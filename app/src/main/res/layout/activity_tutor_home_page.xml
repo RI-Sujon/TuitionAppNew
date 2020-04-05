@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/Navy"
+    tools:context=".Tutor.TutorHomePageActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:text="Visit  Your   Profile"
+            android:textSize="20dp"
+            android:layout_marginBottom="40dp"
+            android:background="@color/GreenYellow"
+            android:textColor="@color/Navy"
+            android:onClick="goToTutorProfileActivity"/>
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:text="Look for               new post"
+            android:background="@color/Aqua"
+            android:textSize="20dp"
+            android:onClick="goToTutorViewPostActivity"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Log Out"
+            android:background="@color/White"
+            android:textSize="20dp"
+            android:onClick="signOut"/>
+
+    </LinearLayout>
+
+</LinearLayout>

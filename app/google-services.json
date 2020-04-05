@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "360974865970",
+    "firebase_url": "https://tuitionapp-d7ee7.firebaseio.com",
+    "project_id": "tuitionapp-d7ee7",
+    "storage_bucket": "tuitionapp-d7ee7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360974865970:android:ecf6435f1f390ddb5c0e2b",
+        "android_client_info": {
+          "package_name": "com.example.tuitionapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360974865970-lktkdcgbm8m5dkpddrbq9ksqbdk71tcg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8IZIDTV1CEBBT2IOvEcyYG9op-0cIIjU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360974865970-lktkdcgbm8m5dkpddrbq9ksqbdk71tcg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

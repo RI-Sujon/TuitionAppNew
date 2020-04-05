@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Guardian.GuardianPostForTuitionActivity">
+
+        <LinearLayout
+            android:id="@+id/upBar"
+            android:layout_weight="4"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/CadetBlue">
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/middleBar"
+            android:layout_weight="20"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:padding="30dp"
+            android:layout_above="@+id/downBar"
+            android:background="@color/Beige">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Title"
+                            android:textSize="20dp"/>;
+
+                        <EditText
+                            android:id="@+id/postTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/WhiteSmoke"
+                            android:inputType="textEmailAddress"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="30dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Institute's Name:"
+                            android:textSize="20dp"/>;
+
+                        <EditText
+                            android:id="@+id/studentInstitute"
+                            android:layout_toEndOf="@+id/mediumSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@color/WhiteSmoke"
+                            android:inputType="textEmailAddress"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Class"
+                            android:textSize="20dp"/>;
+
+                        <Spinner
+                            android:id="@+id/classSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:prompt="@color/WhiteSmoke"
+                            android:layout_marginLeft="10dp"
+                            android:textAlignment="center"
+                            android:background="@color/WhiteSmoke"
+                            android:textSize="15dp"
+                            android:entries="@array/preferredClass_array" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Group"
+                            android:textSize="20dp"/>;
+
+
+                        <Spinner
+                            android:id="@+id/groupSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:textSize="15dp"
+                            android:textAlignment="center"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/WhiteSmoke"
+                            android:entries="@array/group_array" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Medium"
+                            android:textSize="20dp"/>;
+
+                        <Spinner
+                            android:id="@+id/mediumSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:prompt="@color/WhiteSmoke"
+                            android:layout_marginLeft="10dp"
+                            android:textAlignment="center"
+                            android:background="@color/WhiteSmoke"
+                            android:textSize="15dp"
+                            android:entries="@array/medium_array" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:orientation="vertical"
+                        android:layout_marginTop="20dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Subject List"
+                            android:textSize="20dp" />;
+
+                        <LinearLayout
+                            android:id="@+id/subjectTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:orientation="vertical"
+                            android:background="@color/WhiteSmoke">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:id="@+id/subjectTextView1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/GhostWhite"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:id="@+id/subjectTextView2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/GhostWhite"
+                                    android:visibility="gone"
+                                    android:layout_marginLeft="10dp"
+                                    android:textSize="15dp" />
+                                <TextView
+                                    android:id="@+id/subjectTextView3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:visibility="gone"
+                                    android:background="@color/GhostWhite"
+                                    android:layout_marginLeft="10dp"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:id="@+id/subjectTextView4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/GhostWhite"
+                                    android:visibility="gone"
+                                    android:layout_marginLeft="10dp"
+                                    android:textSize="15dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:id="@+id/subjectTextView5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/GhostWhite"
+                                    android:visibility="gone"
+                                    android:textSize="15dp" />
+                                <TextView
+                                    android:id="@+id/subjectTextView6"
+                                    android:layout_toRightOf="@+id/classTextView1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:visibility="gone"
+                                    android:layout_marginLeft="10dp"
+                                    android:background="@color/GhostWhite"
+                                    android:textSize="10dp" />
+
+                                <Spinner
+                                    android:id="@+id/subjectSpinner"
+                                    android:layout_width="120dp"
+                                    android:layout_height="30dp"
+                                    android:prompt="@color/WhiteSmoke"
+                                    android:layout_marginLeft="10dp"
+                                    android:outlineSpotShadowColor="@color/Tomato"
+                                    android:background="@color/colorPrimary"
+                                    android:textSize="15dp"
+                                    android:entries="@array/scienceSubject_array" />
+
+                                <Button
+                                    android:id="@+id/removeSubject"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="35dp"
+                                    android:text="Remove"
+                                    android:textSize="12dp"
+                                    android:layout_marginLeft="10dp"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="20dp">
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:text="Tutor Gender Preference"
+                            android:textSize="20dp"/>;
+
+                        <Spinner
+                            android:id="@+id/genderSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:prompt="@color/WhiteSmoke"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:textAlignment="center"
+                            android:background="@color/WhiteSmoke"
+                            android:textSize="15dp"
+                            android:entries="@array/gender_array" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="20dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Days per Week/Month"
+                            android:textSize="20dp"/>;
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Spinner
+                                android:id="@+id/daysPerWeekOrMonthSpinner"
+                                android:layout_width="70dp"
+                                android:layout_height="50dp"
+                                android:baselineAligned="false"
+                                android:entries="@array/daysPerWeekOrMonth_array"
+                                android:textSize="20dp" />
+
+                            <TextView
+                                android:id="@+id/daysPerWeekOrMonthTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="@color/WhiteSmoke"
+                                android:hint="Select Days Per Week"
+                                android:textSize="20dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="20dp">
+                        <TextView
+                            android:layout_marginTop="20dp"
+                            android:layout_width="60pt"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:text="Area Address"
+                            android:textSize="20dp"/>;
+                        <Spinner
+                            android:id="@+id/areaAddressSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:textSize="20dp"
+                            android:background="@color/WhiteSmoke"
+                            android:entries="@array/areaAddress_array"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Address in more details:"
+                            android:textSize="20dp"/>;
+
+                        <EditText
+                            android:id="@+id/fullAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@color/WhiteSmoke"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Phone Number"
+                            android:textSize="20dp"/>;
+
+                        <EditText
+                            android:id="@+id/phoneNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/WhiteSmoke"
+                            android:inputType="phone"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:text="Salary"
+                            android:textSize="20dp" />;
+
+                        <Spinner
+                            android:id="@+id/salarySpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:textSize="20dp"
+                            android:background="@color/WhiteSmoke"
+                            android:entries="@array/salary_array" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/downBar"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/CadetBlue">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <Button
+                    android:text="POST"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:onClick="signUpCompletion"  />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:outlineSpotShadowColor="@color/Green"
+                    android:outlineAmbientShadowColor="@color/Blue"
+                    android:visibility="invisible"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:onClick="backFromSignUpT_Activity"
+                    android:text="Back" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+</LinearLayout>

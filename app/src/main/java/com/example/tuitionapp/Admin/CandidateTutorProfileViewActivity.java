@@ -33,8 +33,8 @@ public class CandidateTutorProfileViewActivity extends AppCompatActivity {
 
     ListView listView ;
 
-    private String [] emailArray = new String[50];
-    private String [] nameArray = new String[50];
+    private String [] emailArray = new String[60];
+    private String [] nameArray = new String[60];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

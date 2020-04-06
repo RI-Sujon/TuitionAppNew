@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.tuitionapp.CandidateTutor.CandidateTutorInfo;
 import com.example.tuitionapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,15 +31,15 @@ public class TutorProfileActivity extends AppCompatActivity {
 
     private String userEmail ;
 
-    private TutorAccountInfo tutorAccountInfo ;
-    private TutorTuitionInfo tutorTuitionInfo ;
+    private CandidateTutorInfo candidateTutorInfo;
+    private VerifiedTutorInfo verifiedTutorInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_profile);
-        myRefAccountInfo = FirebaseDatabase.getInstance().getReference("AccountInfo");
-        myRefTuitionInfo = FirebaseDatabase.getInstance().getReference("TuitionInfo");
+        myRefAccountInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor");
+        myRefTuitionInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         userEmail = firebaseUser.getEmail().toString() ;
         setTitle("Profile");
@@ -67,12 +68,12 @@ public class TutorProfileActivity extends AppCompatActivity {
         daysPerWeekOrMonth = findViewById(R.id.daysPerWeekOrMonth) ;
         salaryUpto = findViewById(R.id.salary) ;
 
-        myRefAccountInfo.orderByChild("email").equalTo(userEmail)
+        myRefAccountInfo.orderByChild("emailPK").equalTo(userEmail)
                 .addChildEventListener(new ChildEventListener() {
                    @Override
                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         System.out.println("Helo:" + dataSnapshot.getValue().toString());
-                        tutorAccountInfo = dataSnapshot.getValue(TutorAccountInfo.class) ;
+                        candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class) ;
                         addAccountInfoToProfile();
                    }
                    @Override
@@ -87,12 +88,12 @@ public class TutorProfileActivity extends AppCompatActivity {
 
 
 
-        myRefTuitionInfo.orderByChild("emailPrimaryKey").equalTo(userEmail)
+        myRefTuitionInfo.orderByChild("emailPK").equalTo(userEmail)
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         System.out.println("Hellllo:" + dataSnapshot.getValue().toString());
-                        tutorTuitionInfo = dataSnapshot.getValue(TutorTuitionInfo.class) ;
+                        verifiedTutorInfo = dataSnapshot.getValue(VerifiedTutorInfo.class) ;
                         addTuitionInfoToProfile();
                     }
                     @Override
@@ -110,35 +111,35 @@ public class TutorProfileActivity extends AppCompatActivity {
     public void addAccountInfoToProfile(){
         progressBar.setVisibility(View.GONE);
 
-        name.setText("Name  :   " + tutorAccountInfo.getFirstName() + " " +  tutorAccountInfo.getLastName());
-        email.setText("Email  :   " +tutorAccountInfo.getEmail() );
-        phoneNumber.setText("Contact No  :   " +tutorAccountInfo.getMobileNumber() );
-        gender.setText("Gender  :   " +tutorAccountInfo.getGender() );
-        areaAddress.setText("Area Address  :   " +tutorAccountInfo.getAreaAddress() );
-        currentPositon.setText("Current Position  :   " +tutorAccountInfo.getCurrentPosition() );
-        instituteName.setText("Institute Name  :   " + tutorAccountInfo.getEdu_instituteName());
-        subject.setText("Subject/Department  :   " + tutorAccountInfo.getEdu_tutorSubject());
+        name.setText("Name  :   " + candidateTutorInfo.getFirstName() + " " +  candidateTutorInfo.getLastName());
+        email.setText("Email  :   " + candidateTutorInfo.getEmailPK() );
+        phoneNumber.setText("Contact No  :   " + candidateTutorInfo.getMobileNumber() );
+        gender.setText("Gender  :   " + candidateTutorInfo.getGender() );
+        areaAddress.setText("Area Address  :   " + candidateTutorInfo.getAreaAddress() );
+        currentPositon.setText("Current Position  :   " + candidateTutorInfo.getCurrentPosition() );
+        instituteName.setText("Institute Name  :   " + candidateTutorInfo.getEdu_instituteName());
+        subject.setText("Subject/Department  :   " + candidateTutorInfo.getEdu_tutorSubject());
     }
 
     public void addTuitionInfoToProfile(){
         System.out.println(firebaseUser.getUid()+" " + firebaseUser.getIdToken(true) + " " + firebaseUser.getProviderId() );
-        medium.setText("Medium  :   " + tutorTuitionInfo.getMedium() );
-        String strClass = tutorTuitionInfo.getPreferredClass() + "";
+        medium.setText("Medium  :   " + verifiedTutorInfo.getPreferredMediumOrVersion() );
+        String strClass = verifiedTutorInfo.getPreferredClasses() + "";
         if(strClass.length()>0) {
             strClass = strClass.replace("_"," || ") ;
             strClass = strClass.substring(0, strClass.length() - 4);
         }
 
-        String strSub = tutorTuitionInfo.getPreferredSubject() + "" ;
+        String strSub = verifiedTutorInfo.getPreferredSubjects() + "" ;
         if(strSub.length()>0) {
             strSub = strSub.replace("_", " || ");
             strSub = strSub.substring(0, strSub.length() - 4);
         }
         preferredClass.setText("Preferred Class  :   " +  strClass);
-        preferredGroup.setText("Preferred Group  :   " + tutorTuitionInfo.getPreferredGroup() );
+        preferredGroup.setText("Preferred Group  :   " + verifiedTutorInfo.getPreferredGroup() );
         preferredSubject.setText("Preferred Subject  :   " + strSub );
-        daysPerWeekOrMonth.setText("Days Per Week  :   " + tutorTuitionInfo.getDaysPerWeekOrMonth() );
-        salaryUpto.setText("Salary Upto  :   " + tutorTuitionInfo.getSalaryUpto() );
+        daysPerWeekOrMonth.setText("Days Per Week  :   " + verifiedTutorInfo.getPreferredDaysPerWeekOrMonth() );
+        salaryUpto.setText("Salary Upto  :   " + verifiedTutorInfo.getMinimumSalary() );
     }
 
     public void goToTutorHomePageActivity(View view){

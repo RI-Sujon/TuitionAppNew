@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.tuitionapp.R;
-import com.example.tuitionapp.VerifiedTutor.TutorAccountInfo;
-import com.example.tuitionapp.VerifiedTutor.TutorTuitionInfo;
+import com.example.tuitionapp.CandidateTutor.CandidateTutorInfo;
+import com.example.tuitionapp.VerifiedTutor.VerifiedTutorInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,10 +22,10 @@ import java.util.List;
 public class GuardianTutorProfileViewActivity extends AppCompatActivity {
 
     FirebaseDatabase database ;
-    DatabaseReference myRefAccountInfo , myRefTuitionInfo ;
+    DatabaseReference myRefCandidateTutorInfo , myRefVerifiedTutorInfo ;
 
-    List<TutorAccountInfo> accountInfoList  ;
-    List<TutorTuitionInfo> tuitionInfoList  ;
+    List<CandidateTutorInfo> candidateTutorInfoList  ;
+    List<VerifiedTutorInfo> verifiedTutorInfoList  ;
 
     TextView[] infoBox = new TextView[6] ;
 
@@ -38,8 +38,8 @@ public class GuardianTutorProfileViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guardian_tutor_profile_view);
         setTitle("VIEW TUTOR PROFILE");
-        myRefAccountInfo = FirebaseDatabase.getInstance().getReference("AccountInfo") ;
-        myRefTuitionInfo = FirebaseDatabase.getInstance().getReference("TuitionInfo") ;
+        myRefCandidateTutorInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor") ;
+        myRefVerifiedTutorInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor") ;
     }
 
     @Override
@@ -48,8 +48,8 @@ public class GuardianTutorProfileViewActivity extends AppCompatActivity {
 
         //allProfileInfoString = new String[6] ;
 
-        accountInfoList = new ArrayList<>() ;
-        tuitionInfoList = new ArrayList<>() ;
+        candidateTutorInfoList = new ArrayList<>() ;
+        verifiedTutorInfoList = new ArrayList<>() ;
 
         infoBox[0] = findViewById(R.id.info0) ;
         infoBox[1] = findViewById(R.id.info1) ;
@@ -62,22 +62,22 @@ public class GuardianTutorProfileViewActivity extends AppCompatActivity {
 
         }
 
-        myRefAccountInfo.addValueEventListener(new ValueEventListener() {
+        myRefCandidateTutorInfo.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot dS1: dataSnapshot.getChildren()){
-                    TutorAccountInfo tutorAccountInfo = dS1.getValue(TutorAccountInfo.class) ;
-                    accountInfoList.add(tutorAccountInfo) ;
+                    CandidateTutorInfo candidateTutorInfo = dS1.getValue(CandidateTutorInfo.class) ;
+                    candidateTutorInfoList.add(candidateTutorInfo) ;
                 }
 
-                myRefTuitionInfo.addValueEventListener(new ValueEventListener() {
+                myRefVerifiedTutorInfo.addValueEventListener(new ValueEventListener() {
 
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for(DataSnapshot dS1: dataSnapshot.getChildren()){
-                            TutorTuitionInfo tutorTuitionInfo = dS1.getValue(TutorTuitionInfo.class) ;
-                            tuitionInfoList.add(tutorTuitionInfo) ;
+                            VerifiedTutorInfo verifiedTutorInfo = dS1.getValue(VerifiedTutorInfo.class) ;
+                            verifiedTutorInfoList.add(verifiedTutorInfo) ;
                         }
                         viewProfile() ;
                     }
@@ -97,21 +97,19 @@ public class GuardianTutorProfileViewActivity extends AppCompatActivity {
 
     }
 
-
-
     public void viewProfile(){
-        for(int i=0 ; i<tuitionInfoList.size() && i<6 ; i++){
-            String str1 = tuitionInfoList.get(i).toString() ;
+        for(int i=0 ; i<verifiedTutorInfoList.size() && i<6 ; i++){
+            String str1 = verifiedTutorInfoList.get(i).toString() ;
             str1 = str1.replace(",","\n") ;
             str1 = str1.replace("|",", ") ;
             System.out.println(str1);
 
-            for(int j=0 ; j<accountInfoList.size() ; j++){
+            for(int j=0 ; j<candidateTutorInfoList.size() ; j++){
                 String s1,s2 ;
-                s1 = tuitionInfoList.get(i).getEmailPrimaryKey() ;
-                s2 = accountInfoList.get(j).getEmail() ;
+                s1 = verifiedTutorInfoList.get(i).getEmailPK() ;
+                s2 = candidateTutorInfoList.get(j).getEmailPK() ;
                 if(s1.equals(s2)){
-                    String str2 = accountInfoList.get(j).toString() ;
+                    String str2 = candidateTutorInfoList.get(j).toString() ;
                     str2 = str2.replace(",","\n") ;
                     str2 = str2.replace("|",", ") ;
                     allProfileInfoString = str2 + "\n\n" + str1 ;

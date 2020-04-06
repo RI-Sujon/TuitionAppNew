@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.tuitionapp.Guardian.GuardianModuleStartActivity;
-import com.example.tuitionapp.VerifiedTutor.TutorModuleStartActivity;
+import com.example.tuitionapp.CandidateTutor.TutorModuleStartActivity;
 
 public class HomePageActivity extends AppCompatActivity {
 

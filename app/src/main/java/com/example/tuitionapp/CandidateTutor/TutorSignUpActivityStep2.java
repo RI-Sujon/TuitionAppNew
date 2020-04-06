@@ -1,4 +1,4 @@
-package com.example.tuitionapp.VerifiedTutor;
+package com.example.tuitionapp.CandidateTutor;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tuitionapp.R;
+import com.example.tuitionapp.VerifiedTutor.TutorSignUpActivityStep3;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -127,7 +128,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     }
 
     public void goToTutorSignUpActivityStep3(View view){
-        Intent intent = new Intent(this,TutorSignUpActivityStep3.class);
+        Intent intent = new Intent(this, TutorSignUpActivityStep3.class);
         startActivity(intent);
         finish();
     }

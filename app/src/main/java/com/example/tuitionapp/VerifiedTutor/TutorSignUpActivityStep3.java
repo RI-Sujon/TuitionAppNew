@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tuitionapp.CandidateTutor.TutorModuleStartActivity;
 import com.example.tuitionapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,9 +26,10 @@ public class TutorSignUpActivityStep3 extends AppCompatActivity{
     private TextView [] preferredSubjectTextView = new TextView[6];
 
     private Spinner mediumBox, preferredClassBox, preferredGroupBox, preferredSubjectBox , daysPerWeekOrMonthBox ,salaryUptoBox ;
-    private String medium="", preferredClass="" , preferredGroup="" , preferredSubject="" , daysPerWeekOrMonth="" , salaryUpto="";
-    private String emailPrimaryKey ;
-    private Button removeClassButton , removeSubjectButton;
+    private String medium="", preferredClass="", preferredGroup="", preferredSubject="", preferredAreas="", experianceStatus="",daysPerWeekOrMonth="", minimumSalary="";
+    private String profilePicture,demoVideo ;
+    private String emailPK="" ,groupIdFK;
+    private Button removeClassButton , removeSubjectButton ;
 
     private FirebaseDatabase database ;
     private DatabaseReference databaseReference ;
@@ -43,7 +45,7 @@ public class TutorSignUpActivityStep3 extends AppCompatActivity{
         getSupportActionBar().hide();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         database = FirebaseDatabase.getInstance() ;
-        databaseReference = database.getReference("TuitionInfo").child(firebaseUser.getUid().toString()) ;
+        databaseReference = database.getReference("VerifiedTutor").child(firebaseUser.getUid().toString()) ;
     }
 
     protected void onStart() {
@@ -101,14 +103,15 @@ public class TutorSignUpActivityStep3 extends AppCompatActivity{
         }
         preferredGroup = preferredGroupTextView.getText().toString().trim() ;
         daysPerWeekOrMonth = daysPerWeekOrMonthTextView.getText().toString().trim() ;
-        salaryUpto = salaryUptoBox.getSelectedItem().toString() ;
-        emailPrimaryKey = firebaseUser.getEmail().toString() ;
+        minimumSalary = salaryUptoBox.getSelectedItem().toString() ;
+        emailPK = firebaseUser.getEmail().toString() ;
 
-        TutorTuitionInfo tutorTuitionInfo = new TutorTuitionInfo(medium,preferredClass,preferredGroup,preferredSubject,daysPerWeekOrMonth,salaryUpto,emailPrimaryKey) ;
+        VerifiedTutorInfo verifiedTutorInfo = new VerifiedTutorInfo(emailPK, medium, preferredClass, preferredGroup, preferredSubject, preferredAreas ,
+                experianceStatus, daysPerWeekOrMonth, minimumSalary,profilePicture,demoVideo,groupIdFK) ;
 
         //key = databaseReference.push().getKey() ;
 
-        databaseReference.setValue(tutorTuitionInfo) ;
+        databaseReference.setValue(verifiedTutorInfo) ;
         Toast.makeText(getApplicationContext(),"sign up successfully",Toast.LENGTH_SHORT).show();
         goToTutorHomePageActivity();
 

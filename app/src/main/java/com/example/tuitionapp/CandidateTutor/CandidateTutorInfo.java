@@ -1,17 +1,17 @@
-package com.example.tuitionapp.VerifiedTutor;
+package com.example.tuitionapp.CandidateTutor;
 
-public class TutorAccountInfo {
+public class CandidateTutorInfo {
 
-    private String firstName,lastName,email,mobileNumber, gender,areaAddress,currentPosition , edu_instituteName, edu_tutorSubject  ;
+    private String firstName,lastName,emailPK,mobileNumber, gender,areaAddress,currentPosition , edu_instituteName, edu_tutorSubject  ;
 
-    public TutorAccountInfo(){
+    public CandidateTutorInfo(){
 
     }
 
-    public TutorAccountInfo(String firstName, String lastName, String email, String mobileNumber, String gender, String areaAddress, String currentPosition, String edu_instituteName, String edu_tutorSubject) {
+    public CandidateTutorInfo(String firstName, String lastName, String emailPK, String mobileNumber, String gender, String areaAddress, String currentPosition, String edu_instituteName, String edu_tutorSubject) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.emailPK = emailPK;
         this.mobileNumber = mobileNumber;
         this.gender = gender;
         this.areaAddress = areaAddress;
@@ -37,12 +37,12 @@ public class TutorAccountInfo {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailPK() {
+        return emailPK;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailPK(String emailPK) {
+        this.emailPK = emailPK;
     }
 
     public String getMobileNumber() {
@@ -98,7 +98,7 @@ public class TutorAccountInfo {
         return
                 " Name = " + firstName +
                 " " + lastName + '\'' +
-                ", Email = '" + email + '\'' +
+                ", Email = '" + emailPK + '\'' +
                 ", Mobile Number = '" + mobileNumber + '\'' +
                 ", Gender = '" + gender + '\'' +
                 ", AreaAddress = '" + areaAddress + '\'' +

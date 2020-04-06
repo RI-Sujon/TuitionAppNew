@@ -1,4 +1,4 @@
-package com.example.tuitionapp.VerifiedTutor;
+package com.example.tuitionapp.CandidateTutor;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +9,12 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.tuitionapp.Admin.AdminHomePageActivity;
+import com.example.tuitionapp.CandidateTutor.TutorSignUpActivityStep1;
+import com.example.tuitionapp.CandidateTutor.TutorSignUpActivityStep2;
 import com.example.tuitionapp.R;
+import com.example.tuitionapp.VerifiedTutor.TutorHomePageActivity;
+import com.example.tuitionapp.VerifiedTutor.TutorSignUpActivityStep3;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -107,8 +112,14 @@ public class TutorModuleStartActivity extends AppCompatActivity {
 
 
     public void signUpComletionChecking1(final FirebaseUser user){
+
+        if(user.getEmail().equals("tuitionapsspl02@gmail.com")){
+            goToAdminPanel() ;
+            return;
+        }
+
         if (user !=null){
-            myRefAccountInfo = FirebaseDatabase.getInstance().getReference("AccountInfo").child(user.getUid());
+            myRefAccountInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(user.getUid());
             myRefAccountInfo.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -129,7 +140,7 @@ public class TutorModuleStartActivity extends AppCompatActivity {
     }
 
     public void signUpComletionChecking2(FirebaseUser user){
-        myRefTuitionInfo = FirebaseDatabase.getInstance().getReference("TuitionInfo").child(user.getUid());
+        myRefTuitionInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor").child(user.getUid());
         myRefTuitionInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -169,6 +180,12 @@ public class TutorModuleStartActivity extends AppCompatActivity {
 
     public void goToTutorSignUpActivityStep1(){
         Intent intent = new Intent(this, TutorSignUpActivityStep1.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void goToAdminPanel(){
+        Intent intent = new Intent(this, AdminHomePageActivity.class);
         startActivity(intent);
         finish();
     }

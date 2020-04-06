@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.example.tuitionapp.R;
 import com.example.tuitionapp.HomePageActivity;
+import com.example.tuitionapp.TuitionPost.TuitionPostActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class GuardianHomePageActivity extends AppCompatActivity {
@@ -22,7 +23,7 @@ public class GuardianHomePageActivity extends AppCompatActivity {
     }
 
     public void goToGuardianPostForTuitionActivity(View view) {
-        Intent intent = new Intent(this, GuardianPostForTuitionActivity.class);
+        Intent intent = new Intent(this, TuitionPostActivity.class);
         startActivity(intent);
         finish();
 

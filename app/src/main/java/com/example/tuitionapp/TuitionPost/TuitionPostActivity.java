@@ -1,8 +1,10 @@
-package com.example.tuitionapp.Guardian;
+package com.example.tuitionapp.TuitionPost;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,13 +15,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tuitionapp.Guardian.GuardianHomePageActivity;
 import com.example.tuitionapp.R;
+import com.example.tuitionapp.TuitionPost.TuitionPostInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class GuardianPostForTuitionActivity extends AppCompatActivity {
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Date;
+
+public class TuitionPostActivity extends AppCompatActivity {
 
     private EditText postTitleBox, studentInstituteBox, studentFullAreaAddressBox, studentContactNoBox;
     private TextView [] preferredSubjectTextView = new TextView[6];
@@ -27,8 +36,10 @@ public class GuardianPostForTuitionActivity extends AppCompatActivity {
 
     private Spinner mediumBox, classBox, groupBox, subjectBox, tutorGenderPreferenceBox, daysPerWeekOrMonthBox , areaAddressBox ,salaryBox ;
 
-    private String postTitle="", studentInstitute="", studentClass="", studentGroup="", studentMedium="", studentSubjectList="",
-            tutorGenderPreference="", daysPerWeekOrMonth="", studentAreaAddress="", studentFullAddress="", studentContactNo="", salary="" ;
+    private String postId="", postTitle="", studentInstitute="", studentClass="", studentGroup="", studentMedium="", studentSubjectList="",
+            tutorGenderPreference="", daysPerWeekOrMonth="", studentAreaAddress="", studentFullAddress="", studentContactNo="", salary="", extra="" ;
+    private LocalDate postDate ;
+    private LocalTime postTime ;
 
     private Button removeSubjectButton;
 
@@ -46,7 +57,7 @@ public class GuardianPostForTuitionActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         database = FirebaseDatabase.getInstance() ;
-        databaseReference = database.getReference("PostInfo") ;
+        databaseReference = database.getReference("TuitionPost") ;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
     }
 
@@ -89,6 +100,7 @@ public class GuardianPostForTuitionActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void signUpCompletion(View view) {
 
         progressBar = findViewById(R.id.progressBar);
@@ -106,9 +118,9 @@ public class GuardianPostForTuitionActivity extends AppCompatActivity {
 
         studentFullAddress = studentFullAddress.replace(",","_") ;
 
-        String phoneNumberPrimaryKey = firebaseUser.getPhoneNumber() ;
-        GuardianPostInfo guardianPostInfo = new GuardianPostInfo(phoneNumberPrimaryKey,postTitle, studentInstitute ,studentClass , studentGroup, studentMedium, studentSubjectList,
-                tutorGenderPreference,daysPerWeekOrMonth,studentAreaAddress,studentFullAddress,studentContactNo,salary) ;
+        String guardianMobileNumberFK = firebaseUser.getPhoneNumber() ;
+        TuitionPostInfo guardianPostInfo = new TuitionPostInfo(postId,postTitle, studentInstitute ,studentClass , studentGroup, studentMedium, studentSubjectList,
+                tutorGenderPreference,daysPerWeekOrMonth,studentAreaAddress,studentFullAddress,studentContactNo,salary,extra,guardianMobileNumberFK) ;
 
         databaseReference.push().setValue(guardianPostInfo) ;
         Toast.makeText(getApplicationContext(),"successfully post",Toast.LENGTH_SHORT).show();

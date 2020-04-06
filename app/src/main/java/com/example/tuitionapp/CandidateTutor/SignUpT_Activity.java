@@ -1,4 +1,4 @@
-package com.example.tuitionapp.VerifiedTutor;
+package com.example.tuitionapp.CandidateTutor;
 
 import androidx.appcompat.app.AppCompatActivity;
 

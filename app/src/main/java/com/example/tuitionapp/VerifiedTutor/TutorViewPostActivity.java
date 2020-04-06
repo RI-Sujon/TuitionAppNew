@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.tuitionapp.Guardian.GuardianPostInfo;
+import com.example.tuitionapp.TuitionPost.TuitionPostInfo;
 import com.example.tuitionapp.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,7 +23,7 @@ public class TutorViewPostActivity extends AppCompatActivity {
     FirebaseDatabase database ;
     DatabaseReference databaseReference ;
 
-    List<GuardianPostInfo> postList  ;
+    List<TuitionPostInfo> postList  ;
 
     TextView [] postBox = new TextView[6] ;
 
@@ -34,7 +34,7 @@ public class TutorViewPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_view_post);
         setTitle("VIEW POST");
-        databaseReference = FirebaseDatabase.getInstance().getReference("PostInfo") ;
+        databaseReference = FirebaseDatabase.getInstance().getReference("TuitionPost") ;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class TutorViewPostActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot dS1: dataSnapshot.getChildren()){
-                    GuardianPostInfo postInfo = dS1.getValue(GuardianPostInfo.class) ;
+                    TuitionPostInfo postInfo = dS1.getValue(TuitionPostInfo.class) ;
                     postList.add(postInfo) ;
                 }
 

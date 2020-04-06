@@ -1,4 +1,4 @@
-package com.example.tuitionapp.VerifiedTutor;
+package com.example.tuitionapp.CandidateTutor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +17,7 @@ import android.os.Bundle;
 
 import com.example.tuitionapp.R;
 
+import com.example.tuitionapp.VerifiedTutor.TutorSignUpActivityStep3;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +38,7 @@ public class TutorSignUpActivityStep1 extends AppCompatActivity {
 
     private String firstName="", lastName="", email="", mobileNumber="", gender="", areaAddress="", currentPosition="", edu_instituteName="", edu_tutorSubject="" ;
 
-    private TutorAccountInfo AccountInfo ;
+    private CandidateTutorInfo AccountInfo ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class TutorSignUpActivityStep1 extends AppCompatActivity {
         getSupportActionBar().hide();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference = databaseReference.child("AccountInfo").child(firebaseUser.getUid()) ;
+        databaseReference = databaseReference.child("CandidateTutor").child(firebaseUser.getUid()) ;
     }
 
     @Override
@@ -98,7 +99,7 @@ public class TutorSignUpActivityStep1 extends AppCompatActivity {
         edu_instituteName = edu_instituteNameBox.getSelectedItem().toString();
         edu_tutorSubject = edu_tutorSubjectBox.getSelectedItem().toString();
 
-        AccountInfo = new TutorAccountInfo(firstName, lastName, email, mobileNumber, gender, areaAddress, currentPosition, edu_instituteName, edu_tutorSubject);
+        AccountInfo = new CandidateTutorInfo(firstName, lastName, email, mobileNumber, gender, areaAddress, currentPosition, edu_instituteName, edu_tutorSubject);
 
         databaseReference.setValue(AccountInfo) ;
         Toast.makeText(getApplicationContext(),"sign up successfully",Toast.LENGTH_SHORT).show();
@@ -106,13 +107,13 @@ public class TutorSignUpActivityStep1 extends AppCompatActivity {
     }
 
     public void goToTutorSignUpActivityStep2(){
-        Intent intent = new Intent(this,TutorSignUpActivityStep2.class);
+        Intent intent = new Intent(this, TutorSignUpActivityStep2.class);
         startActivity(intent);
         finish();
     }
 
     public void goToTutorSignUpActivityStep3(){
-        Intent intent = new Intent(this,TutorSignUpActivityStep3.class);
+        Intent intent = new Intent(this, TutorSignUpActivityStep3.class);
         startActivity(intent);
         finish();
     }

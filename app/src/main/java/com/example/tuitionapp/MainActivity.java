@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.tuitionapp.Guardian.GuardianHomePageActivity;
-import com.example.tuitionapp.VerifiedTutor.TutorHomePageActivity;
+import com.example.tuitionapp.VerifiedTutor.VerifiedTutorHomePageActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -49,18 +49,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signUpComletionChecking(FirebaseUser user){
-        final DatabaseReference myRefTuitionInfo ;
-        myRefTuitionInfo = FirebaseDatabase.getInstance().getReference("TuitionInfo").child(user.getUid());
+        final DatabaseReference myVerifiedTutorInfo ;
+        myVerifiedTutorInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor").child(user.getUid());
 
-        myRefTuitionInfo.addValueEventListener(new ValueEventListener() {
+        myVerifiedTutorInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    goToTutorHomePageActivity();
-                    myRefTuitionInfo.removeEventListener(this);
+                    goToVerifiedTutorHomePageActivity();
+                    myVerifiedTutorInfo.removeEventListener(this);
                 }else{
                     goToHomePageActivity();
-                    myRefTuitionInfo.removeEventListener(this);
+                    myVerifiedTutorInfo.removeEventListener(this);
                 }
             }
             @Override
@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void goToTutorHomePageActivity(){
-        Intent intent = new Intent(this, TutorHomePageActivity.class);
+    public void goToVerifiedTutorHomePageActivity(){
+        Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
         startActivity(intent);
         finish();
     }

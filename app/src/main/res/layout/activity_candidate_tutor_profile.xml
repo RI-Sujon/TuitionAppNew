@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/Navy"
     android:orientation="vertical"
-    tools:context=".VerifiedTutor.VerifiedTutorProfileActivity">
+    tools:context=".CandidateTutor.CandidateTutorProfileActivity">
 
     <Button
         android:id="@+id/backButton"
@@ -15,7 +15,7 @@
         android:layout_gravity="right"
         android:text="BACK"
         android:visibility="visible"
-        android:onClick="goToTutorHomePageActivity" />
+        android:onClick="goToCandidateTutorHomePageActivity" />
 
     <TextView
         android:id="@+id/name"
@@ -89,53 +89,6 @@
         android:visibility="invisible"
         android:layout_gravity="center"/>
 
-    <TextView
-        android:id="@+id/medium"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:textColor="@color/WhiteSmoke"/>
-
-    <TextView
-        android:id="@+id/preferredClass"
-        android:textSize="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/WhiteSmoke"/>
-
-    <TextView
-        android:id="@+id/preferredGroup"
-        android:textSize="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/WhiteSmoke"/>
-
-    <TextView
-        android:id="@+id/preferredSubject"
-        android:textSize="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/WhiteSmoke"/>
-
-    <TextView
-        android:id="@+id/daysPerWeekOrMonth"
-        android:textSize="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/WhiteSmoke"/>
-
-    <TextView
-        android:id="@+id/salary"
-        android:textSize="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/WhiteSmoke"/>
 
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.tuitionapp.VerifiedTutor;
+package com.example.tuitionapp.CandidateTutor;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,26 +20,23 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class TutorProfileActivity extends AppCompatActivity {
+public class CandidateTutorProfileActivity extends AppCompatActivity {
 
     private FirebaseDatabase database ;
-    private DatabaseReference myRefAccountInfo, myRefTuitionInfo ;
+    private DatabaseReference myRefCandidateTutorInfo ;
     private TextView name,email,phoneNumber,gender,areaAddress,currentPositon,instituteName,subject ;
-    private TextView medium,preferredClass,preferredGroup,preferredSubject,daysPerWeekOrMonth,salaryUpto ;
     private ProgressBar progressBar ;
     private FirebaseUser firebaseUser ;
 
     private String userEmail ;
 
     private CandidateTutorInfo candidateTutorInfo;
-    private VerifiedTutorInfo verifiedTutorInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutor_profile);
-        myRefAccountInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor");
-        myRefTuitionInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor");
+        setContentView(R.layout.activity_candidate_tutor_profile);
+        myRefCandidateTutorInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         userEmail = firebaseUser.getEmail().toString() ;
         setTitle("Profile");
@@ -61,40 +58,13 @@ public class TutorProfileActivity extends AppCompatActivity {
         instituteName = findViewById(R.id.instituteName) ;
         subject = findViewById(R.id.subject) ;
 
-        medium = findViewById(R.id.medium) ;
-        preferredClass = findViewById(R.id.preferredClass) ;
-        preferredGroup = findViewById(R.id.preferredGroup) ;
-        preferredSubject = findViewById(R.id.preferredSubject) ;
-        daysPerWeekOrMonth = findViewById(R.id.daysPerWeekOrMonth) ;
-        salaryUpto = findViewById(R.id.salary) ;
-
-        myRefAccountInfo.orderByChild("emailPK").equalTo(userEmail)
-                .addChildEventListener(new ChildEventListener() {
-                   @Override
-                   public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        System.out.println("Helo:" + dataSnapshot.getValue().toString());
-                        candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class) ;
-                        addAccountInfoToProfile();
-                   }
-                   @Override
-                   public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
-                   @Override
-                   public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) { }
-                   @Override
-                   public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
-                   @Override
-                   public void onCancelled(@NonNull DatabaseError databaseError) { }
-                });
-
-
-
-        myRefTuitionInfo.orderByChild("emailPK").equalTo(userEmail)
+        myRefCandidateTutorInfo.orderByChild("emailPK").equalTo(userEmail)
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        System.out.println("Hellllo:" + dataSnapshot.getValue().toString());
-                        verifiedTutorInfo = dataSnapshot.getValue(VerifiedTutorInfo.class) ;
-                        addTuitionInfoToProfile();
+                        System.out.println("Helo:" + dataSnapshot.getValue().toString());
+                        candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class) ;
+                        addAccountInfoToProfile();
                     }
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
@@ -105,6 +75,7 @@ public class TutorProfileActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) { }
                 });
+
 
     }
 
@@ -121,29 +92,10 @@ public class TutorProfileActivity extends AppCompatActivity {
         subject.setText("Subject/Department  :   " + candidateTutorInfo.getEdu_tutorSubject());
     }
 
-    public void addTuitionInfoToProfile(){
-        System.out.println(firebaseUser.getUid()+" " + firebaseUser.getIdToken(true) + " " + firebaseUser.getProviderId() );
-        medium.setText("Medium  :   " + verifiedTutorInfo.getPreferredMediumOrVersion() );
-        String strClass = verifiedTutorInfo.getPreferredClasses() + "";
-        if(strClass.length()>0) {
-            strClass = strClass.replace("_"," || ") ;
-            strClass = strClass.substring(0, strClass.length() - 4);
-        }
 
-        String strSub = verifiedTutorInfo.getPreferredSubjects() + "" ;
-        if(strSub.length()>0) {
-            strSub = strSub.replace("_", " || ");
-            strSub = strSub.substring(0, strSub.length() - 4);
-        }
-        preferredClass.setText("Preferred Class  :   " +  strClass);
-        preferredGroup.setText("Preferred Group  :   " + verifiedTutorInfo.getPreferredGroup() );
-        preferredSubject.setText("Preferred Subject  :   " + strSub );
-        daysPerWeekOrMonth.setText("Days Per Week  :   " + verifiedTutorInfo.getPreferredDaysPerWeekOrMonth() );
-        salaryUpto.setText("Salary Upto  :   " + verifiedTutorInfo.getMinimumSalary() );
-    }
-
-    public void goToTutorHomePageActivity(View view){
-        Intent intent = new Intent(this, TutorHomePageActivity.class);
+    public void goToCandidateTutorHomePageActivity(View view){
+        System.out.println("Coronaaaaaaaaaaaaaaaaaaaa");
+        Intent intent = new Intent(this, CandidateTutorHomePageActivity.class);
         startActivity(intent);
         finish();
     }

@@ -39,7 +39,7 @@ public class AdminHomePageActivity extends AppCompatActivity {
     }
 
     public void goToCandidateTutorProfileVeiwActivity(View view){
-        Intent intent = new Intent(this, CandidateTutorProfileViewActivity.class) ;
+        Intent intent = new Intent(this, CandidateTutorProfileAdminViewActivity.class) ;
         startActivity(intent);
         finish();
     }

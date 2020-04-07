@@ -118,7 +118,7 @@ public class TutorSignUpActivityStep3 extends AppCompatActivity{
     }
 
     public void goToTutorHomePageActivity(){
-        Intent intent = new Intent(this,TutorHomePageActivity.class);
+        Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
         startActivity(intent);
         finish();
     }

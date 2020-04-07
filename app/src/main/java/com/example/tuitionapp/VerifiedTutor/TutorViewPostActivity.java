@@ -89,7 +89,7 @@ public class TutorViewPostActivity extends AppCompatActivity {
     }
 
     public void goToTutorHomePageActivity(View view){
-        Intent intent = new Intent(this, TutorHomePageActivity.class);
+        Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
         startActivity(intent);
         finish();
     }

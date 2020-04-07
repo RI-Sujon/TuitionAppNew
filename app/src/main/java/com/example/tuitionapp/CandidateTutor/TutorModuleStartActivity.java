@@ -10,11 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.tuitionapp.Admin.AdminHomePageActivity;
-import com.example.tuitionapp.CandidateTutor.TutorSignUpActivityStep1;
-import com.example.tuitionapp.CandidateTutor.TutorSignUpActivityStep2;
+import com.example.tuitionapp.Admin.ApproveInfo;
 import com.example.tuitionapp.R;
-import com.example.tuitionapp.VerifiedTutor.TutorHomePageActivity;
-import com.example.tuitionapp.VerifiedTutor.TutorSignUpActivityStep3;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -40,7 +37,7 @@ public class TutorModuleStartActivity extends AppCompatActivity {
     private  FirebaseAuth mAuth ;
     private ProgressBar progressBar ;
 
-    private DatabaseReference  myRefAccountInfo , myRefTuitionInfo ;
+    private DatabaseReference  myRefCandidateTutorInfo, myRefVerifiedTutorInfo, myRefApproveInfo;
 
     private int flagForHandling = -1 ;
 
@@ -57,7 +54,7 @@ public class TutorModuleStartActivity extends AppCompatActivity {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser!=null) {
-            signUpComletionChecking1(currentUser);
+            isApprovedChecking(currentUser);
         }
     }
 
@@ -92,7 +89,8 @@ public class TutorModuleStartActivity extends AppCompatActivity {
 
                     FirebaseUser user = mAuth.getCurrentUser();
                     //updateUI(user);
-                    signUpComletionChecking1(user);
+                    //signUpComletionChecking1(user);
+                    isApprovedChecking(user);
                 } else {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -111,24 +109,61 @@ public class TutorModuleStartActivity extends AppCompatActivity {
     }
 
 
-    public void signUpComletionChecking1(final FirebaseUser user){
-
+    public void isApprovedChecking(final FirebaseUser user){
         if(user.getEmail().equals("tuitionapsspl02@gmail.com")){
             goToAdminPanel() ;
             return;
         }
-
+        final int[] flag = {0};
         if (user !=null){
-            myRefAccountInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(user.getUid());
-            myRefAccountInfo.addValueEventListener(new ValueEventListener() {
+            myRefApproveInfo = FirebaseDatabase.getInstance().getReference("Approve");
+            myRefApproveInfo.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot dS1: dataSnapshot.getChildren()){
+                        ApproveInfo approveInfo = dS1.getValue(ApproveInfo.class) ;
+                        if(approveInfo.getCandidateTutorEmail().equals(user.getEmail())){
+                            System.out.println("Marhaba");
+                            goToCandidateTutorHomePageActivity();
+                            flag[0] = 1 ;
+                            myRefApproveInfo.removeEventListener(this);
+                        }
+                    }
+                    if(flag[0]==0){
+                        isSignUpStep1CompletedChecking(user);
+                        myRefApproveInfo.removeEventListener(this);
+                    }
+
+                    //goToTutorSignUpActivityStep1();
+                }
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                }
+            });
+        }
+    }
+
+    public void isSignUpStep1CompletedChecking(final FirebaseUser user){
+        if (user !=null){
+            myRefCandidateTutorInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(user.getUid());
+            myRefCandidateTutorInfo.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()){
-                        signUpComletionChecking2(user);
-                        myRefAccountInfo.removeEventListener(this);
+                        CandidateTutorInfo candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class) ;
+                        if(candidateTutorInfo.getIdCardImageName()!=null){
+                            goToCandidateTutorHomePageActivity();
+                        }
+                        else {
+                            goToTutorSignUpActivityStep2();
+                        }
+
+                        myRefCandidateTutorInfo.removeEventListener(this);
                     }else{
                         goToTutorSignUpActivityStep1();
-                        myRefAccountInfo.removeEventListener(this);
+                        myRefCandidateTutorInfo.removeEventListener(this);
                     }
                 }
                 @Override
@@ -139,35 +174,10 @@ public class TutorModuleStartActivity extends AppCompatActivity {
         }
     }
 
-    public void signUpComletionChecking2(FirebaseUser user){
-        myRefTuitionInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor").child(user.getUid());
-        myRefTuitionInfo.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    goToTutorHomePageActivity();
-                    myRefTuitionInfo.removeEventListener(this);
-                }else{
-                    goToTutorSignUpActivityStep3();
-                    myRefTuitionInfo.removeEventListener(this);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-
-    }
-
-    public void goToTutorHomePageActivity(){
-        Intent intent = new Intent(this, TutorHomePageActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    public void goToTutorSignUpActivityStep3(){
-        Intent intent = new Intent(this, TutorSignUpActivityStep3.class);
+    public void goToCandidateTutorHomePageActivity(){
+        System.out.println("Hello sir from tutor module start");
+        Intent intent = new Intent(this, CandidateTutorHomePageActivity.class);
         startActivity(intent);
         finish();
     }

@@ -19,4 +19,10 @@
         android:layout_width="wrap_content"
         android:textSize="12dp"/>
 
+    <Button
+        android:id="@+id/approveButton"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Approve" />
+
 </LinearLayout>

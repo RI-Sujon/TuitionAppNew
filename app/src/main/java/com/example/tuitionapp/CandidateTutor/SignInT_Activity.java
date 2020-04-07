@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.tuitionapp.R;
-import com.example.tuitionapp.VerifiedTutor.TutorProfileActivity;
+import com.example.tuitionapp.VerifiedTutor.VerifiedTutorProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -60,7 +60,7 @@ public class SignInT_Activity extends AppCompatActivity {
 
     public void goToProfile(){
 
-        Intent intent = new Intent(this, TutorProfileActivity.class);
+        Intent intent = new Intent(this, VerifiedTutorProfileActivity.class);
         startActivity(intent);
         finish();
     }

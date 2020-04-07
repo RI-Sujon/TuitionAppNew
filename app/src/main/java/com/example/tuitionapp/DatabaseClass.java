@@ -35,21 +35,21 @@ public class DatabaseClass {
     }
 
     public List<CandidateTutorInfo> getCandidateTutorInfoList(){
-        myRefCandidateTutorInfo.addValueEventListener(new ValueEventListener() {
+            myRefCandidateTutorInfo.addValueEventListener(new ValueEventListener() {
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot dS1: dataSnapshot.getChildren()){
-                    CandidateTutorInfo candidateTutorInfo = dS1.getValue(CandidateTutorInfo.class) ;
-                    candidateTutorInfoList.add(candidateTutorInfo) ;
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot dS1: dataSnapshot.getChildren()){
+                        CandidateTutorInfo candidateTutorInfo = dS1.getValue(CandidateTutorInfo.class) ;
+                        candidateTutorInfoList.add(candidateTutorInfo) ;
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                }
+            });
         return candidateTutorInfoList ;
     }
 

@@ -16,11 +16,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tuitionapp.R;
-import com.example.tuitionapp.VerifiedTutor.TutorSignUpActivityStep3;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -40,6 +44,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private FirebaseUser firebaseUser ;
+    private DatabaseReference myRefCandidateTutor ;
 
     private String emailPrimaryKey ;
 
@@ -58,6 +63,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        myRefCandidateTutor = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(firebaseUser.getUid()) ;
 
         emailPrimaryKey = firebaseUser.getEmail() ;
     }
@@ -128,7 +134,23 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     }
 
     public void goToTutorSignUpActivityStep3(View view){
-        Intent intent = new Intent(this, TutorSignUpActivityStep3.class);
+
+        myRefCandidateTutor.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                CandidateTutorInfo candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class) ;
+                candidateTutorInfo.setIdCardImageName(firebaseUser.getEmail());
+                myRefCandidateTutor.setValue(candidateTutorInfo) ;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+
+        System.out.println("Hello sir from sign up step 2");
+        Intent intent = new Intent(this, CandidateTutorHomePageActivity.class);
         startActivity(intent);
         finish();
     }

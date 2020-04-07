@@ -1,8 +1,11 @@
 package com.example.tuitionapp.CandidateTutor;
 
+import java.util.ArrayList;
+
 public class CandidateTutorInfo {
 
-    private String firstName,lastName,emailPK,mobileNumber, gender,areaAddress,currentPosition , edu_instituteName, edu_tutorSubject  ;
+    private String firstName,lastName,emailPK,mobileNumber, gender,areaAddress,currentPosition , edu_instituteName, edu_tutorSubject, idCardImageName  ;
+    private ArrayList<String> verifiedTutorReferences ;
 
     public CandidateTutorInfo(){
 
@@ -91,6 +94,22 @@ public class CandidateTutorInfo {
 
     public void setEdu_tutorSubject(String edu_tutorSubject) {
         this.edu_tutorSubject = edu_tutorSubject;
+    }
+
+    public String getIdCardImageName() {
+        return idCardImageName;
+    }
+
+    public void setIdCardImageName(String idCardImageName) {
+        this.idCardImageName = idCardImageName;
+    }
+
+    public ArrayList<String> getVerifiedTutorReferences() {
+        return verifiedTutorReferences;
+    }
+
+    public void setVerifiedTutorReferences(ArrayList<String> verifiedTutorReferences) {
+        this.verifiedTutorReferences = verifiedTutorReferences;
     }
 
     @Override

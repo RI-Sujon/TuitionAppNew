@@ -33,7 +33,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutor_home_page);
+        setContentView(R.layout.activity_verified_tutor_home_page);
         mAuth = FirebaseAuth.getInstance() ;
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder().requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);

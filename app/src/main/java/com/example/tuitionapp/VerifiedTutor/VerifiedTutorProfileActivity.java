@@ -37,7 +37,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutor_profile);
+        setContentView(R.layout.activity_verified_tutor_profile);
         myRefAccountInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor");
         myRefTuitionInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();

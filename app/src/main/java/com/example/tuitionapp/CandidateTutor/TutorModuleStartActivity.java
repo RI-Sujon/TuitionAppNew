@@ -58,6 +58,19 @@ public class TutorModuleStartActivity extends AppCompatActivity {
         }
     }
 
+    public void goToTutorSignUpActivity(View view) {
+        Intent intent = new Intent(this, SignUpT_Activity.class);
+        startActivity(intent);
+        finish();
+
+    }
+
+    public void goToTutorSignInActivity(View view) {
+        Intent intent = new Intent(this, SignInT_Activity.class);
+        startActivity(intent);
+        finish();
+    }
+
     public void goToSignInWithGoogle(View view) {
         progressBar.setVisibility(View.VISIBLE);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();

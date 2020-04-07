@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
 
     private ImageView imageView;
     private TextView filePathView ;
+    private EditText reference1, reference2, reference3 ;
     private Button uploadButton ;
     private Button gotoNextButton ;
 
@@ -44,9 +46,10 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private FirebaseUser firebaseUser ;
-    private DatabaseReference myRefCandidateTutor ;
+    private DatabaseReference myRefCandidateTutor, myRefRefer ;
 
     private String emailPrimaryKey ;
+    private String reference1str, reference2str, reference3str ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +62,15 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
         filePathView = findViewById(R.id.filePathName) ;
         uploadButton = findViewById(R.id.uploadButton) ;
         gotoNextButton = findViewById(R.id.nextButton) ;
+        reference1 = findViewById(R.id.reference1) ;
+        reference2 = findViewById(R.id.reference2) ;
+        reference3 = findViewById(R.id.reference3) ;
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         myRefCandidateTutor = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(firebaseUser.getUid()) ;
+        myRefRefer = FirebaseDatabase.getInstance().getReference("Refer") ;
 
         emailPrimaryKey = firebaseUser.getEmail() ;
     }
@@ -134,6 +141,22 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     }
 
     public void goToTutorSignUpActivityStep3(View view){
+        reference1str = reference1.getText().toString() ;
+        reference2str = reference2.getText().toString() ;
+        reference3str = reference3.getText().toString() ;
+
+        if(!reference1str.equals("")){
+            ReferInfo referInfo1= new ReferInfo(firebaseUser.getEmail(),reference1str, false);
+            myRefRefer.push().setValue(referInfo1) ;
+        }
+        if(!reference2str.equals("")){
+            ReferInfo referInfo2= new ReferInfo(firebaseUser.getEmail(),reference2str, false);
+            myRefRefer.push().setValue(referInfo2) ;
+        }
+        if(!reference3str.equals("")){
+            ReferInfo referInfo3= new ReferInfo(firebaseUser.getEmail(),reference3str, false);
+            myRefRefer.push().setValue(referInfo3) ;
+        }
 
         myRefCandidateTutor.addValueEventListener(new ValueEventListener() {
             @Override
@@ -142,14 +165,12 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                 candidateTutorInfo.setIdCardImageName(firebaseUser.getEmail());
                 myRefCandidateTutor.setValue(candidateTutorInfo) ;
             }
-
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
             }
         });
 
-        System.out.println("Hello sir from sign up step 2");
         Intent intent = new Intent(this, CandidateTutorHomePageActivity.class);
         startActivity(intent);
         finish();

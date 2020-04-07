@@ -40,7 +40,9 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:padding="30dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="30dp"
             android:layout_above="@+id/downBar"
             android:background="@color/Beige">
             <ScrollView
@@ -97,6 +99,60 @@
                         android:layout_marginRight="30dp"
                         android:visibility="invisible"
                         android:onClick="uploadImage"  />
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ADD REFERENCE EMAIL"
+                        android:textSize="20dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Reference1:"/>
+                        <EditText
+                            android:id="@+id/reference1"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:paddingLeft="10dp"
+                            android:background="@color/FloralWhite"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Reference2:"/>
+                        <EditText
+                            android:id="@+id/reference2"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:paddingLeft="10dp"
+                            android:background="@color/FloralWhite"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Reference3:"/>
+                        <EditText
+                            android:id="@+id/reference3"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:paddingLeft="10dp"
+                            android:background="@color/FloralWhite"/>
+                    </LinearLayout>
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>

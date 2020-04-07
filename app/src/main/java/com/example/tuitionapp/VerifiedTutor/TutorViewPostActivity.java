@@ -32,7 +32,7 @@ public class TutorViewPostActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutor_view_post);
+        setContentView(R.layout.activity_verified_tutor_view_post);
         setTitle("VIEW POST");
         databaseReference = FirebaseDatabase.getInstance().getReference("TuitionPost") ;
     }

@@ -19,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseClass {
+public class HudaiClass {
 
     FirebaseDatabase database ;
     DatabaseReference myRefCandidateTutorInfo , myRefVerifiedTutorInfo ;
@@ -27,7 +27,7 @@ public class DatabaseClass {
     List<CandidateTutorInfo> candidateTutorInfoList  ;
     List<VerifiedTutorInfo> verifiedTutorInfoList  ;
 
-    public DatabaseClass(){
+    public HudaiClass(){
         candidateTutorInfoList = new ArrayList<>() ;
         verifiedTutorInfoList = new ArrayList<>() ;
         myRefCandidateTutorInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor") ;

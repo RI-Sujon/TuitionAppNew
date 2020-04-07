@@ -38,7 +38,7 @@ public class CandidateTutorProfileAdminViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_candidate_tutor_profile_admin_view);
+        setContentView(R.layout.activity_adminclass_candidate_tutor_profile_list_view);
         listView = findViewById(R.id.candidateTutorList) ;
         setTitle("VIEW TUTOR PROFILE");
         myRefCandidateTutorInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor") ;

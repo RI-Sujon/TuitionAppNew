@@ -44,7 +44,7 @@ public class CustomerAdapterForListView extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        convertView = LayoutInflater.from(context).inflate(R.layout.activity_tutor_list_view, null);
+        convertView = LayoutInflater.from(context).inflate(R.layout.activity_adminclass_tutor_list_view, null);
         TextView nameTextView = convertView.findViewById(R.id.nameTextView);
         TextView emailTextView = convertView.findViewById(R.id.emailTextView);
         nameTextView.setText(name[position]);

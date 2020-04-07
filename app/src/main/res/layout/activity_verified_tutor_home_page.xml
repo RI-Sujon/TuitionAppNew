@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/Navy"
+    tools:context=".VerifiedTutor.VerifiedTutorHomePageActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="MessageBox will implement by Nadim"
+            android:textSize="16dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/Gray"
+            android:textColor="@color/Navy" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="demo video will be implemented by nadim"
+            android:textSize="16dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/Gray"
+            android:textColor="@color/Navy" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="utility feature will be implemented by nadim"
+            android:textSize="16dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/Gray"
+            android:textColor="@color/Navy" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="reference notification implemented by me"
+            android:textSize="16dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/Gray"
+            android:textColor="@color/Navy" />
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="group management will be implemented by me"
+            android:textSize="16dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/Gray"
+            android:textColor="@color/Navy" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/GreenYellow"
+            android:onClick="goToTutorProfileActivity"
+            android:text="Visit  Your   Profile"
+            android:textColor="@color/Navy"
+            android:textSize="20dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Look for new post"
+            android:background="@color/Aqua"
+            android:textSize="20dp"
+            android:onClick="goToTutorViewPostActivity"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Log Out"
+            android:background="@color/White"
+            android:textSize="20dp"
+            android:onClick="signOut"/>
+
+    </LinearLayout>
+
+</LinearLayout>

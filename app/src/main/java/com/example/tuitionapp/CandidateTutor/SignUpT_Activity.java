@@ -46,7 +46,6 @@ public class SignUpT_Activity extends AppCompatActivity {
 
 
         if(newPassword.length() >= 6){
-
             if(newPasswordString.equals(confirmPasswordString)){
                 mAuth.createUserWithEmailAndPassword(emailString,confirmPasswordString).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override

@@ -1,0 +1,107 @@
+package com.example.tuitionapp.VerifiedTutor;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
+import com.example.tuitionapp.Admin.ApproveInfo;
+import com.example.tuitionapp.CandidateTutor.ReferInfo;
+import com.example.tuitionapp.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class CustomAdapter extends BaseAdapter {
+
+    ArrayList<String> email;
+    DatabaseReference myRefRefer = FirebaseDatabase.getInstance().getReference("Refer");
+    Map<String,ReferInfo> map  ;
+    Context context;
+    String userEmail;
+    int size;
+
+    public CustomAdapter(Context context, ArrayList<String> email, Map<String,ReferInfo> map, String userEmail) {
+        this.email = email;
+        this.context = context;
+        this.userEmail = userEmail;
+        this.map = map ;
+    }
+
+    @Override
+    public int getCount() {
+        return email.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final ViewHolder holder ;
+        if (convertView == null) {
+            holder = new ViewHolder() ;
+            convertView = LayoutInflater.from(context).inflate(R.layout.activity_adminclass_tutor_list_view, null);
+            holder.emailTextView = convertView.findViewById(R.id.emailTextView);
+            holder.button = convertView.findViewById(R.id.approveButton);
+
+            convertView.setTag(holder);
+
+        }else{
+            holder = (ViewHolder) convertView.getTag() ;
+        }
+
+        holder.emailTextView.setText("Do You Know this Email: \"" + email.get(position) + "\"");
+
+        holder.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.button.setText("Approved");
+                holder.button.setEnabled(false);
+
+                for(Map.Entry m:map.entrySet()){
+                    System.out.println(m.getKey()+" "+m.getValue());
+                    ReferInfo info = (ReferInfo) m.getValue() ;
+
+                    if (info.getCandidateTutorEmail().equals(email.get(position)) && info.getVerifiedTutorEmail().equals(userEmail)) {
+                        if (info.isReferApprove() != true) {
+                            info.setReferApprove(true);
+                            myRefRefer.child(m.getKey().toString()).setValue(info);
+                            System.out.println("Qqqqqqqqqqqqqqqqqqq: " + m.getKey());
+                        }
+                    }
+
+                }
+            }
+        });
+
+        return convertView;
+    }
+
+    class ViewHolder {
+        TextView emailTextView ;
+        Button button ;
+
+    }
+}
+
+
+

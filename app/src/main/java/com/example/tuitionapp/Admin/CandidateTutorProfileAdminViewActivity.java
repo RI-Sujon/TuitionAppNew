@@ -76,6 +76,7 @@ public class CandidateTutorProfileAdminViewActivity extends AppCompatActivity {
                             ApproveInfo approveInfo = dS1.getValue(ApproveInfo.class) ;
                             approveInfoList.add(approveInfo) ;
                         }
+                        myRefApproveInfo.removeEventListener(this);
                         setListView() ;
                     }
                     @Override

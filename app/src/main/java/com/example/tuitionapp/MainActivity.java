@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                     goToHomePageActivity();
                     myVerifiedTutorInfo.removeEventListener(this);
                 }
+                myVerifiedTutorInfo.removeEventListener(this);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

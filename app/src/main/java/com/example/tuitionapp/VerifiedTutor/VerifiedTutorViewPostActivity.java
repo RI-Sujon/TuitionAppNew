@@ -18,7 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TutorViewPostActivity extends AppCompatActivity {
+public class VerifiedTutorViewPostActivity extends AppCompatActivity {
 
     FirebaseDatabase database ;
     DatabaseReference databaseReference ;
@@ -64,6 +64,7 @@ public class TutorViewPostActivity extends AppCompatActivity {
                 }
 
                 viewPost() ;
+                databaseReference.removeEventListener(this);
             }
 
             @Override

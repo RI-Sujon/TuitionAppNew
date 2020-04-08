@@ -42,15 +42,6 @@
             android:background="@color/Gray"
             android:textColor="@color/Navy" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="reference notification implemented by me"
-            android:textSize="16dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/Gray"
-            android:textColor="@color/Navy" />
-
 
         <Button
             android:layout_width="match_parent"
@@ -62,12 +53,22 @@
             android:textColor="@color/Navy" />
 
         <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="reference notification"
+            android:textSize="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/BlueViolet"
+            android:textColor="@color/Navy"
+            android:onClick="goToVerifiedTutorNotificationActivity"/>
+
+        <Button
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:background="@color/GreenYellow"
-            android:onClick="goToTutorProfileActivity"
+            android:onClick="goToVerifiedTutorProfileActivity"
             android:text="Visit  Your   Profile"
             android:textColor="@color/Navy"
             android:textSize="20dp" />
@@ -78,7 +79,7 @@
             android:text="Look for new post"
             android:background="@color/Aqua"
             android:textSize="20dp"
-            android:onClick="goToTutorViewPostActivity"/>
+            android:onClick="goToVerifiedTutorViewPostActivity"/>
 
         <Button
             android:layout_width="wrap_content"

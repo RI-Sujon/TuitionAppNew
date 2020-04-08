@@ -178,7 +178,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="30dp"
                     android:enabled="false"
-                    android:onClick="goToTutorSignUpActivityStep3"  />
+                    android:onClick="candidateTutorRegistrationCompletion"  />
 
                 <ProgressBar
                     android:id="@+id/progressBar"

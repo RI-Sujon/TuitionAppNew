@@ -4,10 +4,11 @@ public class ReferInfo {
     private String candidateTutorEmail, verifiedTutorEmail ;
     private boolean referApprove ;
 
-    public ReferInfo(String candidateTutorEmail, String verifiedTutorEmail, boolean referApprove) {
+    public ReferInfo(){}
+
+    public ReferInfo(String candidateTutorEmail, String verifiedTutorEmail) {
         this.candidateTutorEmail = candidateTutorEmail;
         this.verifiedTutorEmail = verifiedTutorEmail;
-        this.referApprove = referApprove;
     }
 
     public String getCandidateTutorEmail() {

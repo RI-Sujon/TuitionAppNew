@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tuitionapp.R;
+import com.example.tuitionapp.VerifiedTutor.VerifiedTutorInfo;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +33,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class TutorSignUpActivityStep2 extends AppCompatActivity {
 
@@ -46,10 +48,12 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private FirebaseUser firebaseUser ;
-    private DatabaseReference myRefCandidateTutor, myRefRefer ;
+    private DatabaseReference myRefCandidateTutor, myRefRefer, myRefVerifiedTutor ;
 
     private String emailPrimaryKey ;
     private String reference1str, reference2str, reference3str ;
+
+    ArrayList<VerifiedTutorInfo> verifiedTutorInfoList = new ArrayList<>() ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +74,26 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
         storageReference = storage.getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         myRefCandidateTutor = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(firebaseUser.getUid()) ;
+        myRefVerifiedTutor = FirebaseDatabase.getInstance().getReference("VerifiedTutor") ;
         myRefRefer = FirebaseDatabase.getInstance().getReference("Refer") ;
 
         emailPrimaryKey = firebaseUser.getEmail() ;
+
+        myRefVerifiedTutor.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot dS1: dataSnapshot.getChildren()){
+                    VerifiedTutorInfo verifiedTutorInfo = dS1.getValue(VerifiedTutorInfo.class) ;
+                    verifiedTutorInfoList.add(verifiedTutorInfo) ;
+                }
+                myRefVerifiedTutor.removeEventListener(this);
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+
     }
 
     @Override
@@ -140,30 +161,90 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
         }
     }
 
-    public void goToTutorSignUpActivityStep3(View view){
+    public void candidateTutorRegistrationCompletion(View view){
         reference1str = reference1.getText().toString() ;
         reference2str = reference2.getText().toString() ;
         reference3str = reference3.getText().toString() ;
 
+        int flag1=0, flag2=0, flag3=0 ;
         if(!reference1str.equals("")){
-            ReferInfo referInfo1= new ReferInfo(firebaseUser.getEmail(),reference1str, false);
-            myRefRefer.push().setValue(referInfo1) ;
+            for(VerifiedTutorInfo vt: verifiedTutorInfoList){
+                if(reference1str.equals(vt.getEmailPK())){
+                    flag1 = 1 ;
+                }
+            }
         }
-        if(!reference2str.equals("")){
-            ReferInfo referInfo2= new ReferInfo(firebaseUser.getEmail(),reference2str, false);
-            myRefRefer.push().setValue(referInfo2) ;
-        }
-        if(!reference3str.equals("")){
-            ReferInfo referInfo3= new ReferInfo(firebaseUser.getEmail(),reference3str, false);
-            myRefRefer.push().setValue(referInfo3) ;
+        else{
+            flag1 = -1 ;
         }
 
+        System.out.println(reference2str+"\t\tkkkkkkkk");
+        if(!reference2str.equals("")){
+            System.out.println(reference2str+"\t\tppppppppppppppppppppppp");
+            for(VerifiedTutorInfo vt: verifiedTutorInfoList){
+                System.out.println(reference2str+"\t\t"+vt.getEmailPK());
+                if(reference2str.equals(vt.getEmailPK())){
+                    flag2 = 1 ;
+                }
+            }
+        }
+        else{
+            flag2 = -1 ;
+        }
+
+        if(!reference3str.equals("")){
+            for(VerifiedTutorInfo vt: verifiedTutorInfoList){
+                if(reference3str.equals(vt.getEmailPK())){
+                    flag3 = 1 ;
+                }
+            }
+        }
+        else{
+            flag3 = -1 ;
+        }
+
+        if(flag1!=-1 || flag2!=-1 || flag3!=-1){
+            if(flag1==0){
+                Toast.makeText(getApplicationContext(), "Referenc1 Does not match with any valid tutor ID", Toast.LENGTH_SHORT).show();
+            }
+            else if(flag2==0){
+                Toast.makeText(getApplicationContext(), "Referenc2 Does not match with any valid tutor ID", Toast.LENGTH_SHORT).show();
+            }
+            else if(flag3==0){
+                Toast.makeText(getApplicationContext(), "Referenc3 Does not match with any valid tutor ID", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                if(flag1==1){
+                    ReferInfo referInfo1= new ReferInfo(firebaseUser.getEmail(),reference1str);
+                    myRefRefer.push().setValue(referInfo1) ;
+                }
+                if(flag2==1){
+                    ReferInfo referInfo2= new ReferInfo(firebaseUser.getEmail(),reference1str);
+                    myRefRefer.push().setValue(referInfo2) ;
+                }
+                if(flag3==1){
+                    ReferInfo referInfo3= new ReferInfo(firebaseUser.getEmail(),reference1str);
+                    myRefRefer.push().setValue(referInfo3) ;
+                }
+                goToCandidateTutorProfile();
+            }
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "You need minimum 1 Reference", Toast.LENGTH_SHORT).show() ;
+            goToCandidateTutorProfile();
+        }
+
+
+    }
+
+    public void goToCandidateTutorProfile(){
         myRefCandidateTutor.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 CandidateTutorInfo candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class) ;
                 candidateTutorInfo.setIdCardImageName(firebaseUser.getEmail());
                 myRefCandidateTutor.setValue(candidateTutorInfo) ;
+                myRefCandidateTutor.removeEventListener(this);
             }
             @Override
             public void onCancelled(DatabaseError error) {

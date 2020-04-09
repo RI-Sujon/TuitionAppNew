@@ -18,6 +18,14 @@
         <Button
             android:layout_width="200dp"
             android:layout_height="100dp"
+            android:text="MessageBox Will implemented by Nadim"
+            android:textSize="16dp"
+            android:layout_marginBottom="40dp"
+            android:background="@color/Gray" />
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="100dp"
             android:text="Post For TUTOR"
             android:textSize="20dp"
             android:layout_marginBottom="40dp"

@@ -51,6 +51,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     private DatabaseReference myRefCandidateTutor, myRefRefer, myRefVerifiedTutor ;
 
     private String emailPrimaryKey ;
+    private String imageUriString ;
     private String reference1str, reference2str, reference3str ;
 
     ArrayList<VerifiedTutorInfo> verifiedTutorInfoList = new ArrayList<>() ;
@@ -131,13 +132,19 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("images/" + emailPrimaryKey);
+            final StorageReference imageRef = storageReference.child("images/" + emailPrimaryKey);
 
-            ref.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            imageRef.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Image Uploaded!!", Toast.LENGTH_SHORT).show();
+                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                imageUriString = uri.toString() ;
+                            }
+                        });
                         gotoNextButton.setEnabled(true);
                     }
                 })
@@ -203,13 +210,13 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
 
         if(flag1!=-1 || flag2!=-1 || flag3!=-1){
             if(flag1==0){
-                Toast.makeText(getApplicationContext(), "Referenc1 Does not match with any valid tutor ID", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Reference1 Does not match with any valid tutor ID", Toast.LENGTH_SHORT).show();
             }
             else if(flag2==0){
-                Toast.makeText(getApplicationContext(), "Referenc2 Does not match with any valid tutor ID", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Reference2 Does not match with any valid tutor ID", Toast.LENGTH_SHORT).show();
             }
             else if(flag3==0){
-                Toast.makeText(getApplicationContext(), "Referenc3 Does not match with any valid tutor ID", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Reference3 Does not match with any valid tutor ID", Toast.LENGTH_SHORT).show();
             }
             else {
                 if(flag1==1){
@@ -238,7 +245,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 CandidateTutorInfo candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class) ;
-                candidateTutorInfo.setIdCardImageName(firebaseUser.getEmail());
+                candidateTutorInfo.setIdCardImageUri(imageUriString);
                 myRefCandidateTutor.setValue(candidateTutorInfo) ;
                 myRefCandidateTutor.removeEventListener(this);
             }

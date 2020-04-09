@@ -12,8 +12,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.tuitionapp.Admin.AdminHomePageActivity;
+import com.example.tuitionapp.Admin.BlockInfo;
 import com.example.tuitionapp.CandidateTutor.CandidateTutorInfo;
-import com.example.tuitionapp.Guardian.GuardianTutorProfileViewActivity;
 import com.example.tuitionapp.Guardian.ViewingSearchingTutorProfileActivity;
 import com.example.tuitionapp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
-    private FirebaseDatabase database ;
     private DatabaseReference myRefAccountInfo, myRefTuitionInfo ;
     private TextView name,email,phoneNumber,gender,areaAddress,currentPositon,instituteName,subject ;
     private TextView medium,preferredClass,preferredGroup,preferredSubject,daysPerWeekOrMonth,salaryUpto ;
@@ -54,6 +53,10 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         if(user.equals("guardian")){
             Button messageRequestButton = findViewById(R.id.sendMessageRequestButton) ;
             messageRequestButton.setVisibility(View.VISIBLE);
+        }
+        else if(user.equals("admin")){
+            Button blockButton = findViewById(R.id.blockButton) ;
+            blockButton.setVisibility(View.VISIBLE);
         }
 
     }
@@ -155,6 +158,15 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     public void sendMessageRequestByGuardian(View view){
 
+    }
+
+    public void blockVerifiedTutorByAdmin(View view){
+        DatabaseReference myRefBlockInfo = FirebaseDatabase.getInstance().getReference("Block") ;
+        BlockInfo blockInfo = new BlockInfo("tuitionApsspl02@gmail.com",userEmail,true) ;
+        myRefBlockInfo.push().setValue(blockInfo) ;
+
+        Button button = findViewById(R.id.blockButton) ;
+        button.setEnabled(false);
     }
 
     public void goToBackPageActivity(View view){

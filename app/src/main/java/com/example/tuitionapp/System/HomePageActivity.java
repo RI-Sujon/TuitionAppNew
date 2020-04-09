@@ -1,4 +1,4 @@
-package com.example.tuitionapp;
+package com.example.tuitionapp.System;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.example.tuitionapp.Guardian.GuardianModuleStartActivity;
 import com.example.tuitionapp.CandidateTutor.TutorModuleStartActivity;
+import com.example.tuitionapp.R;
 
 public class HomePageActivity extends AppCompatActivity {
 

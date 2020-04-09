@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class CandidateTutorInfo {
 
-    private String firstName,lastName,emailPK,mobileNumber, gender,areaAddress,currentPosition , edu_instituteName, edu_tutorSubject, idCardImageName  ;
+    private String firstName,lastName,emailPK,mobileNumber, gender,areaAddress,currentPosition , edu_instituteName, edu_tutorSubject, idCardImageUri  ;
     private ArrayList<String> verifiedTutorReferences ;
 
     public CandidateTutorInfo(){
@@ -96,12 +96,12 @@ public class CandidateTutorInfo {
         this.edu_tutorSubject = edu_tutorSubject;
     }
 
-    public String getIdCardImageName() {
-        return idCardImageName;
+    public String getIdCardImageUri() {
+        return idCardImageUri;
     }
 
-    public void setIdCardImageName(String idCardImageName) {
-        this.idCardImageName = idCardImageName;
+    public void setIdCardImageUri(String idCardImageUri) {
+        this.idCardImageUri = idCardImageUri;
     }
 
     public ArrayList<String> getVerifiedTutorReferences() {

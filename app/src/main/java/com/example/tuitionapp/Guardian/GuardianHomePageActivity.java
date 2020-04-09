@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.tuitionapp.R;
-import com.example.tuitionapp.HomePageActivity;
+import com.example.tuitionapp.System.HomePageActivity;
 import com.example.tuitionapp.TuitionPost.TuitionPostActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -32,6 +32,7 @@ public class GuardianHomePageActivity extends AppCompatActivity {
     public void goToGuardianTutorProfileViewActivity(View view){
         //Intent intent = new Intent(this, GuardianTutorProfileViewActivity.class) ;
         Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class) ;
+        intent.putExtra("user","guardian") ;
         startActivity(intent);
         finish();
     }

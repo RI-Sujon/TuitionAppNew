@@ -3,6 +3,7 @@ package com.example.tuitionapp.Admin;
 public class ApproveInfo {
     private String adminEmail ;
     private String candidateTutorEmail ;
+    private boolean approve ;
 
     public ApproveInfo(){
 
@@ -27,5 +28,13 @@ public class ApproveInfo {
 
     public void setCandidateTutorEmail(String candidateTutorEmail) {
         this.candidateTutorEmail = candidateTutorEmail;
+    }
+
+    public boolean isApprove() {
+        return approve;
+    }
+
+    public void setApprove(boolean approve) {
+        this.approve = approve;
     }
 }

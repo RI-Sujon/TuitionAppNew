@@ -23,7 +23,7 @@ tools:context=".Admin.AdminHomePageActivity">
         android:layout_marginBottom="40dp"
         android:background="@color/GreenYellow"
         android:textColor="@color/Navy"
-        android:onClick="goToCandidateTutorProfileVeiwActivity"/>
+        android:onClick="goToCandidateTutorProfileViewActivity"/>
 
     <Button
         android:layout_width="200dp"
@@ -31,7 +31,7 @@ tools:context=".Admin.AdminHomePageActivity">
         android:text="ALL VERIFIED   TUTOR"
         android:background="@color/Aqua"
         android:textSize="20dp"
-        android:onClick="goToCandidateTutorProfileVeiwActivity"/>
+        android:onClick="goToVerifiedTutorProfileViewActivity"/>
 
     <Button
         android:layout_width="wrap_content"

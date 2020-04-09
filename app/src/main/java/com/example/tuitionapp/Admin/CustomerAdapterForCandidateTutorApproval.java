@@ -12,15 +12,16 @@ import com.example.tuitionapp.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 public class CustomerAdapterForCandidateTutorApproval extends BaseAdapter {
 
-    Context context ;
-    String name[] ;
-    String email[];
-    Button button ;
-    DatabaseReference myRefTutorApprove ;
+    private Context context ;
+    private ArrayList<String> name ;
+    private ArrayList<String> email ;
+    private DatabaseReference myRefTutorApprove ;
 
-    public CustomerAdapterForCandidateTutorApproval(Context context, String[] name, String[] email) {
+    public CustomerAdapterForCandidateTutorApproval(Context context, ArrayList<String> name, ArrayList<String> email) {
         this.context = context;
         this.name = name;
         this.email = email;
@@ -29,7 +30,7 @@ public class CustomerAdapterForCandidateTutorApproval extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return name.length;
+        return name.size();
     }
 
     @Override
@@ -44,24 +45,44 @@ public class CustomerAdapterForCandidateTutorApproval extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        convertView = LayoutInflater.from(context).inflate(R.layout.activity_custom_adapter_list_view, null);
-        TextView nameTextView = convertView.findViewById(R.id.nameTextView);
-        TextView emailTextView = convertView.findViewById(R.id.emailTextView);
-        nameTextView.setText(name[position]);
-        emailTextView.setText(email[position]);
-        button = convertView.findViewById(R.id.approveButton) ;
-        nameTextView.setVisibility(View.VISIBLE);
-        emailTextView.setVisibility(View.VISIBLE);
-        button.setVisibility(View.VISIBLE);
-        button.setOnClickListener(new View.OnClickListener() {
+        final ViewHolder holder ;
+
+        if(convertView==null){
+            holder = new ViewHolder() ;
+            convertView = LayoutInflater.from(context).inflate(R.layout.activity_custom_adapter_list_view, null);
+            holder.nameTextView = convertView.findViewById(R.id.nameTextView);
+            holder.emailTextView = convertView.findViewById(R.id.emailTextView);
+            holder.button = convertView.findViewById(R.id.approveButton) ;
+            convertView.setTag(holder);
+        }
+        else {
+            holder = (ViewHolder) convertView.getTag() ;
+        }
+
+
+        holder.nameTextView.setText(name.get(position));
+        holder.emailTextView.setText(email.get(position));
+
+        holder.nameTextView.setVisibility(View.VISIBLE);
+        holder.emailTextView.setVisibility(View.VISIBLE);
+        /*holder.button.setVisibility(View.VISIBLE);
+        holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApproveInfo approveInfo = new ApproveInfo("tuitionapsspl02@gmail.com", email[position]) ;
+                holder.button.setText("Approved");
+                holder.button.setEnabled(false);
+                ApproveInfo approveInfo = new ApproveInfo("tuitionapsspl02@gmail.com", email.get(position)) ;
+                approveInfo.setApprove(true);
                 myRefTutorApprove.push().setValue(approveInfo) ;
-                button.setText("Approved");
-                button.setEnabled(false);
             }
-        });
+        });*/
         return convertView;
     }
+
+    class ViewHolder{
+        Button button ;
+        TextView nameTextView ;
+        TextView emailTextView ;
+    }
+
 }

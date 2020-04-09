@@ -37,10 +37,29 @@
             android:textColor="@color/Brown"/>
 
         <Button
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="50dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="Batch Management"
+            android:textSize="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/Beige"
+            android:textColor="@color/Navy"
+            android:onClick="goToBatchManagement"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="MesssageBox"
+            android:textSize="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/Beige"
+            android:textColor="@color/Navy"
+            android:onClick="goToBatchManagement"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Add Tutor"
             android:textSize="20dp"
             android:layout_marginBottom="20dp"
             android:background="@color/Beige"

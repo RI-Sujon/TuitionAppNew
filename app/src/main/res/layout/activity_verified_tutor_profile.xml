@@ -95,7 +95,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="17dp"
-        android:textColor="@color/DarkOrchid"/>
+        android:textColor="@color/DarkMagenta"/>
 
     <TextView
         android:id="@+id/preferredClass"
@@ -103,7 +103,7 @@
         android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/DarkOrchid"/>
+        android:textColor="@color/DarkMagenta"/>
 
     <TextView
         android:id="@+id/preferredGroup"
@@ -111,7 +111,7 @@
         android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/DarkOrchid"/>
+        android:textColor="@color/DarkMagenta"/>
 
     <TextView
         android:id="@+id/preferredSubject"
@@ -119,7 +119,7 @@
         android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/DarkOrchid"/>
+        android:textColor="@color/DarkMagenta"/>
 
     <TextView
         android:id="@+id/daysPerWeekOrMonth"
@@ -127,7 +127,7 @@
         android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/DarkOrchid"/>
+        android:textColor="@color/DarkMagenta"/>
 
     <TextView
         android:id="@+id/salary"
@@ -135,7 +135,7 @@
         android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/DarkOrchid"/>
+        android:textColor="@color/DarkMagenta"/>
 
     <Button
         android:id="@+id/sendMessageRequestButton"
@@ -148,5 +148,17 @@
         android:text="send an initial message (Will be implemented by NADIM)"
         android:visibility="gone"
         android:onClick="sendMessageRequestByGuardian"/>
+
+    <Button
+        android:id="@+id/blockButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:padding="20dp"
+        android:background="@color/Red"
+        android:text="Block Tutor"
+        android:visibility="gone"
+        android:onClick="blockVerifiedTutorByAdmin"/>
 
 </LinearLayout>

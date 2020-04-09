@@ -23,13 +23,13 @@ import java.util.Map;
 
 public class VerifiedTutorNotificationActivity extends AppCompatActivity {
 
-    DatabaseReference myRefRefer ;
-    ArrayList<ReferInfo>referInfoList ;
-    Map<String,ReferInfo> map = new HashMap<String,ReferInfo>() ;
-    ArrayList<String> candidateTutorEmailList ;
-    FirebaseUser user ;
+    private DatabaseReference myRefRefer ;
+    private ArrayList<ReferInfo>referInfoList ;
+    private Map<String,ReferInfo> map = new HashMap<String,ReferInfo>() ;
+    private ArrayList<String> candidateTutorEmailList ;
+    private FirebaseUser user ;
 
-    ListView listView ;
+    private ListView listView ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

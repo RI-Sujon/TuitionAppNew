@@ -1,4 +1,4 @@
-package com.example.tuitionapp.VerifiedTutor;
+/*package com.example.tuitionapp.VerifiedTutor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -93,4 +93,4 @@ public class VerifiedTutorViewPostActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-}
+}*/

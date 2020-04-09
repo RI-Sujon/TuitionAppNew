@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.example.tuitionapp.Admin.AdminHomePageActivity;
 import com.example.tuitionapp.CandidateTutor.CandidateTutorInfo;
 import com.example.tuitionapp.R;
 import com.example.tuitionapp.VerifiedTutor.VerifiedTutorInfo;
@@ -21,29 +22,31 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
 
-    DatabaseReference myRefVerifiedTutor, myRefCandidateTutor;
+    private DatabaseReference myRefVerifiedTutor, myRefCandidateTutor;
 
-    ArrayList<VerifiedTutorInfo> verifiedTutorInfoList ;
-    ArrayList<CandidateTutorInfo> candidateTutorInfoList ;
-    ArrayList<String> emailList ;
-    ArrayList<String> nameList ;
+    private ArrayList<VerifiedTutorInfo> verifiedTutorInfoList ;
+    private ArrayList<CandidateTutorInfo> candidateTutorInfoList ;
+    private ArrayList<String> emailList ;
+    private ArrayList<String> nameList ;
 
-    CustomerAdapterForViewingSearchingTutorProfile adapter ;
+    private CustomerAdapterForViewingSearchingTutorProfile adapter ;
 
-    ListView listView ;
-    Button searchButton ;
-    EditText searchBar ;
+    private String user;
+
+    private ListView listView ;
+    private Button searchButton ;
+    private EditText searchBar ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewing_searching_tutor_profile);
+        Intent intent = getIntent() ;
+        user = intent.getStringExtra("user") ;
+
         listView = findViewById(R.id.verifiedTutorList) ;
         searchButton = findViewById(R.id.searchButton) ;
         searchBar = findViewById(R.id.search_bar) ;
@@ -120,15 +123,23 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
     }
 
     public void backToHomePage(View view){
-        Intent intent = new Intent(this, GuardianHomePageActivity.class);
-        startActivity(intent);
-        finish();
+
+        if(user.equals("guardian")){
+            Intent intent = new Intent(this, GuardianHomePageActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else if(user.equals("admin")){
+            Intent intent = new Intent(this, AdminHomePageActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void goToSelectedVerifiedTutorProfile(String userEmail){
         Intent intent = new Intent(this, VerifiedTutorProfileActivity.class);
         intent.putExtra("userEmail", userEmail) ;
-        intent.putExtra("user", "guardian") ;
+        intent.putExtra("user", user) ;
         startActivity(intent);
         finish();
     }

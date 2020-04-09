@@ -7,8 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.tuitionapp.Guardian.ViewingSearchingTutorProfileActivity;
 import com.example.tuitionapp.R;
-import com.example.tuitionapp.HomePageActivity;
+import com.example.tuitionapp.System.HomePageActivity;
 import com.example.tuitionapp.TuitionPost.TuitionPostActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -32,13 +33,14 @@ public class AdminHomePageActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
-    public void goToCandidateTutorProfile(View view) {
-        Intent intent = new Intent(this, TuitionPostActivity.class);
+    public void goToVerifiedTutorProfileViewActivity(View view) {
+        Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class);
+        intent.putExtra("user", "admin") ;
         startActivity(intent);
         finish();
     }
 
-    public void goToCandidateTutorProfileVeiwActivity(View view){
+    public void goToCandidateTutorProfileViewActivity(View view){
         Intent intent = new Intent(this, CandidateTutorProfileAdminViewActivity.class) ;
         startActivity(intent);
         finish();

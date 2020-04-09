@@ -1,4 +1,4 @@
-package com.example.tuitionapp;
+package com.example.tuitionapp.System;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.tuitionapp.Guardian.GuardianHomePageActivity;
+import com.example.tuitionapp.R;
 import com.example.tuitionapp.VerifiedTutor.VerifiedTutorHomePageActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

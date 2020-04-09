@@ -1,4 +1,4 @@
-package com.example.tuitionapp.Guardian;
+/*package com.example.tuitionapp.Guardian;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -128,3 +128,4 @@ public class GuardianTutorProfileViewActivity extends AppCompatActivity {
         finish();
     }
 }
+*/

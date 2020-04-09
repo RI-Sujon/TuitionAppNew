@@ -30,9 +30,9 @@
         <activity android:name=".CandidateTutor.SignInT_Activity" />
         <activity android:name=".CandidateTutor.TutorModuleStartActivity" />
         <activity android:name=".Guardian.GuardianModuleStartActivity" />
-        <activity android:name=".HomePageActivity" />
+        <activity android:name=".System.HomePageActivity" />
         <activity android:name=".VerifiedTutor.VerifiedTutorViewPostActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".System.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -18,12 +18,11 @@ import java.util.Map;
 
 public class CustomAdapterForVerifiedTutorNotification extends BaseAdapter {
 
-    ArrayList<String> email;
-    DatabaseReference myRefRefer = FirebaseDatabase.getInstance().getReference("Refer");
-    Map<String,ReferInfo> map  ;
-    Context context;
-    String userEmail;
-    int size;
+    private ArrayList<String> email;
+    private DatabaseReference myRefRefer = FirebaseDatabase.getInstance().getReference("Refer");
+    private Map<String,ReferInfo> map  ;
+    private Context context;
+    private String userEmail;
 
     public CustomAdapterForVerifiedTutorNotification(Context context, ArrayList<String> email, Map<String,ReferInfo> map, String userEmail) {
         this.email = email;

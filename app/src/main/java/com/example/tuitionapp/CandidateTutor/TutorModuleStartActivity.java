@@ -166,7 +166,7 @@ public class TutorModuleStartActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()){
                         CandidateTutorInfo candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class) ;
-                        if(candidateTutorInfo.getIdCardImageName()!=null){
+                        if(candidateTutorInfo.getIdCardImageUri()!=null){
                             goToCandidateTutorHomePageActivity();
                         }
                         else {

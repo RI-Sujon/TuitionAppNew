@@ -8,10 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.tuitionapp.Admin.ApproveInfo;
+import com.example.tuitionapp.Admin.BlockInfo;
 import com.example.tuitionapp.R;
-import com.example.tuitionapp.HomePageActivity;
+import com.example.tuitionapp.System.HomePageActivity;
 import com.example.tuitionapp.VerifiedTutor.VerifiedTutorHomePageActivity;
-import com.example.tuitionapp.VerifiedTutor.VerifiedTutorProfileActivity;
 import com.example.tuitionapp.VerifiedTutor.TutorSignUpActivityStep3;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -30,7 +30,7 @@ public class CandidateTutorHomePageActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth ;
     private GoogleSignInClient mGoogleSignInClient ;
-    private DatabaseReference myRefVerifiedTutorInfo , myRefApproveInfo;
+    private DatabaseReference myRefVerifiedTutorInfo , myRefApproveInfo , myRefBlockInfo;
     private FirebaseUser user ;
 
     @Override
@@ -41,11 +41,15 @@ public class CandidateTutorHomePageActivity extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder().requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         user = mAuth.getCurrentUser() ;
+        System.out.println("dddddddddddddddddddddddddddddddddddddddddd");
         isApprovedAndRegisterWithVerifiedTutor(user);
+
     }
 
     public void goToCandidateTutorProfileActivity(View view){
         Intent intent = new Intent(this, CandidateTutorProfileActivity.class) ;
+        intent.putExtra("userEmail",user.getEmail()) ;
+        intent.putExtra("user", "user") ;
         startActivity(intent);
         finish();
     }
@@ -69,23 +73,48 @@ public class CandidateTutorHomePageActivity extends AppCompatActivity {
     public void isApprovedAndRegisterWithVerifiedTutor(final FirebaseUser user){
         myRefVerifiedTutorInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor").child(user.getUid());
         myRefApproveInfo = FirebaseDatabase.getInstance().getReference("Approve");
+        myRefBlockInfo = FirebaseDatabase.getInstance().getReference("Block");
 
         myRefVerifiedTutorInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    goToVerifiedTutorHomePageActivity();
+
+                    myRefBlockInfo.addValueEventListener(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot1) {
+                            int flag = 0 ;
+                            for(DataSnapshot dS1: dataSnapshot1.getChildren()){
+                                BlockInfo blockInfo = dS1.getValue(BlockInfo.class) ;
+                                if(blockInfo.getVerifiedTutorEmail().equals(user.getEmail())){
+                                    flag = 1 ;
+
+                                    break;
+                                }
+                            }
+                            if(flag==0)goToVerifiedTutorHomePageActivity();
+
+
+                            myRefBlockInfo.removeEventListener(this);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed to read value
+                        }
+                    });
+
                 }
                 else{
                     myRefApproveInfo.addValueEventListener(new ValueEventListener() {
 
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for(DataSnapshot dS1: dataSnapshot.getChildren()){
+                        public void onDataChange(DataSnapshot dataSnapshot2) {
+                            for(DataSnapshot dS1: dataSnapshot2.getChildren()){
                                 ApproveInfo approveInfo = dS1.getValue(ApproveInfo.class) ;
+                                System.out.println(approveInfo.getCandidateTutorEmail()+"\t\t"+user.getEmail());
                                 if(approveInfo.getCandidateTutorEmail().equals(user.getEmail())){
                                     goToTutorSignUpActivityStep3();
-
                                 }
                             }
                             myRefApproveInfo.removeEventListener(this);

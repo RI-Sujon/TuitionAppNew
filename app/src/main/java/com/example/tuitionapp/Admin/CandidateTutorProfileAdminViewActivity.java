@@ -10,7 +10,9 @@ import android.widget.ListView;
 
 import com.example.tuitionapp.CandidateTutor.CandidateTutorInfo;
 
+import com.example.tuitionapp.CandidateTutor.CandidateTutorProfileActivity;
 import com.example.tuitionapp.R;
+import com.example.tuitionapp.VerifiedTutor.VerifiedTutorProfileActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,8 +34,8 @@ public class CandidateTutorProfileAdminViewActivity extends AppCompatActivity {
 
     ListView listView ;
 
-    private String [] emailArray ;
-    private String [] nameArray ;
+    private ArrayList<String> emailArrayList ;
+    private ArrayList<String> nameArrayList  ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,10 @@ public class CandidateTutorProfileAdminViewActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("goTosssssssssssssssssssss:" + position);
 
+                String userEmail = emailArrayList.get(position) ;
+                goToSelectedCandidateTutorProfile(userEmail) ;
             }
         });
     }
@@ -68,16 +73,16 @@ public class CandidateTutorProfileAdminViewActivity extends AppCompatActivity {
                     CandidateTutorInfo candidateTutorInfo = dS1.getValue(CandidateTutorInfo.class) ;
                     candidateTutorInfoList.add(candidateTutorInfo) ;
                 }
+
                 myRefApproveInfo.addValueEventListener(new ValueEventListener() {
 
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot dS1: dataSnapshot.getChildren()){
+                    public void onDataChange(DataSnapshot dataSnapshot1) {
+                        for(DataSnapshot dS1: dataSnapshot1.getChildren()){
                             ApproveInfo approveInfo = dS1.getValue(ApproveInfo.class) ;
                             approveInfoList.add(approveInfo) ;
                         }
                         myRefApproveInfo.removeEventListener(this);
-                        myRefCandidateTutorInfo.removeEventListener(this);
                         setListView() ;
                     }
                     @Override
@@ -85,6 +90,8 @@ public class CandidateTutorProfileAdminViewActivity extends AppCompatActivity {
                         // Failed to read value
                     }
                 });
+
+                myRefCandidateTutorInfo.removeEventListener(this);
             }
 
             @Override
@@ -96,11 +103,11 @@ public class CandidateTutorProfileAdminViewActivity extends AppCompatActivity {
     }
 
     public void setListView(){
-        String [] nameArrayHelper = new String[candidateTutorInfoList.size()] ;
-        emailArray = new String[candidateTutorInfoList.size()] ;
-        int k = 0 ;
+        emailArrayList = new ArrayList<>() ;
+        nameArrayList = new ArrayList<>() ;
+
         for(int i=0 ; i<candidateTutorInfoList.size() ; i++) {
-            int flag = 0;
+            int flag = 0 ;
             for (int j = 0; j < approveInfoList.size(); j++) {
                 String s1 = candidateTutorInfoList.get(i).getEmailPK();
                 String s2 = approveInfoList.get(j).getCandidateTutorEmail();
@@ -109,23 +116,26 @@ public class CandidateTutorProfileAdminViewActivity extends AppCompatActivity {
                 }
             }
             if (flag == 0) {
-                nameArrayHelper[k] = candidateTutorInfoList.get(i).getFirstName() + " " + candidateTutorInfoList.get(i).getLastName();
-                emailArray[k] = candidateTutorInfoList.get(i).getEmailPK();
-                k++ ;
+                nameArrayList.add(candidateTutorInfoList.get(i).getFirstName() + " " + candidateTutorInfoList.get(i).getLastName());
+                emailArrayList.add(candidateTutorInfoList.get(i).getEmailPK());
             }
         }
-        nameArray = new String[k] ;
-        for (int i = 0; i < k; i++) {
-            nameArray[i] = nameArrayHelper[i] ;
-        }
 
-        adapterForListView = new CustomerAdapterForCandidateTutorApproval(this, nameArray , emailArray);
+        adapterForListView = new CustomerAdapterForCandidateTutorApproval(this, nameArrayList , emailArrayList);
         listView.setAdapter(adapterForListView);
 
     }
 
     public void backToHomePage(View view){
         Intent intent = new Intent(this, AdminHomePageActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void goToSelectedCandidateTutorProfile(String userEmail){
+        Intent intent = new Intent(this, CandidateTutorProfileActivity.class);
+        intent.putExtra("userEmail", userEmail) ;
+        intent.putExtra("user", "admin") ;
         startActivity(intent);
         finish();
     }

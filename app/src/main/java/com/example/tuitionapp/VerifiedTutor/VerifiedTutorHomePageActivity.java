@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.example.tuitionapp.Group.GroupHomePageActivity;
 import com.example.tuitionapp.R;
-import com.example.tuitionapp.HomePageActivity;
+import com.example.tuitionapp.System.HomePageActivity;
 import com.example.tuitionapp.TuitionPost.TuitionPostViewActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;

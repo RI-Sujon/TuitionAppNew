@@ -28,7 +28,7 @@ public class CandidateTutorProfileAdminViewActivity extends AppCompatActivity {
     List<CandidateTutorInfo> candidateTutorInfoList ;
     List<ApproveInfo>  approveInfoList ;
 
-    CustomerAdapterForListView adapterForListView ;
+    CustomerAdapterForCandidateTutorApproval adapterForListView ;
 
     ListView listView ;
 
@@ -77,6 +77,7 @@ public class CandidateTutorProfileAdminViewActivity extends AppCompatActivity {
                             approveInfoList.add(approveInfo) ;
                         }
                         myRefApproveInfo.removeEventListener(this);
+                        myRefCandidateTutorInfo.removeEventListener(this);
                         setListView() ;
                     }
                     @Override
@@ -118,7 +119,7 @@ public class CandidateTutorProfileAdminViewActivity extends AppCompatActivity {
             nameArray[i] = nameArrayHelper[i] ;
         }
 
-        adapterForListView = new CustomerAdapterForListView(this, nameArray , emailArray);
+        adapterForListView = new CustomerAdapterForCandidateTutorApproval(this, nameArray , emailArray);
         listView.setAdapter(adapterForListView);
 
     }

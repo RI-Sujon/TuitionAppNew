@@ -17,16 +17,13 @@ import android.widget.Toast;
 
 import com.example.tuitionapp.Guardian.GuardianHomePageActivity;
 import com.example.tuitionapp.R;
-import com.example.tuitionapp.TuitionPost.TuitionPostInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 
 public class TuitionPostActivity extends AppCompatActivity {
 
@@ -53,7 +50,7 @@ public class TuitionPostActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_guardian_post_for_tuition);
+        setContentView(R.layout.activity_tuition_post);
         getSupportActionBar().hide();
 
         database = FirebaseDatabase.getInstance() ;

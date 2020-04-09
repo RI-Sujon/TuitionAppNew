@@ -30,7 +30,8 @@ public class GuardianHomePageActivity extends AppCompatActivity {
     }
 
     public void goToGuardianTutorProfileViewActivity(View view){
-        Intent intent = new Intent(this, GuardianTutorProfileViewActivity.class) ;
+        //Intent intent = new Intent(this, GuardianTutorProfileViewActivity.class) ;
+        Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class) ;
         startActivity(intent);
         finish();
     }

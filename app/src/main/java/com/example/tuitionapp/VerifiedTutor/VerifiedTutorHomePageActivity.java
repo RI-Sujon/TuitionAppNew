@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.tuitionapp.Group.GroupHomePageActivity;
 import com.example.tuitionapp.R;
 import com.example.tuitionapp.HomePageActivity;
+import com.example.tuitionapp.TuitionPost.TuitionPostViewActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -41,14 +43,24 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity {
         finish();
     }
 
+    public void goToVerifiedTutorGroupActivity(View view){
+        Intent intent = new Intent(this, GroupHomePageActivity.class) ;
+        intent.putExtra("userEmail",user.getEmail()) ;
+        intent.putExtra("user" , "user") ;
+        startActivity(intent);
+        finish();
+    }
+
     public void goToVerifiedTutorProfileActivity(View view){
         Intent intent = new Intent(this, VerifiedTutorProfileActivity.class) ;
+        intent.putExtra("userEmail",user.getEmail()) ;
+        intent.putExtra("user" , "user") ;
         startActivity(intent);
         finish();
     }
 
     public void goToVerifiedTutorViewPostActivity(View view){
-        Intent intent = new Intent(this, VerifiedTutorViewPostActivity.class) ;
+        Intent intent = new Intent(this, TuitionPostViewActivity.class) ;
         startActivity(intent);
         finish();
     }

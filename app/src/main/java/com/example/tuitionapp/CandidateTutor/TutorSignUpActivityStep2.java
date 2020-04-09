@@ -178,9 +178,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
             flag1 = -1 ;
         }
 
-        System.out.println(reference2str+"\t\tkkkkkkkk");
         if(!reference2str.equals("")){
-            System.out.println(reference2str+"\t\tppppppppppppppppppppppp");
             for(VerifiedTutorInfo vt: verifiedTutorInfoList){
                 System.out.println(reference2str+"\t\t"+vt.getEmailPK());
                 if(reference2str.equals(vt.getEmailPK())){
@@ -233,8 +231,6 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "You need minimum 1 Reference", Toast.LENGTH_SHORT).show() ;
             goToCandidateTutorProfile();
         }
-
-
     }
 
     public void goToCandidateTutorProfile(){

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/PaleGreen"
+    android:orientation="vertical"
+    tools:context=".Group.GroupHomePageActivity">
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BACK"
+        android:layout_gravity="right"
+        android:onClick="goToBackPageActivity" />
+
+    <LinearLayout
+        android:id="@+id/groupHomePage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/groupNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/DarkGreen"/>
+        <TextView
+            android:id="@+id/fullAddressTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/Brown"/>
+
+        <Button
+            android:layout_marginTop="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Batch Management"
+            android:textSize="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/Beige"
+            android:textColor="@color/Navy"
+            android:onClick="goToBatchManagement"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/groupCreation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Group Name :"
+            android:textColor="@color/Green"
+            android:paddingLeft="3dp"/>
+        <EditText
+            android:id="@+id/groupName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="GROUP NAME"
+            android:backgroundTint="@color/Green"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Address :"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/Green"
+            android:paddingLeft="3dp"/>
+
+        <Spinner
+            android:id="@+id/groupAddressSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingTop="20dp"
+            android:background="@drawable/spinner_background"
+            android:textSize="15dp"
+            android:entries="@array/areaAddress_array" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Details Address :"
+            android:textColor="@color/Green"
+            android:layout_marginTop="30dp"
+            android:paddingLeft="3dp"/>
+        <EditText
+            android:id="@+id/groupFullAddress"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="FULL ADDRESS"
+            android:background="@color/LightGreen"/>
+        <Button
+            android:id="@+id/createGroupButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CREATE GROUP"
+            android:textSize="16dp"
+            android:padding="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center"
+            android:textColor="@color/AliceBlue"
+            android:background="@color/Green"/>
+
+    </LinearLayout>
+
+</LinearLayout>

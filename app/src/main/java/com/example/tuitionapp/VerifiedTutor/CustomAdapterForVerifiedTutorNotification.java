@@ -8,22 +8,15 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
-import com.example.tuitionapp.Admin.ApproveInfo;
 import com.example.tuitionapp.CandidateTutor.ReferInfo;
 import com.example.tuitionapp.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
-public class CustomAdapter extends BaseAdapter {
+public class CustomAdapterForVerifiedTutorNotification extends BaseAdapter {
 
     ArrayList<String> email;
     DatabaseReference myRefRefer = FirebaseDatabase.getInstance().getReference("Refer");
@@ -32,7 +25,7 @@ public class CustomAdapter extends BaseAdapter {
     String userEmail;
     int size;
 
-    public CustomAdapter(Context context, ArrayList<String> email, Map<String,ReferInfo> map, String userEmail) {
+    public CustomAdapterForVerifiedTutorNotification(Context context, ArrayList<String> email, Map<String,ReferInfo> map, String userEmail) {
         this.email = email;
         this.context = context;
         this.userEmail = userEmail;
@@ -59,7 +52,7 @@ public class CustomAdapter extends BaseAdapter {
         final ViewHolder holder ;
         if (convertView == null) {
             holder = new ViewHolder() ;
-            convertView = LayoutInflater.from(context).inflate(R.layout.activity_adminclass_tutor_list_view, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.activity_custom_adapter_list_view, null);
             holder.emailTextView = convertView.findViewById(R.id.emailTextView);
             holder.button = convertView.findViewById(R.id.approveButton);
 
@@ -70,6 +63,8 @@ public class CustomAdapter extends BaseAdapter {
         }
 
         holder.emailTextView.setText("Do You Know this Email: \"" + email.get(position) + "\"");
+        holder.emailTextView.setVisibility(View.VISIBLE);
+        holder.button.setVisibility(View.VISIBLE);
 
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,14 +73,12 @@ public class CustomAdapter extends BaseAdapter {
                 holder.button.setEnabled(false);
 
                 for(Map.Entry m:map.entrySet()){
-                    System.out.println(m.getKey()+" "+m.getValue());
                     ReferInfo info = (ReferInfo) m.getValue() ;
 
                     if (info.getCandidateTutorEmail().equals(email.get(position)) && info.getVerifiedTutorEmail().equals(userEmail)) {
                         if (info.isReferApprove() != true) {
                             info.setReferApprove(true);
                             myRefRefer.child(m.getKey().toString()).setValue(info);
-                            System.out.println("Qqqqqqqqqqqqqqqqqqq: " + m.getKey());
                         }
                     }
 

@@ -7,10 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.tuitionapp.Admin.AdminHomePageActivity;
 import com.example.tuitionapp.CandidateTutor.CandidateTutorInfo;
+import com.example.tuitionapp.Guardian.GuardianTutorProfileViewActivity;
+import com.example.tuitionapp.Guardian.ViewingSearchingTutorProfileActivity;
 import com.example.tuitionapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,7 +33,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     private ProgressBar progressBar ;
     private FirebaseUser firebaseUser ;
 
-    private String userEmail ;
+    private String userEmail,user ;
 
     private CandidateTutorInfo candidateTutorInfo;
     private VerifiedTutorInfo verifiedTutorInfo;
@@ -41,8 +45,17 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         myRefAccountInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor");
         myRefTuitionInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        userEmail = firebaseUser.getEmail().toString() ;
+        //userEmail = firebaseUser.getEmail().toString() ;
+        Intent intent = getIntent() ;
+        userEmail = intent.getStringExtra("userEmail") ;
+        user = intent.getStringExtra("user") ;
         setTitle("Profile");
+
+        if(user.equals("guardian")){
+            Button messageRequestButton = findViewById(R.id.sendMessageRequestButton) ;
+            messageRequestButton.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
@@ -91,7 +104,6 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        System.out.println("Hellllo:" + dataSnapshot.getValue().toString());
                         verifiedTutorInfo = dataSnapshot.getValue(VerifiedTutorInfo.class) ;
                         addTuitionInfoToProfile();
                     }
@@ -138,12 +150,29 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         preferredGroup.setText("Preferred Group  :   " + verifiedTutorInfo.getPreferredGroup() );
         preferredSubject.setText("Preferred Subject  :   " + strSub );
         daysPerWeekOrMonth.setText("Days Per Week  :   " + verifiedTutorInfo.getPreferredDaysPerWeekOrMonth() );
-        salaryUpto.setText("Salary Upto  :   " + verifiedTutorInfo.getMinimumSalary() );
+        salaryUpto.setText("Minimum Salary  :   " + verifiedTutorInfo.getMinimumSalary() );
     }
 
-    public void goToTutorHomePageActivity(View view){
-        Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
-        startActivity(intent);
-        finish();
+    public void sendMessageRequestByGuardian(View view){
+
+    }
+
+    public void goToBackPageActivity(View view){
+        if(user.equals("user")){
+            Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else if(user.equals("guardian")){
+            Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else if(user.equals("admin")){
+            Intent intent = new Intent(this, AdminHomePageActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/Bisque"
+    tools:context=".Guardian.ViewingSearchingTutorProfileActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="BACK"
+            android:layout_gravity="right"
+            android:visibility="visible"
+            android:onClick="backToHomePage"
+            />
+
+        <EditText
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/AliceBlue"
+            android:outlineSpotShadowColor="@color/Blue"
+            android:hint="SearchBar"
+            android:paddingLeft="20dp"/>
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Search"
+            android:paddingLeft="60dp"
+            android:paddingRight="60dp"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            android:onClick="backToHomePage"
+            android:background="@color/Aqua"
+            android:textColor="@color/Navy"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/Beige">
+        <ListView
+            android:id="@+id/verifiedTutorList"
+            android:layout_height="512dp"
+            android:layout_width="match_parent"
+            android:dividerHeight="1dp"
+            android:padding="20dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

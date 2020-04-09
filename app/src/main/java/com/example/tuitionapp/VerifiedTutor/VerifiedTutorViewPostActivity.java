@@ -20,7 +20,6 @@ import java.util.List;
 
 public class VerifiedTutorViewPostActivity extends AppCompatActivity {
 
-    FirebaseDatabase database ;
     DatabaseReference databaseReference ;
 
     List<TuitionPostInfo> postList  ;

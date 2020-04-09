@@ -12,7 +12,7 @@ import com.example.tuitionapp.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class CustomerAdapterForListView extends BaseAdapter {
+public class CustomerAdapterForCandidateTutorApproval extends BaseAdapter {
 
     Context context ;
     String name[] ;
@@ -20,7 +20,7 @@ public class CustomerAdapterForListView extends BaseAdapter {
     Button button ;
     DatabaseReference myRefTutorApprove ;
 
-    public CustomerAdapterForListView(Context context, String[] name, String[] email) {
+    public CustomerAdapterForCandidateTutorApproval(Context context, String[] name, String[] email) {
         this.context = context;
         this.name = name;
         this.email = email;
@@ -44,12 +44,15 @@ public class CustomerAdapterForListView extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        convertView = LayoutInflater.from(context).inflate(R.layout.activity_adminclass_tutor_list_view, null);
+        convertView = LayoutInflater.from(context).inflate(R.layout.activity_custom_adapter_list_view, null);
         TextView nameTextView = convertView.findViewById(R.id.nameTextView);
         TextView emailTextView = convertView.findViewById(R.id.emailTextView);
         nameTextView.setText(name[position]);
         emailTextView.setText(email[position]);
         button = convertView.findViewById(R.id.approveButton) ;
+        nameTextView.setVisibility(View.VISIBLE);
+        emailTextView.setVisibility(View.VISIBLE);
+        button.setVisibility(View.VISIBLE);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

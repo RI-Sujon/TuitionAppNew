@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import com.example.tuitionapp.Admin.AdminHomePageActivity;
-import com.example.tuitionapp.CandidateTutor.CandidateTutorInfo;
 import com.example.tuitionapp.CandidateTutor.ReferInfo;
 import com.example.tuitionapp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -69,12 +67,11 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
     }
 
     public void addReferenceNotification(){
-        System.out.println("Checking1");
         for(ReferInfo rf: referInfoList){
             candidateTutorEmailList.add(rf.getCandidateTutorEmail()) ;
         }
 
-        CustomAdapter adapter = new CustomAdapter(this,candidateTutorEmailList,map,user.getEmail());
+        CustomAdapterForVerifiedTutorNotification adapter = new CustomAdapterForVerifiedTutorNotification(this,candidateTutorEmailList,map,user.getEmail());
         listView.setAdapter(adapter);
     }
 

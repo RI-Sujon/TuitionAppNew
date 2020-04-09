@@ -180,20 +180,19 @@ public class TuitionPostInfo {
             strSub = strSub.substring(0, strSub.length() - 4);
         }
 
-        return "GuardianPostInfo{" +
-                " Post Title = '" + postTitle + '\'' +
-                ", Student Institute Name = '" + studentInstitute + '\'' +
-                ", Student Class = '" + studentClass + '\'' +
-                ", Student Group = '" + studentGroup + '\'' +
-                ", Student Medium = '" + studentMedium + '\'' +
-                ", Student Subject List = '" + strSub + '\'' +
-                ", Tutor Gender Preference = '" + tutorGenderPreference + '\'' +
-                ", Days Per Week = '" + daysPerWeekOrMonth + '\'' +
-                ", Student Area Address = '" + studentAreaAddress + '\'' +
-                ", Student Full Address = '" + studentFullAddress + '\'' +
-                ", Student ContactNo = '" + studentContactNo + '\'' +
-                ", Salary = '" + salary + '\'' +
-                '}';
+        return  " DATE: " + postDate + "\t" + " time: " + postTime  +
+                "\n Post Title = '" + postTitle + '\'' +
+                "\n Student Institute Name = '" + studentInstitute + '\'' +
+                "\n Student Class = '" + studentClass + '\'' +
+                "\n Student Group = '" + studentGroup + '\'' +
+                "\n Student Medium = '" + studentMedium + '\'' +
+                "\n Student Subject List = '" + strSub + '\'' +
+                "\n Tutor Gender Preference = '" + tutorGenderPreference + '\'' +
+                "\n Days Per Week = '" + daysPerWeekOrMonth + '\'' +
+                "\n Student Area Address = '" + studentAreaAddress + '\'' +
+                "\n Student Full Address = '" + studentFullAddress + '\'' +
+                "\n Student ContactNo = '" + studentContactNo + '\'' +
+                "\n Salary = '" + salary + '\'' ;
     }
 
     public void setStudentAreaAddress(String studentAreaAddress) {

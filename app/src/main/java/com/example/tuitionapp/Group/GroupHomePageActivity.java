@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tuitionapp.Batch.BatchHomePageActivity;
 import com.example.tuitionapp.R;
 import com.example.tuitionapp.VerifiedTutor.VerifiedTutorHomePageActivity;
 import com.example.tuitionapp.VerifiedTutor.VerifiedTutorInfo;
@@ -22,16 +23,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class GroupHomePageActivity extends AppCompatActivity {
 
     private DatabaseReference myRefGroupInfo ;
-    private String user, userEmail ;
+    private String user, userEmail, groupID ;
+    private ArrayList<String>userInfo ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_home_page);
         Intent intent = getIntent() ;
+        userInfo = intent.getStringArrayListExtra("userInfo") ;
+        user = intent.getStringExtra("user") ;
         userEmail = intent.getStringExtra("userEmail") ;
 
         myRefGroupInfo = FirebaseDatabase.getInstance().getReference("Group") ;
@@ -43,6 +49,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
                 for(DataSnapshot dS1: dataSnapshot.getChildren()){
                     GroupInfo groupInfo = dS1.getValue(GroupInfo.class) ;
                     if(groupInfo.groupAdminEmail.equals(userEmail)){
+                        groupID = dS1.getKey() ;
                         groupHomePage(groupInfo);
                         flag = 1 ;
                         break ;
@@ -119,6 +126,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
             myRefGroupInfo.push().setValue(groupInfo) ;
             Toast.makeText(getApplicationContext(), "Group Successfully Created", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this,GroupHomePageActivity.class);
+            intent.putStringArrayListExtra("userInfo",userInfo) ;
             intent.putExtra("userEmail",userEmail) ;
             intent.putExtra("user" , "user") ;
             startActivity(intent);
@@ -130,12 +138,20 @@ public class GroupHomePageActivity extends AppCompatActivity {
     }
 
     public void goToBatchManagement(View view){
-
+        Intent intent = new Intent(this, BatchHomePageActivity.class) ;
+        intent.putExtra("user",user) ;
+        intent.putExtra("groupID" , groupID) ;
+        intent.putStringArrayListExtra("userInfo",userInfo) ;
+        startActivity(intent);
+        finish();
     }
 
     public void goToBackPageActivity(View view){
-        Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
-        startActivity(intent);
-        finish();
+        if(user.equals("user")){
+            Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+            intent.putStringArrayListExtra("userInfo",userInfo) ;
+            startActivity(intent);
+            finish();
+        }
     }
 }

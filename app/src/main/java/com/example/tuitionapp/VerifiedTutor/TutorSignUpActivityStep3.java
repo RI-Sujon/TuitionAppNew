@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -107,28 +108,27 @@ public class TutorSignUpActivityStep3 extends AppCompatActivity{
         emailPK = firebaseUser.getEmail().toString() ;
 
         VerifiedTutorInfo verifiedTutorInfo = new VerifiedTutorInfo(emailPK, medium, preferredClass, preferredGroup, preferredSubject, preferredAreas ,
-                experianceStatus, daysPerWeekOrMonth, minimumSalary,profilePicture,demoVideo,groupIdFK) ;
+                experianceStatus, daysPerWeekOrMonth, minimumSalary) ;
 
-        //key = databaseReference.push().getKey() ;
 
         databaseReference.setValue(verifiedTutorInfo) ;
         Toast.makeText(getApplicationContext(),"sign up successfully",Toast.LENGTH_SHORT).show();
-        goToTutorHomePageActivity();
-
+        goToSetProfilePictureActivity();
     }
 
-    public void goToTutorHomePageActivity(){
-        Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+    public void goToSetProfilePictureActivity(){
+        Intent intent = new Intent(this, VerifiedTutorSetProfilePicture.class);
+        intent.putExtra("userEmail", firebaseUser.getEmail()) ;
+        intent.putExtra("userUid", firebaseUser.getUid()) ;
         startActivity(intent);
         finish();
     }
 
-    public void backFromSignUpT_Activity(View view){
+    /*public void backFromSignUpT_Activity(View view){
         Intent intent = new Intent(this, TutorModuleStartActivity.class);
         startActivity(intent);
         finish();
-    }
-
+    }*/
 
     public void selectMedium() {
         mediumBox.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

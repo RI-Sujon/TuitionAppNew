@@ -23,7 +23,7 @@
                 android:layout_gravity="right"
                 android:text="BACK"
                 android:visibility="visible"
-                android:onClick="goToCandidateTutorHomePageActivity" />
+                android:onClick="goToHomePageActivity" />
 
             <TextView
                 android:id="@+id/name"
@@ -135,12 +135,13 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="Approve"
+                android:textColor="@color/AliceBlue"
                 android:background="@color/Green"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:textSize="20dp"
-                android:padding="30dp"
-                android:visibility="visible"
+                android:padding="20dp"
+                android:visibility="gone"
                 android:onClick="approveCandidateTutorAsAVerifiedTutor"/>
 
         </LinearLayout>

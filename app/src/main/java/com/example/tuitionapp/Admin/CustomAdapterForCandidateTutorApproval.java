@@ -14,14 +14,14 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class CustomerAdapterForCandidateTutorApproval extends BaseAdapter {
+public class CustomAdapterForCandidateTutorApproval extends BaseAdapter {
 
     private Context context ;
     private ArrayList<String> name ;
     private ArrayList<String> email ;
     private DatabaseReference myRefTutorApprove ;
 
-    public CustomerAdapterForCandidateTutorApproval(Context context, ArrayList<String> name, ArrayList<String> email) {
+    public CustomAdapterForCandidateTutorApproval(Context context, ArrayList<String> name, ArrayList<String> email) {
         this.context = context;
         this.name = name;
         this.email = email;

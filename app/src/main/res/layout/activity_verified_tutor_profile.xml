@@ -5,160 +5,206 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/AliceBlue"
+    android:weightSum="20"
     android:orientation="vertical"
     tools:context=".VerifiedTutor.VerifiedTutorProfileActivity">
 
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="BACK"
-        android:visibility="visible"
-        android:onClick="goToBackPageActivity" />
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_marginTop="5dp"
+    <LinearLayout
+        android:id="@+id/upBar"
+        android:orientation="horizontal"
+        android:layout_weight="4"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="26dp"
-        android:textColor="@color/Green"/>
+        android:layout_height="0dp"
+        android:padding="10dp"
+        android:background="@color/SkyBlue">
 
-    <TextView
-        android:id="@+id/email"
-        android:textSize="18dp"
-        android:layout_marginTop="10dp"
+        <ImageView
+            android:layout_marginTop="20dp"
+            android:id="@+id/profilePicImageView"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="BACK"
+                android:visibility="visible"
+                android:onClick="goToBackPageActivity" />
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:textColor="@color/Bisque"/>
+
+            <TextView
+                android:id="@+id/userEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/AliceBlue"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/Navy"/>
+        android:layout_height="0dp"
+        android:layout_weight="14">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/phoneNumber"
+                    android:textSize="18dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/Navy"/>
 
-    <TextView
-        android:id="@+id/phoneNumber"
-        android:textSize="18dp"
-        android:layout_marginTop="3dp"
+                <TextView
+                    android:id="@+id/gender"
+                    android:textSize="18dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/Navy"/>
+
+                <TextView
+                    android:id="@+id/areaAddress"
+                    android:textSize="18dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/Navy"/>
+
+                <TextView
+                    android:id="@+id/currentPosition"
+                    android:textSize="18dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/Navy"/>
+
+                <TextView
+                    android:id="@+id/instituteName"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:textColor="@color/Navy"/>
+
+                <TextView
+                    android:id="@+id/subject"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:textColor="@color/Navy"/>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:visibility="invisible"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/medium"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="17dp"
+                    android:textColor="@color/DarkMagenta"/>
+
+                <TextView
+                    android:id="@+id/preferredClass"
+                    android:textSize="17dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/DarkMagenta"/>
+
+                <TextView
+                    android:id="@+id/preferredGroup"
+                    android:textSize="17dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/DarkMagenta"/>
+
+                <TextView
+                    android:id="@+id/preferredSubject"
+                    android:textSize="17dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/DarkMagenta"/>
+
+                <TextView
+                    android:id="@+id/daysPerWeekOrMonth"
+                    android:textSize="17dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/DarkMagenta"/>
+
+                <TextView
+                    android:id="@+id/salary"
+                    android:textSize="17dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/DarkMagenta"/>
+
+                <Button
+                    android:id="@+id/sendMessageRequestButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="40dp"
+                    android:padding="20dp"
+                    android:background="@color/Yellow"
+                    android:text="send an initial message (Will be implemented by NADIM)"
+                    android:visibility="gone"
+                    android:onClick="sendMessageRequestByGuardian"/>
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/Navy"/>
-
-    <TextView
-        android:id="@+id/gender"
-        android:textSize="18dp"
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/Navy"/>
-
-    <TextView
-        android:id="@+id/areaAddress"
-        android:textSize="18dp"
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/Navy"/>
-
-    <TextView
-        android:id="@+id/currentPosition"
-        android:textSize="18dp"
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/Navy"/>
-
-    <TextView
-        android:id="@+id/instituteName"
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18dp"
-        android:textColor="@color/Navy"/>
-
-    <TextView
-        android:id="@+id/subject"
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18dp"
-        android:textColor="@color/Navy"/>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:visibility="invisible"
-        android:layout_gravity="center"/>
-
-    <TextView
-        android:id="@+id/medium"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="17dp"
-        android:textColor="@color/DarkMagenta"/>
-
-    <TextView
-        android:id="@+id/preferredClass"
-        android:textSize="17dp"
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/DarkMagenta"/>
-
-    <TextView
-        android:id="@+id/preferredGroup"
-        android:textSize="17dp"
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/DarkMagenta"/>
-
-    <TextView
-        android:id="@+id/preferredSubject"
-        android:textSize="17dp"
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/DarkMagenta"/>
-
-    <TextView
-        android:id="@+id/daysPerWeekOrMonth"
-        android:textSize="17dp"
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/DarkMagenta"/>
-
-    <TextView
-        android:id="@+id/salary"
-        android:textSize="17dp"
-        android:layout_marginTop="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/DarkMagenta"/>
-
-    <Button
-        android:id="@+id/sendMessageRequestButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:padding="20dp"
-        android:background="@color/Yellow"
-        android:text="send an initial message (Will be implemented by NADIM)"
-        android:visibility="gone"
-        android:onClick="sendMessageRequestByGuardian"/>
-
-    <Button
-        android:id="@+id/blockButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:padding="20dp"
-        android:background="@color/Red"
-        android:text="Block Tutor"
-        android:visibility="gone"
-        android:onClick="blockVerifiedTutorByAdmin"/>
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="2"
+        android:background="@color/AliceBlue">
+        <Button
+            android:id="@+id/blockButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:padding="20dp"
+            android:background="@color/Red"
+            android:text="Block Tutor"
+            android:visibility="gone"
+            android:onClick="blockVerifiedTutorByAdmin"/>
+    </LinearLayout>
 
 </LinearLayout>

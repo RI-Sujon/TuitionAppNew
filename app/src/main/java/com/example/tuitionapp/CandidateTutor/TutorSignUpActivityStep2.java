@@ -132,7 +132,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            final StorageReference imageRef = storageReference.child("images/" + emailPrimaryKey);
+            final StorageReference imageRef = storageReference.child("idCardImage/" + emailPrimaryKey);
 
             imageRef.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -224,11 +224,11 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                     myRefRefer.push().setValue(referInfo1) ;
                 }
                 if(flag2==1){
-                    ReferInfo referInfo2= new ReferInfo(firebaseUser.getEmail(),reference1str);
+                    ReferInfo referInfo2= new ReferInfo(firebaseUser.getEmail(),reference2str);
                     myRefRefer.push().setValue(referInfo2) ;
                 }
                 if(flag3==1){
-                    ReferInfo referInfo3= new ReferInfo(firebaseUser.getEmail(),reference1str);
+                    ReferInfo referInfo3= new ReferInfo(firebaseUser.getEmail(),reference3str);
                     myRefRefer.push().setValue(referInfo3) ;
                 }
                 goToCandidateTutorProfile();

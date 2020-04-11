@@ -32,6 +32,7 @@
             android:thumb="@drawable/thumb" />
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/middleBar"
         android:layout_weight="20"
@@ -41,7 +42,8 @@
         android:layout_height="200dp"
         android:padding="30dp"
         android:layout_above="@+id/downBar"
-        android:background="@color/Beige">
+        android:background="@color/Beige"
+        android:visibility="visible">
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

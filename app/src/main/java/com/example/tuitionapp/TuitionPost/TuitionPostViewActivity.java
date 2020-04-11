@@ -23,12 +23,19 @@ public class TuitionPostViewActivity extends AppCompatActivity {
     private ArrayList<TuitionPostInfo>tuitionPostInfoArrayList ;
     private CustomAdapterForTuitionPostView adapter ;
 
-    ListView listView ;
+    private ListView listView ;
+
+    private ArrayList<String> userInfo ;
+    private String userEmail ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tuition_post_view);
+        Intent intent = getIntent() ;
+        userInfo = intent.getStringArrayListExtra("userInfo") ;
+        userEmail = userInfo.get(2) ;
+
         myRefTuitionPost = FirebaseDatabase.getInstance().getReference("TuitionPost") ;
     }
 
@@ -59,12 +66,13 @@ public class TuitionPostViewActivity extends AppCompatActivity {
     }
 
     public void viewTuitionPost(){
-        adapter  = new CustomAdapterForTuitionPostView(this,tuitionPostInfoArrayList) ;
+        adapter  = new CustomAdapterForTuitionPostView(this,tuitionPostInfoArrayList, userEmail) ;
         listView.setAdapter(adapter);
     }
 
     public void goToBackPageActivity(View view){
-        Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class) ;
+        Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();
     }

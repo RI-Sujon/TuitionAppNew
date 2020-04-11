@@ -9,18 +9,28 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.tuitionapp.MessageBox.MessageBoxInfo;
 import com.example.tuitionapp.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 
 public class CustomAdapterForTuitionPostView extends BaseAdapter {
 
-    Context context ;
-    ArrayList<TuitionPostInfo> tuitionPostInfo ;
+    private Context context ;
+    private ArrayList<TuitionPostInfo> tuitionPostInfo ;
+    private String userEmail ;
 
-    public CustomAdapterForTuitionPostView(Context context, ArrayList<TuitionPostInfo> tuitionPostInfo) {
+    private DatabaseReference myRefMessageBox;
+
+    public CustomAdapterForTuitionPostView(Context context, ArrayList<TuitionPostInfo> tuitionPostInfo, String userEmail) {
         this.context = context;
         this.tuitionPostInfo = tuitionPostInfo;
+        this.userEmail = userEmail ;
+
+        myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
     }
 
     @Override
@@ -39,7 +49,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder ;
         if(convertView==null){
             holder = new ViewHolder() ;
@@ -56,6 +66,15 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
 
         System.out.println(tuitionPostInfo.get(position).toString());
         holder.postTextView.setText(tuitionPostInfo.get(position).toString());
+
+        holder.responseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MessageBoxInfo messageBoxInfo = new MessageBoxInfo(tuitionPostInfo.get(position).getGuardianMobileNumberFK(), userEmail, false, true) ;
+                myRefMessageBox.push().setValue(messageBoxInfo) ;
+            }
+        });
+
 
         return convertView;
     }

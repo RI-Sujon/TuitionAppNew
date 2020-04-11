@@ -41,21 +41,57 @@
             android:onClick="backToHomePage"
             android:background="@color/Aqua"
             android:textColor="@color/Navy"/>
+
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginTop="20dp"
+
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/Beige">
-        <ListView
-            android:id="@+id/verifiedTutorList"
-            android:layout_height="512dp"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:dividerHeight="1dp"
-            android:padding="20dp"/>
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/layout1"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/Beige"
+                android:orientation="vertical">
 
-    </LinearLayout>
+
+                <ListView
+                    android:id="@+id/verifiedTutorList"
+                    android:layout_width="match_parent"
+                    android:layout_height="512dp"
+                    android:background="@color/LightGreen"
+                    android:dividerHeight="1dp"
+                    android:padding="20dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@+id/layout1"
+                android:orientation="vertical">
+
+
+                <ListView
+                    android:id="@+id/groupList"
+                    android:layout_width="200dp"
+                    android:layout_height="512dp"
+                    android:dividerHeight="1dp"
+                    android:padding="20dp"
+                    android:background="@color/Green"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </HorizontalScrollView>
 
 </LinearLayout>

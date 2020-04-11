@@ -12,7 +12,6 @@ import com.example.tuitionapp.CandidateTutor.CandidateTutorInfo;
 
 import com.example.tuitionapp.CandidateTutor.CandidateTutorProfileActivity;
 import com.example.tuitionapp.R;
-import com.example.tuitionapp.VerifiedTutor.VerifiedTutorProfileActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +29,7 @@ public class CandidateTutorProfileAdminViewActivity extends AppCompatActivity {
     List<CandidateTutorInfo> candidateTutorInfoList ;
     List<ApproveInfo>  approveInfoList ;
 
-    CustomerAdapterForCandidateTutorApproval adapterForListView ;
+    CustomAdapterForCandidateTutorApproval adapterForListView ;
 
     ListView listView ;
 
@@ -121,7 +120,7 @@ public class CandidateTutorProfileAdminViewActivity extends AppCompatActivity {
             }
         }
 
-        adapterForListView = new CustomerAdapterForCandidateTutorApproval(this, nameArrayList , emailArrayList);
+        adapterForListView = new CustomAdapterForCandidateTutorApproval(this, nameArrayList , emailArrayList);
         listView.setAdapter(adapterForListView);
 
     }

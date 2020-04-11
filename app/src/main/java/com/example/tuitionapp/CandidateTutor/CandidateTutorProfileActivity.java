@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import static android.graphics.Color.GRAY;
 
 public class CandidateTutorProfileActivity extends AppCompatActivity {
 
@@ -144,6 +147,7 @@ public class CandidateTutorProfileActivity extends AppCompatActivity {
         myRefApproveInfo = FirebaseDatabase.getInstance().getReference("Approve") ;
         Button approveButton = findViewById(R.id.approveButton) ;
         approveButton.setText("Approved");
+        approveButton.setBackgroundColor(GRAY);
         approveButton.setEnabled(false);
         ApproveInfo approveInfo = new ApproveInfo("tuitionapsspl02@gmail.com", userEmail) ;
         approveInfo.setApprove(true);

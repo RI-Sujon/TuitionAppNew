@@ -2,13 +2,13 @@ package com.example.tuitionapp.VerifiedTutor;
 
 public class VerifiedTutorInfo {
     private String emailPK, preferredMediumOrVersion, preferredClasses, preferredGroup , preferredSubjects ,preferredAreas, experienceStatus, preferredDaysPerWeekOrMonth ,
-            minimumSalary , profilePicture, DemoVideo, groupIdFK;
+            minimumSalary , profilePictureUri, DemoVideo, groupIdFK;
 
     public VerifiedTutorInfo() {
     }
 
     public VerifiedTutorInfo(String emailPK, String preferredMediumOrVersion, String preferredClasses, String preferredGroup, String preferredSubjects, String preferredAreas,
-                             String experienceStatus, String preferredDaysPerWeekOrMonth, String minimumSalary, String profilePicture, String demoVideo, String groupIdFK) {
+                             String experienceStatus, String preferredDaysPerWeekOrMonth, String minimumSalary) {
         this.emailPK = emailPK;
         this.preferredMediumOrVersion = preferredMediumOrVersion;
         this.preferredClasses = preferredClasses;
@@ -18,9 +18,6 @@ public class VerifiedTutorInfo {
         this.experienceStatus = experienceStatus;
         this.preferredDaysPerWeekOrMonth = preferredDaysPerWeekOrMonth;
         this.minimumSalary = minimumSalary;
-        this.profilePicture = profilePicture;
-        DemoVideo = demoVideo;
-        this.groupIdFK = groupIdFK;
     }
 
     public String getEmailPK() {
@@ -95,12 +92,12 @@ public class VerifiedTutorInfo {
         this.minimumSalary = minimumSalary;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public String getProfilePictureUri() {
+        return profilePictureUri;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setProfilePictureUri(String profilePictureUri) {
+        this.profilePictureUri = profilePictureUri;
     }
 
     public String getDemoVideo() {

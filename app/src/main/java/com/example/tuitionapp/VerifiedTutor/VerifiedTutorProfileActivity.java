@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.example.tuitionapp.Admin.AdminHomePageActivity;
 import com.example.tuitionapp.Admin.BlockInfo;
 import com.example.tuitionapp.CandidateTutor.CandidateTutorInfo;
 import com.example.tuitionapp.Guardian.ViewingSearchingTutorProfileActivity;
+import com.example.tuitionapp.MessageBox.MessageBoxInfo;
 import com.example.tuitionapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,16 +25,23 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
-    private DatabaseReference myRefAccountInfo, myRefTuitionInfo ;
-    private TextView name,email,phoneNumber,gender,areaAddress,currentPositon,instituteName,subject ;
-    private TextView medium,preferredClass,preferredGroup,preferredSubject,daysPerWeekOrMonth,salaryUpto ;
+    private DatabaseReference myRefAccountInfo, myRefTuitionInfo, myRefMessageBox ;
+    private TextView phoneNumber,gender,areaAddress,currentPosition,instituteName,subject ;
+    private TextView medium,preferredClass,preferredGroup,preferredSubject,daysPerWeekOrMonth,minimumSalary ;
     private ProgressBar progressBar ;
     private FirebaseUser firebaseUser ;
 
     private String userEmail,user ;
+
+    ArrayList<String> userInfo ;
+    ImageView userProfilePicImageView ;
+    TextView userNameTextView, userEmailTextView;
 
     private CandidateTutorInfo candidateTutorInfo;
     private VerifiedTutorInfo verifiedTutorInfo;
@@ -41,11 +50,22 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verified_tutor_profile);
+        Intent intent = getIntent() ;
+        userInfo = intent.getStringArrayListExtra("userInfo") ;
+
+        userProfilePicImageView = findViewById(R.id.profilePicImageView) ;
+        userNameTextView = findViewById(R.id.userName) ;
+        userEmailTextView  = findViewById(R.id.userEmail) ;
+
+        userNameTextView.setText(userInfo.get(0));
+        Picasso.get().load(userInfo.get(1)).into(userProfilePicImageView) ;
+        userEmailTextView.setText(userInfo.get(2));
+
         myRefAccountInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor");
         myRefTuitionInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         //userEmail = firebaseUser.getEmail().toString() ;
-        Intent intent = getIntent() ;
+
         userEmail = intent.getStringExtra("userEmail") ;
         user = intent.getStringExtra("user") ;
         setTitle("Profile");
@@ -68,12 +88,10 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar) ;
         progressBar.setVisibility(View.VISIBLE);
 
-        name = findViewById(R.id.name) ;
-        email = findViewById(R.id.email) ;
         phoneNumber = findViewById(R.id.phoneNumber) ;
         gender = findViewById(R.id.gender) ;
         areaAddress = findViewById(R.id.areaAddress) ;
-        currentPositon = findViewById(R.id.currentPosition) ;
+        currentPosition = findViewById(R.id.currentPosition) ;
         instituteName = findViewById(R.id.instituteName) ;
         subject = findViewById(R.id.subject) ;
 
@@ -82,7 +100,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         preferredGroup = findViewById(R.id.preferredGroup) ;
         preferredSubject = findViewById(R.id.preferredSubject) ;
         daysPerWeekOrMonth = findViewById(R.id.daysPerWeekOrMonth) ;
-        salaryUpto = findViewById(R.id.salary) ;
+        minimumSalary = findViewById(R.id.salary) ;
 
         myRefAccountInfo.orderByChild("emailPK").equalTo(userEmail)
                 .addChildEventListener(new ChildEventListener() {
@@ -125,12 +143,10 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     public void addAccountInfoToProfile(){
         progressBar.setVisibility(View.GONE);
 
-        name.setText("Name  :   " + candidateTutorInfo.getFirstName() + " " +  candidateTutorInfo.getLastName());
-        email.setText("Email  :   " + candidateTutorInfo.getEmailPK() );
         phoneNumber.setText("Contact No  :   " + candidateTutorInfo.getMobileNumber() );
         gender.setText("Gender  :   " + candidateTutorInfo.getGender() );
         areaAddress.setText("Area Address  :   " + candidateTutorInfo.getAreaAddress() );
-        currentPositon.setText("Current Position  :   " + candidateTutorInfo.getCurrentPosition() );
+        currentPosition.setText("Current Position  :   " + candidateTutorInfo.getCurrentPosition() );
         instituteName.setText("Institute Name  :   " + candidateTutorInfo.getEdu_instituteName());
         subject.setText("Subject/Department  :   " + candidateTutorInfo.getEdu_tutorSubject());
     }
@@ -153,11 +169,15 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         preferredGroup.setText("Preferred Group  :   " + verifiedTutorInfo.getPreferredGroup() );
         preferredSubject.setText("Preferred Subject  :   " + strSub );
         daysPerWeekOrMonth.setText("Days Per Week  :   " + verifiedTutorInfo.getPreferredDaysPerWeekOrMonth() );
-        salaryUpto.setText("Minimum Salary  :   " + verifiedTutorInfo.getMinimumSalary() );
+        minimumSalary.setText("Minimum Salary  :   " + verifiedTutorInfo.getMinimumSalary() );
     }
 
     public void sendMessageRequestByGuardian(View view){
+        myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
 
+        MessageBoxInfo messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),userEmail, false ,true) ;
+
+        myRefMessageBox.push().setValue(messageBoxInfo) ;
     }
 
     public void blockVerifiedTutorByAdmin(View view){
@@ -172,6 +192,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     public void goToBackPageActivity(View view){
         if(user.equals("user")){
             Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+            intent.putStringArrayListExtra("userInfo", userInfo) ;
             startActivity(intent);
             finish();
         }
@@ -182,6 +203,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         }
         else if(user.equals("admin")){
             Intent intent = new Intent(this, AdminHomePageActivity.class);
+
             startActivity(intent);
             finish();
         }

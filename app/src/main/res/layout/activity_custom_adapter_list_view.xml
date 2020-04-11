@@ -48,8 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="13dp"
-            android:textColor="@color/Green"
-            android:visibility="visible"/>
+            android:textColor="@color/Green" />
 
         <Button
             android:id="@+id/responseButton"

@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.tuitionapp.CandidateTutor.CandidateTutorInfo;
 import com.example.tuitionapp.Guardian.GuardianHomePageActivity;
 import com.example.tuitionapp.R;
 import com.example.tuitionapp.VerifiedTutor.VerifiedTutorHomePageActivity;
+import com.example.tuitionapp.VerifiedTutor.VerifiedTutorInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -17,8 +19,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    String userName, userProfilePicUri, userEmail, userUid ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,36 +40,52 @@ public class MainActivity extends AppCompatActivity {
             String email = user.getEmail() ;
 
             if(!email.equals("")){
-                signUpComletionChecking(user);
+                signUpCompletionChecking(user);
             }
             else if(!phoneNumber.equals("")){
                 Intent intent = new Intent(this, GuardianHomePageActivity.class);
                 startActivity(intent);
                 finish();
             }
-
-            System.out.println("Phone Number:" + phoneNumber + "\nEmail:" + email);
         }
         else {
             goToHomePageActivity();
         }
     }
 
-    public void signUpComletionChecking(FirebaseUser user){
-        final DatabaseReference myVerifiedTutorInfo ;
-        myVerifiedTutorInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor").child(user.getUid());
+    public void signUpCompletionChecking(FirebaseUser user){
+        final DatabaseReference myRefVerifiedTutorInfo,myRefCandidateTutorInfo ;
+        userUid = user.getUid() ;
+        myRefVerifiedTutorInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor").child(user.getUid());
+        myRefCandidateTutorInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(user.getUid());
 
-        myVerifiedTutorInfo.addValueEventListener(new ValueEventListener() {
+
+        myRefVerifiedTutorInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    goToVerifiedTutorHomePageActivity();
-                    myVerifiedTutorInfo.removeEventListener(this);
-                }else{
-                    goToHomePageActivity();
-                    myVerifiedTutorInfo.removeEventListener(this);
+                    VerifiedTutorInfo verifiedTutorInfo = dataSnapshot.getValue(VerifiedTutorInfo.class) ;
+                    userProfilePicUri = verifiedTutorInfo.getProfilePictureUri() ;
+                    userEmail = verifiedTutorInfo.getEmailPK() ;
+
+                    myRefCandidateTutorInfo.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot1) {
+                            CandidateTutorInfo candidateTutorInfo = dataSnapshot1.getValue(CandidateTutorInfo.class) ;
+                            userName = candidateTutorInfo.getFirstName() + " " + candidateTutorInfo.getLastName() ;
+                            goToVerifiedTutorHomePageActivity();
+                            myRefCandidateTutorInfo.removeEventListener(this);
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
-                myVerifiedTutorInfo.removeEventListener(this);
+                else{
+                    goToHomePageActivity();
+                }
+                myRefVerifiedTutorInfo.removeEventListener(this);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -73,7 +95,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToVerifiedTutorHomePageActivity(){
+        ArrayList<String> userInfo = new ArrayList<>() ;
+        userInfo.add(userName) ;
+        userInfo.add(userProfilePicUri) ;
+        userInfo.add(userEmail) ;
+        userInfo.add(userUid) ;
+
         Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
+
         startActivity(intent);
         finish();
     }

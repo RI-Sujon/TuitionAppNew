@@ -13,6 +13,7 @@ import com.example.tuitionapp.R;
 import com.example.tuitionapp.System.HomePageActivity;
 import com.example.tuitionapp.VerifiedTutor.VerifiedTutorHomePageActivity;
 import com.example.tuitionapp.VerifiedTutor.TutorSignUpActivityStep3;
+import com.example.tuitionapp.VerifiedTutor.VerifiedTutorInfo;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -26,12 +27,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class CandidateTutorHomePageActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth ;
     private GoogleSignInClient mGoogleSignInClient ;
-    private DatabaseReference myRefVerifiedTutorInfo , myRefApproveInfo , myRefBlockInfo;
+    private DatabaseReference myRefVerifiedTutorInfo , myRefApproveInfo , myRefBlockInfo ,myRefCandidateTutorInfo;
     private FirebaseUser user ;
+    String userName, userProfilePicUri, userEmail, userUid ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +45,7 @@ public class CandidateTutorHomePageActivity extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder().requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         user = mAuth.getCurrentUser() ;
-        System.out.println("dddddddddddddddddddddddddddddddddddddddddd");
         isApprovedAndRegisterWithVerifiedTutor(user);
-
     }
 
     public void goToCandidateTutorProfileActivity(View view){
@@ -71,17 +73,21 @@ public class CandidateTutorHomePageActivity extends AppCompatActivity {
     }
 
     public void isApprovedAndRegisterWithVerifiedTutor(final FirebaseUser user){
-        myRefVerifiedTutorInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor").child(user.getUid());
+        userUid = user.getUid() ;
+        myRefVerifiedTutorInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor").child(userUid);
         myRefApproveInfo = FirebaseDatabase.getInstance().getReference("Approve");
         myRefBlockInfo = FirebaseDatabase.getInstance().getReference("Block");
+        myRefCandidateTutorInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(userUid);
 
         myRefVerifiedTutorInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
+                    VerifiedTutorInfo verifiedTutorInfo = dataSnapshot.getValue(VerifiedTutorInfo.class);
+                    userProfilePicUri = verifiedTutorInfo.getProfilePictureUri() ;
+                    userEmail = verifiedTutorInfo.getEmailPK() ;
 
                     myRefBlockInfo.addValueEventListener(new ValueEventListener() {
-
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot1) {
                             int flag = 0 ;
@@ -93,8 +99,21 @@ public class CandidateTutorHomePageActivity extends AppCompatActivity {
                                     break;
                                 }
                             }
-                            if(flag==0)goToVerifiedTutorHomePageActivity();
+                            if(flag==0){
 
+                                myRefCandidateTutorInfo.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot3) {
+                                        CandidateTutorInfo candidateTutorInfo = dataSnapshot3.getValue(CandidateTutorInfo.class) ;
+                                        userName = candidateTutorInfo.getFirstName() + " " + candidateTutorInfo.getLastName() ;
+                                        goToVerifiedTutorHomePageActivity();
+                                    }
+                                    @Override
+                                    public void onCancelled(DatabaseError error) {
+                                        // Failed to read value
+                                    }
+                                });
+                            }
 
                             myRefBlockInfo.removeEventListener(this);
                         }
@@ -106,8 +125,8 @@ public class CandidateTutorHomePageActivity extends AppCompatActivity {
 
                 }
                 else{
-                    myRefApproveInfo.addValueEventListener(new ValueEventListener() {
 
+                    myRefApproveInfo.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot2) {
                             for(DataSnapshot dS1: dataSnapshot2.getChildren()){
@@ -142,7 +161,18 @@ public class CandidateTutorHomePageActivity extends AppCompatActivity {
     }
 
     public void goToVerifiedTutorHomePageActivity(){
+        ArrayList<String> userInfo = new ArrayList<>() ;
+        userInfo.add(userName) ;
+        userInfo.add(userProfilePicUri) ;
+        userInfo.add(userEmail) ;
+        userInfo.add(userUid) ;
+
         Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
+        //intent.putExtra("userName", userName);
+        //intent.putExtra("userProfilePicUri", userProfilePicUri);
+        //intent.putExtra("userEmail", userEmail);
+        //intent.putExtra("userUid", userUid);
         startActivity(intent);
         finish();
     }

@@ -31,10 +31,15 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
 
     private ListView listView ;
 
+    ArrayList<String>userInfo ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verified_tutor_notification);
+        Intent intent = getIntent() ;
+        userInfo = intent.getStringArrayListExtra("userInfo") ;
+
         myRefRefer = FirebaseDatabase.getInstance().getReference("Refer") ;
         user = FirebaseAuth.getInstance().getCurrentUser() ;
         listView = findViewById(R.id.candidateTutorList) ;
@@ -77,6 +82,7 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
 
     public void backToHomePage(View view){
         Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();
     }

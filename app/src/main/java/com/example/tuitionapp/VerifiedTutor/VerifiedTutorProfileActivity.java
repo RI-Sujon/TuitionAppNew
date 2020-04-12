@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.example.tuitionapp.Admin.AdminHomePageActivity;
 import com.example.tuitionapp.Admin.BlockInfo;
 import com.example.tuitionapp.CandidateTutor.CandidateTutorInfo;
+import com.example.tuitionapp.Group.GroupTutorViewActivity;
 import com.example.tuitionapp.Guardian.ViewingSearchingTutorProfileActivity;
 import com.example.tuitionapp.MessageBox.MessageBoxInfo;
 import com.example.tuitionapp.R;
@@ -31,17 +33,18 @@ import java.util.ArrayList;
 
 public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
-    private DatabaseReference myRefAccountInfo, myRefTuitionInfo, myRefMessageBox ;
+    private DatabaseReference myRefAccountInfo, myRefTuitionInfo, myRefMessageBox, myRefReport ;
     private TextView phoneNumber,gender,areaAddress,currentPosition,instituteName,subject ;
     private TextView medium,preferredClass,preferredGroup,preferredSubject,daysPerWeekOrMonth,minimumSalary ;
     private ProgressBar progressBar ;
     private FirebaseUser firebaseUser ;
 
-    private String userEmail,user ;
+    private String userEmail,user ,groupID;
 
-    ArrayList<String> userInfo ;
-    ImageView userProfilePicImageView ;
-    TextView userNameTextView, userEmailTextView;
+    private ArrayList<String> userInfo ;
+    private ImageView userProfilePicImageView ;
+    private TextView userNameTextView, userEmailTextView;
+    private Button messageRequestButton, reportButton , blockButton;
 
     private CandidateTutorInfo candidateTutorInfo;
     private VerifiedTutorInfo verifiedTutorInfo;
@@ -50,32 +53,43 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verified_tutor_profile);
+        getSupportActionBar().hide();
+
         Intent intent = getIntent() ;
+        user = intent.getStringExtra("user") ;
         userInfo = intent.getStringArrayListExtra("userInfo") ;
 
         userProfilePicImageView = findViewById(R.id.profilePicImageView) ;
         userNameTextView = findViewById(R.id.userName) ;
         userEmailTextView  = findViewById(R.id.userEmail) ;
 
-        userNameTextView.setText(userInfo.get(0));
-        Picasso.get().load(userInfo.get(1)).into(userProfilePicImageView) ;
-        userEmailTextView.setText(userInfo.get(2));
+        if(user.equals("tutor")){
+            System.out.println(userInfo.toString());
+            userEmail = userInfo.get(2);
+            userNameTextView.setText(userInfo.get(0));
+            Picasso.get().load(userInfo.get(1)).into(userProfilePicImageView) ;
+            userEmailTextView.setText(userInfo.get(2));
+        }
+        else if(user.equals("group")){
+            userEmail = intent.getStringExtra("groupTutorEmail") ;
+            groupID = intent.getStringExtra("groupID") ;
+        }
+        else {
+            userEmail = intent.getStringExtra("userEmail") ;
+        }
 
         myRefAccountInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor");
         myRefTuitionInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        //userEmail = firebaseUser.getEmail().toString() ;
-
-        userEmail = intent.getStringExtra("userEmail") ;
-        user = intent.getStringExtra("user") ;
-        setTitle("Profile");
 
         if(user.equals("guardian")){
-            Button messageRequestButton = findViewById(R.id.sendMessageRequestButton) ;
+            messageRequestButton = findViewById(R.id.sendMessageRequestButton) ;
+            reportButton = findViewById(R.id.reportButton) ;
             messageRequestButton.setVisibility(View.VISIBLE);
+            reportButton.setVisibility(View.VISIBLE);
         }
         else if(user.equals("admin")){
-            Button blockButton = findViewById(R.id.blockButton) ;
+            blockButton = findViewById(R.id.blockButton) ;
             blockButton.setVisibility(View.VISIBLE);
         }
 
@@ -174,10 +188,21 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     public void sendMessageRequestByGuardian(View view){
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
-
         MessageBoxInfo messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),userEmail, false ,true) ;
-
         myRefMessageBox.push().setValue(messageBoxInfo) ;
+
+        messageRequestButton.setEnabled(false);
+        messageRequestButton.setBackgroundColor(Color.GRAY);
+
+    }
+
+    public void reportIDByGuardian(View view){
+        myRefReport = FirebaseDatabase.getInstance().getReference("Report") ;
+        ReportInfo reportInfo = new ReportInfo(firebaseUser.getPhoneNumber(),userEmail, "this is a fake account") ;
+        myRefReport.push().setValue(reportInfo) ;
+
+        reportButton.setEnabled(false);
+        reportButton.setBackgroundColor(Color.GRAY);
     }
 
     public void blockVerifiedTutorByAdmin(View view){
@@ -185,12 +210,12 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         BlockInfo blockInfo = new BlockInfo("tuitionApsspl02@gmail.com",userEmail,true) ;
         myRefBlockInfo.push().setValue(blockInfo) ;
 
-        Button button = findViewById(R.id.blockButton) ;
-        button.setEnabled(false);
+        blockButton.setEnabled(false);
+        blockButton.setBackgroundColor(Color.GRAY);
     }
 
     public void goToBackPageActivity(View view){
-        if(user.equals("user")){
+        if(user.equals("tutor")){
             Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
             intent.putStringArrayListExtra("userInfo", userInfo) ;
             startActivity(intent);
@@ -198,12 +223,21 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         }
         else if(user.equals("guardian")){
             Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class);
+            intent.putExtra("user",user) ;
             startActivity(intent);
             finish();
         }
         else if(user.equals("admin")){
             Intent intent = new Intent(this, AdminHomePageActivity.class);
-
+            intent.putExtra("user",user) ;
+            startActivity(intent);
+            finish();
+        }
+        else if(user.equals("group")){
+            Intent intent = new Intent(this, GroupTutorViewActivity.class);
+            intent.putExtra("user",user) ;
+            intent.putStringArrayListExtra("userInfo",userInfo) ;
+            intent.putExtra("groupID", groupID) ;
             startActivity(intent);
             finish();
         }

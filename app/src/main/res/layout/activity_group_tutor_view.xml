@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".Group.GroupTutorViewActivity">
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BACK"
+        android:layout_gravity="right"
+        android:onClick="goToBackPageActivity" />
+
+    <Button
+        android:id="@+id/addTutorOption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:textColor="@color/AliceBlue"
+        android:background="@color/Navy"
+        android:text="Add Tutor" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:hint="Tutor Email"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/addTutor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        android:onClick="addTutorOperation"
+        android:visibility="gone"/>
+
+
+    <LinearLayout
+        android:id="@+id/tutorListLayout"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_height="wrap_content"
+        android:background="@color/Beige"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <ListView
+            android:id="@+id/tutorListView"
+            android:layout_width="match_parent"
+            android:layout_height="512dp"
+            android:background="@color/LightGreen"
+            android:dividerHeight="1dp"
+            android:padding="20dp" />
+    </LinearLayout>
+
+
+</LinearLayout>

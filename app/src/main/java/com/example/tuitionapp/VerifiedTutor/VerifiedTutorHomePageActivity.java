@@ -42,6 +42,8 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verified_tutor_home_page);
+        getSupportActionBar().hide();
+
         Intent intent = getIntent() ;
         userInfo = intent.getStringArrayListExtra("userInfo") ;
 
@@ -52,11 +54,6 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity {
         userNameTextView.setText(userInfo.get(0));
         Picasso.get().load(userInfo.get(1)).into(userProfilePicImageView) ;
         userEmailTextView.setText(userInfo.get(2));
-
-        //userName = intent.getStringExtra("userName") ;
-        //userProfilePicUri = intent.getStringExtra("userProfilePicUri") ;
-        //userEmail = intent.getStringExtra("userEmail") ;
-        //userUid = intent.getStringExtra("userUid") ;
 
         mAuth = FirebaseAuth.getInstance() ;
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder().requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
@@ -75,7 +72,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity {
     public void goToVerifiedTutorGroupActivity(View view){
         Intent intent = new Intent(this, GroupHomePageActivity.class) ;
         intent.putExtra("userEmail",user.getEmail()) ;
-        intent.putExtra("user" , "user") ;
+        intent.putExtra("user" , "tutor") ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();
@@ -83,8 +80,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity {
 
     public void goToVerifiedTutorProfileActivity(View view){
         Intent intent = new Intent(this, VerifiedTutorProfileActivity.class) ;
-        intent.putExtra("userEmail",user.getEmail()) ;
-        intent.putExtra("user" , "user") ;
+        intent.putExtra("user" , "tutor") ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();
@@ -92,6 +88,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity {
 
     public void goToVerifiedTutorViewPostActivity(View view){
         Intent intent = new Intent(this, TuitionPostViewActivity.class) ;
+        intent.putExtra("user" , "tutor") ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();

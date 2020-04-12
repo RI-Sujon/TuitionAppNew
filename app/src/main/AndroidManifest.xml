@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Batch.BatchSelectAndViewingActivity"></activity>
-        <activity android:name=".Batch.BatchHomePageActivity" />
+        <activity android:name=".Group.GroupTutorViewActivity"></activity>
+        <activity android:name=".Batch.BatchViewInfoActivity" />
+        <activity android:name=".Batch.BatchCreateAndSelectActivity" />
         <activity android:name=".VerifiedTutor.VerifiedTutorSetProfilePicture" />
         <activity android:name=".Group.GroupHomePageActivity" />
         <activity android:name=".TuitionPost.TuitionPostViewActivity" />

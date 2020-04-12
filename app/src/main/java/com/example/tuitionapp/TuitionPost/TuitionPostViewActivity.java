@@ -32,6 +32,8 @@ public class TuitionPostViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tuition_post_view);
+        getSupportActionBar().hide();
+
         Intent intent = getIntent() ;
         userInfo = intent.getStringArrayListExtra("userInfo") ;
         userEmail = userInfo.get(2) ;

@@ -14,16 +14,16 @@ import java.util.ArrayList;
 public class CustomAdapterForSelectAndViewBatch extends BaseAdapter {
 
     private Context context ;
-    private ArrayList<String>batchName ;
+    private ArrayList<BatchInfo>batchInfoArrayList ;
 
-    public CustomAdapterForSelectAndViewBatch(Context context, ArrayList<String> batchName) {
+    public CustomAdapterForSelectAndViewBatch(Context context, ArrayList<BatchInfo> batchInfoArrayList) {
         this.context = context;
-        this.batchName = batchName;
+        this.batchInfoArrayList = batchInfoArrayList;
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return batchInfoArrayList.size();
     }
 
     @Override
@@ -43,12 +43,14 @@ public class CustomAdapterForSelectAndViewBatch extends BaseAdapter {
             holder = new ViewHolder() ;
             convertView = LayoutInflater.from(context).inflate(R.layout.activity_custom_adapter_list_view, null);
             holder.batchNameTextView = convertView.findViewById(R.id.nameTextView) ;
+
+            convertView.setTag(holder);
         }
         else {
             holder = (ViewHolder) convertView.getTag() ;
         }
 
-        holder.batchNameTextView.setText(batchName.get(position));
+        holder.batchNameTextView.setText(batchInfoArrayList.get(position).getBatchName());
         holder.batchNameTextView.setVisibility(View.VISIBLE);
 
         return convertView ;

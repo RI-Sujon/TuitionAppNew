@@ -19,6 +19,8 @@ public class GuardianHomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guardian_home_page);
+        getSupportActionBar().hide();
+
         mAuth = FirebaseAuth.getInstance();
     }
 

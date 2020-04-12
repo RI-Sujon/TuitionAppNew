@@ -49,6 +49,8 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verified_tutor_set_profile_picture);
+        getSupportActionBar().hide();
+
         Intent intent = getIntent() ;
         userEmail = intent.getStringExtra("userEmail") ;
         userUid = intent.getStringExtra("userUid") ;

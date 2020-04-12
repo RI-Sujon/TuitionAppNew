@@ -41,6 +41,8 @@ public class CandidateTutorHomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_candidate_tutor_home_page);
+        getSupportActionBar().hide();
+
         mAuth = FirebaseAuth.getInstance() ;
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder().requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -95,8 +97,7 @@ public class CandidateTutorHomePageActivity extends AppCompatActivity {
                                 BlockInfo blockInfo = dS1.getValue(BlockInfo.class) ;
                                 if(blockInfo.getVerifiedTutorEmail().equals(user.getEmail())){
                                     flag = 1 ;
-
-                                    break;
+                                    break ;
                                 }
                             }
                             if(flag==0){

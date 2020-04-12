@@ -1,6 +1,7 @@
 package com.example.tuitionapp.TuitionPost;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder holder ;
+        final ViewHolder holder ;
         if(convertView==null){
             holder = new ViewHolder() ;
             convertView = LayoutInflater.from(context).inflate(R.layout.activity_custom_adapter_list_view, null);
@@ -72,6 +73,8 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
             public void onClick(View v) {
                 MessageBoxInfo messageBoxInfo = new MessageBoxInfo(tuitionPostInfo.get(position).getGuardianMobileNumberFK(), userEmail, false, true) ;
                 myRefMessageBox.push().setValue(messageBoxInfo) ;
+                holder.responseButton.setBackgroundColor(Color.GRAY);
+                holder.responseButton.setEnabled(false);
             }
         });
 

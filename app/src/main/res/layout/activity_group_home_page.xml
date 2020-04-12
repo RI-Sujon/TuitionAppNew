@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
         <TextView
             android:id="@+id/groupNameTextView"
             android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
             android:layout_marginTop="50dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Batch Management"
+            android:text="VIEW ALL Batch"
             android:textSize="20dp"
             android:layout_marginBottom="20dp"
             android:background="@color/Beige"
@@ -50,7 +50,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="MesssageBox"
+            android:text="MessageBox"
             android:textSize="20dp"
             android:layout_marginBottom="20dp"
             android:background="@color/Beige"
@@ -59,12 +59,23 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Add Tutor"
+            android:text="Tutor Of This Group"
             android:textSize="20dp"
             android:layout_marginBottom="20dp"
             android:background="@color/Beige"
             android:textColor="@color/Navy"
+            android:onClick="goToGroupTutorManagement"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="NoticeBoard - amar Kaj"
+            android:textSize="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/Red"
+            android:textColor="@color/Navy"
             android:onClick="goToBatchManagement"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -132,5 +143,57 @@
             android:background="@color/Green"/>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/downBar"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="100dp"
+        android:weightSum="8"
+        android:layout_margin="10dp"
+        android:background="@color/AliceBlue"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/sendMessageRequestButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="@color/Yellow"
+            android:onClick="sendMessageRequestByGuardian"
+            android:padding="20dp"
+            android:layout_weight="4"
+            android:textSize="12dp"
+            android:layout_marginRight="5dp"
+            android:text="send an initial message"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/reportButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:background="@color/Yellow"
+            android:layout_marginLeft="5dp"
+            android:onClick="reportIDByGuardian"
+            android:padding="20dp"
+            android:text="Report ID"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/blockButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:padding="20dp"
+            android:background="@color/Red"
+            android:text="Block Tutor"
+            android:visibility="gone"
+            android:onClick="blockVerifiedTutorByAdmin"/>
+    </LinearLayout>
+
+
 
 </LinearLayout>

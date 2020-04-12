@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ViewFlipper;
 
 import com.example.tuitionapp.Admin.AdminHomePageActivity;
 import com.example.tuitionapp.CandidateTutor.CandidateTutorInfo;
@@ -47,11 +49,15 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
     private ListView groupListView ;
     private Button searchButton ;
     private EditText searchBar ;
+    private ViewFlipper viewFlipper ;
+    private Button tutorListViewButton, groupListViewButton ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewing_searching_tutor_profile);
+        getSupportActionBar().hide();
+
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;
 
@@ -59,6 +65,9 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
         groupListView = findViewById(R.id.groupList) ;
         searchButton = findViewById(R.id.searchButton) ;
         searchBar = findViewById(R.id.search_bar) ;
+        viewFlipper = findViewById(R.id.viewFlipper) ;
+        tutorListViewButton = findViewById(R.id.tutorListViewButton) ;
+        groupListViewButton = findViewById(R.id.groupListViewButton) ;
         setTitle("SEARCHING");
 
         myRefVerifiedTutor = FirebaseDatabase.getInstance().getReference("VerifiedTutor") ;
@@ -78,6 +87,28 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String userEmail = groupEmailList.get(position) ;
                 goToSelectedGroup(userEmail) ;
+            }
+        });
+
+        tutorListViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewFlipper.setDisplayedChild(0);
+                tutorListViewButton.setBackgroundColor(Color.rgb(144,238,144));
+                tutorListViewButton.setTextColor(Color.rgb(0,0,128));
+                groupListViewButton.setBackgroundColor(Color.GRAY);
+                groupListViewButton.setTextColor(Color.BLACK);
+            }
+        });
+
+        groupListViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewFlipper.setDisplayedChild(1);
+                groupListViewButton.setBackgroundColor(Color.rgb(144,238,144));
+                groupListViewButton.setTextColor(Color.rgb(0,0,128));
+                tutorListViewButton.setBackgroundColor(Color.GRAY);
+                tutorListViewButton.setTextColor(Color.BLACK);
             }
         });
     }
@@ -133,8 +164,8 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
                 for(DataSnapshot dS1:dataSnapshot.getChildren()){
                     GroupInfo groupInfo = dS1.getValue(GroupInfo.class) ;
                     groupInfoList.add(groupInfo) ;
-                    setGroupListView();
                 }
+                setGroupListView();
             }
 
             @Override
@@ -154,8 +185,8 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
             }
         }
 
-        //adapter = new CustomAdapterForViewingSearchingTutorProfile(this,nameList,emailList);
-        //groupListView.setAdapter(adapter);
+        adapter = new CustomAdapterForViewingSearchingTutorProfile(this,nameList,emailList);
+        tutorListView.setAdapter(adapter);
     }
 
     public void setGroupListView(){
@@ -164,7 +195,7 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
             groupEmailList.add(groupInfo.getGroupAdminEmail()) ;
         }
 
-        adapter2 = new CustomAdapterForViewingSearchingGroup(this,nameList,emailList);
+        adapter2 = new CustomAdapterForViewingSearchingGroup(this,groupNameList,groupEmailList);
         groupListView.setAdapter(adapter2);
 
     }

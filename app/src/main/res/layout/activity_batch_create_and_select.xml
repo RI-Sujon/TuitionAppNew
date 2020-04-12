@@ -7,7 +7,7 @@
     android:padding="20dp"
     android:background="@color/PaleGreen"
     android:orientation="vertical"
-    tools:context=".Batch.BatchHomePageActivity">
+    tools:context=".Batch.BatchCreateAndSelectActivity">
 
     <Button
         android:id="@+id/backButton"
@@ -22,28 +22,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <Button
-            android:layout_marginTop="50dp"
+            android:id="@+id/createNewBatchButton"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Create A Batch"
+            android:text="Create New Batch"
             android:textSize="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="40dp"
             android:background="@color/Beige"
             android:textColor="@color/Navy"
             android:onClick="newBatchCreation"/>
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Select And View Batch"
-            android:textSize="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/Beige"
-            android:textColor="@color/Navy"
-            android:onClick="goToSelectAndViewBatch"/>
+            android:layout_height="wrap_content"
+            android:background="@color/AliceBlue">
+
+            <ListView
+                android:id="@+id/batchList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dividerHeight="15dp"/>
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -54,7 +57,7 @@
         android:orientation="vertical"
         android:layout_gravity="center"
         android:layout_marginBottom="50dp"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -69,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:text="Total Seat :"
+                    android:text="Batch Name :"
                     android:textColor="@color/Green"
                     android:paddingLeft="3dp"/>
                 <EditText
@@ -116,6 +119,7 @@
                     android:textColor="@color/Green"
                     android:layout_marginTop="30dp"
                     android:paddingLeft="3dp"/>
+
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -426,11 +430,10 @@
                     android:layout_marginTop="50dp"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:text="Create Student Info"
+                    android:text="Create Student Info - Amar Kaj"
                     android:textSize="20dp"
-                    android:background="@color/Beige"
-                    android:textColor="@color/Navy"
-                    android:onClick="goToStudentInfoCreationTable"/>
+                    android:background="@color/Red"
+                    android:textColor="@color/Navy" />
 
                 <Button
                     android:id="@+id/createBatchButton"
@@ -450,13 +453,5 @@
 
         </ScrollView>
     </LinearLayout>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:paddingLeft="3dp"
-        android:text="Batch Name :"
-        android:textColor="@color/Green" />
 
 </LinearLayout>

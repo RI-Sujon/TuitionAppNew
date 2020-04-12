@@ -1,4 +1,4 @@
-package com.example.tuitionapp.Guardian;
+package com.example.tuitionapp.Group;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,22 +11,19 @@ import com.example.tuitionapp.R;
 
 import java.util.ArrayList;
 
-class CustomerAdapterForViewingSearchingTutorProfile extends BaseAdapter {
+public class CustomAdapterForGroupTutorViewActivity extends BaseAdapter {
 
-    Context context;
-    ArrayList<String> nameList ;
-    ArrayList<String> emailList ;
+    private Context context ;
+    private ArrayList<AddTutorInfo> addTutorInfoArrayList ;
 
-
-    public CustomerAdapterForViewingSearchingTutorProfile(Context context, ArrayList<String> nameList, ArrayList<String> emailList) {
+    public CustomAdapterForGroupTutorViewActivity(Context context, ArrayList<AddTutorInfo> addTutorInfoArrayList) {
         this.context = context;
-        this.nameList = nameList;
-        this.emailList = emailList;
+        this.addTutorInfoArrayList = addTutorInfoArrayList;
     }
 
     @Override
     public int getCount() {
-        return emailList.size() ;
+        return addTutorInfoArrayList.size();
     }
 
     @Override
@@ -41,27 +38,24 @@ class CustomerAdapterForViewingSearchingTutorProfile extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        ViewHolder holder ;
         if(convertView==null){
             holder = new ViewHolder() ;
             convertView = LayoutInflater.from(context).inflate(R.layout.activity_custom_adapter_list_view, null);
-            holder.name = convertView.findViewById(R.id.nameTextView);
-            holder.email = convertView.findViewById(R.id.emailTextView);
+            holder.email = convertView.findViewById(R.id.nameTextView) ;
+
             convertView.setTag(holder);
-        }
-        else{
-            holder = (ViewHolder) convertView.getTag() ;
+        }else{
+            holder = (ViewHolder)convertView.getTag() ;
         }
 
-        holder.email.setText(emailList.get(position));
-        holder.name.setText(nameList.get(position));
-        holder.name.setVisibility(View.VISIBLE);
+        holder.email.setText(addTutorInfoArrayList.get(position).getTutorEmail());
         holder.email.setVisibility(View.VISIBLE);
+
         return convertView ;
     }
 
-    class ViewHolder {
-        TextView name ;
-        TextView email ;
+    class ViewHolder{
+        TextView email;
     }
 }

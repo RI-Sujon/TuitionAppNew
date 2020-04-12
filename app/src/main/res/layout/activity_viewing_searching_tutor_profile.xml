@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:background="@color/Bisque"
     tools:context=".Guardian.ViewingSearchingTutorProfileActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,56 +43,71 @@
             android:background="@color/Aqua"
             android:textColor="@color/Navy"/>
 
-
     </LinearLayout>
 
-
-    <HorizontalScrollView
+    <LinearLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-        <RelativeLayout
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/tutorListViewButton"
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:id="@+id/layout1"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@color/Beige"
-                android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:text="Tutor"
+            android:textColor="@color/Navy"
+            android:background="@color/LightGreen"/>
+        <Button
+            android:id="@+id/groupListViewButton"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:text="GROUP"
+            android:layout_height="match_parent"
+            android:background="@color/Gray" />
 
+    </LinearLayout>
+    <ViewFlipper
+        android:id="@+id/viewFlipper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/Black">
+        <LinearLayout
+            android:id="@+id/tutorListLayout"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_height="wrap_content"
+            android:background="@color/Beige"
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
-                <ListView
-                    android:id="@+id/verifiedTutorList"
-                    android:layout_width="match_parent"
-                    android:layout_height="512dp"
-                    android:background="@color/LightGreen"
-                    android:dividerHeight="1dp"
-                    android:padding="20dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
+            <ListView
+                android:id="@+id/verifiedTutorList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:layout_toEndOf="@+id/layout1"
-                android:orientation="vertical">
+                android:layout_height="512dp"
+                android:background="@color/LightGreen"
+                android:dividerHeight="1dp"
+                android:padding="20dp" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/groupListLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
-                <ListView
-                    android:id="@+id/groupList"
-                    android:layout_width="200dp"
-                    android:layout_height="512dp"
-                    android:dividerHeight="1dp"
-                    android:padding="20dp"
-                    android:background="@color/Green"/>
+            <ListView
+                android:id="@+id/groupList"
+                android:layout_width="500dp"
+                android:layout_height="512dp"
+                android:dividerHeight="1dp"
+                android:padding="20dp"
+                android:background="@color/LightGreen"/>
 
-            </LinearLayout>
-
-        </RelativeLayout>
-
-    </HorizontalScrollView>
-
+        </LinearLayout>
+    </ViewFlipper>
 </LinearLayout>

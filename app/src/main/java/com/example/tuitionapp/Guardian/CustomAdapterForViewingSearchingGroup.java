@@ -15,17 +15,15 @@ public class CustomAdapterForViewingSearchingGroup extends BaseAdapter {
 
     Context context;
     ArrayList<String> groupNameList ;
-    ArrayList<String> groupEmailList ;
 
-    public CustomAdapterForViewingSearchingGroup(Context context, ArrayList<String> groupNameList, ArrayList<String> groupEmailList) {
+    public CustomAdapterForViewingSearchingGroup(Context context, ArrayList<String> groupNameList) {
         this.context = context;
         this.groupNameList = groupNameList;
-        this.groupEmailList = groupEmailList;
     }
 
     @Override
     public int getCount() {
-        return groupEmailList.size() ;
+        return groupNameList.size() ;
     }
 
     @Override

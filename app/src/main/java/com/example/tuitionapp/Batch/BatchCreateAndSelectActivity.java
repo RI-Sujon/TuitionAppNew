@@ -233,13 +233,10 @@ public class BatchCreateAndSelectActivity extends AppCompatActivity {
 
     public void goToBackPageActivity(View view){
         Intent intent = new Intent(this, GroupHomePageActivity.class);
-
+        intent.putExtra("groupID",groupID) ;
         if(user.equals("tutor")){
             intent.putStringArrayListExtra("userInfo",userInfo) ;
-        }else{
-            intent.putExtra("userEmail", userEmail) ;
         }
-
         intent.putExtra("user", user) ;
         startActivity(intent);
         finish();

@@ -1,5 +1,7 @@
 package com.example.tuitionapp.Group;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -18,11 +20,13 @@ import com.example.tuitionapp.Admin.BlockInfo;
 import com.example.tuitionapp.Batch.BatchCreateAndSelectActivity;
 import com.example.tuitionapp.Guardian.ViewingSearchingTutorProfileActivity;
 import com.example.tuitionapp.MessageBox.MessageBoxInfo;
+import com.example.tuitionapp.NoticeBoard.NoticeBoardViewAndCreateActivity;
 import com.example.tuitionapp.R;
 import com.example.tuitionapp.VerifiedTutor.ReportInfo;
 import com.example.tuitionapp.VerifiedTutor.VerifiedTutorHomePageActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,56 +54,84 @@ public class GroupHomePageActivity extends AppCompatActivity {
         userInfo = intent.getStringArrayListExtra("userInfo") ;
         user = intent.getStringExtra("user") ;
 
+        myRefGroupInfo = FirebaseDatabase.getInstance().getReference("Group") ;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
 
         if(user.equals("tutor")){
             userEmail = userInfo.get(2);
+            myRefGroupInfo.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    int flag = 0 ;
+                    for(DataSnapshot dS1: dataSnapshot.getChildren()){
+                        GroupInfo groupInfo = dS1.getValue(GroupInfo.class) ;
+                        if(groupInfo.getGroupAdminEmail().equals(userEmail)){
+                            groupID = dS1.getKey() ;
+                            System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk:" + groupID);
+                            groupHomePage(groupInfo);
+                            flag = 1 ;
+                            break ;
+                        }
+                    }
+                    if(flag == 0){
+                        goToGroupCreation();
+                    }
+                    myRefGroupInfo.removeEventListener(this);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                }
+            });
         }
         else {
-            userEmail = intent.getStringExtra("userEmail") ;
+            groupID = intent.getStringExtra("groupID") ;
+            myRefGroupInfo.child(groupID) ;
+
+            myRefGroupInfo.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    GroupInfo groupInfo2 = dataSnapshot.getValue(GroupInfo.class) ;
+                    System.out.println( groupID+ " :kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk:" + groupInfo2.getGroupAdminEmail() );
+                    groupHomePage(groupInfo2);
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            }) ;
         }
-
-        myRefGroupInfo = FirebaseDatabase.getInstance().getReference("Group") ;
-
-        myRefGroupInfo.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int flag = 0 ;
-                for(DataSnapshot dS1: dataSnapshot.getChildren()){
-                    GroupInfo groupInfo = dS1.getValue(GroupInfo.class) ;
-                    if(groupInfo.groupAdminEmail.equals(userEmail)){
-                        groupID = dS1.getKey() ;
-                        System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk:" + groupID);
-                        groupHomePage(groupInfo);
-                        flag = 1 ;
-                        break ;
-                    }
-                }
-                if(flag == 0){
-                    goToGroupCreation();
-                }
-                myRefGroupInfo.removeEventListener(this);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
 
         if(user.equals("guardian")){
             LinearLayout downBar = findViewById(R.id.downBar) ;
             downBar.setVisibility(View.VISIBLE);
             messageRequestButton = findViewById(R.id.sendMessageRequestButton) ;
-            reportButton = findViewById(R.id.reportButton) ;
+            //reportButton = findViewById(R.id.reportButton) ;
             messageRequestButton.setVisibility(View.VISIBLE);
-            reportButton.setVisibility(View.VISIBLE);
+            //reportButton.setVisibility(View.VISIBLE);
         }
         else if(user.equals("admin")){
-            LinearLayout downBar = findViewById(R.id.downBar) ;
-            downBar.setVisibility(View.VISIBLE);
-            blockButton = findViewById(R.id.blockButton) ;
-            blockButton.setVisibility(View.VISIBLE);
+            //LinearLayout downBar = findViewById(R.id.downBar) ;
+            //downBar.setVisibility(View.VISIBLE);
+            //blockButton = findViewById(R.id.blockGroupButton) ;
+            //blockButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -109,8 +141,8 @@ public class GroupHomePageActivity extends AppCompatActivity {
         TextView groupNameTextView = findViewById(R.id.groupNameTextView) ;
         TextView fullAddressTextView = findViewById(R.id.fullAddressTextView) ;
 
-        groupNameTextView.setText(groupInfo.groupName);
-        fullAddressTextView.setText(groupInfo.fullAddress + ", " + groupInfo.address);
+        groupNameTextView.setText(groupInfo.getGroupName());
+        fullAddressTextView.setText(groupInfo.getFullAddress() + ", " + groupInfo.getAddress());
     }
 
     public void goToGroupCreation(){
@@ -189,7 +221,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
         reportButton.setBackgroundColor(Color.GRAY);
     }
 
-    public void blockVerifiedTutorByAdmin(View view){
+    public void blockGroupByAdmin(View view){
         myRefBlockInfo = FirebaseDatabase.getInstance().getReference("Block") ;
         BlockInfo blockInfo = new BlockInfo("tuitionApsspl02@gmail.com",userEmail,true) ;
         myRefBlockInfo.push().setValue(blockInfo) ;
@@ -206,9 +238,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
         if(user.equals("tutor")){
             intent.putStringArrayListExtra("userInfo",userInfo) ;
         }
-        else if(user.equals("guardian")){
-            intent.putExtra("userEmail" , userEmail) ;
-        }
+
         startActivity(intent);
         finish();
     }
@@ -221,8 +251,17 @@ public class GroupHomePageActivity extends AppCompatActivity {
         if(user.equals("tutor")){
             intent.putStringArrayListExtra("userInfo",userInfo) ;
         }
-        else if(user.equals("guardian")){
-            intent.putExtra("userEmail" , userEmail) ;
+        startActivity(intent);
+        finish();
+    }
+
+    public void goToNoticeBoardManagement(View view){
+        Intent intent = new Intent(this, NoticeBoardViewAndCreateActivity.class) ;
+        intent.putExtra("user",user) ;
+        intent.putExtra("groupID" , groupID) ;
+
+        if(user.equals("tutor")){
+            intent.putStringArrayListExtra("userInfo",userInfo) ;
         }
         startActivity(intent);
         finish();

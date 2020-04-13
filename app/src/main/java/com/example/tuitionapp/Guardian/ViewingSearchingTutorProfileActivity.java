@@ -38,7 +38,7 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
     private ArrayList<String> emailList ;
     private ArrayList<String> nameList ;
     private ArrayList<String> groupNameList ;
-    private ArrayList<String> groupEmailList ;
+    private ArrayList<String> groupIDList ;
 
     private CustomAdapterForViewingSearchingTutorProfile adapter ;
     private CustomAdapterForViewingSearchingGroup adapter2 ;
@@ -85,8 +85,8 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
         groupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String userEmail = groupEmailList.get(position) ;
-                goToSelectedGroup(userEmail) ;
+                String groupID = groupIDList.get(position) ;
+                goToSelectedGroup(groupID) ;
             }
         });
 
@@ -124,7 +124,7 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
 
         groupInfoList = new ArrayList<>() ;
         groupNameList = new ArrayList<>() ;
-        groupEmailList = new ArrayList<>() ;
+        groupIDList = new ArrayList<>() ;
 
         myRefVerifiedTutor.addValueEventListener(new ValueEventListener() {
             @Override
@@ -164,6 +164,7 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
                 for(DataSnapshot dS1:dataSnapshot.getChildren()){
                     GroupInfo groupInfo = dS1.getValue(GroupInfo.class) ;
                     groupInfoList.add(groupInfo) ;
+                    groupIDList.add(dS1.getKey()) ;
                 }
                 setGroupListView();
             }
@@ -192,10 +193,9 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
     public void setGroupListView(){
         for(GroupInfo groupInfo: groupInfoList){
             groupNameList.add(groupInfo.getGroupName()) ;
-            groupEmailList.add(groupInfo.getGroupAdminEmail()) ;
         }
 
-        adapter2 = new CustomAdapterForViewingSearchingGroup(this,groupNameList,groupEmailList);
+        adapter2 = new CustomAdapterForViewingSearchingGroup(this,groupNameList);
         groupListView.setAdapter(adapter2);
 
     }
@@ -222,10 +222,10 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
         finish();
     }
 
-    public void goToSelectedGroup(String userEmail){
+    public void goToSelectedGroup(String groupID){
         Intent intent = new Intent(this, GroupHomePageActivity.class);
-        intent.putExtra("userEmail", userEmail) ;
         intent.putExtra("user", user) ;
+        intent.putExtra("groupID", groupID) ;
         startActivity(intent);
         finish();
     }

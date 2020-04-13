@@ -58,6 +58,8 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
             holder.layout = convertView.findViewById(R.id.tuitionPostLayout) ;
             holder.responseButton = convertView.findViewById(R.id.responseButton) ;
             holder.postTextView = convertView.findViewById(R.id.postTextView) ;
+            holder.postTime = convertView.findViewById(R.id.postTime) ;
+            holder.postDate = convertView.findViewById(R.id.postDate) ;
             holder.layout.setVisibility(View.VISIBLE);
             convertView.setTag(holder);
         }
@@ -65,8 +67,9 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag() ;
         }
 
-        System.out.println(tuitionPostInfo.get(position).toString());
         holder.postTextView.setText(tuitionPostInfo.get(position).toString());
+        holder.postTime.setText("TIME: " + tuitionPostInfo.get(position).getPostTime());
+        holder.postDate.setText("DATE: " + tuitionPostInfo.get(position).getPostDate());
 
         holder.responseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +88,8 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
     class ViewHolder{
         LinearLayout layout ;
         TextView postTextView ;
+        TextView postTime ;
+        TextView postDate ;
         Button responseButton ;
     }
 }

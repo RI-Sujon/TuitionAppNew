@@ -1,7 +1,7 @@
 package com.example.tuitionapp.Group;
 
 public class GroupInfo {
-    String groupID, groupName, address, fullAddress, groupAdminEmail ;
+    private String groupName, address, fullAddress, groupAdminEmail ;
 
     public GroupInfo(){}
 
@@ -10,14 +10,6 @@ public class GroupInfo {
         this.address = address;
         this.fullAddress = fullAddress;
         this.groupAdminEmail = groupAdminEmail;
-    }
-
-    public String getGroupID() {
-        return groupID;
-    }
-
-    public void setGroupID(String groupID) {
-        this.groupID = groupID;
     }
 
     public String getGroupName() {

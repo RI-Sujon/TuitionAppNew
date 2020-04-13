@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
         <TextView
             android:id="@+id/groupNameTextView"
             android:layout_width="wrap_content"
@@ -69,12 +69,12 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="NoticeBoard - amar Kaj"
+            android:text="NoticeBoard"
             android:textSize="20dp"
             android:layout_marginBottom="20dp"
-            android:background="@color/Red"
+            android:background="@color/Beige"
             android:textColor="@color/Navy"
-            android:onClick="goToBatchManagement"/>
+            android:onClick="goToNoticeBoardManagement"/>
 
     </LinearLayout>
 
@@ -149,7 +149,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:orientation="horizontal"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="200dp"
         android:weightSum="8"
         android:layout_margin="10dp"
         android:background="@color/AliceBlue"
@@ -182,16 +182,15 @@
             android:visibility="gone" />
 
         <Button
-            android:id="@+id/blockButton"
+            android:id="@+id/blockGroupButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"
             android:padding="20dp"
             android:background="@color/Red"
             android:text="Block Tutor"
             android:visibility="gone"
-            android:onClick="blockVerifiedTutorByAdmin"/>
+            android:onClick="blockGroupByAdmin"/>
     </LinearLayout>
 
 

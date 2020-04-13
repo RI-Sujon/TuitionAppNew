@@ -31,9 +31,9 @@ public class GroupTutorViewActivity extends AppCompatActivity {
 
     private String tutorEmail ;
 
-    ArrayList<AddTutorInfo> addTutorInfoArrayList ;
+    private ArrayList<AddTutorInfo> addTutorInfoArrayList ;
 
-    private String groupID ,user ,userEmail;
+    private String groupID ,user ;
     private ArrayList<String>userInfo ;
 
     @Override
@@ -43,13 +43,14 @@ public class GroupTutorViewActivity extends AppCompatActivity {
         Intent intent = getIntent() ;
         groupID = intent.getStringExtra("groupID") ;
         user = intent.getStringExtra("user") ;
-        if(user.equals("tutor")||user.equals("group")){
+        if(user.equals("tutor")||user.equals("groupAdmin")){
             userInfo = intent.getStringArrayListExtra("userInfo") ;
             user = "tutor" ;
         }
-        else {
-            userEmail = intent.getStringExtra("userEmail") ;
+        else if(user.equals("groupVisitor")){
+            user = "guardian" ;
         }
+
 
         addTutorButton = findViewById(R.id.addTutor) ;
         addTutorOptionButton = findViewById(R.id.addTutorOption) ;
@@ -95,6 +96,10 @@ public class GroupTutorViewActivity extends AppCompatActivity {
                 addTutorOptionButton.setVisibility(View.GONE);
             }
         });
+
+        if(user.equals("guardian")||user.equals("admin")){
+            addTutorOptionButton.setVisibility(View.GONE);
+        }
     }
 
     public void addTutorOperation(View view){
@@ -110,9 +115,7 @@ public class GroupTutorViewActivity extends AppCompatActivity {
         if(user.equals("tutor")){
             intent.putStringArrayListExtra("userInfo",userInfo) ;
         }
-        else if(user.equals("guardian")){
-            intent.putExtra("userEmail" , userEmail) ;
-        }
+
         startActivity(intent);
         finish();
     }
@@ -124,14 +127,16 @@ public class GroupTutorViewActivity extends AppCompatActivity {
 
     public void goToSelectedVerifiedTutorProfile(String groupTutorEmail){
         Intent intent = new Intent(this, VerifiedTutorProfileActivity.class);
-        intent.putExtra("user","group") ;
         intent.putExtra("groupID" , groupID) ;
-
         if(user.equals("tutor")){
+            intent.putExtra("user","groupAdmin") ;
             intent.putStringArrayListExtra("userInfo",userInfo) ;
         }
+        else{
+            intent.putExtra("user","groupVisitor") ;
+        }
 
-        intent.putExtra("groupTutorEmail" , groupTutorEmail) ;
+        intent.putExtra("userEmail" , groupTutorEmail) ;
 
         startActivity(intent);
         finish();
@@ -139,11 +144,9 @@ public class GroupTutorViewActivity extends AppCompatActivity {
 
     public void goToBackPageActivity(View view){
         Intent intent = new Intent(this, GroupHomePageActivity.class);
-
+        intent.putExtra("groupID", groupID) ;
         if(user.equals("tutor")){
             intent.putStringArrayListExtra("userInfo",userInfo) ;
-        }else{
-            intent.putExtra("userEmail", userEmail) ;
         }
 
         intent.putExtra("user", user) ;

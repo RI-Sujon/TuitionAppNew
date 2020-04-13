@@ -180,7 +180,7 @@ public class TuitionPostInfo {
             strSub = strSub.substring(0, strSub.length() - 4);
         }
 
-        return  " DATE: " + postDate + "\t" + " time: " + postTime  +
+        return
                 "\n Post Title = '" + postTitle + '\'' +
                 "\n Student Institute Name = '" + studentInstitute + '\'' +
                 "\n Student Class = '" + studentClass + '\'' +

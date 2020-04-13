@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -27,6 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -41,10 +44,15 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     private String userEmail,user ,groupID;
 
+    private ArrayList<ReportInfo>reportInfoArrayList ;
+
     private ArrayList<String> userInfo ;
     private ImageView userProfilePicImageView ;
     private TextView userNameTextView, userEmailTextView;
     private Button messageRequestButton, reportButton , blockButton;
+    private ListView reportListView ;
+    private LinearLayout reportListViewLayout ;
+    private TextView reportTextView ;
 
     private CandidateTutorInfo candidateTutorInfo;
     private VerifiedTutorInfo verifiedTutorInfo;
@@ -57,30 +65,62 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;
-        userInfo = intent.getStringArrayListExtra("userInfo") ;
 
         userProfilePicImageView = findViewById(R.id.profilePicImageView) ;
         userNameTextView = findViewById(R.id.userName) ;
         userEmailTextView  = findViewById(R.id.userEmail) ;
-
-        if(user.equals("tutor")){
-            System.out.println(userInfo.toString());
-            userEmail = userInfo.get(2);
-            userNameTextView.setText(userInfo.get(0));
-            Picasso.get().load(userInfo.get(1)).into(userProfilePicImageView) ;
-            userEmailTextView.setText(userInfo.get(2));
-        }
-        else if(user.equals("group")){
-            userEmail = intent.getStringExtra("groupTutorEmail") ;
-            groupID = intent.getStringExtra("groupID") ;
-        }
-        else {
-            userEmail = intent.getStringExtra("userEmail") ;
-        }
+        reportListView = findViewById(R.id.reportList) ;
+        reportListViewLayout = findViewById(R.id.reportLayout) ;
+        reportTextView = findViewById(R.id.reportTextView) ;
 
         myRefAccountInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor");
         myRefTuitionInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor");
+        myRefReport = FirebaseDatabase.getInstance().getReference("Report");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(user.equals("tutor")){
+            userInfo = intent.getStringArrayListExtra("userInfo") ;
+            System.out.println(userInfo.toString());
+            userEmail = userInfo.get(2);
+            //userNameTextView.setText(userInfo.get(0));
+            //Picasso.get().load(userInfo.get(1)).into(userProfilePicImageView) ;
+            //userEmailTextView.setText(userInfo.get(2));
+        }
+        else if(user.equals("groupAdmin")){
+            userInfo = intent.getStringArrayListExtra("userInfo") ;
+            userEmail = intent.getStringExtra("userEmail") ;
+            groupID = intent.getStringExtra("groupID") ;
+        }
+        else if(user.equals("groupVisitor")){
+            userEmail = intent.getStringExtra("userEmail") ;
+            groupID = intent.getStringExtra("groupID") ;
+        }
+        else if(user.equals("admin")){
+            reportInfoArrayList = new ArrayList<>() ;
+            userEmail = intent.getStringExtra("userEmail") ;
+            reportListViewLayout.setVisibility(View.VISIBLE);
+            reportTextView.setVisibility(View.VISIBLE);
+            myRefReport.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot dS1:dataSnapshot.getChildren()){
+                        ReportInfo reportInfo = dS1.getValue(ReportInfo.class) ;
+                        if(reportInfo.getTutorEmail().equals(userEmail)){
+                            reportInfoArrayList.add(reportInfo) ;
+                        }
+                    }
+                    goToReportTutorListView() ;
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            }) ;
+        }
+        else if(user.equals("guardian")){
+            userEmail = intent.getStringExtra("userEmail") ;
+        }
 
         if(user.equals("guardian")){
             messageRequestButton = findViewById(R.id.sendMessageRequestButton) ;
@@ -157,6 +197,8 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     public void addAccountInfoToProfile(){
         progressBar.setVisibility(View.GONE);
 
+        userNameTextView.setText(candidateTutorInfo.getFirstName() + " " + candidateTutorInfo.getLastName());
+        userEmailTextView.setText(candidateTutorInfo.getEmailPK());
         phoneNumber.setText("Contact No  :   " + candidateTutorInfo.getMobileNumber() );
         gender.setText("Gender  :   " + candidateTutorInfo.getGender() );
         areaAddress.setText("Area Address  :   " + candidateTutorInfo.getAreaAddress() );
@@ -184,6 +226,15 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         preferredSubject.setText("Preferred Subject  :   " + strSub );
         daysPerWeekOrMonth.setText("Days Per Week  :   " + verifiedTutorInfo.getPreferredDaysPerWeekOrMonth() );
         minimumSalary.setText("Minimum Salary  :   " + verifiedTutorInfo.getMinimumSalary() );
+
+        Picasso.get().load(verifiedTutorInfo.getProfilePictureUri()).into(userProfilePicImageView) ;
+
+    }
+
+    public void goToReportTutorListView(){
+        System.out.println("llllllllllllllll:" + reportInfoArrayList.get(0).toString());
+        CustomAdapterForReportTutor adapter = new CustomAdapterForReportTutor(this,reportInfoArrayList) ;
+        reportListView.setAdapter(adapter);
     }
 
     public void sendMessageRequestByGuardian(View view){
@@ -197,7 +248,6 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     }
 
     public void reportIDByGuardian(View view){
-        myRefReport = FirebaseDatabase.getInstance().getReference("Report") ;
         ReportInfo reportInfo = new ReportInfo(firebaseUser.getPhoneNumber(),userEmail, "this is a fake account") ;
         myRefReport.push().setValue(reportInfo) ;
 
@@ -228,15 +278,22 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             finish();
         }
         else if(user.equals("admin")){
-            Intent intent = new Intent(this, AdminHomePageActivity.class);
+            Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class);
             intent.putExtra("user",user) ;
             startActivity(intent);
             finish();
         }
-        else if(user.equals("group")){
+        else if(user.equals("groupAdmin")){
             Intent intent = new Intent(this, GroupTutorViewActivity.class);
             intent.putExtra("user",user) ;
             intent.putStringArrayListExtra("userInfo",userInfo) ;
+            intent.putExtra("groupID", groupID) ;
+            startActivity(intent);
+            finish();
+        }
+        else if(user.equals("groupVisitor")){
+            Intent intent = new Intent(this, GroupTutorViewActivity.class);
+            intent.putExtra("user",user) ;
             intent.putExtra("groupID", groupID) ;
             startActivity(intent);
             finish();

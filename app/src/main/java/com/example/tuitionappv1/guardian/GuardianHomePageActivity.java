@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.tuitionappv1.R;
+import com.example.tuitionappv1.message_box.MainMessageActivity;
 import com.example.tuitionappv1.system.HomePageActivity;
 import com.example.tuitionappv1.tuition_post.TuitionPostActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +30,13 @@ public class GuardianHomePageActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
 
+    }
+
+    public void goToMessageBox(View view){
+        Intent intent = new Intent(this, MainMessageActivity.class);
+        intent.putExtra("user","guardian") ;
+        startActivity(intent);
+        finish();
     }
 
     public void goToGuardianTutorProfileViewActivity(View view){

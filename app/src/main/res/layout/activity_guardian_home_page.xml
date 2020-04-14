@@ -18,10 +18,11 @@
         <Button
             android:layout_width="200dp"
             android:layout_height="100dp"
-            android:text="MessageBox Will implemented by Nadim"
+            android:text="MessageBox "
             android:textSize="16dp"
             android:layout_marginBottom="40dp"
-            android:background="@color/Gray" />
+            android:background="@color/Gray"
+            android:onClick="goToMessageBox"/>
 
         <Button
             android:layout_width="200dp"

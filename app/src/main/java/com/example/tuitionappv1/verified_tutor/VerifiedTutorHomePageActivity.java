@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.tuitionappv1.batch.BatchStudentInfoTableActivity;
 import com.example.tuitionappv1.group.GroupHomePageActivity;
 import com.example.tuitionappv1.R;
+import com.example.tuitionappv1.message_box.MainMessageActivity;
 import com.example.tuitionappv1.system.HomePageActivity;
 import com.example.tuitionappv1.tuition_post.TuitionPostViewActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -59,12 +60,21 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity {
 
     }
 
-    public void goToMessageBox(View view){
+    public void goToBatchStudentInfo(View view){
         Intent intent = new Intent(this, BatchStudentInfoTableActivity.class) ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();
     }
+
+    public  void goToMessageBox(View view){
+        Intent intent = new Intent(VerifiedTutorHomePageActivity.this, MainMessageActivity.class);
+        intent.putExtra("user","tutor") ;
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
 
     public void goToVerifiedTutorNotificationActivity(View view){
         Intent intent = new Intent(this, VerifiedTutorNotificationActivity.class) ;

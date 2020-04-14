@@ -55,7 +55,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="MessageBox will implement by Nadim"
+            android:text="MessageBox"
             android:textSize="16dp"
             android:layout_marginBottom="20dp"
             android:background="@color/Gray"

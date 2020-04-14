@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/Navy"
-    tools:context=".VerifiedTutor.VerifiedTutorHomePageActivity">
+    tools:context=".verified_tutor.VerifiedTutorHomePageActivity">
 
     <LinearLayout
         android:id="@+id/upBar"
@@ -41,7 +41,6 @@
                 android:textSize="14dp"
                 android:textColor="@color/AliceBlue"/>
 
-
         </LinearLayout>
 
     </LinearLayout>
@@ -60,7 +59,8 @@
             android:textSize="16dp"
             android:layout_marginBottom="20dp"
             android:background="@color/Gray"
-            android:textColor="@color/Navy" />
+            android:textColor="@color/Navy"
+            android:onClick="goToMessageBox"/>
 
         <Button
             android:layout_width="match_parent"

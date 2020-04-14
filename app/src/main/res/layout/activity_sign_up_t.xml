@@ -7,7 +7,7 @@
     android:layout_centerInParent="true"
     android:orientation="vertical"
     android:background="@color/PaleGreen"
-    tools:context=".CandidateTutor.SignUpT_Activity">
+    tools:context=".candidate_tutor.SignUpT_Activity">
 
     <LinearLayout
         android:id="@+id/upBar"

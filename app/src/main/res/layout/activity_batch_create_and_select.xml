@@ -7,7 +7,7 @@
     android:padding="20dp"
     android:background="@color/PaleGreen"
     android:orientation="vertical"
-    tools:context=".Batch.BatchCreateAndSelectActivity">
+    tools:context=".batch.BatchCreateAndSelectActivity">
 
     <Button
         android:id="@+id/backButton"
@@ -188,6 +188,7 @@
                             android:layout_height="match_parent"
                             android:layout_width="match_parent"
                             android:layout_column="1"
+                            android:textSize="12dp"
                             android:background="@color/AliceBlue"
                             android:gravity="center"/>
                         <EditText
@@ -195,6 +196,7 @@
                             android:layout_height="40dp"
                             android:layout_width="match_parent"
                             android:layout_column="2"
+                            android:textSize="12dp"
                             android:background="@color/SkyBlue"
                             android:gravity="center"/>
                         <EditText
@@ -202,6 +204,7 @@
                             android:layout_height="40dp"
                             android:layout_width="match_parent"
                             android:layout_column="3"
+                            android:textSize="12dp"
                             android:background="@color/AliceBlue"
                             android:gravity="center"
                             android:visibility="visible"/>
@@ -224,6 +227,7 @@
                             android:layout_height="match_parent"
                             android:layout_width="match_parent"
                             android:layout_column="1"
+                            android:textSize="12dp"
                             android:background="@color/AliceBlue"
                             android:gravity="center"/>
                         <EditText
@@ -231,6 +235,7 @@
                             android:layout_height="40dp"
                             android:layout_width="match_parent"
                             android:layout_column="2"
+                            android:textSize="12dp"
                             android:background="@color/SkyBlue"
                             android:gravity="center"/>
                         <EditText
@@ -238,6 +243,7 @@
                             android:layout_height="40dp"
                             android:layout_width="match_parent"
                             android:layout_column="3"
+                            android:textSize="12dp"
                             android:background="@color/AliceBlue"
                             android:gravity="center"
                             android:visibility="visible"/>
@@ -260,6 +266,7 @@
                             android:layout_height="match_parent"
                             android:layout_width="match_parent"
                             android:layout_column="1"
+                            android:textSize="12dp"
                             android:background="@color/AliceBlue"
                             android:gravity="center"/>
                         <EditText
@@ -267,6 +274,7 @@
                             android:layout_height="40dp"
                             android:layout_width="match_parent"
                             android:layout_column="2"
+                            android:textSize="12dp"
                             android:background="@color/SkyBlue"
                             android:gravity="center"/>
                         <EditText
@@ -274,6 +282,7 @@
                             android:layout_height="40dp"
                             android:layout_width="match_parent"
                             android:layout_column="3"
+                            android:textSize="12dp"
                             android:background="@color/AliceBlue"
                             android:gravity="center"
                             android:visibility="visible"/>
@@ -296,6 +305,7 @@
                             android:layout_height="match_parent"
                             android:layout_width="match_parent"
                             android:layout_column="1"
+                            android:textSize="12dp"
                             android:background="@color/AliceBlue"
                             android:gravity="center"/>
                         <EditText
@@ -303,6 +313,7 @@
                             android:layout_height="40dp"
                             android:layout_width="match_parent"
                             android:layout_column="2"
+                            android:textSize="12dp"
                             android:background="@color/SkyBlue"
                             android:gravity="center"/>
                         <EditText
@@ -310,6 +321,7 @@
                             android:layout_height="40dp"
                             android:layout_width="match_parent"
                             android:layout_column="3"
+                            android:textSize="12dp"
                             android:background="@color/AliceBlue"
                             android:gravity="center"
                             android:visibility="visible"/>
@@ -332,6 +344,7 @@
                             android:layout_height="match_parent"
                             android:layout_width="match_parent"
                             android:layout_column="1"
+                            android:textSize="12dp"
                             android:background="@color/AliceBlue"
                             android:gravity="center"/>
                         <EditText
@@ -339,6 +352,7 @@
                             android:layout_height="40dp"
                             android:layout_width="match_parent"
                             android:layout_column="2"
+                            android:textSize="12dp"
                             android:background="@color/SkyBlue"
                             android:gravity="center"/>
                         <EditText
@@ -346,6 +360,7 @@
                             android:layout_height="40dp"
                             android:layout_width="match_parent"
                             android:layout_column="3"
+                            android:textSize="12dp"
                             android:background="@color/AliceBlue"
                             android:gravity="center"
                             android:visibility="visible"/>
@@ -368,6 +383,7 @@
                             android:layout_height="match_parent"
                             android:layout_width="match_parent"
                             android:layout_column="1"
+                            android:textSize="12dp"
                             android:background="@color/AliceBlue"
                             android:gravity="center"/>
                         <EditText
@@ -375,6 +391,7 @@
                             android:layout_height="40dp"
                             android:layout_width="match_parent"
                             android:layout_column="2"
+                            android:textSize="12dp"
                             android:background="@color/SkyBlue"
                             android:gravity="center"/>
                         <EditText
@@ -382,6 +399,7 @@
                             android:layout_height="40dp"
                             android:layout_width="match_parent"
                             android:layout_column="3"
+                            android:textSize="12dp"
                             android:background="@color/AliceBlue"
                             android:gravity="center"
                             android:visibility="visible"/>
@@ -404,6 +422,7 @@
                             android:layout_height="match_parent"
                             android:layout_width="match_parent"
                             android:layout_column="1"
+                            android:textSize="12dp"
                             android:background="@color/AliceBlue"
                             android:gravity="center"/>
                         <EditText
@@ -411,6 +430,7 @@
                             android:layout_height="40dp"
                             android:layout_width="match_parent"
                             android:layout_column="2"
+                            android:textSize="12dp"
                             android:background="@color/SkyBlue"
                             android:gravity="center"/>
                         <EditText
@@ -418,22 +438,13 @@
                             android:layout_height="40dp"
                             android:layout_width="match_parent"
                             android:layout_column="3"
+                            android:textSize="12dp"
                             android:background="@color/AliceBlue"
                             android:gravity="center"
                             android:visibility="visible"/>
                     </TableRow>
 
                 </TableLayout>
-
-
-                <Button
-                    android:layout_marginTop="50dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:text="Create Student Info - Amar Kaj"
-                    android:textSize="20dp"
-                    android:background="@color/Red"
-                    android:textColor="@color/Navy" />
 
                 <Button
                     android:id="@+id/createBatchButton"

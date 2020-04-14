@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_centerInParent="true"
     android:background="@color/Beige"
-    tools:context=".CandidateTutor.SignInT_Activity">
+    tools:context=".candidate_tutor.SignInT_Activity">
 
     <LinearLayout
         android:layout_centerInParent="true"

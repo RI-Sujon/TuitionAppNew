@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/AntiqueWhite"
     android:orientation="vertical"
-    tools:context=".CandidateTutor.CandidateTutorProfileActivity">
+    tools:context=".candidate_tutor.CandidateTutorProfileActivity">
 
     <ScrollView
         android:layout_width="match_parent"

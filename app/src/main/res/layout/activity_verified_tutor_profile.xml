@@ -7,7 +7,7 @@
     android:background="@color/AliceBlue"
     android:weightSum="20"
     android:orientation="vertical"
-    tools:context=".VerifiedTutor.VerifiedTutorProfileActivity">
+    tools:context=".verified_tutor.VerifiedTutorProfileActivity">
 
 
     <LinearLayout

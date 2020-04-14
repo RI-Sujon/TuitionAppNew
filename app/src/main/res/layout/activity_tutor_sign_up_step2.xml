@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".CandidateTutor.TutorSignUpActivityStep2">
+    tools:context=".candidate_tutor.TutorSignUpActivityStep2">
 
 
         <LinearLayout
@@ -14,7 +14,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/Navy">
+            android:background="@color/Aquamarine">
 
             <SeekBar
                 android:id="@+id/seekBar"
@@ -164,7 +164,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/Navy">
+            android:background="@color/Aquamarine">
 
             <RelativeLayout
                 android:layout_width="match_parent"

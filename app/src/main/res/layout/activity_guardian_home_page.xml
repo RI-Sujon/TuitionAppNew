@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/CornflowerBlue"
-    tools:context=".Guardian.GuardianHomePageActivity">
+    tools:context=".guardian.GuardianHomePageActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -7,7 +7,7 @@
     android:padding="20dp"
     android:background="@color/PaleGreen"
     android:orientation="vertical"
-    tools:context=".Group.GroupHomePageActivity">
+    tools:context=".group.GroupHomePageActivity">
 
     <Button
         android:id="@+id/backButton"

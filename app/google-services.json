@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "843489846077",
-    "firebase_url": "https://ourproject-23c91.firebaseio.com",
-    "project_id": "ourproject-23c91",
-    "storage_bucket": "ourproject-23c91.appspot.com"
+    "project_number": "360974865970",
+    "firebase_url": "https://tuitionapp-d7ee7.firebaseio.com",
+    "project_id": "tuitionapp-d7ee7",
+    "storage_bucket": "tuitionapp-d7ee7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:843489846077:android:8636cf46a3007915305b54",
+        "mobilesdk_app_id": "1:360974865970:android:ecf6435f1f390ddb5c0e2b",
         "android_client_info": {
           "package_name": "com.example.tuitionapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "843489846077-dti8a7u1126rallof152s5mebu8i6t6b.apps.googleusercontent.com",
+          "client_id": "360974865970-k1far31f0qu5dlm1ncbg1bqmog4ss54v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tuitionapp",
+            "certificate_hash": "1ca714898b9082ccef0f0e5b5e1589d46c25f963"
+          }
+        },
+        {
+          "client_id": "360974865970-lktkdcgbm8m5dkpddrbq9ksqbdk71tcg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCp9iYsmom7rnz3dOfvhkfvMRekIhzIjg8"
+          "current_key": "AIzaSyD8IZIDTV1CEBBT2IOvEcyYG9op-0cIIjU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "843489846077-dti8a7u1126rallof152s5mebu8i6t6b.apps.googleusercontent.com",
+              "client_id": "360974865970-lktkdcgbm8m5dkpddrbq9ksqbdk71tcg.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -37,35 +45,35 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:843489846077:android:8b06d61cc48a9a8d305b54",
+        "mobilesdk_app_id": "1:360974865970:android:fd912c81a22628535c0e2b",
         "android_client_info": {
-          "package_name": "com.example.tuitionappv1"
+          "package_name": "com.example.tuitionappv2"
         }
       },
       "oauth_client": [
         {
-          "client_id": "843489846077-2svo8531kbti9fggs4csp2qh2hf45lrj.apps.googleusercontent.com",
+          "client_id": "360974865970-rf564fb5nf5vror2rilms70ucfp12g1u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.tuitionappv1",
+            "package_name": "com.example.tuitionappv2",
             "certificate_hash": "866dc7517c9a5c386f1d4759ce32e479be3d1a0b"
           }
         },
         {
-          "client_id": "843489846077-dti8a7u1126rallof152s5mebu8i6t6b.apps.googleusercontent.com",
+          "client_id": "360974865970-lktkdcgbm8m5dkpddrbq9ksqbdk71tcg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCp9iYsmom7rnz3dOfvhkfvMRekIhzIjg8"
+          "current_key": "AIzaSyD8IZIDTV1CEBBT2IOvEcyYG9op-0cIIjU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "843489846077-dti8a7u1126rallof152s5mebu8i6t6b.apps.googleusercontent.com",
+              "client_id": "360974865970-lktkdcgbm8m5dkpddrbq9ksqbdk71tcg.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

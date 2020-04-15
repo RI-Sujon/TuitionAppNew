@@ -48,7 +48,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_home_page);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         Intent intent = getIntent() ;
         userInfo = intent.getStringArrayListExtra("userInfo") ;

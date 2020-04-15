@@ -13,6 +13,8 @@
         <activity android:name="com.example.tuitionappv2.notice_board.NoticeBoardViewAndCreateActivity" />
         <activity android:name="com.example.tuitionappv2.group.GroupTutorViewActivity" />
         <activity android:name="com.example.tuitionappv2.batch.BatchViewInfoActivity" />
+        <activity android:name="com.example.tuitionappv2.message_box.MainMessageActivity" />
+        <activity android:name="com.example.tuitionappv2.message_box.MessageActivity" />
         <activity android:name="com.example.tuitionappv2.batch.BatchCreateAndSelectActivity" />
         <activity android:name="com.example.tuitionappv2.verified_tutor.VerifiedTutorSetProfilePicture" />
         <activity android:name="com.example.tuitionappv2.group.GroupHomePageActivity" />

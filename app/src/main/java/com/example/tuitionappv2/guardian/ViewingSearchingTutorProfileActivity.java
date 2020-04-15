@@ -59,7 +59,7 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewing_searching_tutor_profile);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;

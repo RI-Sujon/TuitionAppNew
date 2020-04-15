@@ -45,7 +45,7 @@ public class BatchCreateAndSelectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_batch_create_and_select);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;

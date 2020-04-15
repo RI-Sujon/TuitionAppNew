@@ -37,7 +37,7 @@ public class BatchViewInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_batch_view_info);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         Intent intent = getIntent() ;
         batchID = intent.getStringExtra("batchID") ;

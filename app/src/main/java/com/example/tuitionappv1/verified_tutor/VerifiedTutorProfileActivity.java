@@ -41,7 +41,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     private ProgressBar progressBar ;
     private FirebaseUser firebaseUser ;
 
-    private String userEmail,user ,groupID;
+    private String userEmail,user ,groupID, tutorUid;
 
     private ArrayList<ReportInfo>reportInfoArrayList ;
 
@@ -64,6 +64,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;
+
 
         userProfilePicImageView = findViewById(R.id.profilePicImageView) ;
         userNameTextView = findViewById(R.id.userName) ;
@@ -238,7 +239,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     public void sendMessageRequestByGuardian(View view){
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
-        MessageBoxInfo messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),userEmail, false ,true) ;
+        MessageBoxInfo messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail, tutorUid, false ,true) ;
         myRefMessageBox.push().setValue(messageBoxInfo) ;
 
         messageRequestButton.setEnabled(false);
@@ -273,6 +274,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         else if(user.equals("guardian")){
             Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class);
             intent.putExtra("user",user) ;
+            tutorUid= intent.getStringExtra("tutorUid");
             startActivity(intent);
             finish();
         }

@@ -8,8 +8,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class TuitionPostInfo {
-    private String postIdPK,postTitle, studentInstitute, studentClass, studentGroup, studentMedium, studentSubjectList,
-            tutorGenderPreference, daysPerWeekOrMonth, studentAreaAddress, studentFullAddress, studentContactNo, salary , extra, guardianMobileNumberFK;
+    private String postTitle, studentInstitute, studentClass, studentGroup, studentMedium, studentSubjectList,
+            tutorGenderPreference, daysPerWeekOrMonth, studentAreaAddress, studentFullAddress, studentContactNo,
+            salary , extra, guardianMobileNumberFK,guardianUidFK;
     private String postDate ;
     private String postTime ;
 
@@ -17,9 +18,7 @@ public class TuitionPostInfo {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public TuitionPostInfo(String postIdPK, String postTitle, String studentInstitute, String studentClass, String studentGroup, String studentMedium, String studentSubjectList, String tutorGenderPreference, String daysPerWeekOrMonth,
-                           String studentAreaAddress, String studentFullAddress, String studentContactNo, String salary, String extra, String guardianMobileNumberFK) {
-        this.postIdPK = postIdPK;
+    public TuitionPostInfo(String postTitle, String studentInstitute, String studentClass, String studentGroup, String studentMedium, String studentSubjectList, String tutorGenderPreference, String daysPerWeekOrMonth, String studentAreaAddress, String studentFullAddress, String studentContactNo, String salary, String extra, String guardianMobileNumberFK, String guardianUidFK) {
         this.postTitle = postTitle;
         this.studentInstitute = studentInstitute;
         this.studentClass = studentClass;
@@ -34,16 +33,9 @@ public class TuitionPostInfo {
         this.salary = salary;
         this.extra = extra;
         this.guardianMobileNumberFK = guardianMobileNumberFK;
-        postDate = LocalDate.now().toString() ;
-        postTime = LocalTime.now().toString() ;
-    }
-
-    public String getPostIdPK() {
-        return postIdPK;
-    }
-
-    public void setPostIdPK(String postIdPK) {
-        this.postIdPK = postIdPK;
+        this.guardianUidFK = guardianUidFK;
+        postTime =  LocalTime.now().toString() ;
+        postDate =  LocalDate.now().toString() ;
     }
 
     public String getPostTitle() {
@@ -146,6 +138,22 @@ public class TuitionPostInfo {
         this.extra = extra;
     }
 
+    public String getGuardianMobileNumberFK() {
+        return guardianMobileNumberFK;
+    }
+
+    public void setGuardianMobileNumberFK(String guardianMobileNumberFK) {
+        this.guardianMobileNumberFK = guardianMobileNumberFK;
+    }
+
+    public String getGuardianUidFK() {
+        return guardianUidFK;
+    }
+
+    public void setGuardianUidFK(String guardianUidFK) {
+        this.guardianUidFK = guardianUidFK;
+    }
+
     public String getPostDate() {
         return postDate;
     }
@@ -162,13 +170,8 @@ public class TuitionPostInfo {
         this.postTime = postTime;
     }
 
-    public String getGuardianMobileNumberFK() {
-        return guardianMobileNumberFK;
-    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
 
-    public void setGuardianMobileNumberFK(String guardianMobileNumberFK) {
-        this.guardianMobileNumberFK = guardianMobileNumberFK;
-    }
 
     @Override
     public String toString() {

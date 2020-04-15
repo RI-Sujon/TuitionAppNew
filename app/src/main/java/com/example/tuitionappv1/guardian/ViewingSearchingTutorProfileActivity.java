@@ -34,9 +34,12 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
 
     private ArrayList<VerifiedTutorInfo> verifiedTutorInfoList ;
     private ArrayList<CandidateTutorInfo> candidateTutorInfoList ;
+    private ArrayList<String> tutorUidInfoArrayList;
+
     private ArrayList<GroupInfo> groupInfoList ;
     private ArrayList<String> emailList ;
     private ArrayList<String> nameList ;
+    private ArrayList<String> tutorUidList ;
     private ArrayList<String> groupNameList ;
     private ArrayList<String> groupIDList ;
 
@@ -78,7 +81,8 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String userEmail = emailList.get(position) ;
-                goToSelectedVerifiedTutorProfile(userEmail) ;
+                String tutorUid = tutorUidList.get(position) ;
+                goToSelectedVerifiedTutorProfile(userEmail,tutorUid) ;
             }
         });
 
@@ -117,9 +121,12 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        tutorUidInfoArrayList = new ArrayList<>();
         verifiedTutorInfoList = new ArrayList<>() ;
         candidateTutorInfoList = new ArrayList<>() ;
+
         emailList = new ArrayList<>() ;
+        tutorUidList = new ArrayList<>() ;
         nameList = new ArrayList<>() ;
 
         groupInfoList = new ArrayList<>() ;
@@ -140,6 +147,7 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
                         for(DataSnapshot dS1: dataSnapshot.getChildren()){
                             CandidateTutorInfo candidateTutorInfo = dS1.getValue(CandidateTutorInfo.class) ;
                             candidateTutorInfoList.add(candidateTutorInfo) ;
+                            tutorUidInfoArrayList.add(dS1.getKey()) ;
                         }
                         myRefCandidateTutor.removeEventListener(this);
                         setVerifiedTutorListView();
@@ -178,10 +186,11 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
 
     public void setVerifiedTutorListView(){
         for(VerifiedTutorInfo vT: verifiedTutorInfoList){
-            for(CandidateTutorInfo cT: candidateTutorInfoList){
-                if(vT.getEmailPK().equals(cT.getEmailPK())){
+            for(int i=0; i<candidateTutorInfoList.size();i++){
+                if(vT.getEmailPK().equals(candidateTutorInfoList.get(i).getEmailPK())){
                     emailList.add(vT.getEmailPK()) ;
-                    nameList.add(cT.getFirstName()+" "+cT.getLastName()) ;
+                    tutorUidList.add(tutorUidInfoArrayList.get(i));
+                    nameList.add(candidateTutorInfoList.get(i).getFirstName()+" "+candidateTutorInfoList.get(i).getLastName()) ;
                 }
             }
         }
@@ -219,10 +228,11 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
         backToHomePage(null);
     }
 
-    public void goToSelectedVerifiedTutorProfile(String userEmail){
+    public void goToSelectedVerifiedTutorProfile(String userEmail,String tutorUid){
         Intent intent = new Intent(this, VerifiedTutorProfileActivity.class);
         intent.putExtra("userEmail", userEmail) ;
         intent.putExtra("user", user) ;
+        intent.putExtra("tutorUid",tutorUid);
         startActivity(intent);
         finish();
     }

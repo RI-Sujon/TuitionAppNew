@@ -117,8 +117,8 @@ public class TuitionPostActivity extends AppCompatActivity {
         studentFullAddress = studentFullAddress.replace(",","_") ;
 
         String guardianMobileNumberFK = firebaseUser.getPhoneNumber() ;
-        TuitionPostInfo guardianPostInfo = new TuitionPostInfo(postId,postTitle, studentInstitute ,studentClass , studentGroup, studentMedium, studentSubjectList,
-                tutorGenderPreference,daysPerWeekOrMonth,studentAreaAddress,studentFullAddress,studentContactNo,salary,extra,guardianMobileNumberFK) ;
+        TuitionPostInfo guardianPostInfo = new TuitionPostInfo(postTitle, studentInstitute ,studentClass , studentGroup, studentMedium, studentSubjectList,
+                tutorGenderPreference,daysPerWeekOrMonth,studentAreaAddress,studentFullAddress,studentContactNo,salary,extra,guardianMobileNumberFK,firebaseUser.getUid()) ;
 
         databaseReference.push().setValue(guardianPostInfo) ;
         Toast.makeText(getApplicationContext(),"successfully post",Toast.LENGTH_SHORT).show();

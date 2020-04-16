@@ -45,7 +45,8 @@ public class GroupHomePageActivity extends AppCompatActivity {
     private Button messageRequestButton, reportButton , blockButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_home_page);
 //        getSupportActionBar().hide();
@@ -57,7 +58,8 @@ public class GroupHomePageActivity extends AppCompatActivity {
         myRefGroupInfo = FirebaseDatabase.getInstance().getReference("Group") ;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
 
-        if(user.equals("tutor")){
+        if(user.equals("tutor"))
+        {
 
             tutorUid=userInfo.get(3);
             userEmail = userInfo.get(2);
@@ -87,7 +89,9 @@ public class GroupHomePageActivity extends AppCompatActivity {
                 }
             });
         }
-        else {
+
+        else
+        {
             groupID = intent.getStringExtra("groupID") ;
             myRefGroupInfo.child(groupID) ;
 
@@ -147,7 +151,8 @@ public class GroupHomePageActivity extends AppCompatActivity {
         fullAddressTextView.setText(groupInfo.getFullAddress() + ", " + groupInfo.getAddress());
     }
 
-    public void goToGroupCreation(){
+    public void goToGroupCreation()
+    {
         LinearLayout groupCreationLayout = findViewById(R.id.groupCreation) ;
         final Spinner addressSpinner = findViewById(R.id.groupAddressSpinner) ;
         Button createGroupButton = findViewById(R.id.createGroupButton) ;

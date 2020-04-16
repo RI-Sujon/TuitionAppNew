@@ -55,7 +55,7 @@
             android:layout_marginBottom="20dp"
             android:background="@color/Beige"
             android:textColor="@color/Navy"
-            android:onClick="goToBatchManagement"/>
+            android:onClick="goToMessageBox"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="50dp"

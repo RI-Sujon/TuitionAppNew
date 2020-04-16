@@ -41,7 +41,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     private ProgressBar progressBar ;
     private FirebaseUser firebaseUser ;
 
-    private String userEmail,user ,groupID, tutorUid;
+    private String userEmail,user ,groupID,tutorUid;
 
     private ArrayList<ReportInfo>reportInfoArrayList ;
 
@@ -55,16 +55,18 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     private CandidateTutorInfo candidateTutorInfo;
     private VerifiedTutorInfo verifiedTutorInfo;
+    MessageBoxInfo messageBoxInfo;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verified_tutor_profile);
         //getSupportActionBar().hide();
 
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;
-
+        tutorUid= intent.getStringExtra("tutorUid");
 
         userProfilePicImageView = findViewById(R.id.profilePicImageView) ;
         userNameTextView = findViewById(R.id.userName) ;
@@ -232,18 +234,44 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     }
 
     public void goToReportTutorListView(){
-        System.out.println("llllllllllllllll:" + reportInfoArrayList.get(0).toString());
         CustomAdapterForReportTutor adapter = new CustomAdapterForReportTutor(this,reportInfoArrayList) ;
         reportListView.setAdapter(adapter);
     }
 
     public void sendMessageRequestByGuardian(View view){
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
-        MessageBoxInfo messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail, tutorUid, false ,true) ;
-        myRefMessageBox.push().setValue(messageBoxInfo) ;
+         messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail, tutorUid, false ,true) ;
 
-        messageRequestButton.setEnabled(false);
-        messageRequestButton.setBackgroundColor(Color.GRAY);
+        myRefMessageBox.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int flag = 0;
+                for(DataSnapshot snapshot:dataSnapshot.getChildren())
+                {
+                    MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
+                    if(messageBoxInfo1.getGuardianUid().equals(firebaseUser.getUid())
+                            && messageBoxInfo1.getTutorUid().equals(tutorUid)){
+                        flag=1;
+                    }
+
+                }
+
+                if(flag == 0){
+                    myRefMessageBox.push().setValue(messageBoxInfo) ;
+                    messageRequestButton.setEnabled(false);
+                    messageRequestButton.setBackgroundColor(Color.GRAY);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
 
     }
 
@@ -274,7 +302,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         else if(user.equals("guardian")){
             Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class);
             intent.putExtra("user",user) ;
-            tutorUid= intent.getStringExtra("tutorUid");
+            //intent.putExtra("tutorUid","tutorUid");
             startActivity(intent);
             finish();
         }

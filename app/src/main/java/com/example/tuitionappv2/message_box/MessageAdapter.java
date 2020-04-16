@@ -1,6 +1,7 @@
 package com.example.tuitionappv2.message_box;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tuitionappv2.R;
@@ -88,6 +90,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public int getItemViewType(int position) {
       fuser = FirebaseAuth.getInstance().getCurrentUser();
+
       if(mChat.get(position).getSender().equals(fuser.getUid())){
           return MSG_TYPE_RIGHT;
       }

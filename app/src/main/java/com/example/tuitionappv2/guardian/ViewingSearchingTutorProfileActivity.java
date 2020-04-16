@@ -90,8 +90,9 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String groupID = groupIDList.get(position) ;
+                String userEmail = emailList.get(position) ;
                 String groupAdminUid = groupInfoList.get(position).getGroupAdminUid();
-                goToSelectedGroup(groupID,groupAdminUid) ;
+                goToSelectedGroup(groupID,groupAdminUid,userEmail) ;
             }
         });
 
@@ -238,10 +239,11 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
         finish();
     }
 
-    public void goToSelectedGroup(String groupID,String tutorUid){
+    public void goToSelectedGroup(String groupID, String tutorUid, String userEmail){
         Intent intent = new Intent(this, GroupHomePageActivity.class);
         intent.putExtra("user", user) ;
         intent.putExtra("tutorUid", tutorUid) ;
+        intent.putExtra("userEmail", userEmail) ;
         intent.putExtra("groupID", groupID) ;
         startActivity(intent);
         finish();

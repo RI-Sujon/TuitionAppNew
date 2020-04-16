@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.tuitionappv2.admin.BlockInfo;
 import com.example.tuitionappv2.batch.BatchCreateAndSelectActivity;
 import com.example.tuitionappv2.guardian.ViewingSearchingTutorProfileActivity;
+import com.example.tuitionappv2.message_box.MainMessageActivity;
 import com.example.tuitionappv2.message_box.MessageBoxInfo;
 import com.example.tuitionappv2.notice_board.NoticeBoardViewAndCreateActivity;
 import com.example.tuitionappv2.R;
@@ -39,6 +40,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
 
     private DatabaseReference myRefGroupInfo, myRefMessageBox, myRefReport, myRefBlockInfo ;
     private FirebaseUser firebaseUser ;
+    MessageBoxInfo messageBoxInfo;
     private String user, userEmail, groupID , tutorUid;
     private ArrayList<String>userInfo ;
 
@@ -151,6 +153,15 @@ public class GroupHomePageActivity extends AppCompatActivity {
         fullAddressTextView.setText(groupInfo.getFullAddress() + ", " + groupInfo.getAddress());
     }
 
+
+
+    public void goToMessageBox(View view){
+        Intent intent = new Intent(this, MainMessageActivity.class);
+        intent.putExtra("user",user) ;
+        startActivity(intent);
+        finish();
+    }
+
     public void goToGroupCreation()
     {
         LinearLayout groupCreationLayout = findViewById(R.id.groupCreation) ;
@@ -210,12 +221,41 @@ public class GroupHomePageActivity extends AppCompatActivity {
     }
 
     public void sendMessageRequestByGuardian(View view){
+        Intent intent = getIntent() ;
+        tutorUid = intent.getStringExtra("tutorUid");
+        userEmail = intent.getStringExtra("userEmail");
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
-        MessageBoxInfo messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail,tutorUid, false ,true) ;
-        myRefMessageBox.push().setValue(messageBoxInfo) ;
+         messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail,tutorUid, false ,true) ;
 
-        messageRequestButton.setEnabled(false);
-        messageRequestButton.setBackgroundColor(Color.GRAY);
+        myRefMessageBox.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int flag = 0;
+                for(DataSnapshot snapshot:dataSnapshot.getChildren())
+                {
+                    MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
+                    if(messageBoxInfo1.getGuardianUid().equals(firebaseUser.getUid())
+                            && messageBoxInfo1.getTutorUid().equals(tutorUid)){
+                        flag=1;
+                    }
+
+                }
+
+                if(flag == 0){
+                    myRefMessageBox.push().setValue(messageBoxInfo) ;
+                    messageRequestButton.setEnabled(false);
+                    messageRequestButton.setBackgroundColor(Color.GRAY);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
 
     }
 

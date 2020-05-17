@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="8dp"
+    android:layout_marginRight="30dp">
+
+    <LinearLayout
+        android:id="@+id/tutor_layout"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:elevation="2dp" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:maxWidth="170dp"
+            android:maxLines="1"
+            android:layout_height="wrap_content"
+            android:text="Rabiul Islam Sujon"
+            android:textSize="16dp"
+            android:paddingTop="5dp"
+            android:textColor="#00004C"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/department"
+            android:layout_width="wrap_content"
+            android:maxWidth="170dp"
+            android:layout_height="wrap_content"
+            android:text="Studying Institute Of Information Technology at"
+            android:textSize="11dp"
+            android:paddingTop="5dp"
+            android:textColor="@color/Black" />
+        <TextView
+            android:id="@+id/institute_name"
+            android:layout_width="wrap_content"
+            android:maxWidth="170dp"
+            android:layout_height="wrap_content"
+            android:text="Shahajalal University Of Science And Technology"
+            android:textSize="12dp"
+            android:paddingTop="0dp"
+            android:textColor="@color/Black"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/group_layout"
+        android:layout_width="270dp"
+        android:layout_height="160dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/group_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/create_group_icon"
+            android:elevation="2dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="5dp">
+            <TextView
+                android:id="@+id/group_name"
+                android:layout_width="wrap_content"
+                android:maxWidth="160dp"
+                android:layout_height="wrap_content"
+                android:text="Taz Education Village"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="16dp"
+                android:paddingTop="5dp"
+                android:textColor="#000000"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:maxWidth="160dp"
+                android:layout_height="wrap_content"
+                android:text="Class 5 to HSC"
+                android:textSize="12dp"
+                android:paddingTop="0dp"
+                android:textColor="@color/Black" />
+            <TextView
+                android:id="@+id/group_location"
+                android:layout_width="wrap_content"
+                android:maxWidth="160dp"
+                android:layout_height="wrap_content"
+                android:text="Sonapur, Katchpur, Narayangonj"
+                android:textSize="12dp"
+                android:paddingTop="5dp"
+                android:textColor="#132275"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

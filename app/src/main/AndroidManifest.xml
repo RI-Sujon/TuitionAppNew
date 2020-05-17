@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.tuitionappv2">
+    package="com.example.tuitionapp_sujon">
 
     <application
         android:allowBackup="true"
@@ -9,42 +9,44 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.tuitionappv2.batch.BatchStudentInfoTableActivity"></activity>
-        <activity android:name="com.example.tuitionappv2.notice_board.NoticeBoardViewAndCreateActivity" />
-        <activity android:name="com.example.tuitionappv2.group.GroupTutorViewActivity" />
-        <activity android:name="com.example.tuitionappv2.batch.BatchViewInfoActivity" />
-        <activity android:name="com.example.tuitionappv2.message_box.MainMessageActivity" />
-        <activity android:name="com.example.tuitionappv2.message_box.MessageActivity" />
-        <activity android:name="com.example.tuitionappv2.batch.BatchCreateAndSelectActivity" />
-        <activity android:name="com.example.tuitionappv2.verified_tutor.VerifiedTutorSetProfilePicture" />
-        <activity android:name="com.example.tuitionappv2.group.GroupHomePageActivity" />
-        <activity android:name="com.example.tuitionappv2.tuition_post.TuitionPostViewActivity" />
-        <activity android:name="com.example.tuitionappv2.guardian.ViewingSearchingTutorProfileActivity" />
-        <activity android:name="com.example.tuitionappv2.verified_tutor.VerifiedTutorNotificationActivity" />
-        <activity android:name="com.example.tuitionappv2.admin.CandidateTutorProfileAdminViewActivity" />
-        <activity android:name="com.example.tuitionappv2.candidate_tutor.CandidateTutorProfileActivity" />
-        <activity android:name="com.example.tuitionappv2.candidate_tutor.CandidateTutorHomePageActivity" />
-        <activity android:name="com.example.tuitionappv2.admin.CustomAdapterForCandidateTutorApproval" />
-        <activity android:name="com.example.tuitionappv2.admin.AdminHomePageActivity" />
-        <activity android:name="com.example.tuitionappv2.tuition_post.TuitionPostActivity" />
-        <activity android:name="com.example.tuitionappv2.verified_tutor.VerifiedTutorHomePageActivity" />
-        <activity android:name="com.example.tuitionappv2.guardian.GuardianHomePageActivity" />
-        <activity android:name="com.example.tuitionappv2.verified_tutor.TutorSignUpActivityStep3" />
-        <activity android:name="com.example.tuitionappv2.candidate_tutor.TutorSignUpActivityStep2" />
-        <activity android:name="com.example.tuitionappv2.candidate_tutor.TutorSignUpActivityStep1" />
-        <activity android:name="com.example.tuitionappv2.verified_tutor.VerifiedTutorProfileActivity" />
-        <activity android:name="com.example.tuitionappv2.candidate_tutor.SignUpT_Activity" />
-        <activity android:name="com.example.tuitionappv2.candidate_tutor.SignInT_Activity" />
-        <activity android:name="com.example.tuitionappv2.candidate_tutor.TutorModuleStartActivity" />
-        <activity android:name="com.example.tuitionappv2.guardian.GuardianModuleStartActivity" />
-        <activity android:name="com.example.tuitionappv2.system.HomePageActivity" />
-        <activity android:name="com.example.tuitionappv2.system.MainActivity">
+        <activity android:name=".group.GroupCreationActivity"></activity>
+        <activity android:name=".batch.BatchStudentInfoTableActivity" />
+        <activity android:name=".notice_board.NoticeBoardViewAndCreateActivity" />
+        <activity android:name=".group.GroupTutorViewActivity" />
+        <activity android:name=".batch.BatchViewInfoActivity" />
+        <activity android:name=".message_box.MainMessageActivity" />
+        <activity android:name=".message_box.MessageActivity" />
+        <activity android:name=".batch.BatchCreationActivity" />
+        <activity android:name=".verified_tutor.VerifiedTutorSetProfilePicture" />
+        <activity android:name=".group.GroupHomePageActivity" />
+        <activity android:name=".tuition_post.TuitionPostViewActivity" />
+        <activity android:name=".guardian.ViewingSearchingTutorProfileActivity" />
+        <activity android:name=".verified_tutor.VerifiedTutorNotificationActivity" />
+        <activity android:name=".admin.AdminTutorProfileViewActivity" />
+        <activity android:name=".admin.CustomAdapterForCandidateTutorApproval" />
+        <activity android:name=".admin.AdminHomePageActivity" />
+        <activity android:name=".tuition_post.TuitionPostActivity" />
+        <activity android:name=".verified_tutor.VerifiedTutorHomePageActivity" />
+        <activity android:name=".guardian.GuardianHomePageActivity" />
+        <activity android:name=".verified_tutor.TutorSignUpActivityStep3" />
+        <activity android:name=".candidate_tutor.TutorSignUpActivityStep2" />
+        <activity android:name=".candidate_tutor.TutorSignUpActivityStep1" />
+        <activity android:name=".verified_tutor.VerifiedTutorProfileActivity" />
+        <activity android:name=".candidate_tutor.TutorSignUpActivity" />
+        <activity android:name=".candidate_tutor.TutorSignInActivity" />
+        <activity android:name=".guardian.GuardianModuleStartActivity" />
+        <activity android:name=".system.HomePageActivity" />
+        <activity android:name=".system.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

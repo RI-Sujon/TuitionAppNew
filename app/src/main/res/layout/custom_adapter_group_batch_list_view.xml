@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/batchNameList"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:background="@drawable/border4"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_action_name"
+            android:backgroundTint="@color/Blue"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:id="@+id/batchName"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="18dp"
+            android:textColor="@color/Black"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="sans-serif-condensed-medium" />
+
+    </LinearLayout>
+</RelativeLayout>

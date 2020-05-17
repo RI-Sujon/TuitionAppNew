@@ -1,85 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".verified_tutor.VerifiedTutorSetProfilePicture">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/profilePictureLayout"
-        android:layout_weight="20"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/profile_back_page"
+            android:layout_marginTop="-650dp"/>
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="70dp"
             android:textSize="24dp"
-            android:text="UPLOAD PROFILE PICTURE"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/btnChoose"
-                android:text="Choose"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="selectImage"/>
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="YOU CAN ADD A PROFILE PICTURE"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/White"/>
 
-            <TextView
-                android:id="@+id/filePathName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
         <ImageView
             android:id="@+id/profileImageView"
-            android:layout_margin="30dp"
+            android:layout_marginTop="150dp"
+            android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
-            android:layout_height="400dp" />
-    </LinearLayout>
+            android:src="@drawable/add_photo"
+            android:layout_height="300dp"
+            android:onClick="selectImage"/>
 
-    <LinearLayout
-        android:id="@+id/downBar"
-        android:layout_weight="2"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/AntiqueWhite">
+        <ImageButton
+            android:layout_marginTop="500dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/upload_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:onClick="uploadImage"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <Button
-                android:text="SKIP"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:onClick="goToVerifiedTutorHomePage"  />
+        <ImageButton
+            android:layout_marginTop="500dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/skip_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:onClick="storeUriInVerifiedTutorDatabase"/>
+    </RelativeLayout>
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:outlineSpotShadowColor="@color/Green"
-                android:outlineAmbientShadowColor="@color/Blue"
-                android:visibility="invisible"/>
 
-            <Button
-                android:text="UPLOAD"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:onClick="uploadImage"  />
 
-        </RelativeLayout>
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/edit"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Report">
+        <menu>
+            <item android:id="@+id/a1" android:title="this is a fake account"/>
+            <item android:id="@+id/a2" android:title="he/she is disturbing me"/>
+            <item android:id="@+id/a3" android:title="something else"/>
+        </menu>
+    </item>
+</menu>

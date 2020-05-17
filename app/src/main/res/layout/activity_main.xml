@@ -5,23 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerInParent="true"
+    android:background="@drawable/border3"
     tools:context=".system.MainActivity">
 
-    <LinearLayout
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="30dp">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/guardianButton"
-            android:layout_marginBottom="20dp"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Let's Start"
-            android:onClick="startModule"/>
-    </LinearLayout>
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="57dp"
+            android:src="@drawable/main_page_bg_pic" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/leaf"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="@style/TextAppearance.AppCompat.Menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="176dp"
+            android:progressBackgroundTint="@color/White"
+            android:progress="@integer/google_play_services_version"
+            android:layout_marginBottom="357dp" />
+
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

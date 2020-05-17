@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    tools:context=".guardian.GuardianModuleStartActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-10dp"
+            android:layout_marginStart="0dp"
+            android:src="@drawable/main_main"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_arrow"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="16dp"
+            android:onClick="goToBackPageActivity"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="74.72dp"
+            android:src="@drawable/hello" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/niconne"
+            android:text="Welcome Back"
+            android:layout_marginTop="70dp"
+            android:layout_marginStart="18dp"
+            android:textSize="25dp"
+            android:textColor="@color/White"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="110.341dp"
+            android:src="@drawable/log_in_" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pencil"
+            android:layout_marginTop="420dp"
+            android:layout_marginStart="20dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/mobileNumberLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/enter_your_mobile_number"
+            android:layout_marginTop="300dp"
+            android:layout_centerHorizontal="true"/>
+        <EditText
+            android:id="@+id/guardianMobileNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/guardian_mobile_number_edit_text"
+            android:layout_marginTop="330dp"
+            android:inputType="number"
+            android:paddingLeft="110dp"
+            android:paddingRight="10dp"
+            android:maxLength="11"
+            android:textColor="@color/WhiteSmoke"
+            android:textSize="20dp"
+            android:paddingBottom="1dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/we_will_send_code2"
+            android:layout_marginTop="440dp"
+            android:layout_marginStart="130dp"/>
+
+        <ImageView
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/continue_small"
+            android:layout_marginTop="550dp"
+            android:layout_marginStart="210dp"
+            android:onClick="sendVerificationCodeToPhoneNumber"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/verificationCodeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/verify_your_mobile_number"
+            android:layout_marginTop="300dp"
+            android:layout_centerHorizontal="true"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="330dp"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/vc1"
+                android:maxLength="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/verify_bar"
+                android:inputType="number"
+                android:layout_margin="8dp"
+                android:gravity="center"/>
+            <EditText
+                android:id="@+id/vc2"
+                android:maxLength="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/verify_bar"
+                android:inputType="number"
+                android:layout_margin="8dp"
+                android:gravity="center"/>
+            <EditText
+                android:id="@+id/vc3"
+                android:maxLength="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/verify_bar"
+                android:inputType="number"
+                android:layout_margin="8dp"
+                android:gravity="center"/>
+            <EditText
+                android:id="@+id/vc4"
+                android:maxLength="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:background="@drawable/verify_bar"
+                android:layout_margin="8dp"
+                android:gravity="center"/>
+            <EditText
+                android:id="@+id/vc5"
+                android:maxLength="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:background="@drawable/verify_bar"
+                android:layout_margin="8dp"
+                android:gravity="center"/>
+            <EditText
+                android:id="@+id/vc6"
+                android:maxLength="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:background="@drawable/verify_bar"
+                android:layout_margin="8dp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/an_6_digit_code_sent"
+            android:layout_marginTop="440dp"
+            android:layout_marginStart="130dp"/>
+        <TextView
+            android:id="@+id/mobileNumberTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_marginTop="450dp"
+            android:layout_marginStart="130dp"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dont_recieve_the_code"
+            android:layout_marginTop="490dp"
+            android:layout_marginStart="130dp"/>
+        <ImageView
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/resend_code"
+            android:layout_marginTop="505dp"
+            android:layout_marginStart="130dp"
+            android:onClick="resend"/>
+
+        <ImageView
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/verify"
+            android:layout_marginTop="550dp"
+            android:layout_marginStart="210dp"
+            android:onClick="signUpCompletion"/>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

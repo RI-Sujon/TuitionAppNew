@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/view_profile"
+            android:icon="@android:drawable/ic_menu_view"
+            android:title="View Profile" />
+
+        <item
+            android:id="@+id/edit_profile"
+            android:icon="@drawable/edit_text_box"
+            android:title="Edit Profile" />
+
+        <item
+            android:id="@+id/log_out"
+            android:icon="@android:drawable/ic_lock_power_off"
+            android:title="Log Out" />
+
+    </group>
+
+    <item android:title="UTILITIES">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/calender"
+                    android:icon="@android:drawable/ic_menu_my_calendar"
+                    android:title="Calender" />
+
+                <item
+                    android:id="@+id/reminder"
+                    android:icon="@android:drawable/ic_popup_reminder"
+                    android:title="Reminder" />
+                <item
+                    android:id="@+id/notes"
+                    android:icon="@drawable/pencil"
+                    android:title="Notes" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="MORE" >
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/about"
+                    android:icon="@drawable/ic_action_name"
+                    android:title="About" />
+                <item
+                    android:id="@+id/help"
+                    android:icon="@android:drawable/ic_menu_help"
+                    android:title="Help" />
+                <item
+                    android:id="@+id/ratting"
+                    android:icon="@android:drawable/btn_star_big_on"
+                    android:title="Rate Us" />
+            </group>
+        </menu>
+    </item>
+
+</menu>

@@ -1,198 +1,411 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    android:background="@color/PaleGreen"
     android:orientation="vertical"
     tools:context=".group.GroupHomePageActivity">
 
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="BACK"
-        android:layout_gravity="right"
-        android:onClick="goToBackPageActivity" />
-
-    <LinearLayout
-        android:id="@+id/groupHomePage"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-        <TextView
-            android:id="@+id/groupNameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30dp"
-            android:textColor="@color/DarkGreen"/>
-        <TextView
-            android:id="@+id/fullAddressTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="@color/Brown"/>
+        android:layout_height="match_parent"
+        android:background="@color/WhiteSmoke">
 
-        <Button
-            android:layout_marginTop="50dp"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="VIEW ALL Batch"
-            android:textSize="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/Beige"
-            android:textColor="@color/Navy"
-            android:onClick="goToBatchManagement"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="MessageBox"
-            android:textSize="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/Beige"
-            android:textColor="@color/Navy"
-            android:onClick="goToMessageBox"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Tutor Of This Group"
-            android:textSize="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/Beige"
-            android:textColor="@color/Navy"
-            android:onClick="goToGroupTutorManagement"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="NoticeBoard"
-            android:textSize="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/Beige"
-            android:textColor="@color/Navy"
-            android:onClick="goToNoticeBoardManagement"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/groupCreation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:layout_marginBottom="50dp"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Group Name :"
-            android:textColor="@color/Green"
-            android:paddingLeft="3dp"/>
-        <EditText
-            android:id="@+id/groupName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="GROUP NAME"
-            android:backgroundTint="@color/Green"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Address :"
-            android:layout_marginTop="30dp"
-            android:textColor="@color/Green"
-            android:paddingLeft="3dp"/>
-
-        <Spinner
-            android:id="@+id/groupAddressSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:paddingTop="20dp"
-            android:background="@drawable/spinner_background"
-            android:textSize="15dp"
-            android:entries="@array/areaAddress_array" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Details Address :"
-            android:textColor="@color/Green"
-            android:layout_marginTop="30dp"
-            android:paddingLeft="3dp"/>
-        <EditText
-            android:id="@+id/groupFullAddress"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:hint="FULL ADDRESS"
-            android:background="@color/LightGreen"/>
-        <Button
-            android:id="@+id/createGroupButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CREATE GROUP"
-            android:textSize="16dp"
-            android:padding="20dp"
-            android:layout_marginTop="50dp"
-            android:layout_gravity="center"
-            android:textColor="@color/AliceBlue"
-            android:background="@color/Green"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/downBar"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="200dp"
-        android:weightSum="8"
-        android:layout_margin="10dp"
-        android:background="@color/AliceBlue"
-        android:visibility="gone">
-
-        <Button
-            android:id="@+id/sendMessageRequestButton"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:background="@color/Yellow"
-            android:onClick="sendMessageRequestByGuardian"
-            android:padding="20dp"
-            android:layout_weight="4"
-            android:textSize="12dp"
-            android:layout_marginRight="5dp"
-            android:text="send an initial message"
-            android:visibility="gone" />
+            android:visibility="visible">
 
-        <Button
-            android:id="@+id/reportButton"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/group_home_page_bg_pic"/>
+
+                <ImageView
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:id="@+id/backButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="goToBackPageActivity"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_arrow_back_black_24dp"
+                    android:backgroundTint="@color/Black"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="130dp"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="4dp"
+                        android:src="@drawable/messenger_icon_button"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/groupNameTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Taz Education Village"
+                            android:textSize="20dp"
+                            android:fontFamily="sans-serif-black"
+                            android:textColor="@color/DarkGreen"/>
+                        <TextView
+                            android:id="@+id/fullAddressTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sonapur, Katchpur, Narayangonj"
+                            android:textSize="12dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/DarkBlue"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="160dp"
+                android:visibility="visible">
+                <LinearLayout
+                    android:id="@+id/group_home_page_dashboard_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="0dp"
+                    android:paddingBottom="100dp"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginTop="80dp">
+
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/batch_management_card"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:layout_width="160dp"
+                            android:layout_height="180dp"
+                            android:layout_margin="10dp"
+                            app:cardElevation="12dp">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:background="#5BD8D7D7"
+                                android:gravity="center">
+                                <ImageView
+                                    android:layout_width="64dp"
+                                    android:layout_height="64dp"
+                                    android:src="@drawable/ic_star_border_black_24dp"
+                                    android:padding="15dp"
+                                    android:background="@drawable/border_circleable2"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="BATCH INFO"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="10dp"/>
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/LightGrey"
+                                    android:layout_margin="5dp"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="Create or View Your Batch"
+                                    android:padding="1dp"
+                                    android:textColor="@color/DarkGray"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/group_tutor_card"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:layout_width="160dp"
+                            android:layout_height="180dp"
+                            android:layout_margin="10dp"
+                            app:cardElevation="12dp">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:background="#5BD8D7D7"
+                                android:gravity="center">
+                                <ImageView
+                                    android:layout_width="64dp"
+                                    android:layout_height="64dp"
+                                    android:src="@drawable/ic_people_black_24dp"
+                                    android:padding="15dp"
+                                    android:background="@drawable/border_circleable"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="GROUP TUTOR"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="10dp"/>
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/LightGrey"
+                                    android:layout_margin="5dp"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="Add a tutor or view tutor's profile"
+                                    android:padding="1dp"
+                                    android:textColor="@color/DarkGray"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/notice_board_card"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:layout_margin="24dp"
+                        android:elevation="6dp"
+                        app:cardElevation="12dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <ImageView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:src="@drawable/ic_developer_board_black_24dp"
+                                android:padding="15dp"
+                                android:background="@drawable/border_circleable1"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="NOTICE BOARD"
+                                android:textStyle="bold"
+                                android:layout_marginTop="10dp"/>
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/LightGrey"
+                                android:layout_margin="5dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Add or View Group Notice"
+                                android:padding="1dp"
+                                android:textColor="@color/DarkGray"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+            </ScrollView>
+
+            <RelativeLayout
+                android:id="@+id/batch_list_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/createNewBatchButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Create New Batch"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:textSize="15dp"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    app:icon="@drawable/ic_add_circle_outline_black_24dp"
+                    app:strokeColor="@color/Black"
+                    app:iconTint="@color/Black"
+                    android:layout_margin="10dp"
+                    android:backgroundTint="@color/White"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="#E91E63"
+                    android:padding="10dp"
+                    android:visibility="gone"/>
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" ALL BATCH LIST"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:textColor="@color/Blue"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="240dp"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="270dp">
+
+                    <ListView
+                        android:id="@+id/batchList"
+                        android:layout_margin="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@color/AliceBlue"
+                        android:dividerHeight="10dp" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/group_tutor_list_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/addTutorButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Tutor"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:textSize="15dp"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    app:icon="@drawable/ic_add_circle_outline_black_24dp"
+                    app:strokeColor="@color/Black"
+                    app:iconTint="@color/Black"
+                    android:layout_margin="10dp"
+                    android:backgroundTint="@color/White"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/Indigo"
+                    android:padding="10dp"
+                    android:visibility="gone"/>
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tutor of this group"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:textColor="@color/Black"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="240dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="270dp">
+
+                    <ListView
+                        android:id="@+id/groupTutorList"
+                        android:layout_margin="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@color/AliceBlue"
+                        android:dividerHeight="10dp" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/messageBoxFloatingButtonS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/guardian_message_box"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="15dp"
+                android:onClick="goToMessageBox"/>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sendMessageRequestButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Send A Message Request"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textSize="15dp"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                app:icon="@drawable/ic_add_circle_outline_black_24dp"
+                app:strokeColor="@color/Black"
+                app:iconTint="@color/Black"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/White"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/Indigo"
+                android:padding="10dp"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/downBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:background="@color/Yellow"
-            android:layout_marginLeft="5dp"
-            android:onClick="reportIDByGuardian"
-            android:padding="20dp"
-            android:text="Report ID"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/blockGroupButton"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="20dp"
-            android:background="@color/Red"
-            android:text="Block Tutor"
-            android:visibility="gone"
-            android:onClick="blockGroupByAdmin"/>
-    </LinearLayout>
+            android:visibility="visible">
 
 
 
-</LinearLayout>
+            <Button
+                android:id="@+id/reportButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@color/Yellow"
+                android:layout_marginLeft="5dp"
+                android:onClick="reportIDByGuardian"
+                android:padding="20dp"
+                android:text="Report ID"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/blockGroupButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="20dp"
+                android:background="@color/Red"
+                android:text="Block Tutor"
+                android:visibility="gone"
+                android:onClick="blockGroupByAdmin"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

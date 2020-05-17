@@ -1,78 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp"
+    android:background="@color/WhiteSmoke"
     tools:context=".notice_board.NoticeBoardViewAndCreateActivity">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="BACK"
-            android:layout_gravity="right"
-            android:onClick="goToBackPageActivity" />
+        android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/addPostOption"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/AliceBlue"
-            android:background="@color/Navy"
-            android:text="Add Post" />
+            android:layout_height="?attr/actionBarSize"
+            app:title="Notice Board"
+            app:menu="@menu/top_app_bar_notice_board"
+            android:backgroundTint="#2c30e7"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
-        <Button
-            android:id="@+id/addAttachmentOption"
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Note: A RecyclerView can also be used -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="30dp"
-            android:textColor="@color/AliceBlue"
-            android:background="@color/Navy"
-            android:text="Add Attachment" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="40dp"
+            android:visibility="visible">
 
-        <EditText
-            android:id="@+id/post"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:gravity="center"
-            android:background="@color/Beige"
-            android:hint="Add Post"
-            android:visibility="gone"/>
+            <TextView
+                android:id="@+id/title_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TITLE :"
+                android:layout_marginLeft="22dp"
+                android:layout_marginBottom="-10dp"
+                android:textColor="@color/Black"
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
-        <Button
-            android:id="@+id/addPostButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add"
-            android:onClick="addPostOperation"
-            android:visibility="gone"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/titleInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                app:counterEnabled="true"
+                app:counterMaxLength="19"
+                app:endIconMode="clear_text"
+                android:visibility="gone">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/title_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:hint="TITLE"
+                    android:textStyle="bold"
+                    android:maxLength="19"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/attachment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:hint="attachment"
-            android:visibility="gone"/>
+            <TextView
+                android:id="@+id/body_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BODY :"
+                android:layout_marginLeft="22dp"
+                android:layout_marginBottom="-10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/Black"
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
-        <Button
-            android:id="@+id/addAttachmentButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Upload"
-            android:onClick="uploadPDF"
-            android:visibility="gone"/>
-    </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/postInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                android:visibility="gone"
+                app:counterEnabled="true"
+                app:counterMaxLength="199">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/post_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:gravity="top"
+                    android:paddingLeft="15dp"
+                    android:maxLength="199"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/addPostButton"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="ADD NOTICE"
+                android:textColor="@color/White"
+                android:textStyle="bold"
+                android:layout_margin="30dp"
+                android:layout_gravity="center"
+                android:onClick="addPostOperation"
+                android:backgroundTint="@color/Green"
+                android:padding="10dp"
+                android:textSize="18dp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/attachment_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/Black"
+                android:visibility="visible"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"/>
+
+            <Button
+                android:id="@+id/addAttachmentButton"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Upload"
+                android:onClick="uploadPDF"
+                android:layout_margin="30dp"
+                android:backgroundTint="@color/Green"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:padding="10dp"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/tutorListLayout"
@@ -81,12 +147,12 @@
         android:orientation="vertical">
 
         <ListView
-            android:id="@+id/tutorListView"
+            android:layout_marginTop="70dp"
+            android:id="@+id/notice_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/AliceBlue"
-            android:dividerHeight="10dp"
-            android:divider="@color/AliceBlue" />
+            android:dividerHeight="0.5dp"
+            android:divider="@color/White" />
     </LinearLayout>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

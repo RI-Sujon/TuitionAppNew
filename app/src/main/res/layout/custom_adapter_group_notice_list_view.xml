@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <LinearLayout
+        android:id="@+id/noticeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:background="@color/White"
+        android:visibility="visible">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:visibility="visible"
+            android:layout_gravity="bottom">
+
+            <ImageView
+                android:id="@+id/mailBoxPic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_email_black_24dp"
+                android:backgroundTint="@color/DimGray"/>
+
+            <TextView
+                android:id="@+id/notice_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textSize="18dp"
+                android:textColor="@color/Navy"
+                android:textStyle="bold"
+                android:layout_toRightOf="@+id/mailBoxPic"
+                android:fontFamily="sans-serif-condensed"
+                android:layout_marginLeft="15dp"/>
+
+            <TextView
+                android:id="@+id/noticeDate"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="12dp"
+                android:text="28 Feb 2018,  05:25 AM"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="sans-serif-condensed"
+                android:visibility="visible"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/noticePostTextView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingBottom="20dp"
+            android:textSize="14dp"
+            android:text="Hello, I am Rabiul Islam Sujon, Your Math Teacher, Tomorrow will be your Math Class,
+Please take preparation for the class and for the exam. Wish you best of luck for this important exam."
+            android:gravity="center_vertical"
+            android:textColor="@color/Black"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/noticeAttachmentTextView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:background="@color/SkyBlue"
+            android:textColor="@color/Navy"
+            android:visibility="gone"/>
+    </LinearLayout>
+</RelativeLayout>

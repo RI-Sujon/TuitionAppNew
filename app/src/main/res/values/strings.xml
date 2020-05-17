@@ -1,8 +1,11 @@
 <resources>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <string name="app_name">TuitionApp</string>
 
     <string-array name="areaAddress_array">
-        <item><b>SELECT</b></item>
+        <item><b>AREA</b></item>
         <item>Dhaka</item>
         <item>Chittagong</item>
         <item>Rajsahi</item>
@@ -14,7 +17,7 @@
     </string-array>
 
     <string-array name="currentPosition_array">
-        <item><b>SELECT</b></item>
+        <item><b>CURRENT POSITION</b></item>
         <item>College</item>
         <item>Undergraduate</item>
         <item>Graduate</item>
@@ -22,7 +25,7 @@
     </string-array>
 
     <string-array name="Edu_InstituteName_array">
-        <item><b>SELECT INSTITUTE</b></item>
+        <item><b>INSTITUTE</b></item>
         <item>Dhaka University</item>
         <item>Chittagong University</item>
         <item>Rajsahi University</item>
@@ -34,7 +37,7 @@
     </string-array>
 
     <string-array name="Edu_tutorSubject_array">
-        <item><b>SELECT SUBJECT/DEPARTMENT</b></item>
+        <item><b>SUBJECT/DEPARTMENT</b></item>
         <item>IIT</item>
         <item>CSE</item>
         <item>EEE</item>
@@ -43,93 +46,110 @@
         <item>Chemistry</item>
         <item>Math</item>
         <item>Botany</item>
+        <item>Software Engineering</item>
     </string-array>
-
+    n
     <string-array name="medium_array">
-        <item>SELECT MEDIUM</item>
-        <item>Bangla</item>
-        <item>English</item>
+        <item><b>MEDIUM</b></item>
+        <item>Bangla Medium</item>
+        <item>English Medium</item>
         <item>Both</item>
     </string-array>
 
     <string-array name="gender_array">
-        <item><b>SELECT GENDER</b></item>
+        <item><b>GENDER</b></item>
         <item>MALE</item>
         <item>FEMALE</item>
-        <item>MALE / FEMALE</item>
     </string-array>
 
-    <string-array name="preferredClass_array">
-        <item><font size="15"><b>ADD CLASS</b></font></item>
-        <item>Play/Nursery</item>
-        <item>Class 1</item>
-        <item>Class 2</item>
-        <item>Class 3</item>
-        <item>Class 4</item>
-        <item>Class 5</item>
-        <item>Class 6</item>
-        <item>Class 7</item>
-        <item>Class 8</item>
-        <item>Class 9</item>
-        <item>Class 10</item>
-        <item>Inter 1st Year</item>
-        <item>Inter 2nd Year</item>
+    <string-array name="preferable_gender_array">
+        <item><b>GENDER</b></item>
+        <item>Both Male And Female</item>
+        <item>Only Male</item>
+        <item>Only Female</item>
+        <item>Male Tutor Preferable</item>
+        <item>Female Tutor Preferable</item>
+    </string-array>
+
+    <string-array name="preferredClass_array_bangla_medium">
+        <item><b>CLASS</b></item>
         <item>Hons</item>
+        <item>INTER SECOND YEAR</item>
+        <item>INTER FIRST YEAR</item>
+        <item>CLASS 10</item>
+        <item>CLASS 9</item>
+        <item>CLASS 8</item>
+        <item>CLASS 7</item>
+        <item>CLASS 6</item>
+        <item>CLASS 5</item>
+        <item>CLASS 4</item>
+        <item>CLASS 3</item>
+        <item>CLASS 2</item>
+        <item>CLASS 1</item>
+        <item>NURSERY</item>
+        <item>PLAY</item>
+    </string-array>
+
+    <string-array name="preferredClass_array_english_medium">
+        <item><b>CLASS</b></item>
+        <item>Hons</item>
+        <item>A2 LEVEL</item>
+        <item>AS LEVEL</item>
+        <item>O LEVEL</item>
+        <item>CLASS 9</item>
+        <item>CLASS 8</item>
+        <item>CLASS 7</item>
+        <item>CLASS 6</item>
+        <item>CLASS 5</item>
+        <item>CLASS 4</item>
+        <item>CLASS 3</item>
+        <item>CLASS 2</item>
+        <item>CLASS 1</item>
+        <item>KG</item>
+        <item>NURSERY</item>
+        <item>PLAY</item>
     </string-array>
 
     <string-array name="group_array">
-        <item><b>SELECT GROUP</b></item>
+        <item><b>GROUP</b></item>
         <item>Science</item>
         <item>Commerce</item>
         <item>Arts</item>
+        <item>NULL</item>
     </string-array>
 
     <string-array name="primarySubject_array">
-        <item><font size="15"><b>ADD SUBJECT</b></font></item>
-        <item>General Math</item>
         <item>Bangla</item>
+        <item>General Math</item>
         <item>English</item>
-        <item>Science</item>
+        <item>General Science</item>
         <item>Islamic Studies</item>
         <item>Bangladesh and Global Studies</item>
         <item>Others</item>
     </string-array>
 
     <string-array name="scienceSubject_array">
-        <item><font size="15"><b>ADD SUBJECT</b></font></item>
         <item>Physics</item>
         <item>Chemistry</item>
         <item>Higher Math</item>
         <item>Biology</item>
-        <item>General Math</item>
-        <item>Bangla</item>
-        <item>English</item>
-        <item>Others</item>
     </string-array>
 
     <string-array name="commerceSubject_array">
-        <item><font size="15"><b>ADD SUBJECT</b></font></item>
         <item>Accounting</item>
-        <item>Finance</item>
-        <item>Management</item>
-        <item>Bangla</item>
-        <item>English</item>
-        <item>General Math</item>
-        <item>General Science</item>
-        <item>Others</item>
+        <item>Economy</item>
+        <item>Finance, Banking, and Insurance</item>
+        <item>Business Organization and Management</item>
     </string-array>
 
     <string-array name="artsSubject_array">
-        <item><font size="15"><b>ADD SUBJECT</b></font></item>
-        <item>Bangla</item>
-        <item>English</item>
-        <item>General Math</item>
-        <item>General Science</item>
-        <item>Others</item>
+        <item>History</item>
+        <item>Economy</item>
+        <item>Sociology</item>
+        <item>Geography</item>
     </string-array>
 
     <string-array name="daysPerWeekOrMonth_array">
-        <item><b>SELECT</b></item>
         <item>Negotiable</item>
         <item>7 day/week</item>
         <item>6 day/week</item>
@@ -141,7 +161,7 @@
     </string-array>
 
     <string-array name="salary_array">
-        <item><b>SELECT SALARY</b></item>
+        <item><b><font size="11">Negotiable</font></b></item>
         <item>500</item>
         <item>1000</item>
         <item>2000</item>
@@ -158,5 +178,10 @@
         <item>13000</item>
         <item>14000</item>
         <item>15000</item>
+    </string-array>
+
+    <string-array name="privacy">
+        <item>only me</item>
+        <item>public</item>
     </string-array>
 </resources>

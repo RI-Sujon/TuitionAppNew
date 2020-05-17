@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,106 +8,186 @@
     android:background="@color/Bisque"
     tools:context=".guardian.ViewingSearchingTutorProfileActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="BACK"
-            android:layout_gravity="right"
-            android:visibility="visible"
-            android:onClick="backToHomePage"
-            />
-
-        <EditText
-            android:id="@+id/search_bar"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/AliceBlue"
-            android:outlineSpotShadowColor="@color/Blue"
-            android:hint="SearchBar"
-            android:paddingLeft="20dp"/>
-        <Button
-            android:id="@+id/searchButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Search"
-            android:paddingLeft="60dp"
-            android:paddingRight="60dp"
-            android:layout_gravity="center"
-            android:visibility="visible"
-            android:onClick="backToHomePage"
-            android:background="@color/Aqua"
-            android:textColor="@color/Navy"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-        <Button
-            android:id="@+id/tutorListViewButton"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Tutor"
-            android:textColor="@color/Navy"
-            android:background="@color/LightGreen"/>
-        <Button
-            android:id="@+id/groupListViewButton"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:text="GROUP"
-            android:layout_height="match_parent"
-            android:background="@color/Gray" />
-
-    </LinearLayout>
-    <ViewFlipper
-        android:id="@+id/viewFlipper"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/Black">
-        <LinearLayout
-            android:id="@+id/tutorListLayout"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="1dp"
-            android:layout_height="wrap_content"
-            android:background="@color/Beige"
-            android:orientation="vertical"
-            android:layout_gravity="center">
-
-            <ListView
-                android:id="@+id/verifiedTutorList"
-                android:layout_width="match_parent"
-                android:layout_height="512dp"
-                android:background="@color/LightGreen"
-                android:dividerHeight="1dp"
-                android:padding="20dp" />
-        </LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/border3">
 
         <LinearLayout
-            android:id="@+id/groupListLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:orientation="vertical"
-            android:layout_gravity="center">
+            android:gravity="center">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/drawer_button"
+                android:background="#00000000"
+                android:paddingTop="20dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="20dp"
+                android:paddingLeft="20dp"/>
 
-            <ListView
-                android:id="@+id/groupList"
-                android:layout_width="500dp"
-                android:layout_height="512dp"
-                android:dividerHeight="1dp"
-                android:padding="20dp"
-                android:background="@color/LightGreen"/>
+            <EditText
+                android:id="@+id/search_bar"
+                android:layout_width="210dp"
+                android:layout_height="35dp"
+                android:layout_margin="13dp"
+                android:paddingStart="45dp"
+                android:background="@drawable/border_search_bar"
+                android:hint="Search"/>
+
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/filter_icon"
+                android:background="#00000000"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="20dp"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="85dp"
+            android:src="@drawable/search_icon"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="65dp"
+            android:background="@drawable/border_search_bar"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/tutor_list_button_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tutor_search_result_button"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tutorListViewButton"
+                android:layout_width="140dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="TUTOR"
+                android:textColor="@color/Gray"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:background="#00000000"
+                android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/group_list_button_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/group_searching_result"
+                android:visibility="gone"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/groupListViewButton"
+                android:layout_width="140dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="GROUP"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:textColor="@color/Gray"
+                android:background="#00000000"/>
 
         </LinearLayout>
-    </ViewFlipper>
-</LinearLayout>
+        <ViewFlipper
+            android:id="@+id/viewFlipper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/tutorListLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="-10dp"
+                android:layout_gravity="center">
+
+                <ListView
+                    android:id="@+id/verifiedTutorList"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:dividerHeight="15dp"
+                    android:divider="@color/White"
+                    android:padding="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/groupListLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-20dp"
+                android:orientation="vertical"
+                android:layout_gravity="center">
+
+                <ListView
+                    android:id="@+id/groupList"
+                    android:layout_width="500dp"
+                    android:layout_height="500dp"
+                    android:dividerHeight="1dp"
+                    android:padding="20dp" />
+            </LinearLayout>
+        </ViewFlipper>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="260dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="-1dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/border_whiteboard">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="15dp">
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/message_box_button"
+                    android:paddingRight="40dp"
+                    android:background="#00000000"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/home_button"
+                    android:background="#00000000"
+                    android:onClick="backToHomePage"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/message_box_button"
+                    android:paddingLeft="40dp"
+                    android:background="#00000000"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

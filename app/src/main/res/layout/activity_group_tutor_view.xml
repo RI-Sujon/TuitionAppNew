@@ -1,70 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
+    android:background="@color/Lavender"
     tools:context=".group.GroupTutorViewActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <Button
+        android:layout_height="match_parent">
+        <ImageView
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="BACK"
-            android:layout_gravity="right"
-            android:onClick="goToBackPageActivity" />
+            android:onClick="goToBackPageActivity"
+            android:padding="15dp"
+            android:src="@drawable/back_post"/>
 
-        <Button
-            android:id="@+id/addTutorOption"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="30dp"
-            android:textColor="@color/AliceBlue"
-            android:background="@color/Navy"
-            android:text="Add Tutor" />
-
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:hint="Tutor Email"
-            android:visibility="gone"/>
-
-        <Button
-            android:id="@+id/addTutor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add"
-            android:onClick="addTutorOperation"
-            android:visibility="gone"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/tutorListLayout"
-        android:layout_width="match_parent"
-        android:layout_marginTop="1dp"
-        android:layout_height="match_parent"
-        android:background="@color/Beige"
-        android:orientation="vertical"
-        android:layout_gravity="center">
-
-        <ListView
-            android:id="@+id/tutorListView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/LightGreen"
-            android:dividerHeight="1dp"
-            android:padding="20dp" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:gravity="center">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="-100dp"
+                android:layout_marginBottom="15dp"
+                android:paddingLeft="3dp"
+                android:text="ENTER EMAIL ADDRESS OF TUTOR"
+                android:fontFamily="@font/contrail_one"
+                android:textColor="@color/Navy"
+                android:textSize="18dp" />
 
-</LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:hint="EMAIL"
+                app:startIconDrawable="@drawable/ic_email_black_24dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/group_tutor_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/Black"
+                    android:inputType="textEmailAddress"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/addTutor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:textColor="@color/AliceBlue"
+                android:background="@color/Navy"
+                android:backgroundTint="#1E88E5"
+                android:text="Add Tutor"
+                android:onClick="addTutorOperation"/>
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:hint="Tutor Email"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

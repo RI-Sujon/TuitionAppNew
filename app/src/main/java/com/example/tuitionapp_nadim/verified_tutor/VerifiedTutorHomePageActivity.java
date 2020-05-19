@@ -178,6 +178,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
     public  void goToMessageBox(View view){
         Intent intent = new Intent(this, MainMessageActivity.class);
         intent.putExtra("user","tutor") ;
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();

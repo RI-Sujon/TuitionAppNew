@@ -10,9 +10,12 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.tuitionapp_nadim.R;
+import com.example.tuitionapp_nadim.guardian.GuardianHomePageActivity;
+import com.example.tuitionapp_nadim.verified_tutor.VerifiedTutorHomePageActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,6 +38,7 @@ public class MainMessageActivity extends AppCompatActivity {
     DatabaseReference reference;
 
     private String checkUser;
+    ArrayList<String> userInfo ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +98,27 @@ public class MainMessageActivity extends AppCompatActivity {
 
 
     }
+
+    public void backFromMessageBox(View view){
+
+        if(checkUser.equals("tutor")){
+
+            Intent intent1 = getIntent() ;
+            userInfo = intent1.getStringArrayListExtra("userInfo") ;
+            Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+            intent.putStringArrayListExtra("userInfo", userInfo) ;
+            startActivity(intent);
+            finish();
+        }
+        else if(checkUser.equals("guardian")){
+            Intent intent = new Intent(this, GuardianHomePageActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
+    }
+
 
 
 

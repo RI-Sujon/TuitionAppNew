@@ -7,7 +7,7 @@ android {
     buildToolsVersion "29.0.2"
 
     defaultConfig {
-        applicationId "com.example.tuitionapp"
+        applicationId "com.example.tuitionapp_nadim"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1

@@ -13,7 +13,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_message"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/RoyalBlue"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/MenuStyle"
             android:layout_width="match_parent"
@@ -41,7 +41,7 @@
             android:id="@+id/tab_layout_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabSelectedTextColor="@color/colorPrimaryDark"
+            app:tabSelectedTextColor="@color/RoyalBlue"
             android:background="#fff"
             app:tabIndicatorColor="#fff"
             app:tabTextColor="#fff"
@@ -53,8 +53,25 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager_message"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="480dp"
         android:scrollbarDefaultDelayBeforeFade="@integer/google_play_services_version" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        >
+        <Button
+            android:background="@color/Beige"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="145dp"
+            android:text="Back"
+            android:onClick="backFromMessageBox"/>
+
+
+    </RelativeLayout>
 
 
 </LinearLayout>

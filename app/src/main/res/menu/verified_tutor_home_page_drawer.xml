@@ -17,20 +17,18 @@
             android:icon="@android:drawable/ic_lock_power_off"
             android:title="Log Out" />
 
+        <item
+            android:id="@+id/calenderMenuId"
+            android:icon="@android:drawable/ic_menu_my_calendar"
+            android:title="Calender" />
+
     </group>
 
     <item android:title="UTILITIES">
         <menu>
             <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/calender"
-                    android:icon="@android:drawable/ic_menu_my_calendar"
-                    android:title="Calender" />
 
-                <item
-                    android:id="@+id/reminder"
-                    android:icon="@android:drawable/ic_popup_reminder"
-                    android:title="Reminder" />
+
                 <item
                     android:id="@+id/notes"
                     android:icon="@drawable/pencil"
@@ -59,3 +57,8 @@
     </item>
 
 </menu>
+
+<!-- <item
+                    android:id="@+id/reminder"
+                    android:icon="@android:drawable/ic_popup_reminder"
+                    android:title="Reminder" />-->

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dip"
+        android:orientation="horizontal"
+        android:background="@color/title_background">
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="35dp"
+            android:contentDescription="@string/icon_desc"
+            android:src="@drawable/download" />
+
+        <TextView
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Calendar"
+            android:textSize="30sp"
+            android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceMediumInverse"
+            tools:ignore="RtlCompat" />
+
+        <View style="@style/TitleBarSpring" />
+
+        <ProgressBar
+            android:id="@+id/title_refresh_progress"
+            style="@style/TitleBarProgressIndicator"
+            android:visibility="gone" />
+
+        <ImageView
+            style="@style/TitleBarSeparator"
+            android:contentDescription="@string/title_separator_desc" />
+
+        <ImageButton
+            style="@style/TitleBarAction"
+            android:contentDescription="@string/description_add"
+            android:keepScreenOn="true"
+            android:onClick="onAddClick"
+            android:src="@drawable/ic_title_add" />
+    </LinearLayout>
+
+    <!--  <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="400dp" />-->
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:orientation="vertical">
+
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventTitle"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                app:met_floatingLabel="normal"
+                android:hint="title"
+                />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:id="@+id/location"
+                android:layout_marginTop="10dp"
+                app:met_floatingLabel="normal"
+                android:hint="location"
+                />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/description"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                app:met_floatingLabel="normal"
+                android:hint="description"
+                />
+
+
+
+
+
+
+            <DatePicker
+                android:layout_marginLeft="21dp"
+                android:layout_marginRight="21dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/datePicker"
+                />
+
+
+            <TimePicker
+                android:id="@+id/startTimePicker"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TimePicker
+                android:id="@+id/endTimePicker"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/attendees"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:hint="add attendees email address using coma &quot;,&quot;"
+                app:met_floatingLabel="normal" />
+
+
+            <Button
+                android:id="@+id/btn_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="#00897B"
+                android:onClick="createEvent"
+                android:text="Submit"
+                android:textColor="#fff" />
+
+            <Button
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="25sp"
+                android:text="Conference"
+                android:onClick="GoToConference"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+

@@ -14,9 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tuitionapp_nadim.R;
 import com.example.tuitionapp_nadim.admin.ApproveAndBlockInfo;
+import com.example.tuitionapp_nadim.calendar.CalendarSampleActivity;
 import com.example.tuitionapp_nadim.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_nadim.group.GroupInfo;
 import com.example.tuitionapp_nadim.message_box.MainMessageActivity;
@@ -84,12 +86,14 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
 
         Menu menu = navigationView.getMenu();
         menu.findItem(R.id.view_profile).setVisible(false) ;
-        menu.findItem(R.id.calender).setVisible(false) ;
-        menu.findItem(R.id.reminder).setVisible(false) ;
+        menu.findItem(R.id.calenderMenuId).setVisible(false) ;
+        //menu.findItem(R.id.reminder).setVisible(false) ;
         menu.findItem(R.id.notes).setVisible(false) ;
 
 
     }
+
+
 
     @Override
     protected void onStart() {
@@ -204,6 +208,8 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
     }
 
 
+
+
     public void openDrawerOperation(View view){
         drawerLayout.openDrawer(GravityCompat.START);
     }
@@ -222,9 +228,33 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
             case R.id.log_out:
                 signOut();
                 break;
+
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+  /*  @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.verified_tutor_home_page_drawer,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+
+        case R.id.logout:
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(MainActivity.this,StartActivity.class));
+        finish();
+        if(item.getItemId() == R.id.calenderMenuId){
+            Toast.makeText(this, "Calendar is ready", Toast.LENGTH_SHORT).show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+*/
 }

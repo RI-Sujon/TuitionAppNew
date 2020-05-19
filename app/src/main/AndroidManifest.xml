@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tuitionapp_nadim">
 
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,6 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.example.tuitionapp_nadim.group.GroupCreationActivity"></activity>
+        <activity android:name="com.example.tuitionapp_nadim.calendar.CalendarSampleActivity"></activity>
+        <activity android:name="com.example.tuitionapp_nadim.calendar.ViewEventActivity"></activity>
         <activity android:name="com.example.tuitionapp_nadim.batch.BatchStudentInfoTableActivity" />
         <activity android:name="com.example.tuitionapp_nadim.notice_board.NoticeBoardViewAndCreateActivity" />
         <activity android:name="com.example.tuitionapp_nadim.group.GroupTutorViewActivity" />

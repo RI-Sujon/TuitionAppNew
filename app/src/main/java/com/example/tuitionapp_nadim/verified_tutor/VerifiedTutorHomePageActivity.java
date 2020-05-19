@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.tuitionapp_nadim.calendar.CalendarSampleActivity;
 import com.example.tuitionapp_nadim.group.GroupCreationActivity;
 import com.example.tuitionapp_nadim.group.GroupHomePageActivity;
 import com.example.tuitionapp_nadim.R;
@@ -266,6 +267,13 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
+    public void calendarEvent(){
+        Intent intent = new Intent(this, CalendarSampleActivity.class);
+        startActivity(intent);
+        finish();
+
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -275,6 +283,10 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
 
             case R.id.log_out:
                 signOut();
+                break;
+
+            case  R.id.calenderMenuId:
+                calendarEvent();
                 break;
         }
 

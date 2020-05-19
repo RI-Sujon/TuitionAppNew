@@ -17,10 +17,7 @@
             android:icon="@android:drawable/ic_lock_power_off"
             android:title="Log Out" />
 
-        <item
-            android:id="@+id/calenderMenuId"
-            android:icon="@android:drawable/ic_menu_my_calendar"
-            android:title="Calender" />
+
 
     </group>
 
@@ -28,6 +25,10 @@
         <menu>
             <group android:checkableBehavior="single">
 
+                <item
+                    android:id="@+id/calenderMenuId"
+                    android:icon="@android:drawable/ic_menu_my_calendar"
+                    android:title="Calender" />
 
                 <item
                     android:id="@+id/notes"

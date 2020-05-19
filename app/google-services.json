@@ -45,6 +45,43 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:360974865970:android:b35e09f6a5a359a05c0e2b",
+        "android_client_info": {
+          "package_name": "com.example.tuitionapp_nadim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360974865970-359plsttrof1bt7r76oukegsl736usah.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tuitionapp_nadim",
+            "certificate_hash": "6272ab1403acec6cb8ad5953f5aac776eb382534"
+          }
+        },
+        {
+          "client_id": "360974865970-lktkdcgbm8m5dkpddrbq9ksqbdk71tcg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8IZIDTV1CEBBT2IOvEcyYG9op-0cIIjU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360974865970-lktkdcgbm8m5dkpddrbq9ksqbdk71tcg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:360974865970:android:9035c1806af21db55c0e2b",
         "android_client_info": {
           "package_name": "com.example.tuitionapp_sujon"

@@ -50,60 +50,90 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="275dp"
             android:orientation="vertical"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp">
 
-            <EditText
-                android:id="@+id/email_edit_text"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:paddingRight="50dp"
-                android:hint="Enter email address"
-                android:inputType="textEmailAddress"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/email_edit_text_sign_in"
-                android:layout_marginBottom="20dp"
-                android:paddingTop="10dp"/>
+                app:boxStrokeColor="@color/RoyalBlue"
+                app:endIconMode="clear_text"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                app:startIconDrawable="@drawable/ic_email_black_24dp"
+                app:startIconTint="@color/Black"
+                android:hint="EMAIL ADDRESS"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/Black"
+                    android:inputType="textEmailAddress"
+                    android:textSize="15dp"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-            <EditText
-                android:id="@+id/password_edit_text"
-                android:layout_width="wrap_content"
-                android:layout_height="46.54dp"
-                android:layout_centerHorizontal="true"
-                android:paddingLeft="15dp"
-                android:paddingRight="50dp"
-                android:inputType="textPassword"
-                android:hint="Enter password"
-                android:paddingTop="7dp"
-                android:background="@drawable/edit_text_password"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:boxStrokeColor="@color/RoyalBlue"
+                app:endIconMode="password_toggle"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                app:startIconDrawable="@drawable/ic_action_name"
+                app:startIconTint="@color/Black"
+                android:hint="PASSWORD"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/Black"
+                    android:inputType="textPassword"
+                    android:textSize="15dp"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
                 <Switch
                     android:id="@+id/switch_bar"
-                    android:layout_width="55dp"
-                    android:layout_height="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:trackTint="@color/DodgerBlue"
-                    android:thumbTint="@color/Blue" />
+                    android:thumbTint="@color/Blue"
+                    android:paddingLeft="5dp"/>
 
-                <ImageView
-                    android:layout_width="72.13dp"
-                    android:layout_height="12.90dp"
-                    android:src="@drawable/remember_me"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="REMEMBER ME"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="12dp"
                     android:layout_gravity="center"
                     android:layout_toRightOf="@+id/switch_bar"
                     android:layout_centerVertical="true"/>
 
-                <ImageView
-                    android:layout_width="87.31dp"
-                    android:layout_height="12.90dp"
-                    android:src="@drawable/forgot_password_text"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FORGOT PASSWORD"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="12dp"
                     android:layout_gravity=""
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"/>
@@ -121,7 +151,7 @@
             android:layout_width="181.45dp"
             android:layout_height="66dp"
             android:layout_marginStart="105.09dp"
-            android:layout_marginTop="477.22dp"
+            android:layout_marginTop="457.22dp"
             android:src="@drawable/sign_in_background"
             android:onClick="signInCompletion"/>
 
@@ -129,10 +159,8 @@
             android:layout_width="53.53dp"
             android:layout_height="21.81dp"
             android:layout_marginStart="169.65dp"
-            android:layout_marginTop="491.13dp"
+            android:layout_marginTop="471.13dp"
             android:src="@drawable/log_in_text_white"/>
-
-
 
     </RelativeLayout>
     <RelativeLayout

@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/more"
-        android:title="more"
+        android:title="Edit Info"
         android:iconTint="@color/White"
         android:contentDescription="content_description_more"
         app:showAsAction="never" />

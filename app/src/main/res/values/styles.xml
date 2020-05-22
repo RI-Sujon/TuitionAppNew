@@ -14,4 +14,9 @@
         <item name="android:background">@android:color/white</item>
     </style>
 
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/Green</item>
+        <item name="boxStrokeWidth">1dp</item>
+    </style>
+
 </resources>

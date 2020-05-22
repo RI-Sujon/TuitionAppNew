@@ -5,7 +5,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:fitsSystemWindows="true"
-tools:openDrawer="star"
+tools:openDrawer="start"
 android:id="@+id/drawer_layout"
 tools:context=".admin.AdminHomePageActivity">
 
@@ -68,6 +68,7 @@ tools:context=".admin.AdminHomePageActivity">
                 android:backgroundTint="#E64A19"
                 android:layout_margin="15dp"
                 android:elevation="5dp"
+
                 android:onClick="goToCandidateTutorProfileAdminViewActivity"/>
 
             <Button

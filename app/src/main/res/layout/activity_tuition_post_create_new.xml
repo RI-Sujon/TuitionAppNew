@@ -9,30 +9,37 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/solid_ground">
+        android:background="@drawable/border3">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/back_post"
-                android:background="#00000000"
-                android:padding="20dp"
-                android:onClick="goToBackPage"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Let's Create a Post for\nYour Student!"
-                android:layout_centerHorizontal="true"
-                android:textSize="24dp"
-                android:fontFamily="sans-serif-black"
-                android:gravity="center"
-                android:textColor="@color/White"
-                android:padding="10dp"
-                />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/back_post"
+                    android:background="#00000000"
+                    android:padding="20dp"
+                    android:onClick="goToBackPage" />
+
+                <TextView
+                    android:id="@+id/create_post_layout_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Let's Create a Post for\nYour Student!"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="19dp"
+                    android:fontFamily="@font/cherry_cream_soda"
+                    android:gravity="center"
+                    android:textColor="@color/White"
+                    android:padding="10dp"
+                    android:layout_centerInParent="true"/>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -101,11 +108,10 @@
                     android:textColor="@color/White"/>
                 <Spinner
                     android:id="@+id/mediumSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="300dp"
+                    android:layout_height="43.3dp"
                     android:background="@drawable/version"
                     android:layout_gravity="center"
-                    android:entries="@array/medium_array"
                     android:paddingLeft="40dp"/>
 
 
@@ -120,14 +126,14 @@
                     android:textColor="@color/White"/>
                 <Spinner
                     android:id="@+id/classSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="300dp"
+                    android:layout_height="43.3dp"
                     android:background="@drawable/class2"
                     android:layout_gravity="center"
-                    android:entries="@array/preferredClass_array_bangla_medium"
                     android:paddingLeft="40dp"/>
 
                 <TextView
+                    android:id="@+id/group_text_view"
                     android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -138,11 +144,10 @@
                     android:textColor="@color/White"/>
                 <Spinner
                     android:id="@+id/groupSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="300dp"
+                    android:layout_height="43.3dp"
                     android:background="@drawable/group1"
                     android:layout_gravity="center"
-                    android:entries="@array/group_array"
                     android:paddingLeft="40dp"/>
 
                 <TextView
@@ -186,7 +191,7 @@
                     android:layout_gravity="center"
                     android:inputType="text"
                     android:paddingLeft="47dp"
-                    android:hint="Student's Institute Name (OPTIONAL)"
+                    android:hint="Student's Institute Name"
                     android:textSize="16dp"/>
 
                 <TextView
@@ -218,11 +223,10 @@
                     android:textColor="@color/White"/>
                 <Spinner
                     android:id="@+id/daysPerWeekOrMonthSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="300dp"
+                    android:layout_height="43.3dp"
                     android:background="@drawable/days_per_week"
                     android:layout_gravity="center"
-                    android:entries="@array/daysPerWeekOrMonth_array"
                     android:paddingLeft="40dp"/>
 
                 <TextView

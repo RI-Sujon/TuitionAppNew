@@ -12,70 +12,80 @@
         android:orientation="vertical"
         android:background="@drawable/border3">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:gravity="center_vertical">
             <ImageButton
+                android:id="@+id/backButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/drawer_button"
+                android:src="@drawable/ic_arrow_back_black_24dp"
                 android:background="#00000000"
                 android:padding="10dp"
-                android:paddingLeft="20dp"/>
+                android:layout_marginLeft="7dp"
+                android:layout_centerVertical="true"/>
 
-            <EditText
-                android:id="@+id/search_bar"
-                android:layout_width="210dp"
-                android:layout_height="35dp"
-                android:layout_margin="10dp"
-                android:paddingStart="45dp"
-                android:background="@drawable/border_search_bar"
-                android:hint="Search"/>
-
-
-            <ImageButton
-                android:id="@+id/filter_option"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/filter_icon"
-                android:background="#00000000"
-                android:layout_marginLeft="5dp"
-                android:onClick="onPopupFilterButtonClick"
-                android:visibility="gone"/>
-            <Button
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:id="@+id/create_new_post"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:maxLines="2"
-                android:text="CREATE \nNEW POST"
-                android:layout_marginLeft="5dp"
-                android:textSize="15dp"
-                android:fontFamily="sans-serif-condensed-medium"
-                android:textStyle="bold"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:textColor="@color/LimeGreen"
-                android:onClick="goToGuardianPostForTuitionActivity"
-                android:visibility="gone" />
-        </LinearLayout>
+                android:layout_margin="10dp"
+                android:layout_toRightOf="@+id/backButton"
+                android:layout_toLeftOf="@+id/option_button_layout">
+                <EditText
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:paddingStart="45dp"
+                    android:background="@drawable/border_search_bar"
+                    android:hint="Search"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="22dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginStart="75dp"
-            android:src="@drawable/search_icon"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="22dp"
+                    android:layout_marginStart="7dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/search_icon"/>
+            </RelativeLayout>
 
-        <ImageView
-            android:layout_width="380dp"
-            android:layout_height="575dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="65dp"
-            android:background="@drawable/border_search_bar"
-            android:visibility="gone"/>
+
+            <RelativeLayout
+                android:id="@+id/option_button_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp">
+                <ImageButton
+                    android:id="@+id/filter_option"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/filter_icon"
+                    android:background="#00000000"
+                    android:layout_marginLeft="2dp"
+                    android:onClick="onPopupFilterButtonClick"
+                    android:visibility="gone"
+                    android:padding="10dp"
+                    />
+
+                <Button
+                    android:id="@+id/create_new_post"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:fontFamily="@font/"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:onClick="goToGuardianPostForTuitionActivity"
+                    android:text="CREATE \nNEW POST"
+                    android:textColor="@color/LimeGreen"
+                    android:textSize="13dp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+            </RelativeLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -87,25 +97,53 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/image_view"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/border_search_bar">
+            <LinearLayout
+                android:id="@+id/filtered_option_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FILTER BY :"
+                    android:textColor="@color/Black"
+                    android:textSize="12dp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/filter_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/Black"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="12dp"
+                    android:visibility="visible"/>
+            </LinearLayout>
             <ListView
                 android:id="@+id/tuitionPostList"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:divider="@color/White"
-                android:dividerHeight="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:divider="#00000000"
+                android:dividerHeight="20dp"
                 android:paddingTop="20dp"
-                android:paddingBottom="10dp"
-                android:layout_marginBottom="70dp"
-                android:background="@drawable/border_search_bar"/>
+                android:paddingBottom="1dp"
+                android:visibility="visible"/>
         </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
         <RelativeLayout
             android:layout_width="260dp"
             android:layout_height="50dp"

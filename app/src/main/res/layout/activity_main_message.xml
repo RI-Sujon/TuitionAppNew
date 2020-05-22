@@ -68,6 +68,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="145dp"
             android:text="Back"
+            android:backgroundTint="@color/Beige"
             android:onClick="backFromMessageBox"/>
 
 

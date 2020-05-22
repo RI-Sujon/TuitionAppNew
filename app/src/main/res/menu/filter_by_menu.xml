@@ -22,20 +22,20 @@
         android:icon="@android:drawable/ic_menu_edit"
         android:title="CLASS">
         <menu>
-            <item android:id="@+id/c1" android:title="Hons"/>
-            <item android:id="@+id/c2" android:title="Inter 2nd Year"/>
-            <item android:id="@+id/c3" android:title="Inter 1st Year"/>
-            <item android:id="@+id/c4" android:title="Class 10"/>
-            <item android:id="@+id/c5" android:title="Class 9"/>
-            <item android:id="@+id/c6" android:title="Class 8"/>
-            <item android:id="@+id/c7" android:title="Class 7"/>
-            <item android:id="@+id/c8" android:title="Class 6"/>
-            <item android:id="@+id/c9" android:title="Class 5"/>
-            <item android:id="@+id/c10" android:title="Class 4"/>
-            <item android:id="@+id/c11" android:title="Class 3"/>
-            <item android:id="@+id/c12" android:title="Class 2"/>
-            <item android:id="@+id/c13" android:title="Class 1"/>
-            <item android:id="@+id/c14" android:title="Play/Nursery"/>
+            <item android:id="@+id/c2" android:title="INTER SECOND YEAR"/>
+            <item android:id="@+id/c3" android:title="INTER FIRST YEAR"/>
+            <item android:id="@+id/c4" android:title="CLASS 10"/>
+            <item android:id="@+id/c5" android:title="CLASS 9"/>
+            <item android:id="@+id/c6" android:title="CLASS 8"/>
+            <item android:id="@+id/c7" android:title="CLASS 7"/>
+            <item android:id="@+id/c8" android:title="CLASS 6"/>
+            <item android:id="@+id/c9" android:title="CLASS 5"/>
+            <item android:id="@+id/c10" android:title="CLASS 4"/>
+            <item android:id="@+id/c11" android:title="CLASS 3"/>
+            <item android:id="@+id/c12" android:title="CLASS 2"/>
+            <item android:id="@+id/c13" android:title="CLASS 1"/>
+            <item android:id="@+id/c14" android:title="NURSERY"/>
+            <item android:id="@+id/c15" android:title="PLAY"/>
         </menu>
     </item>
 
@@ -49,4 +49,6 @@
             <item android:id="@+id/g3" android:title="Arts"/>
         </menu>
     </item>
+
+    <item android:id="@+id/clear" android:title="CLEAR ALL"/>
 </menu>

@@ -242,10 +242,10 @@
                     android:id="@+id/areaAddressSpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/location"
+                    android:background="@drawable/location_tuition_post"
                     android:layout_gravity="center"
                     android:entries="@array/areaAddress_array"
-                    android:paddingLeft="40dp"/>
+                    android:paddingLeft="40dp" />
 
                 <TextView
                     android:layout_width="wrap_content"

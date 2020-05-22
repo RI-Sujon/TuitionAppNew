@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.tuitionapp_nadim">
+    package="com.example.tuitionapp_surji">
 
     <application
         android:allowBackup="true"
@@ -9,34 +9,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.tuitionapp_nadim.group.GroupCreationActivity"></activity>
-        <activity android:name="com.example.tuitionapp_nadim.batch.BatchStudentInfoTableActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.notice_board.NoticeBoardViewAndCreateActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.group.GroupTutorViewActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.batch.BatchViewInfoActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.message_box.MainMessageActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.message_box.MessageActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.batch.BatchCreationActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.verified_tutor.VerifiedTutorSetProfilePicture" />
-        <activity android:name="com.example.tuitionapp_nadim.group.GroupHomePageActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.tuition_post.TuitionPostViewActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.guardian.ViewingSearchingTutorProfileActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.verified_tutor.VerifiedTutorNotificationActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.admin.AdminTutorProfileViewActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.admin.CustomAdapterForCandidateTutorApproval" />
-        <activity android:name="com.example.tuitionapp_nadim.admin.AdminHomePageActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.tuition_post.TuitionPostActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.verified_tutor.VerifiedTutorHomePageActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.guardian.GuardianHomePageActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.verified_tutor.TutorSignUpActivityStep3" />
-        <activity android:name="com.example.tuitionapp_nadim.candidate_tutor.TutorSignUpActivityStep2" />
-        <activity android:name="com.example.tuitionapp_nadim.candidate_tutor.TutorSignUpActivityStep1" />
-        <activity android:name="com.example.tuitionapp_nadim.verified_tutor.VerifiedTutorProfileActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.candidate_tutor.TutorSignUpActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.candidate_tutor.TutorSignInActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.guardian.GuardianModuleStartActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.system.HomePageActivity" />
-        <activity android:name="com.example.tuitionapp_nadim.system.MainActivity">
+        <activity android:name="com.example.tuitionapp_surji.group.GroupCreationActivity"></activity>
+        <activity android:name="com.example.tuitionapp_surji.batch.BatchStudentInfoTableActivity" />
+        <activity android:name="com.example.tuitionapp_surji.notice_board.NoticeBoardViewAndCreateActivity" />
+        <activity android:name="com.example.tuitionapp_surji.group.GroupTutorViewActivity" />
+        <activity android:name="com.example.tuitionapp_surji.batch.BatchViewInfoActivity" />
+        <activity android:name="com.example.tuitionapp_surji.message_box.MainMessageActivity" />
+        <activity android:name="com.example.tuitionapp_surji.message_box.MessageActivity" />
+        <activity android:name="com.example.tuitionapp_surji.batch.BatchCreationActivity" />
+        <activity android:name="com.example.tuitionapp_surji.verified_tutor.VerifiedTutorSetProfilePicture" />
+        <activity android:name="com.example.tuitionapp_surji.group.GroupHomePageActivity" />
+        <activity android:name="com.example.tuitionapp_surji.tuition_post.TuitionPostViewActivity" />
+        <activity android:name="com.example.tuitionapp_surji.guardian.ViewingSearchingTutorProfileActivity" />
+        <activity android:name="com.example.tuitionapp_surji.verified_tutor.VerifiedTutorNotificationActivity" />
+        <activity android:name="com.example.tuitionapp_surji.admin.AdminTutorProfileViewActivity" />
+        <activity android:name="com.example.tuitionapp_surji.admin.CustomAdapterForCandidateTutorApproval" />
+        <activity android:name="com.example.tuitionapp_surji.admin.AdminHomePageActivity" />
+        <activity android:name="com.example.tuitionapp_surji.tuition_post.TuitionPostActivity" />
+        <activity android:name="com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity" />
+        <activity android:name="com.example.tuitionapp_surji.guardian.GuardianHomePageActivity" />
+        <activity android:name="com.example.tuitionapp_surji.verified_tutor.TutorSignUpActivityStep3" />
+        <activity android:name="com.example.tuitionapp_surji.candidate_tutor.TutorSignUpActivityStep2" />
+        <activity android:name="com.example.tuitionapp_surji.candidate_tutor.TutorSignUpActivityStep1" />
+        <activity android:name="com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity" />
+        <activity android:name="com.example.tuitionapp_surji.candidate_tutor.TutorSignUpActivity" />
+        <activity android:name="com.example.tuitionapp_surji.candidate_tutor.TutorSignInActivity" />
+        <activity android:name="com.example.tuitionapp_surji.guardian.GuardianModuleStartActivity" />
+        <activity android:name="com.example.tuitionapp_surji.system.HomePageActivity" />
+        <activity android:name="com.example.tuitionapp_surji.system.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

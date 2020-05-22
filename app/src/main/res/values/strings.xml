@@ -90,7 +90,6 @@
 
     <string-array name="preferredClass_array_bangla_medium">
         <item><b>CLASS</b></item>
-        <item>Hons</item>
         <item>INTER SECOND YEAR</item>
         <item>INTER FIRST YEAR</item>
         <item>CLASS 10</item>
@@ -109,7 +108,6 @@
 
     <string-array name="preferredClass_array_english_medium">
         <item><b>CLASS</b></item>
-        <item>Hons</item>
         <item>A2 LEVEL</item>
         <item>AS LEVEL</item>
         <item>O LEVEL</item>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/note_post"
+        android:icon="@drawable/ic_add_black_24dp"
+        android:iconTint="@color/White"
+        android:title="post"
+        android:contentDescription="content_description_search"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/note_attachment"
+        android:icon="@drawable/image_note"
+
+        android:title="attachment"
+        android:contentDescription="content_description_attachment"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/note_addPost"
+        android:icon="@drawable/ic_done_black_24dp"
+        android:title="add notice"
+        android:iconTint="@color/White"
+        android:contentDescription="content_description_more"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/note_addAttachment"
+        android:icon="@drawable/ic_done_black_24dp"
+        android:title="add notice"
+        android:iconTint="@color/White"
+        android:contentDescription="content_description_more"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/note_more"
+        android:title="more"
+        android:iconTint="@color/White"
+        android:contentDescription="content_description_more"
+        app:showAsAction="never" />
+
+</menu>

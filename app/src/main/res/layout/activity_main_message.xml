@@ -62,13 +62,13 @@
         android:layout_marginBottom="5dp"
         >
         <Button
-            android:background="@color/Beige"
+            android:backgroundTint="@color/Beige"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="145dp"
             android:text="Back"
-            android:backgroundTint="@color/Beige"
+            android:textColor="@color/RoyalBlue"
             android:onClick="backFromMessageBox"/>
 
 

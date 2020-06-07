@@ -52,7 +52,8 @@ abstract class CalendarAsyncTask extends AsyncTask<Void, Void, Boolean>
   }
 
   @Override
-  protected final Boolean doInBackground(Void... ignored) {
+  protected final Boolean doInBackground(Void... ignored)
+  {
     try {
       doInBackground();
       return true;

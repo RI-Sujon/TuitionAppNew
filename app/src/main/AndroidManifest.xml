@@ -14,7 +14,8 @@
         android:roundIcon="@drawable/appicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.tuitionapp_surji.note.Note_Home"></activity>
+        <activity android:name="com.example.tuitionapp_surji.calendar.CalendarHomeActivity"></activity>
+        <activity android:name="com.example.tuitionapp_surji.note.Note_Home" />
         <activity android:name="com.example.tuitionapp_surji.group.GroupCreationActivity" />
         <activity android:name="com.example.tuitionapp_surji.calendar.CalendarSampleActivity" />
         <activity android:name="com.example.tuitionapp_surji.calendar.ViewEventActivity" />

@@ -130,18 +130,18 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
         String meetingId = event.getHangoutLink();
         //System.out.println(meetingId);
 
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        //System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
         parent.setMeetingId(meetingId);
 
 
         String eventId = event.getId();
-        System.out.println("EVENTIDDDDDDDDDDDDDDDDDDDDDDDDDD = "+eventId);
+        //System.out.println("EVENTIDDDDDDDDDDDDDDDDDDDDDDDDDD = "+eventId);
 
 
         System.out.printf("Event created: %s\n", event.getHtmlLink());
 
-        updateDataOnFireBase(meetingId,eventId);
+        updateDataOnFireBase(meetingId,eventId,title,location,description,date,startTime,endTime,attendee);
 
         //return meetingId;
         return calendarId;
@@ -149,22 +149,35 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
     }
 
 
-    public void updateDataOnFireBase(String meetingId, String eventId){
+    public void updateDataOnFireBase( String meetingId, String eventId, String eventTitle, String location, String description, String date, String startTime,String endTime, String attendee){
         FirebaseUser  firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         String userId=firebaseUser.getUid();
         DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
 
         HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("eventCreatorId",userId);
-        hashMap.put("meetingId",meetingId);
         hashMap.put("eventId",eventId);
+        hashMap.put("meetingId",meetingId);
+        hashMap.put("eventTitle",eventTitle);
+        hashMap.put("location",location);
+        hashMap.put("description",description);
+        hashMap.put("date",date);
+        hashMap.put("startTime",startTime);
+        hashMap.put("endTime",endTime);
+        hashMap.put("attendee",attendee);
 
         databaseReference.child("Events").push().setValue(hashMap);
     }
 
 }
 
-
+/*String title;
+    String location;
+    String description;
+    String date;
+    String startTime;
+    String endTime;
+    String attendee;*/
 
 
 

@@ -76,5 +76,3 @@ dependencies {
         exclude group: 'org.apache.httpcomponents'
     }
 }
-
-

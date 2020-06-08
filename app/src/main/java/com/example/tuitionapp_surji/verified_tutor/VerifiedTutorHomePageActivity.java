@@ -17,7 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.tuitionapp_surji.calendar.CalendarSampleActivity;
+import com.example.tuitionapp_surji.calendar.CalendarHomeActivity;
 import com.example.tuitionapp_surji.group.GroupCreationActivity;
 import com.example.tuitionapp_surji.group.GroupHomePageActivity;
 import com.example.tuitionapp_surji.R;
@@ -269,7 +269,9 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
     }
 
     public void calendarEvent(){
-        Intent intent = new Intent(this, CalendarSampleActivity.class);
+        //Intent intent = new Intent(this, CalendarSampleActivity.class);
+        Intent intent = new Intent(this, CalendarHomeActivity.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();
 

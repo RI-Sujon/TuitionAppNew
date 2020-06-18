@@ -20,7 +20,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/Lavender">
+            android:background="@color/White">
 
             <ImageButton
                 android:id="@+id/drawer_button"
@@ -233,10 +233,56 @@
                         <LinearLayout
                             android:id="@+id/heading"
                             android:layout_width="match_parent"
-                            android:layout_height="260dp">
+                            android:layout_height="wrap_content">
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/recycler_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_toRightOf="@+id/heading" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Recommended"
+                            android:padding="15dp"
+                            android:textColor="@color/Black"
+                            android:textAllCaps="true"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="VIEW ALL"
+                            android:layout_alignParentRight="true"
+                            android:padding="15dp"
+                            android:textStyle="bold"
+                            android:textAllCaps="true"
+                            android:onClick="goToVerifiedTutorViewPostActivity"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-10dp"
+                        android:layout_marginStart="10dp"
+                        android:background="@color/AliceBlue">
+
+                        <LinearLayout
+                            android:id="@+id/heading2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recycler_view2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_toRightOf="@+id/heading" />

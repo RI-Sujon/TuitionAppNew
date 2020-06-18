@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tuitionapp_surji.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+//import com.google.firebase.firestore.DocumentReference;
+//import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +51,7 @@ public class TuitionPostActivity extends AppCompatActivity {
     private String postID, type ;
     private int typeFlag = 0 ;
 
+    //FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +59,7 @@ public class TuitionPostActivity extends AppCompatActivity {
 
         myRefTuitionPost = FirebaseDatabase.getInstance().getReference("TuitionPost") ;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+
 
         Intent intent = getIntent() ;
         type = intent.getStringExtra("type") ;
@@ -201,6 +207,18 @@ public class TuitionPostActivity extends AppCompatActivity {
         }
         else myRefTuitionPost.push().setValue(guardianPostInfo) ;
 
+
+        /*databaseFireStore.collection("TuitionPost").add(guardianPostInfo).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                System.out.println("Passsssssed");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println("FAILlllllllllllll");
+            }
+        }) ;*/
 
         Toast.makeText(getApplicationContext(),"successfully post",Toast.LENGTH_SHORT).show();
         goToGuardianTuitionPostViewActivity();

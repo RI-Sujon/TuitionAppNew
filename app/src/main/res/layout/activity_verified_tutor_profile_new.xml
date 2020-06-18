@@ -20,7 +20,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/back_from_profile"
-            android:padding="15dp"
+            android:paddingTop="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="15dp"
+            android:layout_marginLeft="3dp"
             android:onClick="goToBackPageActivity"/>
         <ImageView
             android:layout_width="wrap_content"
@@ -690,6 +694,32 @@
                         android:visibility="gone"/>
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="20dp">
+                    <TextView
+                        android:id="@+id/availability"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="You are Available."
+                        android:textStyle="bold"
+                        android:textColor="@color/Green"
+                        android:visibility="gone"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/change_availability_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:text=" Click to set \'Not Available\'"
+                        android:textAllCaps="false"
+                        android:textSize="13dp"
+                        android:visibility="gone"/>
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/layoutForAdmin"

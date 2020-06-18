@@ -128,7 +128,7 @@
                 android:layout_marginTop="15dp"
                 app:boxStrokeColor="@color/Black"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                app:startIconDrawable="@drawable/ic_location_city_black_24dp"
+                app:startIconDrawable="@drawable/ic_more_black_24dp"
                 app:startIconTint="@color/Black"
                 android:hint="MORE ABOUT GROUP"
                 app:endIconMode="clear_text"

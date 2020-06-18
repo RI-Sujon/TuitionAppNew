@@ -2,9 +2,13 @@ package com.example.tuitionapp_surji.candidate_tutor;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,6 +37,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -43,7 +48,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     private EditText reference1, reference2;
 
     private Uri filePath;
-    private final int PICK_IMAGE_REQUEST = 120;
+    private int PICK_IMAGE_REQUEST = 120;
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private FirebaseUser firebaseUser ;
@@ -54,11 +59,11 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     private String imageUriString ;
     private String reference1str, reference2str;
 
-    ProgressDialog progressDialog ;
+    private ProgressDialog progressDialog ;
 
     private ArrayList<VerifiedTutorInfo> verifiedTutorInfoList = new ArrayList<>() ;
 
-    private ImageUploadThread imageUploadThread ;
+    private Bitmap bitmapImage ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,8 +124,8 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
             filePathView.setText(filePath.toString());
             filePathView.setVisibility(View.VISIBLE);
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                imageView.setImageBitmap(bitmap);
+                bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                imageView.setImageBitmap(bitmapImage);
             }catch (IOException e) {
                 e.printStackTrace();
             }
@@ -128,84 +133,75 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     }
 
     public void candidateTutorRegistrationCompletion(View view) throws InterruptedException {
-        reference1str = reference1.getText().toString() ;
-        reference2str = reference2.getText().toString() ;
+        reference1str = reference1.getText().toString();
+        reference2str = reference2.getText().toString();
 
-        int flag1=0, flag2=0 ;
-        if(!reference1str.equals("")){
-            for(VerifiedTutorInfo vt: verifiedTutorInfoList){
-                if(reference1str.equals(vt.getEmailPK())){
-                    flag1 = 1 ;
+        int flag1 = 0, flag2 = 0;
+        if (!reference1str.equals("")) {
+            for (VerifiedTutorInfo vt : verifiedTutorInfoList) {
+                if (reference1str.equals(vt.getEmailPK())) {
+                    flag1 = 1;
                 }
             }
-        }
-        else{
-            flag1 = -1 ;
+        } else {
+            flag1 = -1;
         }
 
-        if(!reference2str.equals("")){
-            for(VerifiedTutorInfo vt: verifiedTutorInfoList){
-                System.out.println(reference2str+"\t\t"+vt.getEmailPK());
-                if(reference2str.equals(vt.getEmailPK())){
+        if (!reference2str.equals("")) {
+            for (VerifiedTutorInfo vt : verifiedTutorInfoList) {
+                System.out.println(reference2str + "\t\t" + vt.getEmailPK());
+                if (reference2str.equals(vt.getEmailPK())) {
                     flag2 = 1 ;
                 }
             }
-        }
-        else{
-            flag2 = -1 ;
-        }
-
-        if(reference1str.equals("nadim_mama")){
-            //goToTutorSignUpActivityStep3();
+        } else {
+            flag2 = -1;
         }
 
-        if(flag1!=-1 || flag2!=-1){
-            if(flag1==0){
+        if (reference1str.equals("nadim_mama")) {
+            updateCandidateTutorDatabase();
+        }
+
+        if (flag1 != -1 || flag2 != -1) {
+            if (flag1 == 0) {
                 Toast.makeText(getApplicationContext(), "Reference1 Does not match with any valid tutor ID", Toast.LENGTH_SHORT).show();
-            }
-            else if(flag2==0){
+            } else if (flag2 == 0) {
                 Toast.makeText(getApplicationContext(), "Reference2 Does not match with any valid tutor ID", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                if(flag1==1){
-                    ReferInfo referInfo1= new ReferInfo(firebaseUser.getEmail(),reference1str);
-                    myRefRefer.push().setValue(referInfo1) ;
+            } else {
+                if (flag1 == 1) {
+                    ReferInfo referInfo1 = new ReferInfo(firebaseUser.getEmail(), reference1str);
+                    myRefRefer.push().setValue(referInfo1);
                 }
-                if(flag2==1){
-                    ReferInfo referInfo2= new ReferInfo(firebaseUser.getEmail(),reference2str);
-                    myRefRefer.push().setValue(referInfo2) ;
+                if (flag2 == 1) {
+                    ReferInfo referInfo2 = new ReferInfo(firebaseUser.getEmail(), reference2str);
+                    myRefRefer.push().setValue(referInfo2);
                 }
 
-                imageUploadThread = new ImageUploadThread() ;
-                imageUploadThread.start();
+                uploadImage();
                 progressDialog.setTitle("Uploading...");
                 progressDialog.show();
-                progressDialog.setCancelable(false);
             }
-        }
-        else{
+        } else {
 
-            Toast.makeText(getApplicationContext(), "You need minimum 1 Reference", Toast.LENGTH_SHORT).show() ;
-            imageUploadThread = new ImageUploadThread() ;
-            imageUploadThread.start();
+            Toast.makeText(getApplicationContext(), "You need minimum 1 Reference", Toast.LENGTH_SHORT).show();
+            uploadImage();
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
-            progressDialog.setCancelable(false);
 
         }
     }
 
-    class ImageUploadThread extends Thread{
-        public void run(){
-            uploadImage();
-        }
+    private void uploadFinish(){
+        if (filePath != null) {
+            final StorageReference imageRef = storageReference.child("idCardImage/" + emailPrimaryKey);
 
-        public void uploadImage() {
-            if (filePath != null) {
+            try {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmapImage.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+                byte[] data = baos.toByteArray();
 
-                final StorageReference imageRef = storageReference.child("idCardImage/" + emailPrimaryKey);
-
-                imageRef.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                UploadTask uploadTask = imageRef.putBytes(data);
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         progressDialog.dismiss();
@@ -213,17 +209,15 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                         imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                imageUriString = uri.toString() ;
-                                goToCandidateTutorProfile();
+                                imageUriString = uri.toString();
+                                updateCandidateTutorDatabase();
                             }
                         });
-                        //gotoNextButton.setEnabled(true);
                     }
                 })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
-                            public void onFailure(@NonNull Exception e)
-                            {
+                            public void onFailure(@NonNull Exception e) {
                                 progressDialog.dismiss();
                                 Toast.makeText(getApplicationContext(), "Image Upload failed!!", Toast.LENGTH_SHORT).show();
                             }
@@ -233,41 +227,68 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                             @Override
                             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                                 double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                                progressDialog.setMessage("Uploaded " + (int)progress + "%");
+                                progressDialog.setMessage("Uploaded " + (int) progress + "%");
                             }
                         });
+
+            } catch (Exception e) {
+                System.out.println("Exception: " + e);
             }
         }
+    }
 
-        public void goToCandidateTutorProfile(){
+    public void uploadImage () {
 
-            ApproveAndBlockInfo approveAndBlockInfo = new ApproveAndBlockInfo("waiting") ;
-            myRefApprove.setValue(approveAndBlockInfo) ;
+            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
 
-            myRefCandidateTutor.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    CandidateTutorInfo candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class) ;
-                    candidateTutorInfo.setIdCardImageUri(imageUriString);
-                    myRefCandidateTutor.setValue(candidateTutorInfo) ;
-                    System.out.println("Suuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            } else {
+                uploadFinish();
+            }
+    }
 
-                    goToTutorSignUpActivityStep3() ;
-                    myRefCandidateTutor.removeEventListener(this);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    uploadFinish();
                 }
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                }
-            });
+                break;
 
+            default:
+                break;
         }
+    }
 
-        public void goToTutorSignUpActivityStep3(){
-            System.out.println("Joooooooooooooooooooooooooooooooooooooooooooooooooon");
-            Intent intent = new Intent(TutorSignUpActivityStep2.this, TutorSignUpActivityStep3.class);
-            startActivity(intent);
-            finish();
-        }
+    public void updateCandidateTutorDatabase() {
+
+        ApproveAndBlockInfo approveAndBlockInfo = new ApproveAndBlockInfo("waiting");
+        myRefApprove.setValue(approveAndBlockInfo);
+
+        myRefCandidateTutor.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                CandidateTutorInfo candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class);
+                candidateTutorInfo.setIdCardImageUri(imageUriString);
+                myRefCandidateTutor.setValue(candidateTutorInfo);
+
+                goToTutorSignUpActivityStep3();
+                myRefCandidateTutor.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+
+    }
+
+    public void goToTutorSignUpActivityStep3 () {
+        Intent intent = new Intent(TutorSignUpActivityStep2.this, TutorSignUpActivityStep3.class);
+        startActivity(intent);
+        finish();
     }
 }

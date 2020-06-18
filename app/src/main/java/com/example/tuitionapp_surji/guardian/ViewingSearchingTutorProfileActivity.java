@@ -38,16 +38,11 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
     private ArrayList<ApproveAndBlockInfo> approveAndBlockInfoList ;
     private ArrayList<CandidateTutorInfo> candidateTutorInfoArrayList ;
     private ArrayList<String> tutorUidInfoArrayList ;
-    private ArrayList<VerifiedTutorInfo> verifiedTutorInfoList ;
     private ArrayList<GroupInfo> groupInfoList ;
     private ArrayList<String> approveAndBlockTutorUidList ;
     private ArrayList<String> groupNameList ;
     private ArrayList<String> groupIDList ;
     private ArrayList<String> groupAdminEmailList ;
-    private ArrayList<String> emailList ;
-    private ArrayList<String> tutorUidList ;
-
-    private Map<String,String> profilePicUriListMap ;
 
     private CustomAdapterForTutorListView adapter ;
     private CustomAdapterForGroupListView adapter2 ;
@@ -87,9 +82,8 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
         tutorListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               // String tutorUid = tutorUidInfoArrayList.get(position) ;
-                String userEmail = emailList.get(position) ;
-                String tutorUid = tutorUidList.get(position) ;
+                String tutorUid = tutorUidInfoArrayList.get(position) ;
+                String userEmail = candidateTutorInfoArrayList.get(position).getEmailPK() ;
                 goToSelectedVerifiedTutorProfile(userEmail,tutorUid) ;
             }
         });
@@ -132,35 +126,17 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        verifiedTutorInfoList = new ArrayList<>() ;
-        tutorUidList = new ArrayList<>() ;
+
         approveAndBlockTutorUidList = new ArrayList<>() ;
         tutorUidInfoArrayList = new ArrayList<>();
         approveAndBlockInfoList = new ArrayList<>() ;
         candidateTutorInfoArrayList = new ArrayList<>() ;
         groupAdminEmailList = new ArrayList<>() ;
-        emailList = new ArrayList<>() ;
-
-        profilePicUriListMap = new HashMap<String, String>() ;
 
         groupInfoList = new ArrayList<>() ;
         groupNameList = new ArrayList<>() ;
         groupIDList = new ArrayList<>() ;
 
-        myRefVerifiedTutor.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot dS1: dataSnapshot.getChildren()){
-                    VerifiedTutorInfo verifiedTutorInfo = dS1.getValue(VerifiedTutorInfo.class) ;
-                    verifiedTutorInfoList.add(verifiedTutorInfo) ;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         myRefApproveAndBlock.addValueEventListener(new ValueEventListener() {
             @Override
@@ -182,6 +158,10 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
                             for (String info : approveAndBlockTutorUidList) {
                                 if (dS1.getKey().equals(info)){
                                     CandidateTutorInfo candidateTutorInfo = dS1.getValue(CandidateTutorInfo.class);
+                                    if(user.equals("guardian") && !candidateTutorInfo.isTutorAvailable()){
+                                        continue;
+                                    }
+
                                     candidateTutorInfoArrayList.add(candidateTutorInfo) ;
                                     tutorUidInfoArrayList.add(dS1.getKey()) ;
                                     break;
@@ -226,16 +206,6 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
     }
 
     public void setVerifiedTutorListView(){
-
-        for(VerifiedTutorInfo vT: verifiedTutorInfoList){
-            for(int i=0; i<candidateTutorInfoArrayList.size();i++){
-                if(vT.getEmailPK().equals(candidateTutorInfoArrayList.get(i).getEmailPK())){
-                    emailList.add(vT.getEmailPK()) ;
-                    tutorUidList.add(tutorUidInfoArrayList.get(i));
-                    //nameList.add(candidateTutorInfoList.get(i).getFirstName()+" "+candidateTutorInfoList.get(i).getLastName()) ;
-                }
-            }
-        }
         adapter = new CustomAdapterForTutorListView(this, candidateTutorInfoArrayList, "guardianTutor");
         tutorListView.setAdapter(adapter);
     }

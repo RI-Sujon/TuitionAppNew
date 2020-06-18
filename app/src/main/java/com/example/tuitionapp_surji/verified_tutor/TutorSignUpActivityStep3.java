@@ -1,5 +1,6 @@
 package com.example.tuitionapp_surji.verified_tutor;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -16,11 +17,16 @@ import android.widget.Toast;
 import com.example.tuitionapp_surji.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TutorSignUpActivityStep3 extends AppCompatActivity{
 
@@ -32,8 +38,7 @@ public class TutorSignUpActivityStep3 extends AppCompatActivity{
 
     List<String> mediumArray, classArray, groupArray, subjectArray,daysPerWeekArray;
 
-    private FirebaseDatabase database ;
-    private DatabaseReference databaseReference ;
+    private DatabaseReference myRefCandidateTutor, myRefVerifiedTutor ;
     private FirebaseUser firebaseUser ;
 
     @Override
@@ -42,8 +47,9 @@ public class TutorSignUpActivityStep3 extends AppCompatActivity{
         setContentView(R.layout.activity_tutor_sign_up_step3_new);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-        database = FirebaseDatabase.getInstance() ;
-        databaseReference = database.getReference("VerifiedTutor").child(firebaseUser.getUid().toString()) ;
+
+        myRefVerifiedTutor = FirebaseDatabase.getInstance().getReference("VerifiedTutor").child(firebaseUser.getUid().toString()) ;
+        myRefCandidateTutor = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(firebaseUser.getUid().toString()) ;
     }
 
     protected void onStart() {
@@ -112,13 +118,21 @@ public class TutorSignUpActivityStep3 extends AppCompatActivity{
         VerifiedTutorInfo verifiedTutorInfo = new VerifiedTutorInfo(emailPK, medium, preferredClass, preferredGroup, preferredSubject, preferredAreas ,
                 experienceStatus, daysPerWeekOrMonth, minimumSalary) ;
 
-        databaseReference.setValue(verifiedTutorInfo) ;
+        myRefVerifiedTutor.setValue(verifiedTutorInfo) ;
+
+        Map<String,Object> update = new HashMap<>() ;
+
+        update.put("tutorAvailable",true);
+
+        myRefCandidateTutor.updateChildren(update) ;
+
         Toast.makeText(getApplicationContext(),"sign up successfully",Toast.LENGTH_SHORT).show();
         goToSetProfilePictureActivity();
     }
 
     public void goToSetProfilePictureActivity(){
         Intent intent = new Intent(this, VerifiedTutorSetProfilePicture.class);
+        intent.putExtra("intentFlag", "registration") ;
         intent.putExtra("userEmail", firebaseUser.getEmail()) ;
         intent.putExtra("userUid", firebaseUser.getUid()) ;
         startActivity(intent);
@@ -127,45 +141,10 @@ public class TutorSignUpActivityStep3 extends AppCompatActivity{
 
     public void selectMedium() {
 
-        //ArrayAdapter mediumAdapter = new ArrayAdapter(this,android.R.layout.simple_dropdown_item_1line, mediumArray);
-        //mediumBox.setAdapter(mediumAdapter);
-        //mediumBox.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-        //mediumBox.setThreshold(0);
-        /*final int[] start = {0};
-        final int[] end = {0};
-
-
-        mediumBox.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                mediumBox.showDropDown();
-                return false;
-            }
-        });*/
-
-        /*mediumBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                start[0] = end[0] ;
-                end[0] = end[0] + mediumArray.get(position).length() ;
-                System.out.println("llllllllllllllll:" + mediumArray.get(position).length());
-                SpannableString spannableStr = new SpannableString(mediumBox.getText().toString());
-                ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.RED);
-                spannableStr.setSpan(foregroundColorSpan, 0, end[0], Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                mediumBox.setText(spannableStr);
-                //mediumBox.set
-            }
-        });*/
-
         mediumBox.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               /* if (mediumBox.getSelectedItemPosition() == 0) {
-                }
-                else {
-                    String str = mediumBox.getSelectedItem().toString();
-                    mediumTextView.setText(str);
-                }/*/
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {

@@ -60,11 +60,13 @@ public class CustomAdapterForTutorListView extends BaseAdapter {
         }
 
         if(candidateTutorInfoArrayList.get(position).getProfilePictureUri()!=null){
+            System.out.println(position + " : dddddddddd: " + candidateTutorInfoArrayList.get(position).getEmailPK());
             if(!candidateTutorInfoArrayList.get(position).getProfilePictureUri().equals("")){
                 Picasso.get().load(candidateTutorInfoArrayList.get(position).getProfilePictureUri()).into(holder.imageView) ;
             }
         }
         else{
+            System.out.println(position + " : ddddddddddfffffff: " + candidateTutorInfoArrayList.get(position).getEmailPK());
             if(candidateTutorInfoArrayList.get(position).getGender().equals("MALE")){
                 holder.imageView.setImageResource(R.drawable.male_pic);
             }

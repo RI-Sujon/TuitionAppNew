@@ -7,6 +7,7 @@ public class CandidateTutorInfo {
     private String userName, emailPK, mobileNumber, gender, areaAddress, currentPosition, edu_instituteName, attachedHall, edu_tutorSubject, idCardImageUri  ;
     private ArrayList<String> verifiedTutorReferences ;
     private String profilePictureUri ;
+    private boolean tutorAvailable ;
 
     public CandidateTutorInfo(){
 
@@ -16,6 +17,7 @@ public class CandidateTutorInfo {
         this.userName = userName;
         this.emailPK = emailPK;
         this.mobileNumber = mobileNumber;
+        tutorAvailable = false ;
     }
 
     public CandidateTutorInfo(String gender, String areaAddress, String currentPosition, String edu_instituteName, String edu_tutorSubject, String attachedHall) {
@@ -25,6 +27,7 @@ public class CandidateTutorInfo {
         this.edu_instituteName = edu_instituteName;
         this.edu_tutorSubject = edu_tutorSubject;
         this.attachedHall =attachedHall ;
+        tutorAvailable = false ;
     }
 
     public CandidateTutorInfo(String userName, String emailPK, String mobileNumber, String gender, String areaAddress, String currentPosition, String edu_instituteName, String edu_tutorSubject, String attachedHall) {
@@ -133,5 +136,13 @@ public class CandidateTutorInfo {
 
     public void setProfilePictureUri(String profilePictureUri) {
         this.profilePictureUri = profilePictureUri;
+    }
+
+    public boolean isTutorAvailable() {
+        return tutorAvailable;
+    }
+
+    public void setTutorAvailable(boolean tutorAvailable) {
+        this.tutorAvailable = tutorAvailable;
     }
 }

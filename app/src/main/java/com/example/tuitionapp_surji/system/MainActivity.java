@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startModule() {
-
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
@@ -80,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()){
-
                                     myRefCandidateTutorInfo.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot1) {
@@ -120,8 +118,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }) ;
-
-
     }
 
     public void goToVerifiedTutorHomePageActivity(){
@@ -139,12 +135,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(tutorEmail.charAt(0)=='-'){
-            tutorEmail = tutorEmail.substring(1,tutorEmail.length()) ;
+            tutorEmail = tutorEmail.substring(1, tutorEmail.length()) ;
         }
 
         userInfo.add(tutorEmail) ;
         userInfo.add(tutorUid) ;
         userInfo.add(tutorGender) ;
+        System.out.println("Mainnnnnnnn:" + tutorGender);
 
         Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
         intent.putStringArrayListExtra("userInfo", userInfo) ;

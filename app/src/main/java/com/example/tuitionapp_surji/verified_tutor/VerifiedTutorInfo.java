@@ -18,6 +18,7 @@ public class VerifiedTutorInfo {
         this.experienceStatus = experienceStatus;
         this.preferredDaysPerWeekOrMonth = preferredDaysPerWeekOrMonth;
         this.minimumSalary = minimumSalary;
+
     }
 
     public String getEmailPK() {

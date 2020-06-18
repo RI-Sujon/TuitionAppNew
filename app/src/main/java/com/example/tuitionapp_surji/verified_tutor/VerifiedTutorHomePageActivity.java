@@ -58,7 +58,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
 
     private DrawerLayout drawerLayout ;
     private NavigationView navigationView ;
-    private RecyclerView recyclerView ;
+    private RecyclerView recyclerView, recyclerView2 ;
 
     private TextView nameTextView, emailTextView ;
     private ImageView profilePic ;
@@ -76,6 +76,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         drawerLayout = findViewById(R.id.drawer_layout) ;
         navigationView = findViewById(R.id.navigation_view) ;
         recyclerView = findViewById(R.id.recycler_view) ;
+        recyclerView2 = findViewById(R.id.recycler_view2) ;
 
         navigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.navigation_drawer_open,R.string.navigation_drawer_close) ;
@@ -123,6 +124,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
                 verifiedTutorInfo = dataSnapshot.getValue(VerifiedTutorInfo.class) ;
 
                 preparationForRecyclerView() ;
+                myRefVerifiedTutor.removeEventListener(this);
             }
 
             @Override
@@ -169,10 +171,14 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
 
     private void recyclerViewOperation() {
         recyclerView.setHasFixedSize(true);
+        recyclerView2.setHasFixedSize(true);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView2.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
 
         RecyclerAdapterForTutorHomePage adapter = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList) ;
         recyclerView.setAdapter(adapter);
+        recyclerView2.setAdapter(adapter);
     }
 
     public  void goToMessageBox(View view){

@@ -7,14 +7,15 @@
     tools:context=".verified_tutor.VerifiedTutorSetProfilePicture">
 
     <RelativeLayout
-        android:id="@+id/profilePictureLayout"
+        android:id="@+id/registration_profile_picture_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/profile_back_page"
-            android:layout_marginTop="-650dp"/>
+            android:layout_height="110dp"
+            android:src="@drawable/border3"
+            android:layout_marginTop="0dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,6 +55,38 @@
             android:onClick="finishingRegistration"/>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/view_and_change_profile_pic_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:padding="15dp"/>
 
+        <ImageView
+            android:id="@+id/profile_picture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="150dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="20dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/changeProfilePicButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Profile Picture"
+            android:textColor="@color/White"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40dp"
+            android:visibility="gone"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

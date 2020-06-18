@@ -11,12 +11,14 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,13 +30,17 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
 
-    private ImageView profilePictureImageView ;
+    private ImageView profilePictureImageView2, profilePictureImageView, backButton ;
+
+    private RelativeLayout viewAndChangeProfilePicLayout, registrationProfilePicLayout ;
 
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 122;
@@ -42,38 +48,105 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
     private DatabaseReference myRefCandidateTutor ;
     private FirebaseUser firebaseUser ;
 
-    private String profilePictureUri ;
-    private String tutorName, tutorProfilePicUri="", tutorEmail, tutorUid, tutorGender;
+    private String tutorName, tutorProfilePicUri="", tutorUid2, tutorGender;
     private CandidateTutorInfo candidateTutorInfo ;
+
+    private String intentFlag, user, groupID, tutorEmail, tutorUid, profilePicUri ;
+    private ArrayList<String> userInfo ;
+
+    private MaterialButton changeProfilePicButton ;
+
+    private Bitmap bitmapImage ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verified_tutor_set_profile_picture);
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        tutorEmail = firebaseUser.getEmail() ;
-        tutorUid = firebaseUser.getUid() ;
+        Intent intent = getIntent() ;
+        intentFlag = intent.getStringExtra("intentFlag") ;
 
-        myRefCandidateTutor = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(tutorUid) ;
-        storageReference = FirebaseStorage.getInstance().getReference() ;
+        viewAndChangeProfilePicLayout = findViewById(R.id.view_and_change_profile_pic_layout) ;
+        registrationProfilePicLayout = findViewById(R.id.registration_profile_picture_layout) ;
 
-        profilePictureImageView = findViewById(R.id.profileImageView) ;
+        if(intentFlag.equals("profile")){
+            viewAndChangeProfilePicLayout.setVisibility(View.VISIBLE);
+            user = intent.getStringExtra("user") ;
+            tutorUid = intent.getStringExtra("tutorUid") ;
+            tutorEmail = intent.getStringExtra("tutorEmail") ;
+            groupID = intent.getStringExtra("groupID") ;
+            profilePicUri = intent.getStringExtra("profilePicUri") ;
 
-        myRefCandidateTutor.addValueEventListener(new ValueEventListener() {
+            userInfo = intent.getStringArrayListExtra("userInfo") ;
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class) ;
-                tutorName = candidateTutorInfo.getUserName();
-                tutorGender = candidateTutorInfo.getUserName();
+            profilePictureImageView = findViewById(R.id.profile_picture) ;
+            changeProfilePicButton = findViewById(R.id.changeProfilePicButton) ;
+            backButton = findViewById(R.id.backButton) ;
+
+            if(user.equals("tutor")){
+                tutorEmail = userInfo.get(2) ;
+                changeProfilePicButton.setVisibility(View.VISIBLE);
+
+                myRefCandidateTutor = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(userInfo.get(3)) ;
+                storageReference = FirebaseStorage.getInstance().getReference() ;
+
+                myRefCandidateTutor.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class) ;
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                    }
+                });
             }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
+            if(profilePicUri.equals(null)||profilePicUri.equals("")){
             }
-        });
+            else {
+                Picasso.get().load(profilePicUri).into(profilePictureImageView);
+            }
 
+            changeProfilePicButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectImage(null);
+                }
+            });
+
+            backButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    backToTutorProfile();
+                }
+            });
+
+        }
+        else {
+            registrationProfilePicLayout.setVisibility(View.VISIBLE);
+            firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            tutorEmail = firebaseUser.getEmail() ;
+            tutorUid2 = firebaseUser.getUid() ;
+
+            myRefCandidateTutor = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(tutorUid2) ;
+            storageReference = FirebaseStorage.getInstance().getReference() ;
+
+            profilePictureImageView2 = findViewById(R.id.profileImageView) ;
+
+            myRefCandidateTutor.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class) ;
+                    tutorName = candidateTutorInfo.getUserName();
+                    tutorGender = candidateTutorInfo.getUserName();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                }
+            });
+        }
     }
 
     public void selectImage(View view) {
@@ -90,8 +163,13 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                profilePictureImageView.setImageBitmap(bitmap);
+                bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                if(intentFlag.equals("registration")){
+                    profilePictureImageView2.setImageBitmap(bitmapImage);
+                }
+                else {
+                    uploadImage(null);
+                }
             }catch (IOException e) {
                 e.printStackTrace();
             }
@@ -99,53 +177,72 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
     }
 
     public void uploadImage(View view) {
+
+        final StorageReference imageRef = storageReference.child("profilePicture/" + tutorEmail);
+
         if (filePath != null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
-            final StorageReference imageRef = storageReference.child("profilePicture/" + tutorEmail);
 
-            imageRef.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "Image Uploaded!!", Toast.LENGTH_SHORT).show();
-                    imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            profilePictureUri = uri.toString() ;
-                            tutorProfilePicUri = profilePictureUri ;
-                            finishingRegistration(null);
-                        }
-                    });
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
-                            progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Image Upload failed!!", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            try {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmapImage.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+                byte[] data = baos.toByteArray();
 
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            progressDialog.setMessage("Uploaded " + (int)progress + "%");
-                        }
-                    });
+                UploadTask uploadTask = imageRef.putBytes(data);
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Image Uploaded!!", Toast.LENGTH_SHORT).show();
+                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                tutorProfilePicUri = uri.toString();
+                                finishingRegistration(null);
+                            }
+                        });
+                    }
+                })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Image Upload failed!!", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                                progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                            }
+                        });
+
+            } catch (Exception e) {
+                System.out.println("Exception: " + e);
+            }
         }
+        else selectImage(null);
     }
 
     public void finishingRegistration(View view){
         if(view==null){
-            candidateTutorInfo.setProfilePictureUri(profilePictureUri);
-            myRefCandidateTutor.setValue(candidateTutorInfo) ;
-        }
+            if(intentFlag.equals("registration")){
+                candidateTutorInfo.setProfilePictureUri(tutorProfilePicUri);
+                myRefCandidateTutor.setValue(candidateTutorInfo) ;
+                goToVerifiedTutorHomePage();
 
-        goToVerifiedTutorHomePage();
+            }
+            else {
+                candidateTutorInfo.setProfilePictureUri(tutorProfilePicUri);
+                myRefCandidateTutor.setValue(candidateTutorInfo) ;
+                backToTutorProfile() ;
+            }
+        }
+        else goToVerifiedTutorHomePage();
     }
 
 
@@ -170,11 +267,22 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
         }
 
         userInfo.add(tutorEmail) ;
-        userInfo.add(tutorUid) ;
+        userInfo.add(tutorUid2) ;
         userInfo.add(tutorGender) ;
 
         Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
         intent.putStringArrayListExtra("userInfo", userInfo) ;
+        startActivity(intent);
+        finish();
+    }
+
+    private void backToTutorProfile(){
+        Intent intent = new Intent(this, VerifiedTutorProfileActivity.class);
+        intent.putExtra("user", user) ;
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
+        intent.putExtra("tutorUid", tutorUid) ;
+        intent.putExtra("groupID", groupID) ;
+        intent.putExtra("tutorEmail", tutorEmail) ;
         startActivity(intent);
         finish();
     }

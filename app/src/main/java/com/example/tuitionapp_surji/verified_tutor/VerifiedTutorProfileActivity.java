@@ -27,6 +27,7 @@ import com.example.tuitionapp_surji.group.GroupHomePageActivity;
 import com.example.tuitionapp_surji.guardian.ViewingSearchingTutorProfileActivity;
 import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
 import com.example.tuitionapp_surji.R;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +40,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import static android.graphics.Color.GRAY;
+import static android.graphics.Color.GREEN;
+import static android.graphics.Color.RED;
 
 public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
@@ -73,6 +76,9 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     private ImageButton privacyMobileNumber, privacyAddress, privacyEmail, privacySubject ;
     private ImageButton privacyMedium, privacyClass, privacyGroup, privacySubjectList, privacyArea, privacyDaysPerWeek, privacySalary ;
 
+    private TextView availability ;
+    private MaterialButton changeAvailabilityButton ;
+
     private int mobileNumberFlag = 0, addressFlag = 0, emailFlag = 0, subjectFlag = 0;
     private int mediumFlag = 0, classFlag = 0, groupFlag = 0, subjectListFlag = 0, areaFlag = 0, daysPerWeekFlag = 0, salaryFlag = 0 ;
 
@@ -85,7 +91,6 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;
         tutorUid = intent.getStringExtra("tutorUid");
-
 
         userProfilePicImageView = findViewById(R.id.profilePicImageView) ;
         idCardImageView = findViewById(R.id.idCardImageView) ;
@@ -202,6 +207,9 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                     verifiedTutorInfo = dataSnapshot.getValue(VerifiedTutorInfo.class) ;
                     addVerifiedTutorInfoToProfile();
                     myRefVerifiedTutorInfo.removeEventListener(this);
+
+                    viewAndChangeProfilePicture();
+
                 }
             }
 
@@ -250,6 +258,9 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         privacyDaysPerWeek = findViewById(R.id.privacy_days_per_week) ;
         privacySalary = findViewById(R.id.privacy_salary) ;
 
+        availability = findViewById(R.id.availability) ;
+        changeAvailabilityButton = findViewById(R.id.change_availability_button) ;
+
         mobileNumberRow = findViewById(R.id.mobile_number_row) ;
         emailRow = findViewById(R.id.email_row) ;
         addressRow = findViewById(R.id.address_row) ;
@@ -271,6 +282,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                 experienceButton.setImageResource(R.drawable.exp_gray);
             }
         });
+
         excellenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -280,6 +292,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                 experienceButton.setImageResource(R.drawable.exp_gray);
             }
         });
+
         experienceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -295,6 +308,43 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             experienceButton.setVisibility(View.GONE);
         }
 
+        if(user.equals("tutor")){
+            availability.setVisibility(View.VISIBLE);
+            changeAvailabilityButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void viewAndChangeProfilePicture(){
+        userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VerifiedTutorProfileActivity.this, VerifiedTutorSetProfilePicture.class);
+
+                intent.putExtra("intentFlag","profile") ;
+
+                if(user.equals("tutor")){
+                    intent.putStringArrayListExtra("userInfo", userInfo) ;
+                }
+                else if(user.equals("GroupAdmin")){
+                    intent.putExtra("tutorUid", tutorUid) ;
+                    intent.putExtra("groupID", groupID) ;
+                    intent.putStringArrayListExtra("userInfo", userInfo) ;
+                }
+                else if(user.equals("GroupVisitor")){
+                    intent.putExtra("tutorUid", tutorUid) ;
+                    intent.putExtra("groupID", groupID) ;
+                }
+                else {
+                    intent.putExtra("tutorUid", tutorUid) ;
+                    intent.putExtra("userEmail", userEmail) ;
+                }
+
+                intent.putExtra("user", user) ;
+                intent.putExtra("profilePicUri",candidateTutorInfo.getProfilePictureUri()) ;
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void addCandidateTutorInfoToProfile(){
@@ -377,9 +427,46 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         if(user.equals("admin")){
             Picasso.get().load(candidateTutorInfo.getIdCardImageUri()).into(idCardImageView) ;
         }
+
+        final boolean av = candidateTutorInfo.isTutorAvailable();
+        if(av){
+            availability.setText("You Are Available. ");
+            availability.setTextColor(Color.rgb(35,168,41));
+            changeAvailabilityButton.setText("Click to set \"Not Available\"");
+        }
+        else {
+            availability.setText("You Are Not Available. ");
+            availability.setTextColor(RED);
+            changeAvailabilityButton.setText("Click to set \"Available\"");
+        }
+
+        changeAvailabilityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(av){
+                    candidateTutorInfo.setTutorAvailable(false);
+                    myRefCandidateTutorInfo.setValue(candidateTutorInfo) ;
+                    Intent intent = new Intent(VerifiedTutorProfileActivity.this, VerifiedTutorProfileActivity.class);
+                    intent.putStringArrayListExtra("userInfo", userInfo) ;
+                    intent.putExtra("user", "tutor") ;
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+                    candidateTutorInfo.setTutorAvailable(true);
+                    myRefCandidateTutorInfo.setValue(candidateTutorInfo) ;
+                    Intent intent = new Intent(VerifiedTutorProfileActivity.this, VerifiedTutorProfileActivity.class);
+                    intent.putStringArrayListExtra("userInfo", userInfo) ;
+                    intent.putExtra("user", "tutor") ;
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
     }
 
     public void addVerifiedTutorInfoToProfile(){
+
 
         String mediumText = verifiedTutorInfo.getPreferredMediumOrVersion() ;
         if(mediumText.charAt(0)=='-' && (user.equals("tutor")||user.equals("admin"))){
@@ -1105,16 +1192,6 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         myRefApproveAndBlockInfo.setValue(approveAndBlockInfo) ;
     }
 
-    public void approveCandidateTutorAsAVerifiedTutor(View view){
-        DatabaseReference myRefApproveInfo = FirebaseDatabase.getInstance().getReference("ApproveAndBlock") ;
-        Button approveButton = findViewById(R.id.approveButton) ;
-        approveButton.setText("Approved");
-        approveButton.setBackgroundColor(GRAY);
-        approveButton.setEnabled(false);
-        ApproveAndBlockInfo approveInfo = new ApproveAndBlockInfo("tuitionapsspl02@gmail.com", "approved") ;
-        myRefApproveInfo.push().setValue(approveInfo) ;
-    }
-
     public void goToBackPageActivity(View view){
         if(user.equals("tutor")){
             Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
@@ -1125,51 +1202,51 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         else if(user.equals("guardian")){
             Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class);
             intent.putExtra("user",user) ;
-            startActivity(intent);
-            finish();
+            startActivity(intent) ;
+            finish() ;
         }
         else if(user.equals("admin")){
             Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class);
             intent.putExtra("user",user) ;
-            startActivity(intent);
-            finish();
+            startActivity(intent) ;
+            finish() ;
         }
         else if(user.equals("admin2") || user.equals("admin3")){
-            Intent intent = new Intent(this, AdminTutorProfileViewActivity.class);
+            Intent intent = new Intent(this, AdminTutorProfileViewActivity.class) ;
             if(user.equals("admin2")) intent.putExtra("flag","approveTutor") ;
             else if(user.equals("admin3")) intent.putExtra("flag","blockTutor") ;
-            startActivity(intent);
-            finish();
+            startActivity(intent) ;
+            finish() ;
         }
         else if(user.equals("groupAdmin")){
-            Intent intent = new Intent(this, GroupHomePageActivity.class);
+            Intent intent = new Intent(this, GroupHomePageActivity.class) ;
             intent.putExtra("user","tutor") ;
             intent.putStringArrayListExtra("userInfo",userInfo) ;
             intent.putExtra("groupID", groupID) ;
-            startActivity(intent);
-            finish();
+            startActivity(intent) ;
+            finish() ;
         }
         else if(user.equals("groupVisitor")){
-            Intent intent = new Intent(this, GroupHomePageActivity.class);
+            Intent intent = new Intent(this, GroupHomePageActivity.class) ;
             intent.putExtra("user","guardian") ;
             intent.putExtra("groupID", groupID) ;
-            startActivity(intent);
-            finish();
+            startActivity(intent) ;
+            finish() ;
         }
 
     }
     @Override
     public void onBackPressed(){
-        goToBackPageActivity(null);
+        goToBackPageActivity(null) ;
     }
 
     public void onPopupButtonClick(View view) {
-        final PopupMenu popup = new PopupMenu(this, view);
+        final PopupMenu popup = new PopupMenu(this, view) ;
         if(user.equals("tutor")){
-            popup.getMenuInflater().inflate(R.menu.profile_menu, popup.getMenu());
+            popup.getMenuInflater().inflate(R.menu.profile_menu, popup.getMenu()) ;
         }
         else if(user.equals("guardian")){
-            popup.getMenuInflater().inflate(R.menu.tutor_profile_popup_for_guardian, popup.getMenu());
+            popup.getMenuInflater().inflate(R.menu.tutor_profile_popup_for_guardian, popup.getMenu()) ;
         }
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -1185,7 +1262,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show() ;
                 }
 
-                popup.dismiss();
+                popup.dismiss() ;
                 return true ;
             }
         });

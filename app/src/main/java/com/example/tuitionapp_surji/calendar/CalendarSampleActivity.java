@@ -128,7 +128,7 @@ public final class CalendarSampleActivity extends Activity  {
 
     ArrayList<String> eventInfoList = new ArrayList<>();
 
-
+    private ArrayList<String> userInfo ;
 
 
 
@@ -152,6 +152,10 @@ public final class CalendarSampleActivity extends Activity  {
         setContentView(R.layout.activity_calendar_sample);
         //listView = findViewById(R.id.list);
         //registerForContextMenu(listView);
+
+
+        Intent intent = getIntent() ;
+        userInfo = intent.getStringArrayListExtra("userInfo") ;
 
 
         credential =
@@ -436,6 +440,7 @@ public final class CalendarSampleActivity extends Activity  {
 
      Intent intent = new Intent(this,ViewEventActivity.class);
      intent.putExtra("eventInfo", eventInfoList);
+     intent.putStringArrayListExtra("userInfo", userInfo) ;
      startActivity(intent);
      finish();
     }
@@ -518,8 +523,20 @@ public final class CalendarSampleActivity extends Activity  {
     }
 
 
+    public void goToHomePageActivity(View view) {
 
+        Intent intent = new Intent(this, CalendarHomeActivity.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
+        startActivity(intent);
+        finish();
+    }
 
+    public void ViewTheEvents(View view) {
+        Intent intent = new Intent(this, ViewEventActivity.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
+        startActivity(intent);
+        finish();
+    }
 }
 
 

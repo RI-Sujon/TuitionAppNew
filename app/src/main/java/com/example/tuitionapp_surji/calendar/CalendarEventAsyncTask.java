@@ -8,10 +8,15 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 
 public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
@@ -97,7 +102,6 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
         for(int i=0; i<allAttendees.size(); i++){
             System.out.println(allAttendees.get(i));
             attendees[i] = new EventAttendee().setEmail(allAttendees.get(i));
-            //new EventAttendee().setEmail(allAttendees.get(i));
         }
         event.setAttendees(Arrays.asList(attendees));
 
@@ -126,25 +130,66 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
         String meetingId = event.getHangoutLink();
         //System.out.println(meetingId);
 
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        //System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
         parent.setMeetingId(meetingId);
 
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+        String eventId = event.getId();
+        //System.out.println("EVENTIDDDDDDDDDDDDDDDDDDDDDDDDDD = "+eventId);
 
 
         System.out.printf("Event created: %s\n", event.getHtmlLink());
-        return meetingId;
+
+        updateDataOnFireBase(meetingId,eventId,title,location,description,date,startTime,endTime,attendee);
+
+        //return meetingId;
+        return calendarId;
+
     }
 
-  /*  @Override
-    protected void onPostExecute(String meetingId) {
-        super.onPostExecute(meetingId);
 
-        //parent.ReturnThreadResult(meetingId);
+    public void updateDataOnFireBase( String meetingId, String eventId, String eventTitle, String location, String description, String date, String startTime,String endTime, String attendee){
+        FirebaseUser  firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+        String userId=firebaseUser.getUid();
+        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
 
-    }*/
+        HashMap<String,String> hashMap = new HashMap<>();
+        hashMap.put("eventCreatorId",userId);
+        hashMap.put("eventId",eventId);
+        hashMap.put("meetingId",meetingId);
+        hashMap.put("eventTitle",eventTitle);
+        hashMap.put("location",location);
+        hashMap.put("description",description);
+        hashMap.put("date",date);
+        hashMap.put("startTime",startTime);
+        hashMap.put("endTime",endTime);
+        hashMap.put("attendee",attendee);
+
+        databaseReference.child("Events").push().setValue(hashMap);
+    }
+
 }
+
+/*String title;
+    String location;
+    String description;
+    String date;
+    String startTime;
+    String endTime;
+    String attendee;*/
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

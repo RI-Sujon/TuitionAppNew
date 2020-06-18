@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Wheat"
+    tools:context=".note.Note_Home"
+    >
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/noteTopAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Note"
+            app:menu="@menu/top_app_bar_note"
+            android:backgroundTint="#039BE5"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Note: A RecyclerView can also be used -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="40dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/note_title_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TITLE :"
+                android:layout_marginLeft="22dp"
+                android:layout_marginBottom="-10dp"
+                android:textColor="@color/Black"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/note_titleInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                app:counterEnabled="true"
+                app:counterMaxLength="19"
+                app:endIconMode="clear_text"
+                android:visibility="gone">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/note_title_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:hint="TITLE"
+                    android:textStyle="bold"
+                    android:maxLength="19"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/note_body_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NOTE :"
+                android:layout_marginLeft="22dp"
+                android:layout_marginBottom="-10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/Black"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/note_postInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:textAlignment="center"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                android:visibility="gone"
+                app:counterEnabled="true"
+                app:counterMaxLength="199">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/note_post_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:gravity="top"
+                    android:paddingLeft="15dp"
+                    android:maxLength="199"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/addNoteButton"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="SUBMIT"
+                android:textColor="@color/White"
+                android:textStyle="bold"
+                android:layout_margin="30dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/colorAccent"
+                android:padding="10dp"
+                android:textSize="18dp"
+                android:onClick="addPostOperation"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/note_attachment_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/Black"
+                android:visibility="visible"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"/>
+
+            <Button
+                android:id="@+id/addNoteAttachmentButton"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Upload"
+                android:layout_margin="30dp"
+                android:backgroundTint="@color/Green"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:padding="10dp"
+                android:onClick="uploadPDF"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/noteTutorListLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ListView
+            android:layout_marginTop="70dp"
+            android:id="@+id/note_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="0.5dp"
+            android:divider="@color/White" />
+    </LinearLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

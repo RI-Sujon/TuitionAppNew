@@ -17,11 +17,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.tuitionapp_surji.calendar.CalendarHomeActivity;
 import com.example.tuitionapp_surji.group.GroupCreationActivity;
 import com.example.tuitionapp_surji.group.GroupHomePageActivity;
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.group.GroupInfo;
 import com.example.tuitionapp_surji.message_box.MainMessageActivity;
+import com.example.tuitionapp_surji.note.Note_Home;
 import com.example.tuitionapp_surji.system.HomePageActivity;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostInfo;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostViewActivity;
@@ -208,6 +210,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
                     GroupInfo groupInfo = dS1.getValue(GroupInfo.class) ;
                     if(groupInfo.getGroupAdminUid().equals(userInfo.get(3))){
                         String groupID = dS1.getKey() ;
+
                         Intent intent = new Intent(VerifiedTutorHomePageActivity.this, GroupHomePageActivity.class) ;
                         intent.putExtra("user" , "tutor") ;
                         intent.putStringArrayListExtra("userInfo", userInfo) ;
@@ -271,6 +274,15 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
+    public void calendarEvent(){
+        //Intent intent = new Intent(this, CalendarSampleActivity.class);
+        Intent intent = new Intent(this, CalendarHomeActivity.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
+        startActivity(intent);
+        finish();
+
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -281,10 +293,26 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
             case R.id.log_out:
                 signOut();
                 break;
+
+            case  R.id.calenderMenuId:
+                calendarEvent();
+                break;
+
+            case R.id.notes:
+                addNote();
+                break;
+
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void addNote() {
+        Intent intent = new Intent(this, Note_Home.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
+        startActivity(intent);
+        finish();
     }
 
     @Override

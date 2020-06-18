@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/Beige"
+    tools:context=".calendar.CalendarHomeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+
+        android:padding="1dp">
+
+        <ImageButton
+            android:layout_marginLeft="10dp"
+            android:background="@color/colorAccent"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:onClick="goBackToHomePage"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Events"
+            android:textSize="25sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="470dp"
+        android:orientation="vertical"
+        android:background="@color/Beige"
+        >
+
+        <ListView
+            android:layout_marginTop="20dp"
+            android:id="@+id/events_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="0.5dp"
+            android:divider="@color/colorAccent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/Beige"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:background="@color/Beige"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/plus"
+            android:onClick="addCalendarEvent"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -2,13 +2,9 @@ package com.example.tuitionapp_surji.candidate_tutor;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -50,12 +46,12 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     private Uri filePath;
     private int PICK_IMAGE_REQUEST = 120;
     private FirebaseStorage storage;
-    private StorageReference storageReference;
+   private StorageReference storageReference;
     private FirebaseUser firebaseUser ;
     private DatabaseReference myRefCandidateTutor, myRefRefer, myRefVerifiedTutor, myRefApprove ;
 
 
-    private String emailPrimaryKey ;
+   private String emailPrimaryKey ;
     private String imageUriString ;
     private String reference1str, reference2str;
 
@@ -63,7 +59,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
 
     private ArrayList<VerifiedTutorInfo> verifiedTutorInfoList = new ArrayList<>() ;
 
-    private Bitmap bitmapImage ;
+   private Bitmap bitmapImage ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,14 +173,14 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                     myRefRefer.push().setValue(referInfo2);
                 }
 
-                uploadImage();
+                uploadFinish();
                 progressDialog.setTitle("Uploading...");
                 progressDialog.show();
             }
         } else {
 
             Toast.makeText(getApplicationContext(), "You need minimum 1 Reference", Toast.LENGTH_SHORT).show();
-            uploadImage();
+            uploadFinish();
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
@@ -237,7 +233,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
         }
     }
 
-    public void uploadImage () {
+    /*public void uploadImage () {
 
             int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
 
@@ -246,8 +242,9 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
             } else {
                 uploadFinish();
             }
-    }
+    }*/
 
+/*
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -260,7 +257,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
             default:
                 break;
         }
-    }
+    }*/
 
     public void updateCandidateTutorDatabase() {
 

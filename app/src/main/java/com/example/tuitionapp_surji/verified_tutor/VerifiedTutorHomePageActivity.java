@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.tuitionapp_surji.calendar.CalendarHomeActivity;
+import com.example.tuitionapp_surji.demo_video.DemoVideoMainActivity;
 import com.example.tuitionapp_surji.group.GroupCreationActivity;
 import com.example.tuitionapp_surji.group.GroupHomePageActivity;
 import com.example.tuitionapp_surji.R;
@@ -241,6 +242,14 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
 
     public void goToVerifiedTutorProfileActivity(){
         Intent intent = new Intent(this, VerifiedTutorProfileActivity.class) ;
+        intent.putExtra("user" , "tutor") ;
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
+        startActivity(intent);
+        finish();
+    }
+
+    public void goToDemoVideo(View view){
+        Intent intent = new Intent(this, DemoVideoMainActivity.class) ;
         intent.putExtra("user" , "tutor") ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);

@@ -231,6 +231,12 @@ public class Note_Home extends AppCompatActivity {
                 //databaseReference.child("Note").push().setValue(hashMap2);
                 mDatabaseRef.setValue(hashMap2);
 
+                Intent intent = new Intent(Note_Home.this, Note_Home.class);
+                // intent.putExtra("user",user) ;
+                intent.putStringArrayListExtra("userInfo",userInfo) ;
+                startActivity(intent);
+                finish();
+
             }
 
 
@@ -242,15 +248,6 @@ public class Note_Home extends AppCompatActivity {
 
     }
 
-    private void editNoteOperation() {
-
-        Intent intent = new Intent(this, Note_Home.class);
-        // intent.putExtra("user",user) ;
-        intent.putStringArrayListExtra("userInfo",userInfo) ;
-        startActivity(intent);
-        finish();
-
-    }
 
 
     private void prepareForPostOperation(){

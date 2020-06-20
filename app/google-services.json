@@ -1,42 +1,116 @@
 {
   "project_info": {
-    "project_number": "1014348522088",
-    "firebase_url": "https://sujonapp-cf647.firebaseio.com",
-    "project_id": "sujonapp-cf647",
-    "storage_bucket": "sujonapp-cf647.appspot.com"
+    "project_number": "360974865970",
+    "firebase_url": "https://tuitionapp-d7ee7.firebaseio.com",
+    "project_id": "tuitionapp-d7ee7",
+    "storage_bucket": "tuitionapp-d7ee7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1014348522088:android:3e9060c55d2a5862ced1dd",
+        "mobilesdk_app_id": "1:360974865970:android:b35e09f6a5a359a05c0e2b",
         "android_client_info": {
-          "package_name": "com.example.tuitionapp_surji"
+          "package_name": "com.example.tuitionapp_nadim"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1014348522088-9bj93cgsa36pmar4ii9mdoo3i1oe17dn.apps.googleusercontent.com",
+          "client_id": "360974865970-359plsttrof1bt7r76oukegsl736usah.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.tuitionapp_surji",
-            "certificate_hash": "1ca714898b9082ccef0f0e5b5e1589d46c25f963"
+            "package_name": "com.example.tuitionapp_nadim",
+            "certificate_hash": "6272ab1403acec6cb8ad5953f5aac776eb382534"
           }
         },
         {
-          "client_id": "1014348522088-ub8ovl70es4dk0im1hejetd2tponfj0q.apps.googleusercontent.com",
+          "client_id": "360974865970-lktkdcgbm8m5dkpddrbq9ksqbdk71tcg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDm6EmxXLrPe5peTovJD9nIS6OiK5q8JgY"
+          "current_key": "AIzaSyD8IZIDTV1CEBBT2IOvEcyYG9op-0cIIjU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1014348522088-ub8ovl70es4dk0im1hejetd2tponfj0q.apps.googleusercontent.com",
+              "client_id": "360974865970-lktkdcgbm8m5dkpddrbq9ksqbdk71tcg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360974865970:android:9035c1806af21db55c0e2b",
+        "android_client_info": {
+          "package_name": "com.example.tuitionapp_sujon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360974865970-mf0q57ahl0v2cu3qf38hbifhng3m1u29.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tuitionapp_sujon",
+            "certificate_hash": "1ca714898b9082ccef0f0e5b5e1589d46c25f963"
+          }
+        },
+        {
+          "client_id": "360974865970-lktkdcgbm8m5dkpddrbq9ksqbdk71tcg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8IZIDTV1CEBBT2IOvEcyYG9op-0cIIjU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360974865970-lktkdcgbm8m5dkpddrbq9ksqbdk71tcg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360974865970:android:c4fc7dc87e88304d5c0e2b",
+        "android_client_info": {
+          "package_name": "com.example.tuitionapp_surji"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360974865970-10r2u012lsuctc3uo7ui8r4dueqlb9p9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tuitionapp_surji",
+            "certificate_hash": "6272ab1403acec6cb8ad5953f5aac776eb382534"
+          }
+        },
+        {
+          "client_id": "360974865970-lktkdcgbm8m5dkpddrbq9ksqbdk71tcg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8IZIDTV1CEBBT2IOvEcyYG9op-0cIIjU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360974865970-lktkdcgbm8m5dkpddrbq9ksqbdk71tcg.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

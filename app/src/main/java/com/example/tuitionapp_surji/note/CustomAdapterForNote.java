@@ -54,15 +54,9 @@ public class CustomAdapterForNote extends BaseAdapter {
         }
 
         String post = addNoteInfoArrayList.get(position).getNote_post();
-        String attachmentName = addNoteInfoArrayList.get(position).getNotePdfName() ;
-        if(attachmentName==null){
-            holder.note.setText(post);
-            holder.note.setVisibility(View.VISIBLE);
-        }
-        else {
-            holder.note_attachment.setText(attachmentName);
-            holder.note_attachment.setVisibility(View.VISIBLE);
-        }
+
+        holder.note.setText(post);
+        holder.note.setVisibility(View.VISIBLE);
 
         holder.note_title.setText(addNoteInfoArrayList.get(position).getNote_title());
         System.out.println("Dateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee : "+addNoteInfoArrayList.get(position).getNoteDate());

@@ -1,16 +1,10 @@
 package com.example.tuitionapp_surji.note;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.DownloadManager;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,12 +13,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -34,16 +25,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-
-import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class Note_Home extends AppCompatActivity {
 
@@ -55,8 +43,9 @@ public class Note_Home extends AppCompatActivity {
     private ArrayList<String> userInfo ;
 
     MaterialToolbar note_tool_bar;
-    Button addNoteButton, addNoteAttachmentButton;
+    Button addNoteButton, editNoteButton;
     private ArrayList<NoteInfo> addNoteInfoArrayList ;
+    private ArrayList<String> addNoteKeyArrayList ;
 
     private TextView noteAttachmentTextView ;
 
@@ -65,6 +54,7 @@ public class Note_Home extends AppCompatActivity {
     private TextInputEditText notePostEditText ;
     private TextInputLayout noteTitleEditTextLayout ;
     private TextInputLayout notePostEditTextLayout ;
+    MaterialEditText noteMaterialEditText;
 
     private ListView noteListView ;
 
@@ -83,6 +73,7 @@ public class Note_Home extends AppCompatActivity {
     private SimpleDateFormat simpleDateFormate2 = new SimpleDateFormat("E, dd MMM yyyy") ;
     private String noteDate;
     private String noteTime;
+    int flag;
 
 
     @Override
@@ -98,7 +89,9 @@ public class Note_Home extends AppCompatActivity {
 
         note_tool_bar = findViewById(R.id.noteTopAppBar);
         addNoteButton = findViewById(R.id.addNoteButton);
-        addNoteAttachmentButton = findViewById(R.id.addNoteAttachmentButton);
+        editNoteButton = findViewById(R.id.editNoteButton);
+
+        noteMaterialEditText = findViewById(R.id.noteMaterialEditText);
 
         noteTitleTV = findViewById(R.id.note_title_heading) ;
         noteTitleEditText = findViewById(R.id.note_title_edit_text) ;
@@ -108,18 +101,21 @@ public class Note_Home extends AppCompatActivity {
         notePostEditText = findViewById(R.id.note_post_edit_text) ;
         notePostEditTextLayout = findViewById(R.id.note_postInputLayout) ;
 
-        noteAttachmentTextView = findViewById(R.id.note_attachment_text_view) ;
         noteListView = findViewById(R.id.note_list_view) ;
 
         myRefNote = FirebaseDatabase.getInstance().getReference("Note") ;
         pdfStorage = FirebaseStorage.getInstance().getReference() ;
 
         addNoteInfoArrayList = new ArrayList<>() ;
+        addNoteKeyArrayList = new ArrayList<>() ;
 
         toolbarMenu = note_tool_bar.getMenu() ;
 
         toolbarMenu.findItem(R.id.note_addPost).setVisible(false);
         toolbarMenu.findItem(R.id.note_addAttachment).setVisible(false);
+        editNoteButton.setVisibility(View.INVISIBLE);
+
+
 
 
         myRefNote.addValueEventListener(new ValueEventListener() {
@@ -128,6 +124,7 @@ public class Note_Home extends AppCompatActivity {
                 for(DataSnapshot dS1: dataSnapshot.getChildren()){
                     NoteInfo noteInfo = dS1.getValue(NoteInfo.class) ;
                         addNoteInfoArrayList.add(noteInfo) ;
+                        addNoteKeyArrayList.add(dS1.getKey());
 
                     goToNoteListView();
                 }
@@ -144,12 +141,11 @@ public class Note_Home extends AppCompatActivity {
         noteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedPost = addNoteInfoArrayList.get(position).getNote_post() ;
-                if(selectedPost==null){
-                    String selectedPdfName = addNoteInfoArrayList.get(position).getNotePdfName() ;
-                    String selectedPdfUri = addNoteInfoArrayList.get(position).getNotePdfUri() ;
-                    downloadPDF(Note_Home.this,selectedPdfName,selectedPdfUri);
-                }
+                NoteInfo selectedPost = addNoteInfoArrayList.get(position);
+                String key = addNoteKeyArrayList.get(position);
+                editSelectedNote(selectedPost,key);
+               // editNoteOperation();
+
             }
         });
 
@@ -170,17 +166,12 @@ public class Note_Home extends AppCompatActivity {
                         prepareForPostOperation();
                         break;
 
-                    case R.id.note_attachment:
-                        getPDF();
-                        break;
 
                     case R.id.note_addPost:
                         addPostOperation(null);
                         break;
 
-                    case R.id.note_addAttachment:
-                        uploadPDF(null);
-                        break;
+
 
                 }
                 return true;
@@ -189,12 +180,77 @@ public class Note_Home extends AppCompatActivity {
 
     }
 
+
     public void goToNoteListView(){
         CustomAdapterForNote adapter = new CustomAdapterForNote(this,addNoteInfoArrayList) ;
         noteListView.setAdapter(adapter);
     }
 
+    private void editSelectedNote(final NoteInfo selectedNote, final String key)
+    {
+        toolbarMenu.findItem(R.id.note_post).setVisible(false);
+        toolbarMenu.findItem(R.id.note_attachment).setVisible(false);
+        toolbarMenu.findItem(R.id.note_addPost).setVisible(true);
+        note_tool_bar.setTitle("EDIT NOTE");
 
+        noteMaterialEditText.setText(selectedNote.getNote_post());
+
+        noteTitleTV.setVisibility(View.INVISIBLE);
+        noteBodyTV.setVisibility(View.INVISIBLE);
+        noteTitleEditTextLayout.setVisibility(View.INVISIBLE);
+        notePostEditTextLayout.setVisibility(View.INVISIBLE);
+        addNoteButton.setVisibility(View.INVISIBLE);
+        noteListView.setVisibility(View.GONE);
+        editNoteButton.setVisibility(View.VISIBLE);
+
+
+        flag =0;
+
+        editNoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flag=1;
+                FirebaseDatabase  database = FirebaseDatabase.getInstance();
+                DatabaseReference mDatabaseRef = database.getReference().child("Note").child(key);
+                DatabaseReference databaseReference =FirebaseDatabase.getInstance().getReference();
+                //mDatabaseRef.removeValue();
+
+
+                HashMap<String,String> hashMap = new HashMap<>();
+                HashMap<String,String> hashMap2 = new HashMap<>();
+                hashMap.put("noteId",selectedNote.getNoteId());
+                hashMap2.put("noteId",selectedNote.getNoteId());
+                hashMap.put("note_title",selectedNote.getNote_title());
+                hashMap2.put("note_title",selectedNote.getNote_title());
+                hashMap.put("note_post",selectedNote.getNote_post());
+                hashMap2.put("note_post",noteMaterialEditText.getText().toString());
+                hashMap.put("noteTime",selectedNote.getNoteTime());
+                hashMap2.put("noteTime",selectedNote.getNoteTime());
+                hashMap.put("noteDate",selectedNote.getNoteDate());
+                hashMap2.put("noteDate",selectedNote.getNoteDate());
+                //databaseReference.child("Note").push().setValue(hashMap2);
+                mDatabaseRef.setValue(hashMap2);
+
+            }
+
+
+        });
+
+        System.out.println("RESULTTTTTTTTTTTTTTTTTTTTTTTT");
+        System.out.println(2<<5);
+
+
+    }
+
+    private void editNoteOperation() {
+
+        Intent intent = new Intent(this, Note_Home.class);
+        // intent.putExtra("user",user) ;
+        intent.putStringArrayListExtra("userInfo",userInfo) ;
+        startActivity(intent);
+        finish();
+
+    }
 
 
     private void prepareForPostOperation(){
@@ -203,39 +259,20 @@ public class Note_Home extends AppCompatActivity {
         toolbarMenu.findItem(R.id.note_addPost).setVisible(true);
         note_tool_bar.setTitle("ADD A NOTE");
 
+        noteMaterialEditText.setVisibility(View.GONE);
+
         noteTitleTV.setVisibility(View.VISIBLE);
         noteBodyTV.setVisibility(View.VISIBLE);
         noteTitleEditTextLayout.setVisibility(View.VISIBLE);
         notePostEditTextLayout.setVisibility(View.VISIBLE);
         addNoteButton.setVisibility(View.VISIBLE);
         noteListView.setVisibility(View.GONE);
+        editNoteButton.setVisibility(View.INVISIBLE);
     }
-
-    private void prepareForAttachmentOperation(){
-        toolbarMenu.findItem(R.id.note_post).setVisible(false);
-        toolbarMenu.findItem(R.id.note_attachment).setVisible(false);
-        toolbarMenu.findItem(R.id.note_addAttachment).setVisible(true);
-        note_tool_bar.setTitle("Add An Attachment");
-
-        noteTitleTV.setVisibility(View.VISIBLE);
-        noteBodyTV.setVisibility(View.VISIBLE);
-        noteTitleEditTextLayout.setVisibility(View.VISIBLE);
-        noteAttachmentTextView.setVisibility(View.VISIBLE);
-        addNoteAttachmentButton.setVisibility(View.VISIBLE);
-        noteListView.setVisibility(View.GONE);
-
-        noteAttachmentTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getPDF();
-            }
-        });
-
-    }
-
 
     public void addPostOperation(View view){
         DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
+        DatabaseReference databaseArtists = FirebaseDatabase.getInstance().getReference("Note");
         note_post = notePostEditText.getText().toString() ;
         note_title = noteTitleEditText.getText().toString() ;
 
@@ -244,10 +281,13 @@ public class Note_Home extends AppCompatActivity {
 
         if(!note_post.equals("") || !note_title.equals("")){
             //NoteInfo noteInfo = new NoteInfo(note_title, note_post) ;
-          //  myRefNote.push().setValue(noteInfo);
-          //  databaseReference.child("Events").push().setValue(hashMap);
+            //  myRefNote.push().setValue(noteInfo);
+            //  databaseReference.child("Events").push().setValue(hashMap);
+
+            String noteId = databaseArtists.push().getKey();
 
             HashMap<String,String> hashMap = new HashMap<>();
+            hashMap.put("noteId",noteId);
             hashMap.put("note_title",note_title);
             hashMap.put("note_post",note_post);
             hashMap.put("noteTime",noteTime);
@@ -256,7 +296,7 @@ public class Note_Home extends AppCompatActivity {
 
         }
         Intent intent = new Intent(this, Note_Home.class);
-       // intent.putExtra("user",user) ;
+        // intent.putExtra("user",user) ;
         intent.putStringArrayListExtra("userInfo",userInfo) ;
         startActivity(intent);
         finish();
@@ -264,13 +304,8 @@ public class Note_Home extends AppCompatActivity {
 
 
 
-    private void getPDF() {
-        Intent intent = new Intent();
-        intent.setType("application/pdf");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_PDF_CODE);
-        prepareForAttachmentOperation();
-    }
+
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -281,76 +316,8 @@ public class Note_Home extends AppCompatActivity {
         }
     }
 
-    public void uploadPDF(View view) {
-        if (filePath != null) {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
 
-            pdfName = String.valueOf(System.currentTimeMillis()) + ".pdf";
-            final StorageReference pdfRef = pdfStorage.child("pdfNotice/" + pdfName );
 
-            pdfRef.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "Image Uploaded!!", Toast.LENGTH_SHORT).show();
-                    pdfRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @RequiresApi(api = Build.VERSION_CODES.O)
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            uriString = uri.toString() ;
-                            addAttachmentOperationCompletion();
-                        }
-                    });
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
-                            progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Image Upload failed!!", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            progressDialog.setMessage("Uploaded " + (int)progress + "%");
-                        }
-                    });
-
-        }
-    }
-
-    public void downloadPDF(Context context, String selectedPdfName, String selectedPdfUri){
-        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        Uri uri = Uri.parse(selectedPdfUri) ;
-
-        DownloadManager.Request request = new DownloadManager.Request(uri) ;
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) ;
-        request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,selectedPdfName) ;
-
-        downloadManager.enqueue(request) ;
-    }
-
-    public void addAttachmentOperationCompletion(){
-        note_title = noteTitleEditText.getText().toString() ;
-
-        NoteInfo noteInfo = new NoteInfo(note_title, uriString, pdfName) ;
-        myRefNote.push().setValue(noteInfo) ;
-
-        Intent intent = new Intent(this, Note_Home.class);
-        //intent.putExtra("user",user) ;
-       // intent.putExtra("groupID" , groupID) ;
-
-        intent.putStringArrayListExtra("userInfo",userInfo) ;
-
-        startActivity(intent);
-        finish();
-    }
 
     public void goToBackPageActivity(){
         Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
@@ -365,7 +332,6 @@ public class Note_Home extends AppCompatActivity {
     public void onBackPressed(){
         goToBackPageActivity();
     }
-
 
 
 }

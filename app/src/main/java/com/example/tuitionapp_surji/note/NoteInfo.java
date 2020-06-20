@@ -8,6 +8,7 @@ public class NoteInfo {
     private String notePdfName;
     private String noteTime;
     private String noteDate;
+    private String noteId;
 
 
 
@@ -19,6 +20,7 @@ public class NoteInfo {
         this.note_post = note_post;
         this.noteTime = noteTime;
         this.noteDate = noteDate;
+        this.noteId = noteId;
 
 
     }
@@ -45,20 +47,12 @@ public class NoteInfo {
         this.note_post = note_post;
     }
 
-    public String getNotePdfUri() {
-        return notePdfUri;
+    public String getNoteTime() {
+        return noteTime;
     }
 
-    public void setNotePdfUri(String notePdfUri) {
-        this.notePdfUri = notePdfUri;
-    }
-
-    public String getNotePdfName() {
-        return notePdfName;
-    }
-
-    public void setNotePdfName(String notePdfName) {
-        this.notePdfName = notePdfName;
+    public void setNoteTime(String noteTime) {
+        this.noteTime = noteTime;
     }
 
     public String getNoteDate() {
@@ -69,13 +63,11 @@ public class NoteInfo {
         this.noteDate = noteDate;
     }
 
-    public String getNoteTime() {
-        return noteTime;
+    public String getNoteId() {
+        return noteId;
     }
 
-    public void setNoteTime(String noteTime) {
-        this.noteTime = noteTime;
+    public void setNoteId(String noteId) {
+        this.noteId = noteId;
     }
-
-
 }

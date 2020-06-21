@@ -17,6 +17,7 @@
         android:id="@+id/show_message"
         android:layout_toRightOf="@id/profile_image"
         android:layout_marginLeft="5dp"
+        android:layout_marginRight="40dp"
         android:padding="8dp"
         android:textSize="18sp"
         android:layout_width="wrap_content"

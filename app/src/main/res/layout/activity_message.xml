@@ -44,6 +44,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginBottom="10dp"
         android:id="@+id/recycler_view"
         android:layout_below="@+id/bar_layout"
         android:layout_width="match_parent"

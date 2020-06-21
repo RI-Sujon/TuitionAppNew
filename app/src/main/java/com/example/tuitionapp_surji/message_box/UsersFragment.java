@@ -31,9 +31,12 @@ public class UsersFragment extends Fragment {
     private UserAdapter userAdapter;
     private List<User> mUsers;
     private String checkUser;
+    private String tutorName;
 
-    public UsersFragment(String checkUser) {
+
+    public UsersFragment(String checkUser, String tutorName) {
         this.checkUser=checkUser;
+        this.tutorName=tutorName;
     }
 
     @Override

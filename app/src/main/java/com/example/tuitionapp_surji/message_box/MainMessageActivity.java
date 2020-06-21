@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.guardian.GuardianHomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
 import com.google.android.material.tabs.TabLayout;
@@ -35,10 +36,14 @@ public class MainMessageActivity extends AppCompatActivity {
     TextView username;
 
     FirebaseUser firebaseUser;
-    DatabaseReference reference;
+    DatabaseReference reference, candidateTutorReference;
 
     private String checkUser;
     ArrayList<String> userInfo ;
+    CandidateTutorInfo tutorInfo;
+    MessageBoxInfo messageBoxUser;
+
+    String tutorName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,21 +53,72 @@ public class MainMessageActivity extends AppCompatActivity {
         Intent intent = getIntent() ;
         checkUser = intent.getStringExtra("user");
 
-        Toolbar toolbar=findViewById(R.id.toolbar_message);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(" ");
+        //Toolbar toolbar=findViewById(R.id.toolbar_message);
+       // setSupportActionBar(toolbar);
+       // getSupportActionBar().setTitle(" ");
 
         profile_image=findViewById(R.id.profile_image);
-        username=findViewById(R.id.username_message);
+        //username=findViewById(R.id.username_message);
+
+        tutorInfo = new CandidateTutorInfo();
 
         firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
-        reference= FirebaseDatabase.getInstance().getReference("MessageBox").child(firebaseUser.getUid());
+        reference= FirebaseDatabase.getInstance().getReference("MessageBox");//.child(firebaseUser.getUid());
+        candidateTutorReference = FirebaseDatabase.getInstance().getReference("CandidateTutor");
 
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                 User user=dataSnapshot.getValue(User.class);
-                if(checkUser.equals("guardian")){
+
+
+        if(checkUser.equals("guardian"))
+        {
+            System.out.println("Guardian ID ======================================"+firebaseUser.getUid());
+            reference.addValueEventListener(new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot1)
+                {
+                    for(DataSnapshot snapshot:dataSnapshot1.getChildren()){
+                        System.out.println("kaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                        System.out.println();
+                        MessageBoxInfo user=snapshot.getValue(MessageBoxInfo.class);
+                        if(user.getGuardianUid().equals(firebaseUser.getUid())){
+                            System.out.println("getTutorId ============================= "+user.getTutorUid());
+                            messageBoxUser = user;
+                            System.out.println("AAAAAAAAAAAAAAAAAAAAAAA ==== "+messageBoxUser.getTutorEmail());
+                            break;
+                        }
+
+
+                    }
+
+                    final String tutorEmail = messageBoxUser.getTutorEmail();
+
+                    candidateTutorReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                                CandidateTutorInfo candidateTutorInfo = snapshot.getValue(CandidateTutorInfo.class);
+                                if(candidateTutorInfo.getEmailPK().equals(tutorEmail)){
+                                    System.out.println("Email =============================" +candidateTutorInfo.getEmailPK());
+                                    tutorInfo = candidateTutorInfo;
+                                    System.out.println("Name =============="+tutorInfo.getUserName());
+                                    tutorName = tutorInfo.getUserName();
+                                    System.out.println("Name =============="+tutorName);
+
+                                    break;
+                                }
+
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+             /*   if(checkUser.equals("guardian")){
                     username.setText("Guardian");
                 }
 
@@ -72,29 +128,124 @@ public class MainMessageActivity extends AppCompatActivity {
 
                if("default".equals("default")){
                     profile_image.setImageResource(R.mipmap.ic_launcher);
-                }
+                }*/
 
                /* else{
                     Glide.with(MainActivity.this).load(user.getImageURL()).into(profile_image);
                 }*/
-            }
+                }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+//            username.setText("Guardian");
+        }
+
+        else{
+            reference.addValueEventListener(new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                    for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                        MessageBoxInfo user=snapshot.getValue(MessageBoxInfo.class);
+                        if(user.getTutorUid().equals(firebaseUser.getUid())){
+                            messageBoxUser = user;
+                        }
+
+                    }
+
+                    final String tutorEmail = messageBoxUser.getTutorEmail();
+
+                    candidateTutorReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                                CandidateTutorInfo candidateTutorInfo = snapshot.getValue(CandidateTutorInfo.class);
+                                if(candidateTutorInfo.getEmailPK().equals(tutorEmail)){
+                                    System.out.println("Email =============================" +candidateTutorInfo.getEmailPK());
+                                    System.out.println("Email =============================" +tutorEmail);
+                                    tutorInfo = candidateTutorInfo;
+                                    System.out.println("Name =============="+tutorInfo.getUserName());
+                                }
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+             /*   if(checkUser.equals("guardian")){
+                    username.setText("Guardian");
+                }
+
+                else if(checkUser.equals("tutor")){
+                    username.setText("Tutor");
+                }
+
+               if("default".equals("default")){
+                    profile_image.setImageResource(R.mipmap.ic_launcher);
+                }*/
+
+               /* else{
+                    Glide.with(MainActivity.this).load(user.getImageURL()).into(profile_image);
+                }*/
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+          //  username.setText("Tutor");
+
+        }
+
+//        profile_image.setImageResource(R.mipmap.ic_launcher);
+
+
+      //  TabLayout tabLayout=findViewById(R.id.tab_layout_message);
+        Toolbar toolbar= findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onClick(View v) {
+                if(checkUser.equals("tutor")){
 
+                    Intent intent1 = getIntent() ;
+                    userInfo = intent1.getStringArrayListExtra("userInfo") ;
+                    Intent intent = new Intent(MainMessageActivity.this, VerifiedTutorHomePageActivity.class);
+                    intent.putStringArrayListExtra("userInfo", userInfo) ;
+                    startActivity(intent);
+                    finish();
+                }
+                else if(checkUser.equals("guardian")){
+                    Intent intent = new Intent(MainMessageActivity.this, GuardianHomePageActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 
-        TabLayout tabLayout=findViewById(R.id.tab_layout_message);
         ViewPager viewPager =findViewById(R.id.view_pager_message);
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter( getSupportFragmentManager(),2);
 
-        viewPagerAdapter.addFragment(new UsersFragment(checkUser),"Users");
+        viewPagerAdapter.addFragment(new UsersFragment(checkUser,tutorName),"Users");
 
         viewPager.setAdapter(viewPagerAdapter);
 
-        tabLayout.setupWithViewPager(viewPager);
+       // tabLayout.setupWithViewPager(viewPager);
+        //toolbar.setupWithViewPager(viewPager);
 
 
     }

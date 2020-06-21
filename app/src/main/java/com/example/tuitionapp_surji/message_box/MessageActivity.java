@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +38,7 @@ public class MessageActivity extends AppCompatActivity
     TextView username;
 
     FirebaseUser fuser;
-    DatabaseReference reference;
+    DatabaseReference reference,candidateTutorReference;
 
     ImageButton btn_send;
     EditText text_send;
@@ -47,7 +49,8 @@ public class MessageActivity extends AppCompatActivity
     RecyclerView recyclerView;
 
     Intent intent;
-    private  String checkUser;
+    private  String checkUser,guardianMobileNumber,tutorEmail;
+    private String imageUri,gender;
 
 
     @Override
@@ -79,10 +82,11 @@ public class MessageActivity extends AppCompatActivity
         btn_send = findViewById(R.id.btn_send);
         text_send = findViewById(R.id.text_send);
 
-
         intent = getIntent();
         final String userId = intent.getStringExtra("userId");
         checkUser = intent.getStringExtra("user");
+        guardianMobileNumber = intent.getStringExtra("mobileNumber");
+        tutorEmail = intent.getStringExtra("tutorEmail");
         fuser = FirebaseAuth.getInstance().getCurrentUser();
 
 
@@ -103,10 +107,11 @@ public class MessageActivity extends AppCompatActivity
         });
 
 
-        reference = FirebaseDatabase.getInstance().getReference("MessageBox").child(userId);
+        reference = FirebaseDatabase.getInstance().getReference("MessageBox");//.child(userId);
+        candidateTutorReference = FirebaseDatabase.getInstance().getReference("CandidateTutor");
 
 
-        reference.addValueEventListener(new ValueEventListener() {
+        /*reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                  User user =  dataSnapshot.getValue(User.class);
@@ -121,13 +126,13 @@ public class MessageActivity extends AppCompatActivity
 
                 profile_image.setImageResource(R.mipmap.ic_launcher);
 
-             /*   if(user.getImageURL().equals("default")){
+             *//*   if(user.getImageURL().equals("default")){
                     profile_image.setImageResource(R.mipmap.ic_launcher);
                 }
 
                 else {
                     Glide.with(MessageActivity.this).load(user.getImageURL()).into(profile_image);
-                }*/
+                }*//*
 
                 readMessages(fuser.getUid(),userId);//,user.getImageURL());
 
@@ -137,7 +142,95 @@ public class MessageActivity extends AppCompatActivity
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
+
+        if(checkUser.equals("guardian"))
+        {
+            candidateTutorReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                    for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                        CandidateTutorInfo candidateTutorInfo = snapshot.getValue(CandidateTutorInfo.class);
+                        if(candidateTutorInfo.getEmailPK().equals(tutorEmail))
+                        {
+                            imageUri = candidateTutorInfo.getProfilePictureUri();
+                            gender = candidateTutorInfo.getGender();
+
+                            username.setText(candidateTutorInfo.getUserName());
+                            if(candidateTutorInfo.getGender().equals("MALE"))
+                            {
+                                if(candidateTutorInfo.getProfilePictureUri()!= null)
+                                    Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(profile_image);
+                                else
+                                    profile_image.setImageResource(R.drawable.male_pic);
+                            }
+
+                            else if(candidateTutorInfo.getGender().equals("FEMALE")){
+                                if(candidateTutorInfo.getProfilePictureUri()!= null)
+                                    Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(profile_image);
+                                else
+                                    profile_image.setImageResource(R.drawable.female_pic);
+                            }
+
+
+                            break;
+                        }
+
+                    }
+                    //System.out.println("Uri ===================="+imageUri);
+
+                    readMessages(fuser.getUid(),userId,imageUri,gender);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        else if(checkUser.equals("tutor"))
+        {
+            candidateTutorReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                   /* for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                        CandidateTutorInfo candidateTutorInfo = snapshot.getValue(CandidateTutorInfo.class);
+                        if(candidateTutorInfo.getEmailPK().equals(tutorEmail))
+                        {
+
+                            username.setText(candidateTutorInfo.getUserName());
+                            if(candidateTutorInfo.getGender().equals("MALE")){
+                                if(candidateTutorInfo.getProfilePictureUri()!= null)
+                                    Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(profile_image);
+                                else
+                                    profile_image.setImageResource(R.drawable.male_pic);
+                            }
+
+                            else if(candidateTutorInfo.getGender().equals("FEMALE")){
+                                if(candidateTutorInfo.getProfilePictureUri()!= null)
+                                    Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(profile_image);
+                                else
+                                    profile_image.setImageResource(R.drawable.female_pic);
+                            }
+                        }
+                    }
+                */
+                   username.setText("Guardian");
+                   profile_image.setImageResource(R.drawable.man);
+                    readMessages(fuser.getUid(),userId,imageUri,gender);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
 
@@ -156,7 +249,7 @@ public class MessageActivity extends AppCompatActivity
 
     }
 
-    private void readMessages(final String myId, final String userId){//, final String imageurl){
+    private void readMessages(final String myId, final String userId, final String imageUri, final String gender){//, final String imageurl){
         mChat = new ArrayList<>();
 
         reference = FirebaseDatabase.getInstance().getReference("Chats");
@@ -172,7 +265,7 @@ public class MessageActivity extends AppCompatActivity
                         mChat.add(chat);
                     }
 
-                    messageAdapter = new MessageAdapter(MessageActivity.this,mChat);//,imageurl);
+                    messageAdapter = new MessageAdapter(MessageActivity.this,mChat,imageUri,gender);//,imageurl);
                     recyclerView.setAdapter(messageAdapter);
                 }
             }

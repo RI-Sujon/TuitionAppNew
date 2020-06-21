@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tuitionapp_surji.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -23,15 +24,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     private Context mContext;
     private List<Chat> mChat;
-    private String imageurl;
+    private String imageUri,gender=" ";
 
     FirebaseUser fuser;
 
 
-    public MessageAdapter(Context mContext, List<Chat> mChat){//, String imageurl) {
+    public MessageAdapter(Context mContext, List<Chat> mChat, String imageUri, String gender){//, String imageurl) {
         this.mContext = mContext;
         this.mChat = mChat;
-        //this.imageurl = imageurl;
+        this.imageUri = imageUri;
+        this.gender = gender;
     }
 
     @NonNull
@@ -57,15 +59,24 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         Chat chat = mChat.get(position);
         holder.show_message.setText(chat.getMessage());
-        holder.profile_image.setImageResource(R.mipmap.ic_launcher);
 
-     /*   if(imageurl.equals("default")){
-            holder.profile_image.setImageResource(R.mipmap.ic_launcher);
+      if(imageUri!=null){
+          Picasso.get().load(imageUri).into(holder.profile_image);
         }
 
-        else {
-            Glide.with(mContext).load(imageurl).into(holder.profile_image);
-        }*/
+        else if(gender!=null){
+            if(gender.equals("MALE")){
+                holder.profile_image.setImageResource(R.drawable.male_pic);
+
+            }
+            else {
+                holder.profile_image.setImageResource(R.drawable.female_pic);
+            }
+        }
+
+        else{
+          holder.profile_image.setImageResource(R.drawable.man);
+      }
     }
 
     @Override

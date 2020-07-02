@@ -80,8 +80,8 @@ public class UsersFragment extends Fragment {
                     }
 
                     else if(checkUser.equals("tutor")){
-                        System.out.println("AAAAAAAAAAAAAAAAAAAAA = "+ user.getTutorUid());
-                        System.out.println("BBBBBBBBBBBBBBBBBBBBB = "+ firebaseUser.getUid());
+                       // System.out.println("AAAAAAAAAAAAAAAAAAAAA = "+ user.getTutorUid());
+                        //System.out.println("BBBBBBBBBBBBBBBBBBBBB = "+ firebaseUser.getUid());
                         if(user.getTutorUid().equals(firebaseUser.getUid()))
                         {
                             mUsers.add(user);

@@ -44,7 +44,7 @@ public class CalendarHomeActivity extends AppCompatActivity {
         calendarEventInfos = new ArrayList<>();
         eventListView = findViewById(R.id.events_list_view);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        final String userId = firebaseUser.getUid();
+       //final String userId = firebaseUser.getUid();
         reference = FirebaseDatabase.getInstance().getReference("Events");
 
         
@@ -52,13 +52,18 @@ public class CalendarHomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     CalendarEventInfo calendarEventInfo = snapshot.getValue(CalendarEventInfo.class);
-                    //MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
-                    if(calendarEventInfo.getEventCreatorId().equals(userId))
-                    calendarEventInfos.add(calendarEventInfo);
-                    
-                    goToEventsListView();
+
+                    //System.out.println("============================="+calendarEventInfo.getEventTitle());
+                    if(calendarEventInfo.getEventCreatorId().equals(firebaseUser.getUid())){
+                        calendarEventInfos.add(calendarEventInfo);
+                        goToEventsListView(calendarEventInfos);
+                    }
+
+                    reference.removeEventListener(this);
+
                 }
 
             }
@@ -79,15 +84,15 @@ public class CalendarHomeActivity extends AppCompatActivity {
     }
 
     private void viewTheSelectedEvent(CalendarEventInfo calendarEventInfo) {
-        Intent intent = new Intent(this,ViewEventActivity.class);
+        Intent intent = new Intent(this, CalendarViewEventActivity.class);
         intent.putExtra("calendarEventInfo", (Serializable) calendarEventInfo);
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();
     }
 
-    private void goToEventsListView() {
-        CustomAdapterForCalendarEvents adapter = new CustomAdapterForCalendarEvents(this,calendarEventInfos);
+    private void goToEventsListView(ArrayList<CalendarEventInfo> calendarEventInfoArrayList) {
+        CustomAdapterForCalendarEvents adapter = new CustomAdapterForCalendarEvents(this, calendarEventInfoArrayList);
         eventListView.setAdapter(adapter);
     }
 

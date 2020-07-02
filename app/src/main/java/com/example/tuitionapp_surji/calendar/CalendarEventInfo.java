@@ -4,12 +4,13 @@ import java.io.Serializable;
 
 public class CalendarEventInfo implements Serializable
 {
-    String eventCreatorId, meetingId, eventId,eventTitle,location,description,date,startTime,endTime,attendee;
+    String eventCreatorId, meetingId, eventId,eventTitle,location,description,date,startTime,endTime,attendee,weekDay;
 
     public CalendarEventInfo() {
     }
 
-    public CalendarEventInfo(String eventCreatorId, String meetingId, String eventId, String eventTitle, String location, String description, String date, String startTime, String endTime, String attendee) {
+    public CalendarEventInfo(String eventCreatorId, String meetingId, String eventId, String eventTitle, String location, String description,
+                             String date, String startTime, String endTime, String attendee, String weekDay) {
         this.eventCreatorId = eventCreatorId;
         this.meetingId = meetingId;
         this.eventId = eventId;
@@ -20,6 +21,7 @@ public class CalendarEventInfo implements Serializable
         this.startTime = startTime;
         this.endTime = endTime;
         this.attendee = attendee;
+        this.weekDay = weekDay;
     }
 
     public String getEventCreatorId() {
@@ -100,5 +102,13 @@ public class CalendarEventInfo implements Serializable
 
     public void setAttendee(String attendee) {
         this.attendee = attendee;
+    }
+
+    public String getWeekDay() {
+        return weekDay;
+    }
+
+    public void setWeekDay(String weekDay) {
+        this.weekDay = weekDay;
     }
 }

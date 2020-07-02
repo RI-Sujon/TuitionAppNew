@@ -78,11 +78,12 @@
                                 android:orientation="vertical"
                                 android:gravity="center">
 
-                                <ImageButton
+                                <de.hdodenhof.circleimageview.CircleImageView
                                     android:foreground="?android:attr/selectableItemBackground"
                                     android:clickable="true"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="@color/RoyalBlue"
+                                    android:layout_width="55dp"
+                                    android:layout_height="55dp"
                                     android:src="@drawable/tuition_post_icon"
                                     android:background="#00000000"
                                     android:layout_margin="10dp"
@@ -104,10 +105,11 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:orientation="vertical">
-                                <ImageButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/messenger_icon_button"
+                                <de.hdodenhof.circleimageview.CircleImageView
+
+                                    android:layout_width="55dp"
+                                    android:layout_height="55dp"
+                                    android:src="@drawable/guardian_message_box"
                                     android:background="#00000000"
                                     android:layout_margin="10dp"
                                     android:onClick="goToMessageBox"/>
@@ -127,12 +129,12 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 android:gravity="center">
-                                <ImageButton
+                                <de.hdodenhof.circleimageview.CircleImageView
                                     android:foreground="?android:attr/selectableItemBackground"
                                     android:clickable="true"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/create_group_icon"
+                                    android:layout_width="55dp"
+                                    android:layout_height="55dp"
+                                    android:src="@drawable/classroom03"
                                     android:background="#00000000"
                                     android:layout_margin="10dp"
                                     android:onClick="goToVerifiedTutorGroupActivity"/>
@@ -157,9 +159,9 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 android:gravity="center">
-                                <ImageButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:layout_width="55dp"
+                                    android:layout_height="55dp"
                                     android:src="@drawable/demo_video_icon"
                                     android:background="#00000000"
                                     android:layout_margin="20dp"
@@ -180,9 +182,10 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 android:gravity="center">
-                                <ImageButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:layout_width="55dp"
+                                    android:layout_height="55dp"
+                                    android:backgroundTint="@color/colorAccent"
                                     android:src="@drawable/utilities_icon_button"
                                     android:background="#00000000"
                                     android:layout_margin="20dp" />

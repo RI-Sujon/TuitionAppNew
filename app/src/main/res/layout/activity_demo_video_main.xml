@@ -10,14 +10,30 @@ tools:context=".demo_video.DemoVideoMainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:background="@color/colorAccent"
+        android:layout_height="50dp">
         <ImageButton
-            android:layout_gravity="left"
+            android:layout_marginLeft="25dp"
+            android:background="@color/colorAccent"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_arrow_back_black_24dp"
             android:onClick="goToHomePageActivity"
             />
+
+        <TextView
+            android:background="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Demo Video"
+            android:textStyle="italic"
+            android:layout_marginLeft="115dp"
+            android:layout_gravity="center"
+            android:textSize="25sp"
+            android:textColor="@color/Black"
+            />
+
     </LinearLayout>
 
     <LinearLayout
@@ -28,23 +44,25 @@ tools:context=".demo_video.DemoVideoMainActivity">
 
         <VideoView
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="300dp"
             android:id="@+id/Video_view"
             android:layout_margin="10dp"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="name"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:paddingLeft="20dp"
-            android:id="@+id/video_name"/>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorAccent"
             android:text="choose video"
             android:id="@+id/choose_btn"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:hint="Set the video name"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:id="@+id/video_name"/>
 
         <Button
             android:layout_width="wrap_content"

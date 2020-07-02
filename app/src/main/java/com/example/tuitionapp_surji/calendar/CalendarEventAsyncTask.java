@@ -1,7 +1,11 @@
 package com.example.tuitionapp_surji.calendar;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
@@ -10,8 +14,11 @@ import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,6 +36,7 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
     String startTime;
     String endTime;
     String attendee;
+    String weekDay;
     ArrayList<String> allAttendees = new ArrayList<>(50);
     String[] strings;
 
@@ -37,11 +45,12 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
     String s1,s2;
 
     CalendarSampleActivity parent;
+    private ArrayList<String> userInfo ;
 
 
 
-    public CalendarEventAsyncTask(CalendarSampleActivity parent,Calendar service,String title, String location, String description, String date, String startTime,
-                                  String endTime, String attendee) {
+    public CalendarEventAsyncTask(CalendarSampleActivity parent, Calendar service, String title, String location, String description, String date, String startTime,
+                                  String endTime, String attendee, String weekDay, ArrayList<String> userInfo) {
 
         this.parent = parent;
         this.service = service;
@@ -52,6 +61,8 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
         this.startTime = startTime;
         this.endTime = endTime;
         this.attendee = attendee;
+        this.weekDay = weekDay;
+        this.userInfo = userInfo;
 
     }
 
@@ -107,7 +118,6 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
 
 
 
-
         EventReminder[] reminderOverrides = new EventReminder[] {
                 new EventReminder().setMethod("email").setMinutes(24 * 60),
                 new EventReminder().setMethod("popup").setMinutes(10),
@@ -141,18 +151,31 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
 
         System.out.printf("Event created: %s\n", event.getHtmlLink());
 
-        updateDataOnFireBase(meetingId,eventId,title,location,description,date,startTime,endTime,attendee);
+        updateDataOnFireBase(meetingId,eventId,title,location,description,date,startTime,endTime,attendee,weekDay);
 
-        //return meetingId;
         return calendarId;
 
     }
 
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
 
-    public void updateDataOnFireBase( String meetingId, String eventId, String eventTitle, String location, String description, String date, String startTime,String endTime, String attendee){
+        Intent intent = new Intent(parent, CalendarHomeActivity.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
+        parent.startActivity(intent);
+        parent.finish();
+    }
+
+    public void updateDataOnFireBase(String meetingId, String eventId, String eventTitle, String location, String description,
+                                     String date, String startTime, String endTime, String attendee, String weekDay){
         FirebaseUser  firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         String userId=firebaseUser.getUid();
         DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
+
+        String newDate = dateParser(date,weekDay);
+        String newStarTime = timeParser(startTime);
+        String newEndTime = timeParser(endTime);
 
         HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("eventCreatorId",userId);
@@ -161,23 +184,76 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
         hashMap.put("eventTitle",eventTitle);
         hashMap.put("location",location);
         hashMap.put("description",description);
-        hashMap.put("date",date);
-        hashMap.put("startTime",startTime);
-        hashMap.put("endTime",endTime);
+        hashMap.put("date",newDate);
+        hashMap.put("startTime",newStarTime);
+        hashMap.put("endTime",newEndTime);
         hashMap.put("attendee",attendee);
+        hashMap.put("weekDay",weekDay);
 
-        databaseReference.child("Events").push().setValue(hashMap);
+        databaseReference.child("Events").push().setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                System.out.println("SUJON er Matha");
+            }
+        });
+
+
+    }
+
+    private String timeParser(String eventTime) {
+        String[] time = eventTime.split(":");
+        int hr,min;
+        String time_period="AM";
+
+        hr= Integer.parseInt(time[0]);
+        min= Integer.parseInt(time[1]);
+        if(hr>12){
+            hr=hr-12;
+            time_period = "PM";
+        }
+        else if(hr==12)
+            time_period="PM";
+
+        else if(hr==0){
+            hr=12;
+        }
+
+        System.out.println(hr+":"+time[1]+ " "+time_period);
+
+        return hr+":"+time[1]+ " "+time_period;
+    }
+
+    private String dateParser(String date, String weekDay) {
+
+        String[] dates = date.split("-");
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        ArrayList<String> week_month = new ArrayList<>(2);
+        stringArrayList.add(dates[0]);
+        stringArrayList.add(dates[1]);
+        stringArrayList.add(dates[2]);
+
+
+
+        for (int i=0; i<stringArrayList.size();i++){
+            System.out.println(stringArrayList.get(i));
+        }
+
+
+        String[] months = {"January" ,"February","March","April","May","June","July","August",
+                "September","October","November","December"
+        };
+
+        week_month.add(months[Integer.parseInt(stringArrayList.get(1))-1]);
+        System.out.println(week_month.get(0));
+        String dateFormat = weekDay +", "+week_month.get(0)+" "+ stringArrayList.get(2);
+
+
+        return dateFormat;
     }
 
 }
 
-/*String title;
-    String location;
-    String description;
-    String date;
-    String startTime;
-    String endTime;
-    String attendee;*/
+
 
 
 

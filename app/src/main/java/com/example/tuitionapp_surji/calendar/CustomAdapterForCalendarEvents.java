@@ -60,7 +60,7 @@ public class CustomAdapterForCalendarEvents extends BaseAdapter {
 
         if(title!=null && startTime!=null && endTime!=null && date !=null){
             eventViewHolder.eventTitle.setText(title);
-            eventViewHolder.date.setText(date+" - "+startTime+"-"+endTime);
+            eventViewHolder.date.setText(date+" . "+startTime+" - "+endTime);
         }
 
         return convertView;

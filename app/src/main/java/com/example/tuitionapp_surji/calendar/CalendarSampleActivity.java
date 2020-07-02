@@ -1,21 +1,8 @@
 package com.example.tuitionapp_surji.calendar;
 
-/*
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-
-public class CalendarSampleActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
-}
-*/
 
 import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,9 +10,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
+
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -34,13 +21,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.annotation.RequiresApi;
@@ -57,9 +42,13 @@ import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Calendar;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -181,7 +170,7 @@ public final class CalendarSampleActivity extends Activity  {
 
     }
 
-    void refreshView()
+  /*  void refreshView()
     {
         adapter = new ArrayAdapter<CalendarInfo>(
                 this, android.R.layout.simple_list_item_1, model.toSortedArray()) {
@@ -197,7 +186,7 @@ public final class CalendarSampleActivity extends Activity  {
         };
         //listView.setAdapter(adapter);
     }
-
+*/
     @Override
     protected void onResume()
     {
@@ -276,9 +265,9 @@ public final class CalendarSampleActivity extends Activity  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_refresh:
+           /* case R.id.menu_refresh:
                 AsyncLoadCalendars.run(this);
-                break;
+                break;*/
             case R.id.menu_accounts:
                 chooseAccount();
                 return true;
@@ -360,10 +349,6 @@ public final class CalendarSampleActivity extends Activity  {
     }
 
 
-    public void onAddClick(View view) {
-        startAddOrEditCalendarActivity(null);
-    }
-
     private void startAddOrEditCalendarActivity(CalendarInfo calendarInfo) {
         Intent intent = new Intent(this, AddOrEditCalendarActivity.class);
         if (calendarInfo != null) {
@@ -373,24 +358,6 @@ public final class CalendarSampleActivity extends Activity  {
         startActivityForResult(intent, ADD_OR_EDIT_CALENDAR_REQUEST);
     }
 
-
-    public void onAddEventClick(View view) {
-        startAddOrEditEventCalendarActivity(null);
-    }
-
-
-    public void startAddOrEditEventCalendarActivity(CalendarInfo calendarInfo){
-
-        Intent intent = new Intent(this, CalendarEventActivity.class);
-        if (calendarInfo != null) {
-            intent.putExtra("id", calendarInfo.id);
-            intent.putExtra("summary", calendarInfo.summary);
-        }
-
-        startActivityForResult(intent, ADD_EVENT);
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-
-    }
 
 
 
@@ -410,10 +377,10 @@ public final class CalendarSampleActivity extends Activity  {
 
 
 
+    @SuppressLint("NewApi")
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void createEvent(View view)
-    {
-        eventTitle_txt =eventTitle.getText().toString();
+    public void createEvent(View view) throws InterruptedException {
+        eventTitle_txt =eventTitle.getText().toString() ;
         location_txt = location.getText().toString();
         description_txt = description.getText().toString();
         date_txt = getDate();
@@ -423,56 +390,43 @@ public final class CalendarSampleActivity extends Activity  {
 
 
 
-      new CalendarEventAsyncTask(this,client,eventTitle_txt, location_txt, description_txt, date_txt, startTime_txt,
-                endTime_txt, attendees_txt).execute();
+        CalendarEventAsyncTask calendarEventAsyncTask=   new CalendarEventAsyncTask(this,client,eventTitle_txt, location_txt, description_txt, date_txt, startTime_txt,
+                endTime_txt, attendees_txt,getWeek(),userInfo);
+        calendarEventAsyncTask.execute();
 
 
-        System.out.println(meetingId);
+      //  new CalendarEventAsyncTask(this,client,eventTitle_txt, location_txt, description_txt, date_txt, startTime_txt,
+               // endTime_txt, attendees_txt,getWeek()).execute();
 
-        eventInfoList.add(eventTitle_txt);
-        eventInfoList.add(date_txt);
-        eventInfoList.add(startTime_txt);
-        eventInfoList.add(endTime_txt);
-        eventInfoList.add(meetingId);
-        eventInfoList.add(attendees_txt);
-        eventInfoList.add(location_txt);
-        eventInfoList.add(description_txt);
 
-     Intent intent = new Intent(this,ViewEventActivity.class);
-     intent.putExtra("eventInfo", eventInfoList);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            System.out.println("========================  "+ startTimePicker.getHour());
+        }
+
+
+        //Thread.sleep(10000);
+
+
+
+/*
+     Intent intent = new Intent(this, CalendarHomeActivity.class);
      intent.putStringArrayListExtra("userInfo", userInfo) ;
      startActivity(intent);
-     finish();
+     finish();*/
     }
 
-    /*public void ReturnThreadResult(String meetingId) {
-        this.meetingId= meetingId;
-    }*/
 
     public  void setMeetingId(String meetingId){
         this.meetingId = meetingId;
     }
 
-    public void GoToConference(View view)
-    {
-        //String meetingId = event.getHangoutLink();
-        Uri conference = Uri.parse(meetingId);
-        Intent meetingIntent = new Intent(Intent.ACTION_VIEW, conference);
-
-        PackageManager packageManager = getPackageManager();
-        List<ResolveInfo> activities = packageManager.queryIntentActivities(meetingIntent, 0);
-        boolean isIntentSafe = activities.size() > 0;
-
-        if (isIntentSafe)
-        {
-            startActivity(meetingIntent);
-        }
-    }
 
 
-
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public String getDate()
     {
+
+
         StringBuilder stringBuilder  = new  StringBuilder();
 
         stringBuilder.append(datePicker.getYear()+"-");
@@ -494,8 +448,35 @@ public final class CalendarSampleActivity extends Activity  {
             stringBuilder.append(datePicker.getDayOfMonth());
 
 
+
+
+
+
+
         return stringBuilder.toString();
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getWeek()
+    {
+
+        DateTimeFormatter dayOfWeekFormatter
+                = DateTimeFormatter.ofPattern("EEE", Locale.ENGLISH);
+
+
+        LocalDate date = LocalDate.of(
+                datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth()+3);
+        System.out.println("Week day =========================== "+date.format(dayOfWeekFormatter));
+
+        String weekDay = date.format(dayOfWeekFormatter);
+
+
+
+        return weekDay;
+    }
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public String getTime(TimePicker timePicker)
@@ -532,7 +513,7 @@ public final class CalendarSampleActivity extends Activity  {
     }
 
     public void ViewTheEvents(View view) {
-        Intent intent = new Intent(this, ViewEventActivity.class);
+        Intent intent = new Intent(this, CalendarViewEventActivity.class);
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();

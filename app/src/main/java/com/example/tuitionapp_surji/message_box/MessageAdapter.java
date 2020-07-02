@@ -1,6 +1,8 @@
 package com.example.tuitionapp_surji.message_box;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +12,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.tuitionapp_surji.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.List;
+
+import static java.security.AccessController.getContext;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 
     public static final int MSG_TYPE_LEFT = 0;
     public static final int MSG_TYPE_RIGHT = 1;
+    public static final int IMAGE_TYPE_RIGHT = 2;
+    public static final int IMAGE_TYPE_LEFT = 3;
 
     private Context mContext;
     private List<Chat> mChat;
@@ -46,8 +54,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             return new MessageAdapter.ViewHolder(view);
         }
 
-        else {
+        else if(viewType == MSG_TYPE_LEFT){
             View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_left, parent, false);
+
+            return new MessageAdapter.ViewHolder(view);
+        }
+
+        else if(viewType == IMAGE_TYPE_LEFT){
+            View view = LayoutInflater.from(mContext).inflate(R.layout.image_item_left, parent, false);
+
+            return new MessageAdapter.ViewHolder(view);
+        }
+
+        else {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.image_item_right, parent, false);
 
             return new MessageAdapter.ViewHolder(view);
         }
@@ -55,28 +75,65 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position)
+    {
 
         Chat chat = mChat.get(position);
-        holder.show_message.setText(chat.getMessage());
+
+
+       // System.out.println("URi ===========  "+imageUri);
+//        holder.profile_image_messenger.setImageResource(R.drawable.male_pic);
+
+
 
       if(imageUri!=null){
-          Picasso.get().load(imageUri).into(holder.profile_image);
+          Picasso.get().load(imageUri).into(holder.profile_image_messenger);
         }
 
-        else if(gender!=null){
+      else if(imageUri==null && gender!=null){
             if(gender.equals("MALE")){
-                holder.profile_image.setImageResource(R.drawable.male_pic);
+                holder.profile_image_messenger.setImageResource(R.drawable.male_pic);
 
             }
+
             else {
-                holder.profile_image.setImageResource(R.drawable.female_pic);
+                holder.profile_image_messenger.setImageResource(R.drawable.female_pic);
             }
+      }
+
+       /* else if(imageUri==null && gender==null) {
+          holder.profile_image.setImageResource(R.drawable.man);
+      }*/
+
+        if(chat.getMessage_type().equals("text")){
+            holder.show_message.setText(chat.getMessage());
         }
 
         else{
-          holder.profile_image.setImageResource(R.drawable.man);
-      }
+            //System.out.println("URI ==================="+chat.getMessage());
+            if(chat.getMessage()!=null){
+
+                Picasso.get().load(chat.getMessage()).into(holder.show_image);
+
+            }
+        }
+
+
+        if(position==mChat.size()-1){
+            if(chat.getIsSeen()){
+                holder.txt_seen.setText("Seen");
+            }
+
+            else {
+                holder.txt_seen.setText("Delivered");
+            }
+        }
+
+        else
+        {
+            holder.txt_seen.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -86,13 +143,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView show_message;
-        public ImageView profile_image;
+        public TextView txt_seen;
+        public ImageView profile_image_messenger;
+        public ImageView show_image;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             show_message = itemView.findViewById(R.id.show_message);
-            profile_image = itemView.findViewById(R.id.profile_image);
+            txt_seen = itemView.findViewById(R.id.txt_seen);
+            profile_image_messenger = itemView.findViewById(R.id.profile_image_messenger);
+            show_image = itemView.findViewById(R.id.show_image);
         }
     }
 
@@ -100,12 +162,25 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public int getItemViewType(int position) {
       fuser = FirebaseAuth.getInstance().getCurrentUser();
 
-      if(mChat.get(position).getSender().equals(fuser.getUid())){
-          return MSG_TYPE_RIGHT;
+      if(mChat.get(position).getMessage_type().equals("text")){
+          if(mChat.get(position).getSender().equals(fuser.getUid())){
+              return MSG_TYPE_RIGHT;
+          }
+
+          else {
+              return MSG_TYPE_LEFT;
+          }
       }
 
-      else {
-          return MSG_TYPE_LEFT;
+      else{
+          if(mChat.get(position).getSender().equals(fuser.getUid())){
+              return IMAGE_TYPE_RIGHT;
+          }
+
+          else {
+              return IMAGE_TYPE_LEFT;
+          }
       }
+
     }
 }

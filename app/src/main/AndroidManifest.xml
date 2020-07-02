@@ -16,8 +16,7 @@
         android:theme="@style/AppTheme">
         <activity android:name="com.example.tuitionapp_surji.group.GroupCreationActivity"></activity>
         <activity android:name="com.example.tuitionapp_surji.demo_video.DemoVideoMainActivity"></activity>
-        <activity android:name="com.example.tuitionapp_surji.calendar.CalendarEventActivity"></activity>
-        <activity android:name="com.example.tuitionapp_surji.calendar.ViewEventActivity"></activity>
+        <activity android:name="com.example.tuitionapp_surji.calendar.CalendarViewEventActivity"></activity>
         <activity android:name="com.example.tuitionapp_surji.calendar.CalendarHomeActivity"></activity>
         <activity android:name="com.example.tuitionapp_surji.calendar.CalendarSampleActivity"></activity>
         <activity android:name="com.example.tuitionapp_surji.note.Note_Home"></activity>

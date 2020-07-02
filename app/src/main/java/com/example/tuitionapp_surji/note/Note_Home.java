@@ -19,6 +19,8 @@ import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +39,6 @@ public class Note_Home extends AppCompatActivity {
 
 
     private DatabaseReference myRefNote ;
-    private StorageReference pdfStorage ;
     final static int PICK_PDF_CODE = 2342 ;
 
     private ArrayList<String> userInfo ;
@@ -47,23 +48,14 @@ public class Note_Home extends AppCompatActivity {
     private ArrayList<NoteInfo> addNoteInfoArrayList ;
     private ArrayList<String> addNoteKeyArrayList ;
 
-    private TextView noteAttachmentTextView ;
-
-    private TextView noteTitleTV, noteBodyTV ;
-    private TextInputEditText noteTitleEditText ;
+    private TextView  noteBodyTV ;
     private TextInputEditText notePostEditText ;
-    private TextInputLayout noteTitleEditTextLayout ;
     private TextInputLayout notePostEditTextLayout ;
     MaterialEditText noteMaterialEditText;
 
     private ListView noteListView ;
 
-    private String note_title ;
     private String note_post ;
-    private Uri filePath ;
-    private String uriString ;
-    private String pdfName ;
-    //private String groupID ,user ,userEmail;
     private Menu toolbarMenu ;
 
 
@@ -74,6 +66,7 @@ public class Note_Home extends AppCompatActivity {
     private String noteDate;
     private String noteTime;
     int flag;
+    private FirebaseUser firebaseUser;
 
 
     @Override
@@ -93,10 +86,6 @@ public class Note_Home extends AppCompatActivity {
 
         noteMaterialEditText = findViewById(R.id.noteMaterialEditText);
 
-        noteTitleTV = findViewById(R.id.note_title_heading) ;
-        noteTitleEditText = findViewById(R.id.note_title_edit_text) ;
-        noteTitleEditTextLayout = findViewById(R.id.note_titleInputLayout) ;
-
         noteBodyTV = findViewById(R.id.note_body_heading) ;
         notePostEditText = findViewById(R.id.note_post_edit_text) ;
         notePostEditTextLayout = findViewById(R.id.note_postInputLayout) ;
@@ -104,7 +93,7 @@ public class Note_Home extends AppCompatActivity {
         noteListView = findViewById(R.id.note_list_view) ;
 
         myRefNote = FirebaseDatabase.getInstance().getReference("Note") ;
-        pdfStorage = FirebaseStorage.getInstance().getReference() ;
+        firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
 
         addNoteInfoArrayList = new ArrayList<>() ;
         addNoteKeyArrayList = new ArrayList<>() ;
@@ -114,6 +103,8 @@ public class Note_Home extends AppCompatActivity {
         toolbarMenu.findItem(R.id.note_addPost).setVisible(false);
         toolbarMenu.findItem(R.id.note_addAttachment).setVisible(false);
         editNoteButton.setVisibility(View.INVISIBLE);
+        noteBodyTV.setVisibility(View.GONE);
+        notePostEditTextLayout.setVisibility(View.GONE);
 
 
 
@@ -123,8 +114,11 @@ public class Note_Home extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot dS1: dataSnapshot.getChildren()){
                     NoteInfo noteInfo = dS1.getValue(NoteInfo.class) ;
+                    if(firebaseUser.getUid().equals(noteInfo.getUserId())){
                         addNoteInfoArrayList.add(noteInfo) ;
                         addNoteKeyArrayList.add(dS1.getKey());
+                    }
+
 
                     goToNoteListView();
                 }
@@ -144,7 +138,6 @@ public class Note_Home extends AppCompatActivity {
                 NoteInfo selectedPost = addNoteInfoArrayList.get(position);
                 String key = addNoteKeyArrayList.get(position);
                 editSelectedNote(selectedPost,key);
-               // editNoteOperation();
 
             }
         });
@@ -154,7 +147,20 @@ public class Note_Home extends AppCompatActivity {
         note_tool_bar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToBackPageActivity();
+                System.out.println("========================================  "+notePostEditTextLayout.getVisibility());
+                int a = editNoteButton.getVisibility();
+                int b = notePostEditTextLayout.getVisibility();
+                if(a==0 || b==0){
+                      Intent intent = new Intent(Note_Home.this, Note_Home.class);
+                    // intent.putExtra("user",user) ;
+                    intent.putStringArrayListExtra("userInfo",userInfo) ;
+                    startActivity(intent);
+                    finish();
+                }
+
+                else{
+                    goToBackPageActivity();
+                }
             }
         });
 
@@ -195,9 +201,7 @@ public class Note_Home extends AppCompatActivity {
 
         noteMaterialEditText.setText(selectedNote.getNote_post());
 
-        noteTitleTV.setVisibility(View.INVISIBLE);
         noteBodyTV.setVisibility(View.INVISIBLE);
-        noteTitleEditTextLayout.setVisibility(View.INVISIBLE);
         notePostEditTextLayout.setVisibility(View.INVISIBLE);
         addNoteButton.setVisibility(View.INVISIBLE);
         noteListView.setVisibility(View.GONE);
@@ -214,25 +218,19 @@ public class Note_Home extends AppCompatActivity {
                 DatabaseReference mDatabaseRef = database.getReference().child("Note").child(key);
                 DatabaseReference databaseReference =FirebaseDatabase.getInstance().getReference();
                 //mDatabaseRef.removeValue();
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
-                HashMap<String,String> hashMap = new HashMap<>();
                 HashMap<String,String> hashMap2 = new HashMap<>();
-                hashMap.put("noteId",selectedNote.getNoteId());
-                hashMap2.put("noteId",selectedNote.getNoteId());
-                hashMap.put("note_title",selectedNote.getNote_title());
-                hashMap2.put("note_title",selectedNote.getNote_title());
-                hashMap.put("note_post",selectedNote.getNote_post());
+               // hashMap2.put("note_title",selectedNote.getNote_title());
                 hashMap2.put("note_post",noteMaterialEditText.getText().toString());
-                hashMap.put("noteTime",selectedNote.getNoteTime());
                 hashMap2.put("noteTime",selectedNote.getNoteTime());
-                hashMap.put("noteDate",selectedNote.getNoteDate());
                 hashMap2.put("noteDate",selectedNote.getNoteDate());
+                hashMap2.put("userId",firebaseUser.getUid());
                 //databaseReference.child("Note").push().setValue(hashMap2);
                 mDatabaseRef.setValue(hashMap2);
 
                 Intent intent = new Intent(Note_Home.this, Note_Home.class);
-                // intent.putExtra("user",user) ;
                 intent.putStringArrayListExtra("userInfo",userInfo) ;
                 startActivity(intent);
                 finish();
@@ -258,9 +256,8 @@ public class Note_Home extends AppCompatActivity {
 
         noteMaterialEditText.setVisibility(View.GONE);
 
-        noteTitleTV.setVisibility(View.VISIBLE);
+
         noteBodyTV.setVisibility(View.VISIBLE);
-        noteTitleEditTextLayout.setVisibility(View.VISIBLE);
         notePostEditTextLayout.setVisibility(View.VISIBLE);
         addNoteButton.setVisibility(View.VISIBLE);
         noteListView.setVisibility(View.GONE);
@@ -271,12 +268,11 @@ public class Note_Home extends AppCompatActivity {
         DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
         DatabaseReference databaseArtists = FirebaseDatabase.getInstance().getReference("Note");
         note_post = notePostEditText.getText().toString() ;
-        note_title = noteTitleEditText.getText().toString() ;
 
         noteTime = simpleDateFormate1.format(noteCalendar.getTime());
         noteDate = simpleDateFormate2.format(noteCalendar.getTime());
 
-        if(!note_post.equals("") || !note_title.equals("")){
+        if(!note_post.equals("")){
             //NoteInfo noteInfo = new NoteInfo(note_title, note_post) ;
             //  myRefNote.push().setValue(noteInfo);
             //  databaseReference.child("Events").push().setValue(hashMap);
@@ -284,11 +280,12 @@ public class Note_Home extends AppCompatActivity {
             String noteId = databaseArtists.push().getKey();
 
             HashMap<String,String> hashMap = new HashMap<>();
-            hashMap.put("noteId",noteId);
-            hashMap.put("note_title",note_title);
+            //hashMap.put("note_title",note_title);
             hashMap.put("note_post",note_post);
             hashMap.put("noteTime",noteTime);
             hashMap.put("noteDate",noteDate);
+            hashMap.put("userId",firebaseUser.getUid());
+
             databaseReference.child("Note").push().setValue(hashMap);
 
         }
@@ -298,21 +295,6 @@ public class Note_Home extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
-
-
-
-
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_PDF_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filePath = data.getData() ;
-            noteAttachmentTextView.setText(filePath.toString());
-        }
-    }
-
 
 
 

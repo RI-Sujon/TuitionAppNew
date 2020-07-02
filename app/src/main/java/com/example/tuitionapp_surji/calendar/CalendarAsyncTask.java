@@ -35,20 +35,20 @@ abstract class CalendarAsyncTask extends AsyncTask<Void, Void, Boolean>
   final CalendarSampleActivity activity;
   final CalendarModel model;
   final com.google.api.services.calendar.Calendar client;
-  private final View progressBar;
+  //private final View progressBar;
 
   CalendarAsyncTask(CalendarSampleActivity activity) {
     this.activity = activity;
     model = activity.model;
     client = activity.client;
-    progressBar = activity.findViewById(R.id.title_refresh_progress);
+    //progressBar = activity.findViewById(R.id.title_refresh_progress);
   }
 
   @Override
   protected void onPreExecute() {
     super.onPreExecute();
     activity.numAsyncTasks++;
-    progressBar.setVisibility(View.VISIBLE);
+    //progressBar.setVisibility(View.VISIBLE);
   }
 
   @Override
@@ -73,11 +73,13 @@ abstract class CalendarAsyncTask extends AsyncTask<Void, Void, Boolean>
   protected final void onPostExecute(Boolean success) {
     super.onPostExecute(success);
     if (0 == --activity.numAsyncTasks) {
-      progressBar.setVisibility(View.GONE);
+     // progressBar.setVisibility(View.GONE);
     }
-    if (success) {
+
+
+   /* if (success) {
       activity.refreshView();
-    }
+    }*/
   }
 
   abstract protected void doInBackground() throws IOException;

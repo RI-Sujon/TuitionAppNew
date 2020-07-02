@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewEventActivity extends AppCompatActivity
+public class CalendarViewEventActivity extends AppCompatActivity
 {
 
     private Serializable eventInfoList;// = (ArrayList<String>) getIntent().getSerializableExtra("key");
@@ -40,7 +40,7 @@ public class ViewEventActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_event);
+        setContentView(R.layout.activity_calendar_view_event);
 
         Intent intent = getIntent() ;
         userInfo = intent.getStringArrayListExtra("userInfo") ;
@@ -59,7 +59,7 @@ public class ViewEventActivity extends AppCompatActivity
         final String userId = firebaseUser.getUid();
         reference = FirebaseDatabase.getInstance().getReference("Events");//.child(userId);
 
-        reference.addValueEventListener(new ValueEventListener() {
+      /*  reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -67,9 +67,11 @@ public class ViewEventActivity extends AppCompatActivity
                     CalendarEventInfo calendarEventInfo = snapshot.getValue(CalendarEventInfo.class);
                     //MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
                     if(calendarEventInfo.getEventCreatorId().equals(userId))
-                    System.out.println("Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee : "+calendarEventInfo.getEventTitle());
+                    //System.out.println("Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee : "+calendarEventInfo.getEventTitle());
                     calendarEventInfos.add(calendarEventInfo);
                 }
+
+                reference.removeEventListener(this);
 
             }
 
@@ -77,7 +79,7 @@ public class ViewEventActivity extends AppCompatActivity
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
 
 
@@ -90,7 +92,7 @@ public class ViewEventActivity extends AppCompatActivity
 
 
         title.setText(calendarEventInfo.getEventTitle());
-        dateTime.setText(calendarEventInfo.getDate()+" , "+calendarEventInfo.getStartTime()+"-"+ calendarEventInfo.getEndTime());
+        dateTime.setText(calendarEventInfo.getDate()+"  .  "+calendarEventInfo.getStartTime()+" - "+ calendarEventInfo.getEndTime());
         attendee.setText(calendarEventInfo.getAttendee());
         location.setText(calendarEventInfo.getLocation());
         description.setText(calendarEventInfo.getDescription());

@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/Beige"
+    android:background="@color/White"
     tools:context=".calendar.CalendarHomeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@color/colorAccent"
 
         android:padding="1dp">
@@ -27,43 +27,48 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
             android:text="Events"
+            android:textStyle="italic"
+            android:layout_marginLeft="115dp"
+            android:layout_gravity="center"
             android:textSize="25sp"
+            android:textColor="@color/Black"
             />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="470dp"
-        android:orientation="vertical"
-        android:background="@color/Beige"
-        >
+        android:layout_height="450dp"
+        android:background="@color/White"
+        android:orientation="vertical">
 
         <ListView
-            android:layout_marginTop="20dp"
             android:id="@+id/events_list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="0.5dp"
-            android:divider="@color/colorAccent" />
+            android:layout_height="450dp"
+            android:layout_marginTop="20dp"
+            android:divider="@color/colorAccent"
+            android:dividerHeight="0.5dp">
+
+        </ListView>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:background="@color/Beige"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+      <LinearLayout
+          android:background="@color/White"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
 
-        <ImageButton
-            android:background="@color/Beige"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/plus"
-            android:onClick="addCalendarEvent"
-            />
-    </LinearLayout>
+          <de.hdodenhof.circleimageview.CircleImageView
+              android:layout_marginTop="50dp"
+              android:background="@color/White"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:src="@drawable/plus_icon01"
+              android:onClick="addCalendarEvent"
+              />
+      </LinearLayout>
 
 
 </LinearLayout>

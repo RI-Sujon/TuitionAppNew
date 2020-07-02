@@ -43,9 +43,7 @@ public class CustomAdapterForNote extends BaseAdapter {
             holder = new CustomAdapterForNote.ViewHolder() ;
             convertView = LayoutInflater.from(context).inflate(R.layout.custom_adapter_note_list_view, null);
 
-            holder.note_title = convertView.findViewById(R.id.note_title) ;
             holder.note = convertView.findViewById(R.id.notePostTextView) ;
-            holder.note_attachment = convertView.findViewById(R.id.noteAttachmentTextView) ;
             holder.noteDate = convertView.findViewById(R.id.noteDate) ;
 
             convertView.setTag(holder);
@@ -58,7 +56,6 @@ public class CustomAdapterForNote extends BaseAdapter {
         holder.note.setText(post);
         holder.note.setVisibility(View.VISIBLE);
 
-        holder.note_title.setText(addNoteInfoArrayList.get(position).getNote_title());
         System.out.println("Dateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee : "+addNoteInfoArrayList.get(position).getNoteDate());
         holder.noteDate.setText(addNoteInfoArrayList.get(position).getNoteDate() + ",  " +addNoteInfoArrayList.get(position).getNoteTime());
 
@@ -66,7 +63,6 @@ public class CustomAdapterForNote extends BaseAdapter {
     }
 
     class ViewHolder{
-        TextView note_title ;
         TextView note;
         TextView note_attachment;
         TextView noteDate ;

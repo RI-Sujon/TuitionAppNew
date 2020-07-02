@@ -52,14 +52,13 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
 
 
    private String emailPrimaryKey ;
-    private String imageUriString ;
+   private String imageUriString ;
     private String reference1str, reference2str;
-
     private ProgressDialog progressDialog ;
 
     private ArrayList<VerifiedTutorInfo> verifiedTutorInfoList = new ArrayList<>() ;
 
-   private Bitmap bitmapImage ;
+  private Bitmap bitmapImage ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

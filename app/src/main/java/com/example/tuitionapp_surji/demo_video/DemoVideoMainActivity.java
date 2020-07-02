@@ -79,7 +79,6 @@ public class DemoVideoMainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
         videoname = findViewById(R.id.video_name);
 
-        progressBar = new ProgressBar(this);
 
         mediaController = new MediaController(this);
 
@@ -106,7 +105,9 @@ public class DemoVideoMainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 System.out.println("Video nameeeeeeeeeeeeeeeeeeeeee = "+videoName);
                 //UploadVideo();
+                progressBar.setVisibility(View.VISIBLE);
                 uploadFinish();
+               // progressBar.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -213,8 +214,8 @@ public class DemoVideoMainActivity extends AppCompatActivity {
                             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                                 double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
                                 //progressBar.text("Uploaded " + (int) progress + "%");
-                                progressBar.setProgress((int) progress);
                                 progressBar.setVisibility(View.VISIBLE);
+                                progressBar.setProgress((int) progress);
                             }
                         });
 

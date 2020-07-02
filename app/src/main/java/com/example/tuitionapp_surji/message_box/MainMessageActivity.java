@@ -70,20 +70,20 @@ public class MainMessageActivity extends AppCompatActivity {
 
         if(checkUser.equals("guardian"))
         {
-            System.out.println("Guardian ID ======================================"+firebaseUser.getUid());
+           // System.out.println("Guardian ID ======================================"+firebaseUser.getUid());
             reference.addValueEventListener(new ValueEventListener()
             {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot1)
                 {
                     for(DataSnapshot snapshot:dataSnapshot1.getChildren()){
-                        System.out.println("kaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                 //       System.out.println("kaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                         System.out.println();
                         MessageBoxInfo user=snapshot.getValue(MessageBoxInfo.class);
                         if(user.getGuardianUid().equals(firebaseUser.getUid())){
                             System.out.println("getTutorId ============================= "+user.getTutorUid());
                             messageBoxUser = user;
-                            System.out.println("AAAAAAAAAAAAAAAAAAAAAAA ==== "+messageBoxUser.getTutorEmail());
+                         //   System.out.println("AAAAAAAAAAAAAAAAAAAAAAA ==== "+messageBoxUser.getTutorEmail());
                             break;
                         }
 
@@ -98,11 +98,11 @@ public class MainMessageActivity extends AppCompatActivity {
                             for(DataSnapshot snapshot:dataSnapshot.getChildren()){
                                 CandidateTutorInfo candidateTutorInfo = snapshot.getValue(CandidateTutorInfo.class);
                                 if(candidateTutorInfo.getEmailPK().equals(tutorEmail)){
-                                    System.out.println("Email =============================" +candidateTutorInfo.getEmailPK());
+                                //    System.out.println("Email =============================" +candidateTutorInfo.getEmailPK());
                                     tutorInfo = candidateTutorInfo;
-                                    System.out.println("Name =============="+tutorInfo.getUserName());
+                                  //  System.out.println("Name =============="+tutorInfo.getUserName());
                                     tutorName = tutorInfo.getUserName();
-                                    System.out.println("Name =============="+tutorName);
+                                 // System.out.println("Name =============="+tutorName);
 
                                     break;
                                 }
@@ -165,10 +165,10 @@ public class MainMessageActivity extends AppCompatActivity {
                             for(DataSnapshot snapshot:dataSnapshot.getChildren()){
                                 CandidateTutorInfo candidateTutorInfo = snapshot.getValue(CandidateTutorInfo.class);
                                 if(candidateTutorInfo.getEmailPK().equals(tutorEmail)){
-                                    System.out.println("Email =============================" +candidateTutorInfo.getEmailPK());
-                                    System.out.println("Email =============================" +tutorEmail);
+                                  //  System.out.println("Email =============================" +candidateTutorInfo.getEmailPK());
+                                  //  System.out.println("Email =============================" +tutorEmail);
                                     tutorInfo = candidateTutorInfo;
-                                    System.out.println("Name =============="+tutorInfo.getUserName());
+                                   // System.out.println("Name =============="+tutorInfo.getUserName());
                                 }
 
                             }
@@ -249,28 +249,6 @@ public class MainMessageActivity extends AppCompatActivity {
 
 
     }
-
-    public void backFromMessageBox(View view){
-
-        if(checkUser.equals("tutor")){
-
-            Intent intent1 = getIntent() ;
-            userInfo = intent1.getStringArrayListExtra("userInfo") ;
-            Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
-            intent.putStringArrayListExtra("userInfo", userInfo) ;
-            startActivity(intent);
-            finish();
-        }
-        else if(checkUser.equals("guardian")){
-            Intent intent = new Intent(this, GuardianHomePageActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
-
-    }
-
-
 
 
     public class  ViewPagerAdapter  extends FragmentPagerAdapter {

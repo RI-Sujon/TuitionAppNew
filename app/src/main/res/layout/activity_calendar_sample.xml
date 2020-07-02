@@ -10,30 +10,34 @@
         android:layout_width="match_parent"
         android:layout_height="45dip"
         android:orientation="horizontal"
-        android:background="@color/title_background">
+        android:background="@color/colorAccent">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageView1"
             android:layout_width="50dp"
+            android:background="@color/colorAccent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginRight="35dp"
             android:contentDescription="@string/icon_desc"
-            android:src="@drawable/download" />
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:onClick="goToHomePageActivity"/>
 
         <TextView
+            android:background="@color/colorAccent"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Event"
+            android:textColor="@color/Black"
             android:textSize="20sp"
             android:textAlignment="center"
             android:textAppearance="?android:attr/textAppearanceMediumInverse"
             tools:ignore="RtlCompat" />
 
-        <View style="@style/TitleBarSpring" />
+        <!--<View style="@style/TitleBarSpring" />-->
 
-        <ProgressBar
+      <!--  <ProgressBar
             android:id="@+id/title_refresh_progress"
             style="@style/TitleBarProgressIndicator"
             android:visibility="gone" />
@@ -42,14 +46,14 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             style="@style/TitleBarSeparator"
-            android:contentDescription="@string/title_separator_desc" />
+            android:contentDescription="@string/title_separator_desc" />-->
 
-        <ImageButton
+     <!--   <ImageButton
             style="@style/TitleBarAction"
             android:contentDescription="@string/description_add"
             android:keepScreenOn="true"
             android:onClick="onAddClick"
-            android:src="@drawable/ic_title_add" />
+            android:src="@drawable/ic_title_add" />-->
     </LinearLayout>
 
     <!--  <ListView
@@ -112,24 +116,42 @@
 
 
             <DatePicker
-                android:layout_marginLeft="21dp"
-                android:layout_marginRight="21dp"
+                android:backgroundTint="@color/Black"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/datePicker"
                 />
 
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textColor="@color/Black"
+                android:text="Starting Time"/>
+
             <TimePicker
                 android:id="@+id/startTimePicker"
                 android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
+                android:layout_width="267dp"
                 android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/Black"
+                android:text="Ending Time"/>
 
             <TimePicker
                 android:id="@+id/endTimePicker"
                 android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
+                android:layout_width="267dp"
                 android:layout_height="wrap_content"/>
 
 
@@ -156,35 +178,8 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                >
-
-                <Button
-                    android:text="Back"
-                    android:backgroundTint="@color/colorAccent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="goToHomePageActivity"
-                    />
-
-                <Button
-                    android:text="Event"
-                    android:layout_marginLeft="180dp"
-                    android:backgroundTint="@color/colorAccent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
-
-            </LinearLayout>
 
         </LinearLayout>
-
-
-
-
 
     </ScrollView>
 

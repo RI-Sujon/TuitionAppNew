@@ -45,6 +45,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class VerifiedTutorHomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -274,9 +275,33 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
                     }
                 });
 
-        Intent intent = new Intent(this, HomePageActivity.class) ;
+        Intent intent = new Intent(this, HomePageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) ;
         startActivity(intent);
-        finish();
+        //finish();
+    }
+
+    private void status(String status){
+
+
+          DatabaseReference  reference = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(user.getUid());
+            HashMap<String,Object> hashMap = new HashMap<>();
+            hashMap.put("status",status);
+            reference.updateChildren(hashMap);
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
     }
 
     public void openDrawerOperation(View view){

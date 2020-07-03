@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -157,14 +158,14 @@ public class MainMessageActivity extends AppCompatActivity {
 
                     }
 
-                    final String tutorEmail = messageBoxUser.getTutorEmail();
+                  //  final String tutorEmail = messageBoxUser.getTutorEmail();
 
                     candidateTutorReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for(DataSnapshot snapshot:dataSnapshot.getChildren()){
                                 CandidateTutorInfo candidateTutorInfo = snapshot.getValue(CandidateTutorInfo.class);
-                                if(candidateTutorInfo.getEmailPK().equals(tutorEmail)){
+                                if(candidateTutorInfo.getEmailPK().equals(firebaseUser.getEmail())){
                                   //  System.out.println("Email =============================" +candidateTutorInfo.getEmailPK());
                                   //  System.out.println("Email =============================" +tutorEmail);
                                     tutorInfo = candidateTutorInfo;
@@ -285,4 +286,28 @@ public class MainMessageActivity extends AppCompatActivity {
         }
     }
 
+
+    private void status(String status){
+
+        if(checkUser.equals("tutor")){
+            reference = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(firebaseUser.getUid());
+            HashMap<String,Object> hashMap = new HashMap<>();
+            hashMap.put("status",status);
+            reference.updateChildren(hashMap);
+        }
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
+    }
 }

@@ -32,15 +32,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private  String checkUser;
     CandidateTutorInfo tutorInfo;
     private String LastMessage;
+    private boolean isChat;
 
     DatabaseReference candidateTutorReference; //= FirebaseDatabase.getInstance().getReference("CandidateTutor");
     ArrayList<CandidateTutorInfo> imageUriStrings;
 
 
-    public UserAdapter(Context mContext, List<User> mUsers, String checkUser) {
+    public UserAdapter(Context mContext, List<User> mUsers, String checkUser,boolean isChat) {
         this.mContext = mContext;
         this.mUsers = mUsers;
         this.checkUser = checkUser;
+        this.isChat = isChat;
     }
 
     @NonNull
@@ -92,6 +94,26 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
 
 
+                            if(isChat){
+                                if(candidateTutorInfo.getStatus().equals("online")){
+                                    holder.img_on.setVisibility(View.VISIBLE);
+                                    holder.img_off.setVisibility(View.GONE);
+                                }
+
+                                else
+                                {
+                                    holder.img_on.setVisibility(View.GONE);
+                                    holder.img_off.setVisibility(View.VISIBLE);
+                                }
+                            }
+
+                            else {
+                                holder.img_on.setVisibility(View.GONE);
+                                holder.img_off.setVisibility(View.GONE);
+                            }
+
+
+
                             break;
                         }
 
@@ -113,6 +135,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
            // System.out.println("Before Set Name =============="+ imageUriStrings.get(0).getProfilePictureUri());
             //holder.username.setText(tutorName[0]);
             //holder.profile_image.setImageResource(R.mipmap.ic_launcher);
+
+
+
+
+
         }
 
         else if(checkUser.equals("tutor")){
@@ -120,6 +147,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             holder.profile_image.setImageResource(R.drawable.man);
             lastMessageSetter(user.getGuardianUid(), holder.last_msg);
             //holder.profile_image.setImageResource(R.mipmap.ic_launcher);
+
+            holder.img_on.setVisibility(View.GONE);
+            holder.img_off.setVisibility(View.GONE);
         }
 
 
@@ -162,6 +192,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView username;
         public ImageView profile_image;
+        public ImageView img_on;
+        public ImageView img_off;
         private  TextView last_msg;
 
         public ViewHolder(View itemView){
@@ -170,6 +202,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             username=itemView.findViewById(R.id.username);
             profile_image=itemView.findViewById(R.id.profile_image);
             last_msg=itemView.findViewById(R.id.last_msg);
+            img_on=itemView.findViewById(R.id.img_on);
+            img_off=itemView.findViewById(R.id.img_off);
         }
     }
 
@@ -193,35 +227,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                     }
 
                 }
-
-
-
-
-               /* if(LastMessage!=null){
-
-                    if(LastMessage.equals("default")){
-                        last_msg.setText("No message");
-                    }
-
-                    else
-                    {
-                        if(LastMessage.length()>20){
-                            String shortMessage = LastMessage.substring(0,20);
-                            last_msg.setText(shortMessage+"... "+ chat.getMessage_time());
-
-                        }
-                        else
-                            last_msg.setText(LastMessage);
-
-                    }
-
-                }
-
-                else
-                    last_msg.setText("No Message");
-
-
-                LastMessage = "default";*/
 
                 LastMessage = "default";
             }

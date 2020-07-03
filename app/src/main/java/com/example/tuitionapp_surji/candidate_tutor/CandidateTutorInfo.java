@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class CandidateTutorInfo {
 
-    private String userName, emailPK, mobileNumber, gender, areaAddress, currentPosition, edu_instituteName, attachedHall, edu_tutorSubject, idCardImageUri  ;
+    private String userName, emailPK, mobileNumber, gender,areaAddress, currentPosition, edu_instituteName, attachedHall, edu_tutorSubject, idCardImageUri  ;
     private ArrayList<String> verifiedTutorReferences ;
-    private String profilePictureUri ;
+    private String profilePictureUri,status;
     private boolean tutorAvailable ;
 
     public CandidateTutorInfo(){
@@ -18,6 +18,7 @@ public class CandidateTutorInfo {
         this.emailPK = emailPK;
         this.mobileNumber = mobileNumber;
         tutorAvailable = false ;
+        status = "offline";
     }
 
     public CandidateTutorInfo(String gender, String areaAddress, String currentPosition, String edu_instituteName, String edu_tutorSubject, String attachedHall) {
@@ -28,6 +29,7 @@ public class CandidateTutorInfo {
         this.edu_tutorSubject = edu_tutorSubject;
         this.attachedHall =attachedHall ;
         tutorAvailable = false ;
+        status="offline";
     }
 
     public CandidateTutorInfo(String userName, String emailPK, String mobileNumber, String gender, String areaAddress, String currentPosition, String edu_instituteName, String edu_tutorSubject, String attachedHall) {
@@ -40,6 +42,7 @@ public class CandidateTutorInfo {
         this.edu_instituteName = edu_instituteName;
         this.edu_tutorSubject = edu_tutorSubject;
         this.attachedHall = attachedHall;
+        status="offline";
     }
 
     public String getUserName() {
@@ -144,5 +147,13 @@ public class CandidateTutorInfo {
 
     public void setTutorAvailable(boolean tutorAvailable) {
         this.tutorAvailable = tutorAvailable;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

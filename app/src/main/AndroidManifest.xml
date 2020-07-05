@@ -34,6 +34,7 @@
         <activity android:name=".guardian.ViewingSearchingTutorProfileActivity" />
         <activity android:name=".verified_tutor.VerifiedTutorNotificationActivity" />
         <activity android:name=".admin.AdminTutorProfileViewActivity" />
+         <activity android:name="com.example.tuitionapp_surji.admin.CustomAdapterForCandidateTutorApproval" />
         <activity android:name=".admin.AdminHomePageActivity" />
         <activity android:name=".tuition_post.TuitionPostActivity" />
         <activity android:name=".verified_tutor.VerifiedTutorHomePageActivity" />

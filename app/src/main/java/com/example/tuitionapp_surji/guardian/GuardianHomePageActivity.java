@@ -25,6 +25,7 @@ import com.example.tuitionapp_surji.system.HomePageActivity;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostViewActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class GuardianHomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -84,9 +86,9 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
 
         view = navigationView.getHeaderView(0) ;
 
-        guardianName = (TextView)view.findViewById(R.id.name) ;
-        guardianMobileNo = (TextView)view.findViewById(R.id.email) ;
-        profilePic = (ImageView)view.findViewById(R.id.profile_image) ;
+        guardianName = view.findViewById(R.id.name);
+        guardianMobileNo = view.findViewById(R.id.email);
+        profilePic = view.findViewById(R.id.profile_image);
 
         guardianMobileNo.setText(mAuth.getCurrentUser().getPhoneNumber());
 
@@ -96,9 +98,14 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
                 GuardianInfo guardianInfo = dataSnapshot.getValue(GuardianInfo.class) ;
                 guardianName.setText(guardianInfo.getName());
 
-                if(!guardianInfo.equals("1")){
+                if(!guardianInfo.getProfilePicUri().equals("1")){
                     Picasso.get().load(guardianInfo.getProfilePicUri()).into(profilePic) ;
                 }
+
+                else
+                    profilePic.setImageResource(R.drawable.man);
+
+
                 myRefGuardian.removeEventListener(this);
             }
 
@@ -225,11 +232,34 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
     public void signOut() {
         mAuth.signOut();
 
-        Intent intent = new Intent(this, HomePageActivity.class);
+        Intent intent = new Intent(GuardianHomePageActivity.this, HomePageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) ;
         startActivity(intent);
-        finish();
+        //finish();
     }
 
+
+    private void status(String status){
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        System.out.println("User =================================  "+ firebaseUser.getUid());
+        DatabaseReference  reference = FirebaseDatabase.getInstance().getReference("Guardian").child(firebaseUser.getUid());
+        HashMap<String,Object> hashMap = new HashMap<>();
+        hashMap.put("status",status);
+        reference.updateChildren(hashMap);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
+    }
 
     public void openDrawerOperation(View view){
         drawerLayout.openDrawer(GravityCompat.START);

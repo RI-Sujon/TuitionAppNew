@@ -283,7 +283,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
     private void status(String status){
 
 
-          DatabaseReference  reference = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(user.getUid());
+            DatabaseReference  reference = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(user.getUid());
             HashMap<String,Object> hashMap = new HashMap<>();
             hashMap.put("status",status);
             reference.updateChildren(hashMap);

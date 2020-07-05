@@ -1145,7 +1145,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     public void sendMessageRequestByGuardian(View view){
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
-        messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail, tutorUid, false ,true) ;
+        messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail, tutorUid, true ,false) ;
 
         myRefMessageBox.addValueEventListener(new ValueEventListener() {
             @Override
@@ -1211,10 +1211,13 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                 intent.putExtra("tutorEmail",tutorEmail);
             }
 
-            else
+            else{
                 intent= new Intent(this, ViewingSearchingTutorProfileActivity.class);
 
+            }
+
             intent.putExtra("user",user) ;
+
             startActivity(intent) ;
             finish() ;
         }

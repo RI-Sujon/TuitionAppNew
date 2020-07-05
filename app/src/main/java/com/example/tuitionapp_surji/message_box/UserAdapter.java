@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
+import com.example.tuitionapp_surji.guardian.GuardianInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +35,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private String LastMessage;
     private boolean isChat;
     private ArrayList<String> userInfo ;
-    private DatabaseReference candidateTutorReference; //= FirebaseDatabase.getInstance().getReference("CandidateTutor");
     private ArrayList<CandidateTutorInfo> imageUriStrings;
 
 
@@ -59,7 +59,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
        final MessageBoxUser user=mUsers.get(position);
        imageUriStrings = new ArrayList<>();
 
-        candidateTutorReference = FirebaseDatabase.getInstance().getReference("CandidateTutor");
+        DatabaseReference candidateTutorReference = FirebaseDatabase.getInstance().getReference("CandidateTutor");
+        DatabaseReference guardianReference = FirebaseDatabase.getInstance().getReference("Guardian");
 
 
         if(checkUser.equals("guardian")){
@@ -131,26 +132,87 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
             lastMessageSetter(user.getTutorUid(), holder.last_msg);
 
-
-            //holder.username.setText(user.getTutorEmail());
-           // System.out.println("Before Set Name =============="+ imageUriStrings.get(0).getProfilePictureUri());
-            //holder.username.setText(tutorName[0]);
-            //holder.profile_image.setImageResource(R.mipmap.ic_launcher);
-
-
-
-
-
         }
 
         else if(checkUser.equals("tutor")){
-            holder.username.setText(user.getGuardianMobileNumber());
-            holder.profile_image.setImageResource(R.drawable.man);
+
+            guardianReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                        GuardianInfo guardianInfo = snapshot.getValue(GuardianInfo.class);
+                        if(guardianInfo.getPhoneNumber().equals(user.getGuardianMobileNumber()))
+                        {
+
+                            holder.username.setText(guardianInfo.getName());
+
+                           /* if(candidateTutorInfo.getGender().equals("MALE")){
+                                if(tutorInfo.getProfilePictureUri()!= null)
+                                    Picasso.get().load(tutorInfo.getProfilePictureUri()).into(holder.profile_image);
+                                else
+                                    holder.profile_image.setImageResource(R.drawable.male_pic);
+                            }
+
+                            else if(candidateTutorInfo.getGender().equals("FEMALE")){
+                                if(tutorInfo.getProfilePictureUri()!= null)
+                                    Picasso.get().load(tutorInfo.getProfilePictureUri()).into(holder.profile_image);
+                                else
+                                    holder.profile_image.setImageResource(R.drawable.female_pic);
+                            }*/
+
+                            if(!guardianInfo.getProfilePicUri().equals("1")){
+                                Picasso.get().load(guardianInfo.getProfilePicUri()).into(holder.profile_image);
+                            }
+
+                            else{
+                                holder.profile_image.setImageResource(R.drawable.man);
+                            }
+
+
+
+                            if(isChat){
+                                if(guardianInfo.getStatus().equals("online")){
+                                    holder.img_on.setVisibility(View.VISIBLE);
+                                    holder.img_off.setVisibility(View.GONE);
+                                }
+
+                                else
+                                {
+                                    holder.img_on.setVisibility(View.GONE);
+                                    holder.img_off.setVisibility(View.VISIBLE);
+                                }
+                            }
+
+                            else {
+                                holder.img_on.setVisibility(View.GONE);
+                                holder.img_off.setVisibility(View.GONE);
+                            }
+
+
+
+                            break;
+                        }
+
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
             lastMessageSetter(user.getGuardianUid(), holder.last_msg);
+
+
+           /* holder.username.setText(user.getGuardianMobileNumber());
+            holder.profile_image.setImageResource(R.drawable.man);
             //holder.profile_image.setImageResource(R.mipmap.ic_launcher);
 
             holder.img_on.setVisibility(View.GONE);
-            holder.img_off.setVisibility(View.GONE);
+            holder.img_off.setVisibility(View.GONE);*/
         }
 
 

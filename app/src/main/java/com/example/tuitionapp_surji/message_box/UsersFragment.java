@@ -78,16 +78,19 @@ public class UsersFragment extends Fragment {
                     if(checkUser.equals("guardian")){
                         if(user.getGuardianUid().equals(firebaseUser.getUid()))
                         {
-                            mUsers.add(user);
+                            if(user.isMessageFromGuardianSide() && user.isMessageFromTutorSide())
+                                mUsers.add(user);
                         }
                     }
 
-                    else if(checkUser.equals("tutor")){
+                    else if(checkUser.equals("tutor"))
+                    {
                        // System.out.println("AAAAAAAAAAAAAAAAAAAAA = "+ user.getTutorUid());
                         //System.out.println("BBBBBBBBBBBBBBBBBBBBB = "+ firebaseUser.getUid());
                         if(user.getTutorUid().equals(firebaseUser.getUid()))
                         {
-                            mUsers.add(user);
+                            if(user.isMessageFromGuardianSide() && user.isMessageFromTutorSide())
+                                mUsers.add(user);
                         }
                     }
 

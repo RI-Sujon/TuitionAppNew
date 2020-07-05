@@ -1,5 +1,6 @@
 package com.example.tuitionapp_surji.message_box;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
+import com.example.tuitionapp_surji.guardian.GuardianInfo;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,7 +56,8 @@ public class MessageActivity extends AppCompatActivity
     TextView username;
     private int PICK_IMAGE_REQUEST = 120;
     FirebaseUser fuser;
-    DatabaseReference reference,candidateTutorReference;
+    DatabaseReference reference,candidateTutorReference, guardianReference;
+    @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a");
     private Calendar noteCalendar = Calendar.getInstance();
     private StorageReference storageReference;
@@ -148,41 +151,7 @@ public class MessageActivity extends AppCompatActivity
 
         reference = FirebaseDatabase.getInstance().getReference("MessageBox");//.child(userId);
         candidateTutorReference = FirebaseDatabase.getInstance().getReference("CandidateTutor");
-
-
-
-        /*reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                 User user =  dataSnapshot.getValue(User.class);
-
-                if(checkUser.equals("guardian")){
-                    username.setText("Tutor");
-                }
-
-                else if(checkUser.equals("tutor")){
-                    username.setText("Guardian");
-                }
-
-                profile_image.setImageResource(R.mipmap.ic_launcher);
-
-             *//*   if(user.getImageURL().equals("default")){
-                    profile_image.setImageResource(R.mipmap.ic_launcher);
-                }
-
-                else {
-                    Glide.with(MessageActivity.this).load(user.getImageURL()).into(profile_image);
-                }*//*
-
-                readMessages(fuser.getUid(),userId);//,user.getImageURL());
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
+        guardianReference = FirebaseDatabase.getInstance().getReference("Guardian");
 
         if(checkUser.equals("guardian"))
         {
@@ -218,7 +187,6 @@ public class MessageActivity extends AppCompatActivity
                         }
 
                     }
-                    //System.out.println("Uri ===================="+imageUri);
 
                     readMessages(fuser.getUid(),userId,imageUri,gender);
 
@@ -234,17 +202,17 @@ public class MessageActivity extends AppCompatActivity
 
         else if(checkUser.equals("tutor"))
         {
-            candidateTutorReference.addValueEventListener(new ValueEventListener() {
+            guardianReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot)
                 {
-                   /* for(DataSnapshot snapshot:dataSnapshot.getChildren()){
-                        CandidateTutorInfo candidateTutorInfo = snapshot.getValue(CandidateTutorInfo.class);
-                        if(candidateTutorInfo.getEmailPK().equals(tutorEmail))
+                    for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                        GuardianInfo guardianInfo = snapshot.getValue(GuardianInfo.class);
+                        if(guardianInfo.getPhoneNumber().equals(guardianMobileNumber))
                         {
+                            username.setText(guardianInfo.getName());
 
-                            username.setText(candidateTutorInfo.getUserName());
-                            if(candidateTutorInfo.getGender().equals("MALE")){
+                          /*  if(guardianInfo.getGender().equals("MALE")){
                                 if(candidateTutorInfo.getProfilePictureUri()!= null)
                                     Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(profile_image);
                                 else
@@ -256,12 +224,21 @@ public class MessageActivity extends AppCompatActivity
                                     Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(profile_image);
                                 else
                                     profile_image.setImageResource(R.drawable.female_pic);
-                            }
+                            }*/
+
+                          if(!guardianInfo.getProfilePicUri().equals("1")){
+                              imageUri = guardianInfo.getProfilePicUri();
+                              Picasso.get().load(guardianInfo.getProfilePicUri()).into(profile_image);
+                          }
+
+                          else{
+                              profile_image.setImageResource(R.drawable.man);
+                          }
+
                         }
                     }
-                */
-                   username.setText("Guardian");
-                   profile_image.setImageResource(R.drawable.man);
+
+                  // profile_image.setImageResource(R.drawable.man);
                     readMessages(fuser.getUid(),userId,imageUri,gender);
 
                 }
@@ -298,9 +275,6 @@ public class MessageActivity extends AppCompatActivity
                     }
                 }
 
-                //reference.removeEventListener(seenListener);
-
-
             }
 
             @Override
@@ -316,9 +290,7 @@ public class MessageActivity extends AppCompatActivity
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
-
         message_time = simpleDateFormat.format(noteCalendar.getTime());
-       // System.out.println("Time ===================================="+ message_time);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sender", sender);
         hashMap.put("receiver", receiver);
@@ -327,9 +299,7 @@ public class MessageActivity extends AppCompatActivity
         hashMap.put("message_type","text");
         hashMap.put("isSeen",false);
 
-
         reference.child("Chats").push().setValue(hashMap);
-
     }
 
 
@@ -366,11 +336,8 @@ public class MessageActivity extends AppCompatActivity
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
         startActivityForResult(Intent.createChooser(intent, "Select Image from here..."), PICK_IMAGE_REQUEST);
     }
-
-
 
 
     @Override
@@ -391,10 +358,7 @@ public class MessageActivity extends AppCompatActivity
 
         String userId = intent.getStringExtra("userId");
         uploadFinish(fuser.getUid(), userId);
-
-        System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
     }
-
 
 
     private void uploadFinish(final String sender, final String receiver){
@@ -470,10 +434,6 @@ public class MessageActivity extends AppCompatActivity
             } catch (Exception e) {
                 System.out.println("Exception: " + e);
             }
-
-
-
-
         }
     }
 
@@ -481,6 +441,13 @@ public class MessageActivity extends AppCompatActivity
 
         if(checkUser.equals("tutor")){
             reference = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(fuser.getUid());
+            HashMap<String,Object> hashMap = new HashMap<>();
+            hashMap.put("status",status);
+            reference.updateChildren(hashMap);
+        }
+
+        else if(checkUser.equals("guardian")){
+            reference = FirebaseDatabase.getInstance().getReference("Guardian").child(fuser.getUid());
             HashMap<String,Object> hashMap = new HashMap<>();
             hashMap.put("status",status);
             reference.updateChildren(hashMap);
@@ -502,5 +469,7 @@ public class MessageActivity extends AppCompatActivity
         status("offline");
 
     }
+
+
 
 }

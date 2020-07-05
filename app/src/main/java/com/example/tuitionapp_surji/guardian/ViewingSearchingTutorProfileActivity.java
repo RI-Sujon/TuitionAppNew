@@ -243,6 +243,7 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
         intent.putExtra("user", user) ;
         intent.putExtra("tutorUid",tutorUid);
         intent.putExtra("userEmail", userEmail) ;
+        intent.putExtra("context", "guardian_view") ;
         startActivity(intent);
         finish();
     }

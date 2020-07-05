@@ -67,7 +67,7 @@ public class MessageRequestActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MessageRequestActivity.this,MainMessageActivity.class);//.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Intent intent = new Intent(MessageRequestActivity.this,MainMessageActivity.class);
                 if(checkUser.equals("guardian")){
                     intent.putExtra("user","guardian");
                 }
@@ -131,6 +131,17 @@ public class MessageRequestActivity extends AppCompatActivity {
                             break;
                         }
 
+                    }
+
+                    else{
+                        assert messageBoxInfo != null;
+                        if( fuser.getUid().equals(messageBoxInfo.getTutorUid()) && userId.equals(messageBoxInfo.getGuardianUid()) )
+                        {
+                            System.out.println("Update ======================================================== Update");
+                            hashMap.put("messageFromTutorSide",true);
+                            snapshot.getRef().updateChildren(hashMap);
+                            break;
+                        }
                     }
 
                 }

@@ -1,6 +1,6 @@
 package com.example.tuitionapp_surji.message_box;
 
-public class User {
+public class MessageBoxUser {
     private String guardianMobileNumber ;
     private String guardianUid ;
     private String tutorUid ;
@@ -8,11 +8,11 @@ public class User {
     private boolean messageFromGuardianSide ;
     private boolean messageFromTutorSide ;
 
-    public User() {
+    public MessageBoxUser() {
     }
 
 
-    public User(String guardianMobileNumber, String guardianUid, String tutorUid, String tutorEmail, boolean messageFromGuardianSide, boolean messageFromTutorSide) {
+    public MessageBoxUser(String guardianMobileNumber, String guardianUid, String tutorUid, String tutorEmail, boolean messageFromGuardianSide, boolean messageFromTutorSide) {
         this.guardianMobileNumber = guardianMobileNumber;
         this.guardianUid = guardianUid;
         this.tutorUid = tutorUid;

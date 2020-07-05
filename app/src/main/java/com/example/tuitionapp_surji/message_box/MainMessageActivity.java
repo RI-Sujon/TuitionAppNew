@@ -44,6 +44,8 @@ public class MainMessageActivity extends AppCompatActivity {
     CandidateTutorInfo tutorInfo;
     MessageBoxInfo messageBoxUser;
 
+    TextView toolbar_name;
+
     String tutorName;
 
     @Override
@@ -51,8 +53,12 @@ public class MainMessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_message);
 
+        toolbar_name = findViewById(R.id.toolbar_name);
+
         Intent intent = getIntent() ;
         checkUser = intent.getStringExtra("user");
+        userInfo = intent.getStringArrayListExtra("userInfo") ;
+
 
         //Toolbar toolbar=findViewById(R.id.toolbar_message);
        // setSupportActionBar(toolbar);
@@ -241,9 +247,17 @@ public class MainMessageActivity extends AppCompatActivity {
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter( getSupportFragmentManager(),2);
 
-        viewPagerAdapter.addFragment(new UsersFragment(checkUser,tutorName),"Users");
+        Fragment userFragment = new UsersFragment(checkUser,tutorName,userInfo);
+        Fragment requestFragment = new MessageRequestsFragment(checkUser,tutorName,userInfo);
+
+      //  viewPagerAdapter.addFragment(new UsersFragment(checkUser,tutorName,userInfo),"Chats");
+       // viewPagerAdapter.addFragment(new MessageRequestsFragment(),"Requests");
+        viewPagerAdapter.addFragment(userFragment,"Chats");
+        viewPagerAdapter.addFragment(requestFragment,"Requests");
 
         viewPager.setAdapter(viewPagerAdapter);
+
+
 
        // tabLayout.setupWithViewPager(viewPager);
         //toolbar.setupWithViewPager(viewPager);
@@ -287,7 +301,7 @@ public class MainMessageActivity extends AppCompatActivity {
     }
 
 
-    private void status(String status){
+    /*private void status(String status){
 
         if(checkUser.equals("tutor")){
             reference = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(firebaseUser.getUid());
@@ -309,5 +323,5 @@ public class MainMessageActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         status("offline");
-    }
+    }*/
 }

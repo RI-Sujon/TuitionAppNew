@@ -72,6 +72,7 @@ public class MessageActivity extends AppCompatActivity
     Intent intent;
     private  String checkUser,guardianMobileNumber,tutorEmail;
     private String imageUri,gender,message_time;
+    ArrayList<String> userInfo ;
 
     ValueEventListener seenListener;
 
@@ -85,10 +86,20 @@ public class MessageActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MessageActivity.this,MainMessageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                Intent intent = new Intent(MessageActivity.this,MainMessageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                if(checkUser.equals("guardian")){
+                    intent.putExtra("user","guardian");
+                }
+
+                else {
+                    intent.putExtra("user","tutor");
+                    intent.putStringArrayListExtra("userInfo", userInfo) ;
+                }
+                startActivity(intent);
             }
         });
 
@@ -113,6 +124,8 @@ public class MessageActivity extends AppCompatActivity
         checkUser = intent.getStringExtra("user");
         guardianMobileNumber = intent.getStringExtra("mobileNumber");
         tutorEmail = intent.getStringExtra("tutorEmail");
+        userInfo = intent.getStringArrayListExtra("userInfo") ;
+
         fuser = FirebaseAuth.getInstance().getCurrentUser();
 
 
@@ -216,7 +229,7 @@ public class MessageActivity extends AppCompatActivity
 
                 }
             });
-            seenMessage(userId);
+            //seenMessage(userId);
         }
 
         else if(checkUser.equals("tutor"))
@@ -258,14 +271,15 @@ public class MessageActivity extends AppCompatActivity
 
                 }
             });
-            seenMessage(userId);
+            //seenMessage(userId);
         }
 
-
+        seenMessage(userId);
     }
 
 
-    private void seenMessage(final String userId){
+    private void seenMessage(final String userId)
+    {
 
         reference= FirebaseDatabase.getInstance().getReference("Chats");
         seenListener = reference.addValueEventListener(new ValueEventListener() {
@@ -284,7 +298,7 @@ public class MessageActivity extends AppCompatActivity
                     }
                 }
 
-                reference.removeEventListener(seenListener);
+                //reference.removeEventListener(seenListener);
 
 
             }
@@ -484,7 +498,9 @@ public class MessageActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
+        reference.removeEventListener(seenListener);
         status("offline");
+
     }
 
 }

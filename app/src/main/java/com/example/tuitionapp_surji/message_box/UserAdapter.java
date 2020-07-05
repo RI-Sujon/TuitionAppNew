@@ -28,34 +28,35 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<User> mUsers;
+    private List<MessageBoxUser> mUsers;
     private  String checkUser;
-    CandidateTutorInfo tutorInfo;
+    private CandidateTutorInfo tutorInfo;
     private String LastMessage;
     private boolean isChat;
+    private ArrayList<String> userInfo ;
+    private DatabaseReference candidateTutorReference; //= FirebaseDatabase.getInstance().getReference("CandidateTutor");
+    private ArrayList<CandidateTutorInfo> imageUriStrings;
 
-    DatabaseReference candidateTutorReference; //= FirebaseDatabase.getInstance().getReference("CandidateTutor");
-    ArrayList<CandidateTutorInfo> imageUriStrings;
 
-
-    public UserAdapter(Context mContext, List<User> mUsers, String checkUser,boolean isChat) {
+    public UserAdapter(Context mContext, List<MessageBoxUser> mUsers, String checkUser, boolean isChat, ArrayList<String> userInfo) {
         this.mContext = mContext;
         this.mUsers = mUsers;
         this.checkUser = checkUser;
         this.isChat = isChat;
+        this.userInfo = userInfo;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(mContext).inflate(R.layout.user_item,parent,false);
+        View view= LayoutInflater.from(mContext).inflate(R.layout.messagebox_user_item,parent,false);
 
         return new UserAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-       final User user=mUsers.get(position);
+       final MessageBoxUser user=mUsers.get(position);
        imageUriStrings = new ArrayList<>();
 
         candidateTutorReference = FirebaseDatabase.getInstance().getReference("CandidateTutor");
@@ -176,6 +177,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 else if(checkUser.equals("tutor")){
                     intent.putExtra("userId", user.getGuardianUid());
                     intent.putExtra("mobileNumber",user.getGuardianMobileNumber());
+                    intent.putStringArrayListExtra("userInfo", userInfo) ;
                     intent.putExtra("user", checkUser);
 
                 }

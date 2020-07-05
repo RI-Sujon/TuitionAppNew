@@ -27,6 +27,7 @@ import com.example.tuitionapp_surji.group.GroupHomePageActivity;
 import com.example.tuitionapp_surji.guardian.ViewingSearchingTutorProfileActivity;
 import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.message_box.MessageRequestActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -53,7 +54,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     private ApproveAndBlockInfo approveAndBlockInfo ;
     private MessageBoxInfo messageBoxInfo;
 
-    private String user,userEmail ,groupID,tutorUid;
+    private String user,userEmail ,groupID,tutorUid,contextType,tutorEmail;
     private ArrayList<ReportInfo>reportInfoArrayList ;
     private ArrayList<String> userInfo ;
 
@@ -91,6 +92,8 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;
         tutorUid = intent.getStringExtra("tutorUid");
+        contextType =  intent.getStringExtra("context");
+        tutorEmail =  intent.getStringExtra("userEmail");
 
         userProfilePicImageView = findViewById(R.id.profilePicImageView) ;
         idCardImageView = findViewById(R.id.idCardImageView) ;
@@ -99,6 +102,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         status2 = findViewById(R.id.status2) ;
         reportListView = findViewById(R.id.reportList) ;
         layoutForAdmin = findViewById(R.id.layoutForAdmin) ;
+
 
         myRefCandidateTutorInfo= FirebaseDatabase.getInstance().getReference("CandidateTutor");
         myRefVerifiedTutorInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor");
@@ -1200,7 +1204,16 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             finish();
         }
         else if(user.equals("guardian")){
-            Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class);
+            Intent intent;
+            if(contextType.equals("messenger")){
+                intent = new Intent(VerifiedTutorProfileActivity.this, MessageRequestActivity.class);
+                intent.putExtra("userId", tutorUid);
+                intent.putExtra("tutorEmail",tutorEmail);
+            }
+
+            else
+                intent= new Intent(this, ViewingSearchingTutorProfileActivity.class);
+
             intent.putExtra("user",user) ;
             startActivity(intent) ;
             finish() ;

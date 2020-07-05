@@ -37,7 +37,6 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verified_tutor_notification);
-//        getSupportActionBar().hide();
 
         Intent intent = getIntent() ;
         userInfo = intent.getStringArrayListExtra("userInfo") ;
@@ -52,7 +51,6 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
         myRefRefer.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("Checking4");
                 for(DataSnapshot dS1: dataSnapshot.getChildren()){
                     ReferInfo referInfo = dS1.getValue(ReferInfo.class) ;
                     if(user.getEmail().equals(referInfo.getVerifiedTutorEmail()) && referInfo.isReferApprove()!= true){
@@ -60,10 +58,8 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
                         map.put(dS1.getKey(),referInfo) ;
                     }
                 }
-                System.out.println("Checking3");
                 myRefRefer.removeEventListener(this);
                 addReferenceNotification() ;
-
             }
 
             @Override

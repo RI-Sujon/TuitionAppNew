@@ -24,8 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-//import com.google.firebase.firestore.DocumentReference;
-//import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +51,7 @@ public class TuitionPostActivity extends AppCompatActivity {
     private String postID, type ;
     private int typeFlag = 0 ;
 
-    //FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance();
+    FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -208,7 +208,7 @@ public class TuitionPostActivity extends AppCompatActivity {
         else myRefTuitionPost.push().setValue(guardianPostInfo) ;
 
 
-        /*databaseFireStore.collection("TuitionPost").add(guardianPostInfo).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        databaseFireStore.collection("TuitionPost").add(guardianPostInfo).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 System.out.println("Passsssssed");
@@ -218,7 +218,7 @@ public class TuitionPostActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 System.out.println("FAILlllllllllllll");
             }
-        }) ;*/
+        }) ;
 
         Toast.makeText(getApplicationContext(),"successfully post",Toast.LENGTH_SHORT).show();
         goToGuardianTuitionPostViewActivity();

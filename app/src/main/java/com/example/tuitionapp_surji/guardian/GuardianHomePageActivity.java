@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.tuitionapp_surji.R;
@@ -29,6 +30,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -53,9 +56,10 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
     private ArrayList<String> groupNameList ;
     private ArrayList<String> groupIDList ;
 
-    private Map<String,String> profilePicUriListMap ;
+    private DatabaseReference myRefGuardian ;
 
-    private TextView guardianMobileNo ;
+    private TextView guardianMobileNo, guardianName ;
+    private ImageView profilePic ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,7 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         setContentView(R.layout.activity_guardian_home_page);
 
         mAuth = FirebaseAuth.getInstance();
+        myRefGuardian = FirebaseDatabase.getInstance().getReference("Guardian").child(mAuth.getCurrentUser().getUid()) ;
 
         drawerLayout = findViewById(R.id.drawer_layout) ;
         navigationView = findViewById(R.id.navigation_view) ;
@@ -79,8 +84,31 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
 
         view = navigationView.getHeaderView(0) ;
 
+        guardianName = (TextView)view.findViewById(R.id.name) ;
         guardianMobileNo = (TextView)view.findViewById(R.id.email) ;
+        profilePic = (ImageView)view.findViewById(R.id.profile_image) ;
+
         guardianMobileNo.setText(mAuth.getCurrentUser().getPhoneNumber());
+
+        myRefGuardian.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GuardianInfo guardianInfo = dataSnapshot.getValue(GuardianInfo.class) ;
+                guardianName.setText(guardianInfo.getName());
+
+                if(!guardianInfo.equals("1")){
+                    Picasso.get().load(guardianInfo.getProfilePicUri()).into(profilePic) ;
+                }
+                myRefGuardian.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        }) ;
+
+
 
         Menu menu = navigationView.getMenu();
         menu.findItem(R.id.view_profile).setVisible(false) ;

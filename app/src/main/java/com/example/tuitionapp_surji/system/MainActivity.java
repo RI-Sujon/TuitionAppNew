@@ -10,6 +10,7 @@ import com.example.tuitionapp_surji.admin.ApproveAndBlockInfo;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.guardian.GuardianHomePageActivity;
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.guardian.GuardianInformationActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,14 +40,11 @@ public class MainActivity extends AppCompatActivity {
             String phoneNumber = user.getPhoneNumber() ;
             String email = user.getEmail() ;
 
-            System.out.println("Email:" +  email + "\tPhone:" + phoneNumber);
             if(!email.equals("")){
                 signUpCompletionChecking(user);
             }
             else if(!phoneNumber.equals("")){
-                Intent intent = new Intent(this, GuardianHomePageActivity.class);
-                startActivity(intent);
-                finish();
+                goToNextPage();
             }
 
             else {
@@ -141,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
         userInfo.add(tutorEmail) ;
         userInfo.add(tutorUid) ;
         userInfo.add(tutorGender) ;
-        System.out.println("Mainnnnnnnn:" + tutorGender);
 
         Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
         intent.putStringArrayListExtra("userInfo", userInfo) ;
@@ -152,6 +149,42 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToHomePageActivity(){
         Intent intent = new Intent(this, HomePageActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void goToNextPage(){
+        final DatabaseReference myRefGuardian ;
+
+        myRefGuardian = FirebaseDatabase.getInstance().getReference("Guardian").child(user.getUid()) ;
+
+        myRefGuardian.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    goToGuardianHomePageActivity();
+                }
+                else {
+                    goToGuardianInformationActivity();
+                }
+                myRefGuardian.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        }) ;
+    }
+
+    public void goToGuardianHomePageActivity(){
+        Intent intent = new Intent(this, GuardianHomePageActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void goToGuardianInformationActivity(){
+        Intent intent = new Intent(this, GuardianInformationActivity.class);
         startActivity(intent);
         finish();
     }

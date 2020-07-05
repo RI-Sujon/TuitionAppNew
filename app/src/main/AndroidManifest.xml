@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tuitionapp_surji">
-    
-      <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/appicon"
-        android:label="eTUTOR"
-        android:roundIcon="@drawable/appicon"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.example.tuitionapp_surji.group.GroupCreationActivity"></activity>
-        <activity android:name="com.example.tuitionapp_surji.demo_video.DemoVideoMainActivity"></activity>
-        <activity android:name="com.example.tuitionapp_surji.calendar.CalendarViewEventActivity"></activity>
-        <activity android:name="com.example.tuitionapp_surji.calendar.CalendarHomeActivity"></activity>
-        <activity android:name="com.example.tuitionapp_surji.calendar.CalendarSampleActivity"></activity>
-        <activity android:name="com.example.tuitionapp_surji.note.Note_Home"></activity>
         <activity android:name="com.example.tuitionapp_surji.batch.BatchStudentInfoTableActivity" />
         <activity android:name="com.example.tuitionapp_surji.notice_board.NoticeBoardViewAndCreateActivity" />
         <activity android:name="com.example.tuitionapp_surji.group.GroupTutorViewActivity" />
@@ -33,6 +23,7 @@
         <activity android:name="com.example.tuitionapp_surji.guardian.ViewingSearchingTutorProfileActivity" />
         <activity android:name="com.example.tuitionapp_surji.verified_tutor.VerifiedTutorNotificationActivity" />
         <activity android:name="com.example.tuitionapp_surji.admin.AdminTutorProfileViewActivity" />
+        <activity android:name="com.example.tuitionapp_surji.admin.CustomAdapterForCandidateTutorApproval" />
         <activity android:name="com.example.tuitionapp_surji.admin.AdminHomePageActivity" />
         <activity android:name="com.example.tuitionapp_surji.tuition_post.TuitionPostActivity" />
         <activity android:name="com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity" />

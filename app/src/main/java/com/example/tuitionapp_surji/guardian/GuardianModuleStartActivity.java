@@ -23,10 +23,17 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.TimeUnit;
 
 public class GuardianModuleStartActivity extends AppCompatActivity {
+    private DatabaseReference myRefGuardian ;
+
     private EditText phoneNumberBox ;
     private TextView phoneNumberTextView ;
     private EditText [] vc = new EditText[6];
@@ -34,7 +41,7 @@ public class GuardianModuleStartActivity extends AppCompatActivity {
     //private ProgressBar progressBar ;
     private FirebaseAuth mAuth;
 
-    String phoneNumber , verificationCode;
+    private String phoneNumber , verificationCode;
 
     private boolean mVerificationInProgress = false;
     private String mVerificationId;
@@ -176,7 +183,7 @@ public class GuardianModuleStartActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = task.getResult().getUser();
                             Toast.makeText(getApplicationContext(),"sign up successfully",Toast.LENGTH_SHORT).show();
-                            goToGuardianHomePageActivity();
+                            goToNextPage();
 
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
@@ -187,8 +194,36 @@ public class GuardianModuleStartActivity extends AppCompatActivity {
                 });
     }
 
+    public void goToNextPage(){
+        myRefGuardian = FirebaseDatabase.getInstance().getReference("Guardian").child(mAuth.getCurrentUser().getUid()) ;
+
+        myRefGuardian.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    goToGuardianHomePageActivity();
+                }
+                else {
+                    goToGuardianInformationActivity();
+                }
+                myRefGuardian.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        }) ;
+    }
+
     public void goToGuardianHomePageActivity(){
         Intent intent = new Intent(this, GuardianHomePageActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void goToGuardianInformationActivity(){
+        Intent intent = new Intent(this, GuardianInformationActivity.class);
         startActivity(intent);
         finish();
     }

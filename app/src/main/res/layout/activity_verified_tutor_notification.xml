@@ -34,7 +34,7 @@
                 <ListView
                     android:id="@+id/candidateTutorList"
                     android:layout_height="512dp"
-                    android:layout_width="match_parent"
+                    android:layout_width ="match_parent"
                     android:dividerHeight="1dp" />
 
             </LinearLayout>

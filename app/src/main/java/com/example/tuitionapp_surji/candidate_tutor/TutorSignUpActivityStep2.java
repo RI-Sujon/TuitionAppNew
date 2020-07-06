@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.admin.ApproveAndBlockInfo;
+import com.example.tuitionapp_surji.verified_tutor.NotificationInfo;
 import com.example.tuitionapp_surji.verified_tutor.TutorSignUpActivityStep3;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorInfo;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -52,8 +53,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private FirebaseUser firebaseUser ;
-    private DatabaseReference myRefCandidateTutor, myRefRefer, myRefVerifiedTutor, myRefApprove ;
-
+    private DatabaseReference myRefCandidateTutor, myRefRefer, myRefVerifiedTutor, myRefApprove, myRefNotification, myRefNotification2 ;
 
     private String emailPrimaryKey ;
     private String imageUriString ;
@@ -62,6 +62,11 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     private ProgressDialog progressDialog ;
 
     private ArrayList<VerifiedTutorInfo> verifiedTutorInfoList = new ArrayList<>() ;
+    private ArrayList<String> verifiedTutorUidList = new ArrayList<>() ;
+    private String reference1Uid, reference2Uid ;
+
+    private CandidateTutorInfo candidateTutorInfo ;
+
 
     private Bitmap bitmapImage ;
 
@@ -83,6 +88,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
         myRefVerifiedTutor = FirebaseDatabase.getInstance().getReference("VerifiedTutor") ;
         myRefRefer = FirebaseDatabase.getInstance().getReference("Refer") ;
         myRefApprove = FirebaseDatabase.getInstance().getReference("ApproveAndBlock").child(firebaseUser.getUid()) ;
+        myRefNotification = FirebaseDatabase.getInstance().getReference("Notification") ;
 
         emailPrimaryKey = firebaseUser.getEmail() ;
 
@@ -92,6 +98,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                 for(DataSnapshot dS1: dataSnapshot.getChildren()){
                     VerifiedTutorInfo verifiedTutorInfo = dS1.getValue(VerifiedTutorInfo.class) ;
                     verifiedTutorInfoList.add(verifiedTutorInfo) ;
+                    verifiedTutorUidList.add(dS1.getKey()) ;
                 }
                 myRefVerifiedTutor.removeEventListener(this);
             }
@@ -101,11 +108,20 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
             }
         });
 
-    }
+        myRefCandidateTutor.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class);
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+                myRefCandidateTutor.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+
     }
 
     public void selectImage(View view) {
@@ -132,34 +148,33 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
         }
     }
 
-    public void candidateTutorRegistrationCompletion(View view) throws InterruptedException {
+    public void candidateTutorRegistrationCompletion(View view) {
         reference1str = reference1.getText().toString();
         reference2str = reference2.getText().toString();
 
         int flag1 = 0, flag2 = 0;
         if (!reference1str.equals("")) {
-            for (VerifiedTutorInfo vt : verifiedTutorInfoList) {
-                if (reference1str.equals(vt.getEmailPK())) {
+            for (int i=0 ; i<verifiedTutorInfoList.size() ; i++) {
+                if (reference1str.equals(verifiedTutorInfoList.get(i).getEmailPK())) {
                     flag1 = 1;
+                    reference1Uid = verifiedTutorUidList.get(i) ;
                 }
             }
-        } else {
+        }
+        else {
             flag1 = -1;
         }
 
         if (!reference2str.equals("")) {
-            for (VerifiedTutorInfo vt : verifiedTutorInfoList) {
-                System.out.println(reference2str + "\t\t" + vt.getEmailPK());
-                if (reference2str.equals(vt.getEmailPK())) {
-                    flag2 = 1 ;
+            for (int i=0 ; i<verifiedTutorInfoList.size() ; i++) {
+                if (reference2str.equals(verifiedTutorInfoList.get(i).getEmailPK())) {
+                    flag2 = 1;
+                    reference2Uid = verifiedTutorUidList.get(i) ;
                 }
             }
-        } else {
-            flag2 = -1;
         }
-
-        if (reference1str.equals("nadim_mama")) {
-            updateCandidateTutorDatabase();
+        else {
+            flag2 = -1;
         }
 
         if (flag1 != -1 || flag2 != -1) {
@@ -171,23 +186,30 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                 if (flag1 == 1) {
                     ReferInfo referInfo1 = new ReferInfo(firebaseUser.getEmail(), reference1str);
                     myRefRefer.push().setValue(referInfo1);
+
+                    myRefNotification2 = myRefNotification.child(reference1Uid) ;
+                    NotificationInfo notificationInfo = new NotificationInfo("refer",candidateTutorInfo.getUserName(),candidateTutorInfo.getEmailPK(),firebaseUser.getUid()) ;
+                    myRefNotification2.push().setValue(notificationInfo) ;
                 }
                 if (flag2 == 1) {
                     ReferInfo referInfo2 = new ReferInfo(firebaseUser.getEmail(), reference2str);
                     myRefRefer.push().setValue(referInfo2);
+
+                    myRefNotification2 = myRefNotification.child(reference2Uid) ;
+                    NotificationInfo notificationInfo = new NotificationInfo("refer",candidateTutorInfo.getUserName(),candidateTutorInfo.getEmailPK(),firebaseUser.getUid()) ;
+                    myRefNotification2.push().setValue(notificationInfo) ;
                 }
 
-                uploadImage();
+                uploadFinish();
                 progressDialog.setTitle("Uploading...");
                 progressDialog.show();
             }
-        } else {
-
+        }
+        else {
             Toast.makeText(getApplicationContext(), "You need minimum 1 Reference", Toast.LENGTH_SHORT).show();
-            uploadImage();
+            uploadFinish();
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
-
         }
     }
 
@@ -237,7 +259,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
         }
     }
 
-    public void uploadImage () {
+    /*public void uploadImage () {
 
             int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
 
@@ -260,29 +282,17 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
             default:
                 break;
         }
-    }
+    }*/
 
     public void updateCandidateTutorDatabase() {
 
         ApproveAndBlockInfo approveAndBlockInfo = new ApproveAndBlockInfo("waiting");
         myRefApprove.setValue(approveAndBlockInfo);
 
-        myRefCandidateTutor.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                CandidateTutorInfo candidateTutorInfo = dataSnapshot.getValue(CandidateTutorInfo.class);
-                candidateTutorInfo.setIdCardImageUri(imageUriString);
-                myRefCandidateTutor.setValue(candidateTutorInfo);
+        candidateTutorInfo.setIdCardImageUri(imageUriString);
+        myRefCandidateTutor.setValue(candidateTutorInfo);
 
-                goToTutorSignUpActivityStep3();
-                myRefCandidateTutor.removeEventListener(this);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
+        goToTutorSignUpActivityStep3();
 
     }
 

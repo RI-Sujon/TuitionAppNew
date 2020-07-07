@@ -86,7 +86,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         myRefCandidateTutor = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(firebaseUser.getUid()) ;
         myRefVerifiedTutor = FirebaseDatabase.getInstance().getReference("VerifiedTutor") ;
-        myRefRefer = FirebaseDatabase.getInstance().getReference("Refer") ;
+        myRefRefer = FirebaseDatabase.getInstance().getReference("Refer").child(firebaseUser.getUid()) ;
         myRefApprove = FirebaseDatabase.getInstance().getReference("ApproveAndBlock").child(firebaseUser.getUid()) ;
         myRefNotification = FirebaseDatabase.getInstance().getReference("Notification") ;
 
@@ -184,7 +184,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Reference2 Does not match with any valid tutor ID", Toast.LENGTH_SHORT).show();
             } else {
                 if (flag1 == 1) {
-                    ReferInfo referInfo1 = new ReferInfo(firebaseUser.getEmail(), reference1str);
+                    ReferInfo referInfo1 = new ReferInfo(reference1str);
                     myRefRefer.push().setValue(referInfo1);
 
                     myRefNotification2 = myRefNotification.child(reference1Uid) ;
@@ -192,7 +192,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                     myRefNotification2.push().setValue(notificationInfo) ;
                 }
                 if (flag2 == 1) {
-                    ReferInfo referInfo2 = new ReferInfo(firebaseUser.getEmail(), reference2str);
+                    ReferInfo referInfo2 = new ReferInfo(reference2str);
                     myRefRefer.push().setValue(referInfo2);
 
                     myRefNotification2 = myRefNotification.child(reference2Uid) ;
@@ -258,31 +258,6 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
             }
         }
     }
-
-    /*public void uploadImage () {
-
-            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-
-            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-            } else {
-                uploadFinish();
-            }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1:
-                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    uploadFinish();
-                }
-                break;
-
-            default:
-                break;
-        }
-    }*/
 
     public void updateCandidateTutorDatabase() {
 

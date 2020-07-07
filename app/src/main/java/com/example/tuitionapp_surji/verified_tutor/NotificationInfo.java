@@ -4,14 +4,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class NotificationInfo {
-    String types;
-    String message1, message2, message3;
+    private String types;
+    private String message1, message2, message3, message4;
 
     private String postDate;
     private String postTime;
     private Calendar calendar = Calendar.getInstance();
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a");
     private SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("E, dd MMM yyyy");
+
+    public NotificationInfo() {
+    }
 
     public NotificationInfo(String types, String message1) {
         this.types = types;
@@ -70,6 +73,14 @@ public class NotificationInfo {
 
     public void setMessage3(String message3) {
         this.message3 = message3;
+    }
+
+    public String getMessage4() {
+        return message4;
+    }
+
+    public void setMessage4(String message4) {
+        this.message4 = message4;
     }
 
     public String getPostDate() {

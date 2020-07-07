@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.tuitionapp_surji.candidate_tutor.ReferInfo;
 import com.example.tuitionapp_surji.R;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,15 +25,16 @@ import java.util.Map;
 
 public class VerifiedTutorNotificationActivity extends AppCompatActivity {
 
-    private DatabaseReference myRefRefer ;
-    private ArrayList<ReferInfo>referInfoList ;
-    private Map<String,ReferInfo> map = new HashMap<String,ReferInfo>() ;
-    private ArrayList<String> candidateTutorEmailList ;
+    private DatabaseReference myRefNotification ;
+    private ArrayList<NotificationInfo>notificationInfoArrayList ;
+
+    private ArrayList<String> notificationInfoUidList ;
     private FirebaseUser user ;
 
     private ListView listView ;
 
-    ArrayList<String>userInfo ;
+    private ArrayList<String>userInfo ;
+    private MaterialToolbar materialToolbar ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,24 +44,22 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
         Intent intent = getIntent() ;
         userInfo = intent.getStringArrayListExtra("userInfo") ;
 
-        myRefRefer = FirebaseDatabase.getInstance().getReference("Refer") ;
+        myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child(userInfo.get(3)) ;
         user = FirebaseAuth.getInstance().getCurrentUser() ;
-        listView = findViewById(R.id.candidateTutorList) ;
+        listView = findViewById(R.id.listView) ;
 
-        referInfoList = new ArrayList<>() ;
-        candidateTutorEmailList = new ArrayList<>() ;
+        notificationInfoArrayList = new ArrayList<>() ;
+        notificationInfoUidList = new ArrayList<>() ;
 
-        myRefRefer.addValueEventListener(new ValueEventListener() {
+        myRefNotification.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot dS1: dataSnapshot.getChildren()){
-                    ReferInfo referInfo = dS1.getValue(ReferInfo.class) ;
-                    if(user.getEmail().equals(referInfo.getVerifiedTutorEmail()) && referInfo.isReferApprove()!= true){
-                        referInfoList.add(referInfo) ;
-                        map.put(dS1.getKey(),referInfo) ;
-                    }
+                    NotificationInfo notificationInfo = dS1.getValue(NotificationInfo.class) ;
+                    notificationInfoArrayList.add(notificationInfo) ;
+                    notificationInfoUidList.add(dS1.getKey()) ;
                 }
-                myRefRefer.removeEventListener(this);
+                myRefNotification.removeEventListener(this);
                 addReferenceNotification() ;
             }
 
@@ -67,23 +68,47 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
                 // Failed to read value
             }
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String tutorUid = notificationInfoArrayList.get(position).getMessage3() ;
+                goToSelectedTutorProfile(tutorUid);
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        materialToolbar = findViewById(R.id.topAppBar) ;
+
+        materialToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToHomePage();
+            }
+        });
     }
 
     public void addReferenceNotification(){
-        for(ReferInfo rf: referInfoList){
-            candidateTutorEmailList.add(rf.getCandidateTutorEmail()) ;
-        }
-
-        CustomAdapterForVerifiedTutorNotification adapter = new CustomAdapterForVerifiedTutorNotification(this,candidateTutorEmailList,map,user.getEmail());
+        CustomAdapterForVerifiedTutorNotification adapter = new CustomAdapterForVerifiedTutorNotification(this, notificationInfoArrayList,userInfo,notificationInfoUidList);
         listView.setAdapter(adapter);
     }
 
-    public void backToHomePage(View view){
-        Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+    public void goToSelectedTutorProfile(String tutorUid){
+        Intent intent = new Intent(this, VerifiedTutorProfileActivity.class);
+        intent.putExtra("tutorUid", tutorUid) ;
+        intent.putExtra("user", "referFriend") ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();
     }
 
-
+    public void backToHomePage(){
+        Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
+        startActivity(intent);
+        finish();
+    }
 }

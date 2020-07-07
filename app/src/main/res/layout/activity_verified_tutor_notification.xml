@@ -1,45 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".verified_tutor.VerifiedTutorNotificationActivity">
-    <LinearLayout
+
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="right">
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="BACK"
-            android:visibility="visible"
-            android:onClick="backToHomePage"
-            />
-    </LinearLayout>
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Notifications"
+            android:backgroundTint="#2c30e7"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <LinearLayout
+        android:layout_marginTop="65dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <ScrollView
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <ListView
-                    android:id="@+id/candidateTutorList"
-                    android:layout_height="512dp"
-                    android:layout_width ="match_parent"
-                    android:dividerHeight="1dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ListView
+                android:id="@+id/listView"
+                android:layout_height="match_parent"
+                android:layout_width ="match_parent"
+                android:dividerHeight="0dp" />
 
-            </LinearLayout>
-
-        </ScrollView>
+        </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

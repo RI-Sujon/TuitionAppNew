@@ -1,22 +1,14 @@
 package com.example.tuitionapp_surji.candidate_tutor;
 
 public class ReferInfo {
-    private String candidateTutorEmail, verifiedTutorEmail ;
-    private boolean referApprove ;
+    private String verifiedTutorEmail ;
+    private String referApprove ;
 
     public ReferInfo(){}
 
-    public ReferInfo(String candidateTutorEmail, String verifiedTutorEmail) {
-        this.candidateTutorEmail = candidateTutorEmail;
+    public ReferInfo(String verifiedTutorEmail) {
         this.verifiedTutorEmail = verifiedTutorEmail;
-    }
-
-    public String getCandidateTutorEmail() {
-        return candidateTutorEmail;
-    }
-
-    public void setCandidateTutorEmail(String candidateTutorEmail) {
-        this.candidateTutorEmail = candidateTutorEmail;
+        referApprove = "waiting" ;
     }
 
     public String getVerifiedTutorEmail() {
@@ -27,11 +19,11 @@ public class ReferInfo {
         this.verifiedTutorEmail = verifiedTutorEmail;
     }
 
-    public boolean isReferApprove() {
+    public String getReferApprove() {
         return referApprove;
     }
 
-    public void setReferApprove(boolean referApprove) {
+    public void setReferApprove(String referApprove) {
         this.referApprove = referApprove;
     }
 }

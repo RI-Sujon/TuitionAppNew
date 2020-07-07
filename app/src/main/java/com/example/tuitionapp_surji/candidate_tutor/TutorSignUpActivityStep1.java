@@ -167,12 +167,6 @@ public class TutorSignUpActivityStep1 extends AppCompatActivity {
         finish();
     }
 
-    public void backFromSignUpT_Activity(View view){
-        Intent intent = new Intent(this, TutorSignInActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     public void selectCurrentPosition(){
         currentPositionBox.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

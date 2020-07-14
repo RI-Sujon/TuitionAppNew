@@ -233,15 +233,15 @@ public class MainMessageActivity extends AppCompatActivity {
 
                     Intent intent1 = getIntent() ;
                     userInfo = intent1.getStringArrayListExtra("userInfo") ;
-                    Intent intent = new Intent(MainMessageActivity.this, VerifiedTutorHomePageActivity.class);
+                    Intent intent = new Intent(MainMessageActivity.this, VerifiedTutorHomePageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putStringArrayListExtra("userInfo", userInfo) ;
                     startActivity(intent);
-                    finish();
+                    //finish();
                 }
                 else if(checkUser.equals("guardian")){
-                    Intent intent = new Intent(MainMessageActivity.this, GuardianHomePageActivity.class);
+                    Intent intent = new Intent(MainMessageActivity.this, GuardianHomePageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                    finish();
+                    //finish();
                 }
             }
         });
@@ -301,6 +301,40 @@ public class MainMessageActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position){
             return titles.get(position);
         }
+    }
+
+
+    private void status(String status){
+
+        if(checkUser.equals("tutor")){
+            reference = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(firebaseUser.getUid());
+            HashMap<String,Object> hashMap = new HashMap<>();
+            hashMap.put("status",status);
+            reference.updateChildren(hashMap);
+        }
+
+        else if(checkUser.equals("guardian")){
+            reference = FirebaseDatabase.getInstance().getReference("Guardian").child(firebaseUser.getUid());
+            HashMap<String,Object> hashMap = new HashMap<>();
+            hashMap.put("status",status);
+            reference.updateChildren(hashMap);
+        }
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //reference.removeEventListener(seenListener);
+        status("offline");
+
     }
 
 }

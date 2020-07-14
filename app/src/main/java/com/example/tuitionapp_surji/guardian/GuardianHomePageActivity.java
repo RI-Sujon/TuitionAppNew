@@ -59,9 +59,11 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
     private ArrayList<String> groupIDList ;
 
     private DatabaseReference myRefGuardian ;
+    private DatabaseReference reference;
 
     private TextView guardianMobileNo, guardianName ;
     private ImageView profilePic ;
+    private String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         setContentView(R.layout.activity_guardian_home_page);
 
         mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser().getUid();
         myRefGuardian = FirebaseDatabase.getInstance().getReference("Guardian").child(mAuth.getCurrentUser().getUid()) ;
 
         drawerLayout = findViewById(R.id.drawer_layout) ;
@@ -241,11 +244,14 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
     private void status(String status){
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        System.out.println("User =================================  "+ firebaseUser.getUid());
-        DatabaseReference  reference = FirebaseDatabase.getInstance().getReference("Guardian").child(firebaseUser.getUid());
-        HashMap<String,Object> hashMap = new HashMap<>();
-        hashMap.put("status",status);
-        reference.updateChildren(hashMap);
+        if(firebaseUser!=null)
+            System.out.println("============================ "+ firebaseUser.getUid());
+
+         reference = FirebaseDatabase.getInstance().getReference("Guardian").child(user);
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("status", status);
+            reference.updateChildren(hashMap);
+
 
     }
 

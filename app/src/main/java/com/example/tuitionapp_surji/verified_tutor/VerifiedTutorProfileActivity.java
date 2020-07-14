@@ -128,6 +128,11 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             myRefCandidateTutorInfo = myRefCandidateTutorInfo.child(tutorUid) ;
             myRefVerifiedTutorInfo = myRefVerifiedTutorInfo.child(tutorUid) ;
         }
+        else if(user.equals("referFriend")){
+            userInfo = intent.getStringArrayListExtra("userInfo") ;
+            myRefCandidateTutorInfo = myRefCandidateTutorInfo.child(tutorUid) ;
+            myRefVerifiedTutorInfo = myRefVerifiedTutorInfo.child(tutorUid) ;
+        }
         else if(user.equals("admin") || user.equals("admin2") || user.equals("admin3")){
             myRefCandidateTutorInfo = myRefCandidateTutorInfo.child(tutorUid) ;
             myRefVerifiedTutorInfo = myRefVerifiedTutorInfo.child(tutorUid) ;
@@ -1249,6 +1254,13 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             startActivity(intent) ;
             finish() ;
         }
+        else if(user.equals("referFriend")){
+            Intent intent = new Intent(this, VerifiedTutorNotificationActivity.class) ;
+            intent.putStringArrayListExtra("userInfo", userInfo) ;
+            startActivity(intent) ;
+            finish() ;
+        }
+
 
     }
     @Override

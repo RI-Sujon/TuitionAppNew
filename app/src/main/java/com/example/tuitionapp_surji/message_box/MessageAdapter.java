@@ -75,11 +75,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position)
+    public void onBindViewHolder(@NonNull final MessageAdapter.ViewHolder holder, int position)
     {
 
-        Chat chat = mChat.get(position);
 
+        final Chat chat = mChat.get(position);
 
        // System.out.println("URi ===========  "+imageUri);
 //        holder.profile_image_messenger.setImageResource(R.drawable.male_pic);
@@ -107,6 +107,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         if(chat.getMessage_type().equals("text")){
             holder.show_message.setText(chat.getMessage());
+
         }
 
         else{
@@ -120,7 +121,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
 
         if(position==mChat.size()-1){
-            if(chat.getIsSeen()){
+            if(chat.getIsSeen().equals("yes")){
                 holder.txt_seen.setText("Seen");
             }
 
@@ -134,6 +135,58 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             holder.txt_seen.setVisibility(View.GONE);
         }
 
+        holder.show_date.setVisibility(View.GONE);
+
+
+
+
+        holder.show_message.setOnClickListener(new View.OnClickListener() {
+
+            int counter = 0;
+
+            @Override
+            public void onClick(View v)
+            {
+              //  System.out.println("SEEN ============== "+ chat1.isSeen());
+
+                counter++;
+                holder.show_date.setText(chat.getMessageDate()+", "+chat.getMessage_time());
+
+                if(counter==1){
+
+                    if(chat.getIsSeen().equals("yes"))
+                        holder.txt_seen.setText("Seen");
+
+                    else
+                        holder.txt_seen.setText("Delivered");
+
+                    holder.txt_seen.setVisibility(View.VISIBLE);
+                    holder.show_date.setVisibility(View.VISIBLE);
+                }
+
+               else if(counter%2==0){
+                    holder.txt_seen.setVisibility(View.GONE);
+                    holder.show_date.setVisibility(View.GONE);
+                }
+
+                else if(counter%2!=0)
+                {
+                    if(chat.getIsSeen().equals("yes"))
+                        holder.txt_seen.setText("Seen");
+
+                    else
+                        holder.txt_seen.setText("Delivered");
+
+                    holder.txt_seen.setVisibility(View.VISIBLE);
+                    holder.show_date.setVisibility(View.VISIBLE);
+
+                }
+
+                //System.out.println("Counter ============  "+counter);
+
+            }
+        });
+
     }
 
     @Override
@@ -141,8 +194,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         return mChat.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder
+    {
         public TextView show_message;
+        public TextView show_date;
         public TextView txt_seen;
         public ImageView profile_image_messenger;
         public ImageView show_image;
@@ -152,6 +207,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             super(itemView);
 
             show_message = itemView.findViewById(R.id.show_message);
+            show_date = itemView.findViewById(R.id.messageDate);
             txt_seen = itemView.findViewById(R.id.txt_seen);
             profile_image_messenger = itemView.findViewById(R.id.profile_image_messenger);
             show_image = itemView.findViewById(R.id.show_image);
@@ -159,7 +215,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
 
     @Override
-    public int getItemViewType(int position) {
+    public int getItemViewType(int position)
+    {
       fuser = FirebaseAuth.getInstance().getCurrentUser();
 
       if(mChat.get(position).getMessage_type().equals("text")){

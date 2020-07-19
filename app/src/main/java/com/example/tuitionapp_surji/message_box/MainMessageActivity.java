@@ -174,6 +174,9 @@ public class MainMessageActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for(DataSnapshot snapshot:dataSnapshot.getChildren()){
                                 CandidateTutorInfo candidateTutorInfo = snapshot.getValue(CandidateTutorInfo.class);
+
+
+
                                 if(candidateTutorInfo.getEmailPK().equals(firebaseUser.getEmail())){
                                   //  System.out.println("Email =============================" +candidateTutorInfo.getEmailPK());
                                   //  System.out.println("Email =============================" +tutorEmail);

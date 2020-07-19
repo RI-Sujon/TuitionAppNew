@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UsersFragment extends Fragment {
+public class UsersFragment extends Fragment
+{
 
 
     private RecyclerView recyclerView;

@@ -5,19 +5,23 @@ public class Chat {
     private String receiver;
     private String message;
     private String message_time;
+    private String messageDate;
     private String message_type;
-    private boolean isSeen;
+    private String messageDay;
+    private String  isSeen;
 
 
     public Chat() {
     }
 
-    public Chat(String sender, String receiver, String message, String message_time, String message_type,boolean isSeen) {
+    public Chat(String sender, String receiver, String message, String message_time, String messageDate, String message_type, String messageDay, String isSeen) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
         this.message_time = message_time;
+        this.messageDate = messageDate;
         this.message_type = message_type;
+        this.messageDay = messageDay;
         this.isSeen = isSeen;
     }
 
@@ -53,6 +57,14 @@ public class Chat {
         this.message_time = message_time;
     }
 
+    public String getMessageDate() {
+        return messageDate;
+    }
+
+    public void setMessageDate(String messageDate) {
+        this.messageDate = messageDate;
+    }
+
     public String getMessage_type() {
         return message_type;
     }
@@ -61,11 +73,19 @@ public class Chat {
         this.message_type = message_type;
     }
 
-    public boolean getIsSeen() {
+    public String getMessageDay() {
+        return messageDay;
+    }
+
+    public void setMessageDay(String messageDay) {
+        this.messageDay = messageDay;
+    }
+
+    public String getIsSeen() {
         return isSeen;
     }
 
-    public void setIsSeen(boolean isSeen) {
+    public void setIsSeen(String isSeen) {
         this.isSeen = isSeen;
     }
 }

@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -59,6 +60,7 @@ public class MessageActivity extends AppCompatActivity
     DatabaseReference reference,candidateTutorReference, guardianReference;
     @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a");
+    private SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("E, dd MMM yyyy") ;
     private Calendar noteCalendar = Calendar.getInstance();
     private StorageReference storageReference;
     private String imageUriString ;
@@ -269,7 +271,7 @@ public class MessageActivity extends AppCompatActivity
                     if (chat.getReceiver().equals(fuser.getUid()) && chat.getSender().equals(userId))
                     {
                         HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("isSeen",true);
+                        hashMap.put("isSeen","yes");
                         snapshot.getRef().updateChildren(hashMap);
 
                     }
@@ -286,18 +288,31 @@ public class MessageActivity extends AppCompatActivity
     }
 
 
-    private void sendMessage(String sender, String receiver, String message){
+    private void sendMessage(String sender, String receiver, String message)
+    {
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
         message_time = simpleDateFormat.format(noteCalendar.getTime());
+
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+        Date d = new Date();
+        String messageDay = sdf.format(d);
+
+        String messageDate = simpleDateFormat2.format(noteCalendar.getTime());
+
+        //System.out.println("Current week day : "+dayOfTheWeek);
+
+
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sender", sender);
         hashMap.put("receiver", receiver);
         hashMap.put("message", message);
         hashMap.put("message_time",message_time);
         hashMap.put("message_type","text");
-        hashMap.put("isSeen",false);
+        hashMap.put("isSeen","no");
+        hashMap.put("messageDay",messageDay);
+        hashMap.put("messageDate",messageDate);
 
         reference.child("Chats").push().setValue(hashMap);
     }
@@ -400,13 +415,22 @@ public class MessageActivity extends AppCompatActivity
 
 
                                 message_time = simpleDateFormat.format(noteCalendar.getTime());
-                                // System.out.println("Time ===================================="+ message_time);
+
+                                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+                                Date d = new Date();
+                                String messageDay = sdf.format(d);
+
+                                String messageDate = simpleDateFormat2.format(noteCalendar.getTime());
+
                                 HashMap<String, Object> hashMap = new HashMap<>();
                                 hashMap.put("sender", sender);
                                 hashMap.put("receiver", receiver);
                                 hashMap.put("message", imageUriString);
                                 hashMap.put("message_time",message_time);
                                 hashMap.put("message_type","image");
+                                hashMap.put("isSeen","no");
+                                hashMap.put("messageDay",messageDay);
+                                hashMap.put("messageDate",messageDate);
 
 
                                 reference.child("Chats").push().setValue(hashMap);
@@ -469,7 +493,5 @@ public class MessageActivity extends AppCompatActivity
         status("offline");
 
     }
-
-
 
 }

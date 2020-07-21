@@ -47,7 +47,7 @@ tools:context=".admin.AdminHomePageActivity">
                 android:layout_alignParentRight="true"
                 android:padding="20dp"
                 android:background="#00000000"
-                android:src="@drawable/notification" />
+                android:src="@drawable/notification_icon" />
         </RelativeLayout>
 
         <LinearLayout

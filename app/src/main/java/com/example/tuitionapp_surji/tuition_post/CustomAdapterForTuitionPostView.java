@@ -52,7 +52,6 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
         this.tuitionPostInfoUid = tuitionPostInfoUid;
         this.userFlag = userFlag ;
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
-        //myRefTuitionPost = FirebaseDatabase.getInstance().getReference("TuitionPost") ;
 
         today = simpleDateFormat2.format(calendar.getTime());
         calendar.add(Calendar.DATE,-1);

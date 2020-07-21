@@ -40,8 +40,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static android.graphics.Color.GRAY;
-import static android.graphics.Color.GREEN;
 import static android.graphics.Color.RED;
 
 public class VerifiedTutorProfileActivity extends AppCompatActivity {

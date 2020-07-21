@@ -20,32 +20,40 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/White">
+            android:background="@color/AliceBlue">
 
-            <ImageButton
-                android:id="@+id/drawer_button"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/topBar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/drawer_button"
-                android:background="#00000000"
-                android:padding="25dp"
-                android:onClick="openDrawerOperation"/>
+                android:background="#2A59E6">
+                <ImageButton
+                    android:id="@+id/drawer_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/drawer_button"
+                    android:backgroundTint="@color/Black"
+                    android:layout_margin="20dp"
+                    android:background="#00000000"
+                    android:onClick="openDrawerOperation"/>
 
-            <ImageButton
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="20dp"
-                android:background="#00000000"
-                android:src="@drawable/notification"
-                android:onClick="goToVerifiedTutorNotificationActivity"/>
+                <ImageButton
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="17dp"
+                    android:src="@drawable/notification_icon"
+                    android:background="#00000000"
+                    android:onClick="goToVerifiedTutorNotificationActivity"/>
+            </RelativeLayout>
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="75dp">
+                android:layout_below="@+id/topBar">
                 <LinearLayout
+                    android:layout_marginTop="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
@@ -77,9 +85,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:gravity="center">
+                                android:gravity="center"
+                                android:layout_margin="4dp"
+                                >
 
-                                <de.hdodenhof.circleimageview.CircleImageView
+                                <ImageView
                                     android:foreground="?android:attr/selectableItemBackground"
                                     android:clickable="true"
                                     android:backgroundTint="@color/RoyalBlue"
@@ -105,12 +115,13 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:orientation="vertical">
-                                <de.hdodenhof.circleimageview.CircleImageView
+                                android:orientation="vertical"
+                                android:layout_margin="4dp">
+                                <ImageView
 
                                     android:layout_width="55dp"
                                     android:layout_height="55dp"
-                                    android:src="@drawable/guardian_message_box"
+                                    android:src="@drawable/messenger_icon_button"
                                     android:background="#00000000"
                                     android:layout_margin="10dp"
                                     android:onClick="goToMessageBox"/>
@@ -129,13 +140,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:gravity="center">
-                                <de.hdodenhof.circleimageview.CircleImageView
+                                android:gravity="center"
+                                android:layout_margin="4dp">
+                                <ImageView
                                     android:foreground="?android:attr/selectableItemBackground"
                                     android:clickable="true"
                                     android:layout_width="55dp"
                                     android:layout_height="55dp"
-                                    android:src="@drawable/classroom03"
+                                    android:src="@drawable/group_icon2"
                                     android:background="#00000000"
                                     android:layout_margin="10dp"
                                     android:onClick="goToVerifiedTutorGroupActivity"/>
@@ -160,7 +172,7 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 android:gravity="center">
-                                <de.hdodenhof.circleimageview.CircleImageView
+                                <ImageView
                                     android:layout_width="55dp"
                                     android:layout_height="55dp"
                                     android:src="@drawable/demo_video_icon"
@@ -183,7 +195,7 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 android:gravity="center">
-                                <de.hdodenhof.circleimageview.CircleImageView
+                                <ImageView
                                     android:layout_width="55dp"
                                     android:layout_height="55dp"
                                     android:backgroundTint="@color/colorAccent"
@@ -320,9 +332,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12dp"
-                            android:paddingBottom="15dp"
                             android:textColor="@color/Orange"
                             android:text="s.rabiulislam429@gmail.com"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12dp"
+                            android:paddingBottom="17dp"
+                            android:textColor="#FBC02D"
+                            android:text="Katchpur, Narayangonj, Bangladesh"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -338,8 +356,22 @@
                             android:textSize="12dp"
                             android:textColor="@color/Orange"
                             android:text="nadim1028@gmail.com"/>
-                    </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12dp"
+                            android:paddingBottom="60dp"
+                            android:textColor="#FBC02D"
+                            android:text="Sherpur, Mymensingh, Bangladesh"/>
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" @Developed by Nadim and Sujon, IITDU"
+                            android:textColor="@color/White"
+                            android:textSize="13dp"
+                            android:layout_gravity="center"/>
+                    </LinearLayout>
 
                 </LinearLayout>
             </ScrollView>

@@ -1,6 +1,7 @@
 package com.example.tuitionapp_surji.verified_tutor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,7 @@ public class CustomAdapterForVerifiedTutorNotification extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView,final ViewGroup parent) {
         final ViewHolder holder ;
         if (convertView == null) {
             holder = new ViewHolder() ;
@@ -99,6 +100,17 @@ public class CustomAdapterForVerifiedTutorNotification extends BaseAdapter {
             holder.buttonYes.setVisibility(View.VISIBLE);
             holder.buttonNo.setVisibility(View.VISIBLE);
 
+            holder.message.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(parent.getContext(), VerifiedTutorProfileActivity.class);
+                    intent.putExtra("tutorUid", notificationInfoArrayList.get(position).getMessage3()) ;
+                    intent.putExtra("user", "referFriend") ;
+                    intent.putStringArrayListExtra("userInfo", userInfo) ;
+                    parent.getContext().startActivity(intent);
+                }
+            });
+
             holder.buttonYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -112,13 +124,17 @@ public class CustomAdapterForVerifiedTutorNotification extends BaseAdapter {
                             for (DataSnapshot dS1: dataSnapshot.getChildren()){
                                 ReferInfo referInfo = dS1.getValue(ReferInfo.class) ;
                                 if(referInfo.getVerifiedTutorEmail().equals(userInfo.get(2))){
-                                    System.out.println("------------------------------->" + dS1.toString());
                                     referInfo.setReferApprove("yes");
                                     myRefRefer2.child(dS1.getKey()).setValue(referInfo) ;
 
                                     NotificationInfo notificationInfo = notificationInfoArrayList.get(position) ;
                                     notificationInfo.setMessage4("yes");
                                     myRefNotification2.setValue(notificationInfo) ;
+
+                                    Intent intent = new Intent(parent.getContext(), VerifiedTutorNotificationActivity.class);
+                                    intent.putStringArrayListExtra("userInfo", userInfo) ;
+                                    parent.getContext().startActivity(intent);
+
                                     break;
                                 }
                             }
@@ -145,12 +161,16 @@ public class CustomAdapterForVerifiedTutorNotification extends BaseAdapter {
                                 ReferInfo referInfo = dS1.getValue(ReferInfo.class) ;
                                 if(referInfo.getVerifiedTutorEmail().equals(userInfo.get(2))){
                                     referInfo.setReferApprove("no");
-                                    System.out.println("------------------------------->" + dS1.toString());
                                     myRefRefer2.child(dS1.getKey()).setValue(referInfo) ;
 
                                     NotificationInfo notificationInfo = notificationInfoArrayList.get(position) ;
                                     notificationInfo.setMessage4("no");
                                     myRefNotification2.setValue(notificationInfo) ;
+
+                                    Intent intent = new Intent(parent.getContext(), VerifiedTutorNotificationActivity.class);
+                                    intent.putStringArrayListExtra("userInfo", userInfo) ;
+                                    parent.getContext().startActivity(intent);
+
                                     break;
                                 }
                             }

@@ -13,7 +13,7 @@ tools:context=".demo_video.DemoVideoMainActivity">
         android:background="@color/colorAccent"
         android:layout_height="50dp">
         <ImageButton
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:background="@color/colorAccent"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
@@ -40,7 +40,7 @@ tools:context=".demo_video.DemoVideoMainActivity">
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <VideoView
             android:layout_width="match_parent"
@@ -78,10 +78,17 @@ tools:context=".demo_video.DemoVideoMainActivity">
             android:id="@+id/progress_bar"
             android:visibility="invisible"/>
 
+        <Button
+            android:id="@+id/download_video"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Download"
+            android:onClick="viewTheDownloadedVideo"
+            />
+
 
     </LinearLayout>
-
-
 
 
 </LinearLayout>

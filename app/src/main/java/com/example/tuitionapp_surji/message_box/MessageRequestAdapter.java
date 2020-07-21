@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
+import com.example.tuitionapp_surji.guardian.GuardianInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,7 +32,7 @@ public class MessageRequestAdapter extends RecyclerView.Adapter<MessageRequestAd
     private String LastMessage;
     private boolean isChat;
     private ArrayList<String> userInfo ;
-    private DatabaseReference candidateTutorReference; //= FirebaseDatabase.getInstance().getReference("CandidateTutor");
+    private DatabaseReference candidateTutorReference, guardianReference; //= FirebaseDatabase.getInstance().getReference("CandidateTutor");
     private ArrayList<CandidateTutorInfo> imageUriStrings;
 
 
@@ -56,6 +57,7 @@ public class MessageRequestAdapter extends RecyclerView.Adapter<MessageRequestAd
 
         final MessageBoxInfo user = mUsers.get(position);
         candidateTutorReference = FirebaseDatabase.getInstance().getReference("CandidateTutor");
+        guardianReference = FirebaseDatabase.getInstance().getReference("Guardian");
 
         if(checkUser.equals("guardian")){
 
@@ -98,9 +100,41 @@ public class MessageRequestAdapter extends RecyclerView.Adapter<MessageRequestAd
         }
 
         else if(checkUser.equals("tutor")){
-            holder.requester_username.setText(user.getGuardianMobileNumber());
+
+            guardianReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        GuardianInfo guardianInfo = snapshot.getValue(GuardianInfo.class);
+                        if (guardianInfo.getPhoneNumber().equals(user.getGuardianMobileNumber()))
+                        {
+
+                            holder.requester_username.setText(guardianInfo.getName());
+                            holder.request_msg.setText("A guardian sent you a message request.");
+
+                            if(!guardianInfo.getProfilePicUri().equals("1")){
+                                Picasso.get().load(guardianInfo.getProfilePicUri()).into(holder.requester_profile_image);
+                            }
+
+                            else{
+                                holder.requester_profile_image.setImageResource(R.drawable.man);
+                            }
+
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+           /* holder.requester_username.setText(user.getGuardianMobileNumber());
             holder.request_msg.setText("A guardian sent you a message request.");
-            holder.requester_profile_image.setImageResource(R.drawable.man);
+            holder.requester_profile_image.setImageResource(R.drawable.man)*/;
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

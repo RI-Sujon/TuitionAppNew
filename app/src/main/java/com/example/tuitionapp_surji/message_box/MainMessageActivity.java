@@ -6,11 +6,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.tuitionapp_surji.R;
@@ -49,6 +53,8 @@ public class MainMessageActivity extends AppCompatActivity {
     String tutorName;
     String tutorEmail;
 
+    ImageView chats_btn,request_btn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +72,8 @@ public class MainMessageActivity extends AppCompatActivity {
        // getSupportActionBar().setTitle(" ");
 
         profile_image=findViewById(R.id.profile_image);
+        chats_btn = findViewById(R.id.chats_button);
+        request_btn = findViewById(R.id.message_request_button);
         //username=findViewById(R.id.username_message);
 
         tutorInfo = new CandidateTutorInfo();
@@ -249,25 +257,48 @@ public class MainMessageActivity extends AppCompatActivity {
             }
         });
 
-        ViewPager viewPager =findViewById(R.id.view_pager_message);
+         final ViewPager viewPager =findViewById(R.id.view_pager_message);
 
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter( getSupportFragmentManager(),2);
+         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter( getSupportFragmentManager(),2);
 
-        Fragment userFragment = new UsersFragment(checkUser,tutorName,userInfo);
-        Fragment requestFragment = new MessageRequestsFragment(checkUser,tutorName,userInfo);
+         Fragment userFragment = new UsersFragment(checkUser,tutorName,userInfo);
+         Fragment requestFragment = new MessageRequestsFragment(checkUser,tutorName,userInfo);
 
-      //  viewPagerAdapter.addFragment(new UsersFragment(checkUser,tutorName,userInfo),"Chats");
-       // viewPagerAdapter.addFragment(new MessageRequestsFragment(),"Requests");
+
         viewPagerAdapter.addFragment(userFragment,"Chats");
         viewPagerAdapter.addFragment(requestFragment,"Requests");
 
-        viewPager.setAdapter(viewPagerAdapter);
 
-
-
-       // tabLayout.setupWithViewPager(viewPager);
+        //  viewPagerAdapter.addFragment(new UsersFragment(checkUser,tutorName,userInfo),"Chats");
+        // viewPagerAdapter.addFragment(new MessageRequestsFragment(),"Requests");
+        // tabLayout.setupWithViewPager(viewPager);
         //toolbar.setupWithViewPager(viewPager);
 
+
+
+
+        request_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                viewPager.setCurrentItem(1);
+            }
+        });
+
+
+
+
+        chats_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+               viewPager.setCurrentItem(0);
+            }
+        });
+
+
+        viewPager.setAdapter(viewPagerAdapter);
 
     }
 

@@ -77,20 +77,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull final MessageAdapter.ViewHolder holder, int position)
     {
-
-
         final Chat chat = mChat.get(position);
 
-       // System.out.println("URi ===========  "+imageUri);
-//        holder.profile_image_messenger.setImageResource(R.drawable.male_pic);
-
-
-
-      if(imageUri!=null){
+        if(imageUri!=null){
           Picasso.get().load(imageUri).into(holder.profile_image_messenger);
         }
 
-      else if(imageUri==null && gender!=null){
+
+
+        else if(imageUri==null && gender!=null)
+        {
             if(gender.equals("MALE")){
                 holder.profile_image_messenger.setImageResource(R.drawable.male_pic);
 
@@ -99,27 +95,98 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             else {
                 holder.profile_image_messenger.setImageResource(R.drawable.female_pic);
             }
-      }
-
-       /* else if(imageUri==null && gender==null) {
-          holder.profile_image.setImageResource(R.drawable.man);
-      }*/
-
-        if(chat.getMessage_type().equals("text")){
-            holder.show_message.setText(chat.getMessage());
-
         }
 
-        else{
+
+        if(chat.getMessage_type().equals("image")){
             //System.out.println("URI ==================="+chat.getMessage());
             if(chat.getMessage()!=null){
 
                 Picasso.get().load(chat.getMessage()).into(holder.show_image);
-
+                holder.show_message.setVisibility(View.GONE);
+                holder.show_date.setVisibility(View.GONE);
+                holder.txt_seen.setVisibility(View.GONE);
+                holder.profile_image_messenger.setVisibility(View.GONE);
             }
         }
 
+        else if(chat.getMessage_type().equals("text")){
+            holder.show_image.setVisibility(View.GONE);
+            holder.show_message.setText(chat.getMessage());
 
+
+            if(position==mChat.size()-1){
+                if(chat.getIsSeen().equals("yes")){
+                    holder.txt_seen.setText("Seen");
+                }
+
+                else {
+                    holder.txt_seen.setText("Delivered");
+                }
+            }
+
+            else
+            {
+                holder.txt_seen.setVisibility(View.GONE);
+            }
+
+            holder.show_date.setVisibility(View.GONE);
+
+
+
+
+            holder.show_message.setOnClickListener(new View.OnClickListener() {
+
+                int counter = 0;
+
+                @Override
+                public void onClick(View v)
+                {
+                    //  System.out.println("SEEN ============== "+ chat1.isSeen());
+
+                    counter++;
+                    holder.show_date.setText(chat.getMessageDate()+", "+chat.getMessage_time());
+
+                    if(counter==1){
+
+                        if(chat.getIsSeen().equals("yes"))
+                            holder.txt_seen.setText("Seen");
+
+                        else
+                            holder.txt_seen.setText("Delivered");
+
+                        holder.txt_seen.setVisibility(View.VISIBLE);
+                        holder.show_date.setVisibility(View.VISIBLE);
+                    }
+
+                    else if(counter%2==0){
+                        holder.txt_seen.setVisibility(View.GONE);
+                        holder.show_date.setVisibility(View.GONE);
+                    }
+
+                    else if(counter%2!=0)
+                    {
+                        if(chat.getIsSeen().equals("yes"))
+                            holder.txt_seen.setText("Seen");
+
+                        else
+                            holder.txt_seen.setText("Delivered");
+
+                        holder.txt_seen.setVisibility(View.VISIBLE);
+                        holder.show_date.setVisibility(View.VISIBLE);
+
+                    }
+
+                    //System.out.println("Counter ============  "+counter);
+
+                }
+            });
+
+        }
+
+
+
+/*
         if(position==mChat.size()-1){
             if(chat.getIsSeen().equals("yes")){
                 holder.txt_seen.setText("Seen");
@@ -185,8 +252,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 //System.out.println("Counter ============  "+counter);
 
             }
-        });
-
+        });*/
     }
 
     @Override

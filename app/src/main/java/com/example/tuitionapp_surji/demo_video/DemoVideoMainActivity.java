@@ -47,7 +47,7 @@ public class DemoVideoMainActivity extends AppCompatActivity {
 
 
     private Button choosebtn;
-    private Button uploadbtn;
+    private Button uploadbtn, download_btn;
     private   ProgressBar progressBar;
     private VideoView videoView;
     private EditText videoname;
@@ -78,6 +78,7 @@ public class DemoVideoMainActivity extends AppCompatActivity {
         videoView = findViewById(R.id.Video_view);
         progressBar = findViewById(R.id.progress_bar);
         videoname = findViewById(R.id.video_name);
+        download_btn = findViewById(R.id.download_video);
 
 
         mediaController = new MediaController(this);
@@ -236,8 +237,6 @@ public class DemoVideoMainActivity extends AppCompatActivity {
         hashMap.put("emailPrimaryKey",emailPrimaryKey);
         //videoReference.push().setValue(demoVideoInfo);
         databaseReference.child("Videos").push().setValue(hashMap);
-
-
     }
 
 
@@ -248,6 +247,15 @@ public class DemoVideoMainActivity extends AppCompatActivity {
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();
+    }
+
+    public void viewTheDownloadedVideo(View view) {
+        videoView.setMediaController(mediaController);
+        mediaController.setAnchorView(videoView);
+
+        Uri uri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/tuitionapp-d7ee7.appspot.com/o/demoVideo%2FNext%201.mp4?alt=media&token=f83ed8e1-1303-40eb-a9b5-214defba54c0");
+        videoView.setVideoURI(uri);
+        videoView.start();
     }
 }
 

@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
+import com.example.tuitionapp_surji.guardian.GuardianInfo;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,8 +35,10 @@ public class MessageRequestActivity extends AppCompatActivity {
     String  userId;
 
     FirebaseUser fuser;
-    CircleImageView circleImageView;
-    TextView acceptButton, declineButton;
+    CircleImageView circleImageView, messageRequesterProfileImage;
+    TextView acceptButton, declineButton,messageRequesterName ;
+
+    private DatabaseReference candidateTutorReference, guardianReference;
 
 
     @Override
@@ -45,6 +50,12 @@ public class MessageRequestActivity extends AppCompatActivity {
         circleImageView = findViewById(R.id.requester_profile_id);
         acceptButton = findViewById(R.id.accept_button);
         declineButton = findViewById(R.id.decline_button);
+
+        messageRequesterName =findViewById(R.id.message_requester_name);
+        messageRequesterProfileImage =findViewById(R.id.message_requester_profile_image);
+
+        candidateTutorReference = FirebaseDatabase.getInstance().getReference("CandidateTutor");
+        guardianReference = FirebaseDatabase.getInstance().getReference("Guardian");
 
 
         Intent intent = getIntent();
@@ -80,6 +91,77 @@ public class MessageRequestActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        if(checkUser.equals("guardian")){
+            candidateTutorReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    for(DataSnapshot snapshot:dataSnapshot.getChildren()) {
+                        CandidateTutorInfo candidateTutorInfo = snapshot.getValue(CandidateTutorInfo.class);
+                        if (candidateTutorInfo.getEmailPK().equals(tutorEmail))
+                        {
+                            messageRequesterName.setText(candidateTutorInfo.getUserName());
+
+                            if(candidateTutorInfo.getGender().equals("MALE")){
+                                if(candidateTutorInfo.getProfilePictureUri()!= null)
+                                    Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(messageRequesterProfileImage);
+                                else
+                                   messageRequesterProfileImage.setImageResource(R.drawable.male_pic);
+                            }
+
+                            else if(candidateTutorInfo.getGender().equals("FEMALE")){
+                                if(candidateTutorInfo.getProfilePictureUri()!= null)
+                                    Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(messageRequesterProfileImage);
+                                else
+                                    messageRequesterProfileImage.setImageResource(R.drawable.female_pic);
+                            }
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
+        else if(checkUser.equals("tutor")){
+            guardianReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        GuardianInfo guardianInfo = snapshot.getValue(GuardianInfo.class);
+                        if (guardianInfo.getPhoneNumber().equals(guardianMobileNumber))
+                        {
+
+                          messageRequesterName.setText(guardianInfo.getName());
+
+                            if(!guardianInfo.getProfilePicUri().equals("1")){
+                                Picasso.get().load(guardianInfo.getProfilePicUri()).into(messageRequesterProfileImage);
+                            }
+
+                            else{
+                                messageRequesterProfileImage.setImageResource(R.drawable.man);
+                            }
+
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        }
 
 
     }

@@ -37,6 +37,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -45,10 +46,11 @@ public class GroupHomePageActivity extends AppCompatActivity {
     private DatabaseReference myRefGroup, myRefMessageBox, myRefReport, myRefBatch, myRefAddTutor, myRefCandidateTutor ;
     private FirebaseUser firebaseUser ;
     private MessageBoxInfo messageBoxInfo;
-    private String user, userEmail, groupID , tutorUid, batchID , groupName,groupAddress;
+    private String user, userEmail, groupID , tutorUid, batchID , groupName, groupAddress, context;
     private ArrayList<String>userInfo ;
 
     private TextView groupNameTextView, fullAddressTextView ;
+    private ImageView groupProfileImage ;
 
     private MaterialButton messageRequestButton, reportButton , blockButton;
     private ImageView messageFloatingButton ;
@@ -75,6 +77,8 @@ public class GroupHomePageActivity extends AppCompatActivity {
 
     private int backButtonFlag = 0, batchReUseFlag = 0, tutorReUseFlag = 0 ;
 
+    private GroupInfo groupInfo ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -95,8 +99,8 @@ public class GroupHomePageActivity extends AppCompatActivity {
         myRefGroup.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GroupInfo groupInfo = dataSnapshot.getValue(GroupInfo.class) ;
-                groupHomePage(groupInfo);
+                groupInfo = dataSnapshot.getValue(GroupInfo.class) ;
+                groupHomePage();
             }
 
             @Override
@@ -105,9 +109,11 @@ public class GroupHomePageActivity extends AppCompatActivity {
             }
         }) ;
 
-        if(user.equals("guardian")){
+        if(user.equals("guardian")||user.equals("guardianHomePage")){
             messageFloatingButton = findViewById(R.id.messageBoxFloatingButtonS) ;
             messageFloatingButton.setVisibility(View.GONE);
+
+            context = intent.getStringExtra("context") ;
 
             tutorUid = intent.getStringExtra("tutorUid");
             messageRequestButton = findViewById(R.id.sendMessageRequestButton) ;
@@ -146,6 +152,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
 
         groupNameTextView = findViewById(R.id.groupNameTextView) ;
         fullAddressTextView = findViewById(R.id.fullAddressTextView) ;
+        groupProfileImage = findViewById(R.id.groupProfileImage) ;
 
         groupTutorListLayout = findViewById(R.id.group_tutor_list_layout) ;
         tutorListView = findViewById(R.id.groupTutorList) ;
@@ -178,14 +185,27 @@ public class GroupHomePageActivity extends AppCompatActivity {
         });
     }
 
-    public void groupHomePage(GroupInfo groupInfo){
+    public void groupHomePage(){
         groupName = groupInfo.getGroupName() ;
         groupAddress = groupInfo.getFullAddress() + ", " + groupInfo.getAddress() ;
 
         groupNameTextView.setText(groupName);
         fullAddressTextView.setText(groupAddress);
+        if(!groupInfo.getGroupImageUri().equals("")){
+            Picasso.get().load(groupInfo.getGroupImageUri()).into(groupProfileImage);
+        }
     }
 
+    public void goToGroupProfile(View view){
+        Intent intent = new Intent(this, GroupProfileActivity.class) ;
+        intent.putExtra("groupName", groupInfo.getGroupName());
+        intent.putExtra("location", groupInfo.getFullAddress() + ", " + groupInfo.getAddress());
+        intent.putExtra("classRange", groupInfo.getClassRange());
+        intent.putExtra("extraInfo", groupInfo.getExtraInfo());
+        intent.putExtra("groupImage", groupInfo.getGroupImageUri());
+        startActivity(intent);
+
+    }
 
     public void goToBatchManagement(){
         backButtonFlag = 1 ;
@@ -455,15 +475,18 @@ public class GroupHomePageActivity extends AppCompatActivity {
     public void goToBackPageActivity(View view){
         if(backButtonFlag == 0){
             if(user.equals("tutor")){
-                Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
-                intent.putStringArrayListExtra("userInfo",userInfo) ;
-                startActivity(intent);
+                //Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+                //intent.putStringArrayListExtra("userInfo",userInfo) ;
+                //startActivity(intent);
                 finish();
             }
             else if(user.equals("guardian")||user.equals("admin")){
                 Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class);
-                intent.putExtra("user",user) ;
+                intent.putExtra("user", user);
                 startActivity(intent);
+                finish();
+            }
+            else if(user.equals("guardianHomePage")){
                 finish();
             }
         }

@@ -15,9 +15,7 @@
 package com.example.tuitionapp_surji.calendar;
 
 import android.os.AsyncTask;
-import android.view.View;
 
-import com.example.tuitionapp_surji.R;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 

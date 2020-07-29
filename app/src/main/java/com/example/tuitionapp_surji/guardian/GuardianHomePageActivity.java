@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,17 +32,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class GuardianHomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth mAuth;
-    private DatabaseReference myRefVerifiedTutor, myRefCandidateTutor, myRefApproveAndBlock ;
+    private DatabaseReference myRefVerifiedTutor, myRefCandidateTutor, myRefApproveAndBlock, myRefGroupInfo ;
 
     private DrawerLayout drawerLayout ;
     private NavigationView navigationView ;
@@ -52,11 +51,11 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
     private ArrayList<CandidateTutorInfo> candidateTutorInfoArrayList ;
     private ArrayList<String> tutorUidArrayList;
 
-    private ArrayList<GroupInfo> groupInfoList ;
+    private ArrayList<GroupInfo> groupInfoArrayList ;
 
     private ArrayList<String> approveAndBlockTutorUidList ;
     private ArrayList<String> groupNameList ;
-    private ArrayList<String> groupIDList ;
+    private ArrayList<String> groupInfoUidList ;
 
     private DatabaseReference myRefGuardian ;
     private DatabaseReference reference;
@@ -84,8 +83,6 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-
-        recyclerViewOperation2();
 
         view = navigationView.getHeaderView(0) ;
 
@@ -125,7 +122,6 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         menu.findItem(R.id.calenderMenuId).setVisible(false) ;
         menu.findItem(R.id.notes).setVisible(false) ;
 
-
     }
 
     @Override
@@ -137,13 +133,14 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         approveAndBlockInfoList = new ArrayList<>() ;
         candidateTutorInfoArrayList = new ArrayList<>() ;
 
-        groupInfoList = new ArrayList<>() ;
+        groupInfoArrayList = new ArrayList<>() ;
         groupNameList = new ArrayList<>() ;
-        groupIDList = new ArrayList<>() ;
+        groupInfoUidList = new ArrayList<>() ;
 
         myRefApproveAndBlock = FirebaseDatabase.getInstance().getReference("ApproveAndBlock") ;
         myRefCandidateTutor = FirebaseDatabase.getInstance().getReference("CandidateTutor") ;
         myRefVerifiedTutor = FirebaseDatabase.getInstance().getReference("VerifiedTutor") ;
+        myRefGroupInfo = FirebaseDatabase.getInstance().getReference("Group") ;
 
         myRefApproveAndBlock.addValueEventListener(new ValueEventListener() {
             @Override
@@ -166,8 +163,9 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
                         for(DataSnapshot dS1: dataSnapshot.getChildren()){
                             CandidateTutorInfo candidateTutorInfo = dS1.getValue(CandidateTutorInfo.class) ;
                             for(int i=0 ; i<approveAndBlockTutorUidList.size(); i++){
-                                if(approveAndBlockTutorUidList.get(i).equals(dS1.getKey()) && approveAndBlockInfoList.get(i).getStatus().equals("running")){
+                                if(approveAndBlockTutorUidList.get(i).equals(dS1.getKey()) && approveAndBlockInfoList.get(i).getStatus().equals("running") && candidateTutorInfo.isTutorAvailable()){
                                     candidateTutorInfoArrayList.add(candidateTutorInfo) ;
+                                    tutorUidArrayList.add(dS1.getKey()) ;
                                 }
                             }
 
@@ -192,13 +190,30 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
                 // Failed to read value
             }
         });
+
+        myRefGroupInfo.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dS1: dataSnapshot.getChildren()){
+                    GroupInfo groupInfo = dS1.getValue(GroupInfo.class) ;
+                    groupInfoArrayList.add(groupInfo) ;
+                    groupInfoUidList.add(dS1.getKey()) ;
+                    recyclerViewOperation2();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        }) ;
     }
 
     private void recyclerViewOperation() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
 
-        RecyclerAdapterForGuardianHomePage1 adapter = new RecyclerAdapterForGuardianHomePage1(candidateTutorInfoArrayList) ;
+        RecyclerAdapterForGuardianHomePage1 adapter = new RecyclerAdapterForGuardianHomePage1(candidateTutorInfoArrayList, tutorUidArrayList) ;
         recyclerView.setAdapter(adapter);
     }
 
@@ -206,8 +221,8 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         recyclerView2.setHasFixedSize(true);
         recyclerView2.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
 
-        RecyclerAdapterForGuardianHomePage2 adapter = new RecyclerAdapterForGuardianHomePage2(approveAndBlockTutorUidList,approveAndBlockTutorUidList,approveAndBlockTutorUidList) ;
-        recyclerView2.setAdapter(adapter);
+        RecyclerAdapterForGuardianHomePage2 adapter2 = new RecyclerAdapterForGuardianHomePage2(groupInfoArrayList, groupInfoUidList) ;
+        recyclerView2.setAdapter(adapter2);
     }
 
 
@@ -215,7 +230,7 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         Intent intent = new Intent(this, TuitionPostViewActivity.class);
         intent.putExtra("user", "guardian") ;
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     public void goToMessageBox(View view){
@@ -229,7 +244,7 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class) ;
         intent.putExtra("user","guardian") ;
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     public void signOut() {

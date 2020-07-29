@@ -36,7 +36,7 @@ public class TutorSignUpActivityStep1 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutor_sign_up_step1_new);
+        setContentView(R.layout.activity_tutor_sign_up_step1);
         Intent intent = getIntent() ;
         type = intent.getStringExtra("type");
 

@@ -32,8 +32,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
 
     private Context context ;
     private ArrayList<TuitionPostInfo> tuitionPostInfo ;
-    private String userEmail ;
-    private String tutorUid ;
+    private ArrayList<String> tutorInfo ;
     private ArrayList<String> tuitionPostInfoUid ;
     private String userFlag ;
     private MessageBoxInfo messageBoxInfo;
@@ -44,11 +43,10 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
 
     private DatabaseReference myRefMessageBox, myRefTuitionPost ;
 
-    public CustomAdapterForTuitionPostView(Context context, ArrayList<TuitionPostInfo> tuitionPostInfo, String userEmail, String tutorUid, ArrayList<String> tuitionPostInfoUid, String userFlag) {
+    public CustomAdapterForTuitionPostView(Context context, ArrayList<TuitionPostInfo> tuitionPostInfo, ArrayList<String> tutorInfo, ArrayList<String> tuitionPostInfoUid, String userFlag) {
         this.context = context;
         this.tuitionPostInfo = tuitionPostInfo;
-        this.userEmail = userEmail ;
-        this.tutorUid = tutorUid;
+        this.tutorInfo = tutorInfo  ;
         this.tuitionPostInfoUid = tuitionPostInfoUid;
         this.userFlag = userFlag ;
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
@@ -86,6 +84,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
             holder = new ViewHolder() ;
             convertView = LayoutInflater.from(context).inflate(R.layout.custom_adapter_tuition_post_list_view, null);
             holder.layout = convertView.findViewById(R.id.tuitionPostLayout) ;
+            holder.cardLayout = convertView.findViewById(R.id.cardLayout) ;
             holder.responseButton = convertView.findViewById(R.id.responseButton) ;
             holder.responseButtonLayout = convertView.findViewById(R.id.responseButtonLayout) ;
 
@@ -122,7 +121,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
             holder.createNewPostButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(parent.getContext(),TuitionPostActivity.class) ;
+                    Intent intent = new Intent(parent.getContext(), TuitionPostCreationActivity.class) ;
                     intent.putExtra("type","newPost") ;
                     parent.getContext().startActivity(intent);
                 }
@@ -247,7 +246,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     messageBoxInfo = new MessageBoxInfo(tuitionPostInfo.get(position).getGuardianMobileNumberFK(),
-                            tuitionPostInfo.get(position).getGuardianUidFK(), userEmail, tutorUid, false, true);
+                            tuitionPostInfo.get(position).getGuardianUidFK(), tutorInfo.get(2), tutorInfo.get(3), false, true);
 
                     myRefMessageBox.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -256,7 +255,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
                                 if (messageBoxInfo1.getGuardianUid().equals(tuitionPostInfo.get(position).getGuardianUidFK())
-                                        && messageBoxInfo1.getTutorUid().equals(tutorUid)) {
+                                        && messageBoxInfo1.getTutorUid().equals(tutorInfo.get(3))) {
                                     flag = 1;
                                 }
                             }
@@ -317,7 +316,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
             holder.editPostButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(parent.getContext(), TuitionPostActivity.class) ;
+                    Intent intent = new Intent(parent.getContext(), TuitionPostCreationActivity.class) ;
                     intent.putExtra("type","editPost") ;
                     intent.putExtra("tuitionPostID" , tuitionPostInfoUid.get(position)) ;
                     parent.getContext().startActivity(intent) ;
@@ -325,10 +324,38 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
             });
 
         }
+
+        holder.cardLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(parent.getContext(), TuitionPostViewSinglePageActivity.class);
+
+                intent.putStringArrayListExtra("tutorInfo", tutorInfo);
+                intent.putExtra("guardianUid", tuitionPostInfo.get(position).getGuardianUidFK()) ;
+                intent.putExtra("user", userFlag) ;
+
+                intent.putExtra("postTitle", tuitionPostInfo.get(position).getPostTitle()) ;
+                intent.putExtra("medium", tuitionPostInfo.get(position).getStudentMedium()) ;
+                intent.putExtra("class_name", tuitionPostInfo.get(position).getStudentClass()) ;
+                intent.putExtra("group", tuitionPostInfo.get(position).getStudentGroup()) ;
+                intent.putExtra("subject", tuitionPostInfo.get(position).getStudentSubjectList()) ;
+                intent.putExtra("studentInstituteName", tuitionPostInfo.get(position).getStudentInstitute()) ;
+                intent.putExtra("address", tuitionPostInfo.get(position).getStudentFullAddress() +", " + tuitionPostInfo.get(position).getStudentAreaAddress()) ;
+                intent.putExtra("contactNo", tuitionPostInfo.get(position).getStudentContactNo()) ;
+                intent.putExtra("daysPerWeek", tuitionPostInfo.get(position).getDaysPerWeekOrMonth()) ;
+                intent.putExtra("salary", tuitionPostInfo.get(position).getSalary()) ;
+                intent.putExtra("extraInfo", tuitionPostInfo.get(position).getExtra()) ;
+                intent.putExtra("postTime", tuitionPostInfo.get(position).getPostDate() + ", " + tuitionPostInfo.get(position).getPostTime()) ;
+                intent.putExtra("tutorGenderPreferable", tuitionPostInfo.get(position).getTutorGenderPreference()) ;
+                parent.getContext().startActivity(intent);
+            }
+        });
+
         return convertView;
     }
 
     class ViewHolder{
+        LinearLayout cardLayout ;
         ImageView postImage ;
         LinearLayout layout ;
         TextView postTime ;

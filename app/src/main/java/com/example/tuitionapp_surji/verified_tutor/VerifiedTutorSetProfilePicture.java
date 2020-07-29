@@ -58,6 +58,8 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
 
     private Bitmap bitmapImage ;
 
+    private String contextType ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,8 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
             tutorEmail = intent.getStringExtra("tutorEmail") ;
             groupID = intent.getStringExtra("groupID") ;
             profilePicUri = intent.getStringExtra("profilePicUri") ;
+
+            contextType = intent.getStringExtra("context") ;
 
             userInfo = intent.getStringArrayListExtra("userInfo") ;
 
@@ -102,7 +106,10 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
                 });
             }
 
-            if(profilePicUri.equals(null)||profilePicUri.equals("")){
+            if(profilePicUri==null){
+            }
+            else if(profilePicUri.equals("")){
+
             }
             else {
                 Picasso.get().load(profilePicUri).into(profilePictureImageView);
@@ -283,7 +290,17 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
         intent.putExtra("tutorUid", tutorUid) ;
         intent.putExtra("groupID", groupID) ;
         intent.putExtra("tutorEmail", tutorEmail) ;
+        if(user.equals("guardian")){
+            intent.putExtra("context", contextType) ;
+        }
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(intentFlag.equals("profile")){
+            backToTutorProfile();
+        }
     }
 }

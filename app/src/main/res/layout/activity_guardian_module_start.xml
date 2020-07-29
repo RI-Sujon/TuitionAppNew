@@ -119,12 +119,39 @@
             android:layout_marginTop="300dp"
             android:layout_centerHorizontal="true"/>
 
+        <com.chaos.view.PinView
+            android:id="@+id/firstPinView"
+            style="@style/PinWidget.PinView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:inputType="number"
+            android:itemBackground="@drawable/verify_bar"
+            android:padding="2dp"
+            android:textColor="@color/Black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cursorColor="#09f2f0"
+            app:cursorWidth="2dp"
+            app:hideLineWhenFilled="true"
+            app:itemCount="6"
+            app:itemHeight="42dp"
+            app:itemRadius="7dp"
+            app:itemSpacing="15dp"
+            app:itemWidth="34dp"
+            app:lineColor="#00000000"
+            app:lineWidth="0dp"
+            android:layout_marginTop="330dp"
+            android:layout_centerHorizontal="true"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="330dp"
+            android:layout_marginTop="390dp"
             android:layout_centerHorizontal="true"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone"
+            >
             <EditText
                 android:id="@+id/vc1"
                 android:maxLength="1"
@@ -133,7 +160,9 @@
                 android:background="@drawable/verify_bar"
                 android:inputType="number"
                 android:layout_margin="8dp"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:cursorVisible="true"
+                android:focusable="true" />
             <EditText
                 android:id="@+id/vc2"
                 android:maxLength="1"
@@ -141,6 +170,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/verify_bar"
                 android:inputType="number"
+                android:focusable="true"
                 android:layout_margin="8dp"
                 android:gravity="center"/>
             <EditText
@@ -150,6 +180,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/verify_bar"
                 android:inputType="number"
+                android:focusable="true"
                 android:layout_margin="8dp"
                 android:gravity="center"/>
             <EditText

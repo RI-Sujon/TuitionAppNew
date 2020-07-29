@@ -87,6 +87,7 @@ public class CustomAdapterForTutorListView extends BaseAdapter {
         else{
             holder.department.setVisibility(View.GONE);
         }*/
+
         return convertView ;
     }
 

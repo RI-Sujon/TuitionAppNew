@@ -205,16 +205,19 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_marginTop="200dp"
+                    android:layout_height="280dp"
+                    android:layout_marginTop="150dp"
                     android:background="@color/Navy"
-                    android:padding="30dp"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:paddingTop="30dp"
                     android:orientation="vertical">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Contact us:"
                         android:paddingBottom="10dp"
+                        android:layout_marginTop="10dp"
                         android:textColor="@color/Aqua"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -227,9 +230,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="12dp"
-                        android:paddingBottom="15dp"
                         android:textColor="@color/Orange"
                         android:text="s.rabiulislam429@gmail.com"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12dp"
+                        android:paddingBottom="17dp"
+                        android:textColor="#FBC02D"
+                        android:text="Katchpur, Narayangonj, Bangladesh"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -245,6 +254,21 @@
                         android:textSize="12dp"
                         android:textColor="@color/Orange"
                         android:text="nadim1028@gmail.com"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12dp"
+                        android:paddingBottom="60dp"
+                        android:textColor="#FBC02D"
+                        android:text="Sherpur, Mymensingh, Bangladesh"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" @Developed by Nadim and Sujon, IITDU"
+                        android:textColor="@color/White"
+                        android:textSize="13dp"
+                        android:layout_gravity="center"/>
                 </LinearLayout>
 
 

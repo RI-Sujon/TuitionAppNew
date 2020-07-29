@@ -6,9 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".group.GroupCreationActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="@color/Yellow">
 
         <ImageView
@@ -19,146 +20,188 @@
             android:padding="15dp"
             android:src="@drawable/ic_arrow_back_black_24dp"/>
 
-        <LinearLayout
-            android:id="@+id/groupCreation"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:padding="30dp"
-            android:visibility="visible">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/muli_black"
-                android:padding="15dp"
-                android:text="CREATE GROUP"
-                android:textColor="@color/Black"
-                android:textSize="30dp"
-                android:textStyle="bold" />
-
-            <com.google.android.material.textfield.TextInputLayout
+            android:layout_height="match_parent">
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                app:boxStrokeColor="@color/Black"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                app:startIconDrawable="@drawable/ic_group_black_24dp"
-                app:startIconTint="@color/Black"
-                android:hint="GROUP NAME"
-                app:hintTextColor="@color/Black"
-                app:endIconMode="clear_text">
+                android:layout_height="match_parent">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/groupName"
+                <LinearLayout
+                    android:id="@+id/groupCreation"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Black"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
+                    android:paddingBottom="30dp"
+                    android:visibility="visible">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                app:boxStrokeColor="@color/Black"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:startIconDrawable="@drawable/ic_location_on_black_24dp"
-                app:startIconTint="@color/Black"
-                android:hint="ADDRESS"
-                app:hintTextColor="@color/Black"
-                app:endIconMode="dropdown_menu"
-                app:endIconTint="@color/Black">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/muli_black"
+                        android:padding="15dp"
+                        android:text="CREATE GROUP"
+                        android:textColor="@color/Black"
+                        android:textSize="30dp"
+                        android:textStyle="bold" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/groupAddressSpinner2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Black"
-                    android:backgroundTint="@color/Black"
-                    android:inputType="none"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        app:boxStrokeColor="@color/Black"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        app:startIconDrawable="@drawable/ic_group_black_24dp"
+                        app:startIconTint="@color/Black"
+                        android:hint="GROUP NAME"
+                        app:hintTextColor="@color/Black"
+                        app:endIconMode="clear_text">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/groupName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/Black"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        app:boxStrokeColor="@color/Black"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:startIconDrawable="@drawable/ic_location_on_black_24dp"
+                        app:startIconTint="@color/Black"
+                        android:hint="ADDRESS"
+                        app:hintTextColor="@color/Black"
+                        app:endIconMode="dropdown_menu"
+                        app:endIconTint="@color/Black">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/groupAddressSpinner2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/Black"
+                            android:backgroundTint="@color/Black"
+                            android:inputType="none"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                app:boxStrokeColor="@color/Black"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                app:startIconDrawable="@drawable/ic_location_city_black_24dp"
-                app:startIconTint="@color/Black"
-                app:endIconMode="clear_text"
-                android:hint="DETAILS ADDRESS "
-                app:hintTextColor="@color/Black">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        app:boxStrokeColor="@color/Black"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        app:startIconDrawable="@drawable/ic_location_city_black_24dp"
+                        app:startIconTint="@color/Black"
+                        app:endIconMode="clear_text"
+                        android:hint="DETAILS ADDRESS "
+                        app:hintTextColor="@color/Black">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/detailsAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Black"
-                    android:inputType="text"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/detailsAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/Black"
+                            android:inputType="text"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                app:boxStrokeColor="@color/Black"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                app:startIconDrawable="@drawable/ic_equalizer_black_24dp"
-                app:startIconTint="@color/Black"
-                app:endIconMode="clear_text"
-                android:hint="CLASS RANGE"
-                app:hintTextColor="@color/Black">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        app:boxStrokeColor="@color/Black"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        app:startIconDrawable="@drawable/ic_equalizer_black_24dp"
+                        app:startIconTint="@color/Black"
+                        app:endIconMode="clear_text"
+                        android:hint="CLASS RANGE"
+                        app:hintTextColor="@color/Black">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/class_range"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Black"
-                    android:inputType="text"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/class_range"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/Black"
+                            android:inputType="text"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                app:boxStrokeColor="@color/Black"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                app:startIconDrawable="@drawable/ic_more_black_24dp"
-                app:startIconTint="@color/Black"
-                android:hint="MORE ABOUT GROUP"
-                app:endIconMode="clear_text"
-                app:hintTextColor="@color/Black">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        app:boxStrokeColor="@color/Black"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        app:startIconDrawable="@drawable/ic_more_black_24dp"
+                        app:startIconTint="@color/Black"
+                        android:hint="MORE ABOUT GROUP"
+                        app:endIconMode="clear_text"
+                        app:hintTextColor="@color/Black">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/more_about_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Black"
-                    android:inputType="text"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/more_about_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/Black"
+                            android:inputType="text"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/createGroupButton"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="15dp"
-                android:textColor="@color/WhiteSmoke"
-                android:text="CREATE"
-                android:fontFamily="sans-serif-black"
-                android:textSize="20dp"
-                android:background="@color/Black"
-                android:backgroundTint="@color/Black"
-                android:onClick="groupCreation"/>
-        </LinearLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        app:boxStrokeColor="@color/Black"
+                        app:boxStrokeWidth="8dp"
+                        app:boxStrokeWidthFocused="8dp"
+                        android:focusable="false"
+                        app:startIconTint="@color/Black"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:endIconDrawable="@drawable/ic_baseline_more_horiz_24"
+                        app:startIconDrawable="@drawable/ic_baseline_image_24"
+                        android:gravity="center"
+                        app:endIconMode="custom"
+                        app:hintTextColor="@color/Black">
 
-    </RelativeLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/Black"
+                            android:inputType="text"
+                            style="@style/Widget.AppCompat.TextView"
+                            android:editable="false"
+                            android:text="Select an Image For Your Group"
+                            android:cursorVisible="false"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/createGroupButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:textColor="@color/WhiteSmoke"
+                        android:text="CREATE"
+                        android:fontFamily="sans-serif-black"
+                        android:textSize="20dp"
+                        android:background="@color/Black"
+                        android:backgroundTint="@color/Black"
+                        android:onClick="groupCreation"/>
+                </LinearLayout>
+
+            </RelativeLayout>
+        </ScrollView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

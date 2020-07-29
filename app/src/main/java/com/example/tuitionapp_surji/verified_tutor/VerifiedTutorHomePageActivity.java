@@ -193,8 +193,8 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         recyclerView2.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
 
-        RecyclerAdapterForTutorHomePage adapter = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList1, 1) ;
-        RecyclerAdapterForTutorHomePage adapter2 = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList2, 2) ;
+        RecyclerAdapterForTutorHomePage adapter = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList1, userInfo,1) ;
+        RecyclerAdapterForTutorHomePage adapter2 = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList2, userInfo,2) ;
         recyclerView.setAdapter(adapter2);
         recyclerView2.setAdapter(adapter);
     }
@@ -232,7 +232,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
                         intent.putStringArrayListExtra("userInfo", userInfo) ;
                         intent.putExtra("groupID", groupID) ;
                         startActivity(intent);
-                        finish();
+                        //finish();
 
                         flag = 1 ;
                         break ;
@@ -276,7 +276,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         intent.putExtra("user" , "tutor") ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     public void signOut() {

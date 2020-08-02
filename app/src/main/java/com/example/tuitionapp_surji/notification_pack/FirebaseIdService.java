@@ -12,7 +12,7 @@ public class FirebaseIdService extends FirebaseMessagingService {
     public void onNewToken(String s)
     {
         super.onNewToken(s);
-        System.out.println("toooooooooooooooooooooo\n\nkkkkkkkkkkkkkkkkkkkkkkkkkk\n\neeeeeeeeeeeeeeeeeeennnnnnnnnnn");
+        System.out.println("toooooooooooooooooooooo\n\nkkkkkkkk kkkkkkkkkkkkkkkkkk\n\neeeeeeeeeeeeeeeeeeennnnnnnnnnn");
         FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         String refreshToken= FirebaseInstanceId.getInstance().getToken();
         if(firebaseUser!=null){

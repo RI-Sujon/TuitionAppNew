@@ -1,29 +1,29 @@
 package com.example.tuitionapp_surji.notification_pack;
 
 public class Data {
-    public String Title, Message ;
+    public String title, body ;
 
     public Data() {
     }
 
-    public Data(String title, String message) {
-        Title = title;
-        Message = message;
+    public Data(String title, String body) {
+        this.title = title;
+        this.body = body;
     }
 
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public void setTitle(String title) {
-        Title = title;
+        this.title = title;
     }
 
-    public String getMessage() {
-        return Message;
+    public String getBody() {
+        return body;
     }
 
-    public void setMessage(String message) {
-        Message = message;
+    public void setBody(String body) {
+        this.body = body;
     }
 }

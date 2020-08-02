@@ -310,7 +310,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     }
 
     public void sendNotifications(String userToken){
-        Data data = new Data("Amar Matha","A friend wants to join TutorApp.Do You know him?");
+        Data data = new Data("New Friend","A friend wants to join TutorApp.Do You know him?");
         NotificationSender sender = new NotificationSender(data, userToken) ;
         apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
             @Override
@@ -318,14 +318,9 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                 if (response.code() == 200) {
                     if (response.body().success != 1) {
                         Toast.makeText(TutorSignUpActivityStep2.this, "Failed to Send Notification", Toast.LENGTH_LONG);
-                        System.out.println("1111111111111111111");
-                    }else {
-                        Toast.makeText(TutorSignUpActivityStep2.this, "Hello to Send Notification", Toast.LENGTH_LONG);
-                        System.out.println("222222222222222222");
                     }
                 }else {
                     Toast.makeText(TutorSignUpActivityStep2.this, "Hello22222222 to Send Notification", Toast.LENGTH_LONG);
-                    System.out.println("33333333333333333---->:" + response.code());
                 }
             }
             @Override

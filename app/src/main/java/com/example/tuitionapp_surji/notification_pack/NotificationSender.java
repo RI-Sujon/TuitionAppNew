@@ -2,29 +2,14 @@ package com.example.tuitionapp_surji.notification_pack;
 
 public class NotificationSender {
     private Data data ;
-    private String token ;
+    private String to ;
 
     public NotificationSender() {
     }
 
-    public NotificationSender(Data data, String token) {
+    public NotificationSender(Data data, String to) {
         this.data = data;
-        this.token = token;
+        this.to = to;
     }
 
-    public Data getData() {
-        return data;
-    }
-
-    public void setData(Data data) {
-        this.data = data;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }

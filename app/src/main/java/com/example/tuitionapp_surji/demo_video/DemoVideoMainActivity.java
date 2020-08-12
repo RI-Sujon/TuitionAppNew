@@ -115,7 +115,7 @@ public class DemoVideoMainActivity extends AppCompatActivity {
 
 
     private  void ChooseVideo(){
-        System.out.println("Video nameeee33333333333333333333333333333333333333333333333333333333333333333333333333333eeeeeeeeeeeeeeeeee = "+videoName);
+        //System.out.println("Video nameeee33333333333333333333333333333333333333333333333333333333333333333333333333333eeeeeeeeeeeeeeeeee = "+videoName);
         Intent intent = new Intent();
         intent.setType("video/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -144,7 +144,7 @@ public class DemoVideoMainActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(videoUri));
     }
 
-    private void UploadVideo() {
+    /*private void UploadVideo() {
 
         progressBar.setVisibility(View.VISIBLE);
         if (videoUri != null){
@@ -179,7 +179,7 @@ public class DemoVideoMainActivity extends AppCompatActivity {
 
 
     }
-
+*/
 
     private void uploadFinish(){
 
@@ -253,7 +253,7 @@ public class DemoVideoMainActivity extends AppCompatActivity {
         videoView.setMediaController(mediaController);
         mediaController.setAnchorView(videoView);
 
-        Uri uri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/tuitionapp-d7ee7.appspot.com/o/demoVideo%2FNext%201.mp4?alt=media&token=f83ed8e1-1303-40eb-a9b5-214defba54c0");
+        Uri uri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/tuitionapp-d7ee7.appspot.com/o/demoVideo%2F1.mp4?alt=media&token=3dae9f0f-73ff-452c-a93c-a00bf00d6cb2");
         videoView.setVideoURI(uri);
         videoView.start();
     }

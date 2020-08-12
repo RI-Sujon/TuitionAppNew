@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.tuitionapp_surji.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +35,8 @@ public class MessageRequestsFragment extends Fragment {
     private String tutorName;
     ArrayList<String> userInfo ;
 
+    TextView no_request;
+
 
     public MessageRequestsFragment(String checkUser, String tutorName, ArrayList<String> userInfo) {
         this.checkUser=checkUser;
@@ -52,8 +55,10 @@ public class MessageRequestsFragment extends Fragment {
         message_request_recycler_view.setHasFixedSize(true);
         message_request_recycler_view.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        no_request = view.findViewById(R.id.no_request);
+
         mUsers = new ArrayList<>();
-       readRequests();
+        readRequests();
 
         return view;
 
@@ -102,6 +107,10 @@ public class MessageRequestsFragment extends Fragment {
 
                 messageRequestAdapter = new MessageRequestAdapter(getContext(), mUsers,checkUser,true,userInfo) ;
                 message_request_recycler_view.setAdapter(messageRequestAdapter);
+
+                if(mUsers.size()==0)
+                    no_request.setVisibility(View.VISIBLE);
+
             }
 
             @Override

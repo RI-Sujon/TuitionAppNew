@@ -76,8 +76,10 @@
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
             android:layout_width="240dp"
+            android:maxLength="200"
             android:hint="Type a message..."
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_send"

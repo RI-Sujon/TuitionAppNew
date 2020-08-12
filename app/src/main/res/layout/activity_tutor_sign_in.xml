@@ -220,7 +220,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/contrail_one"
-                android:text="Don't have account?"
+                android:text="Don't have an account?"
                 android:textColor="@color/LightSlateGray"
                 android:textSize="12dp"
                 android:paddingRight="5dp"

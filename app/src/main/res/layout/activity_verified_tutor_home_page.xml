@@ -106,12 +106,12 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:orientation="vertical">
-                                <de.hdodenhof.circleimageview.CircleImageView
-
+                                <ImageView
+                                    android:foreground="?android:attr/selectableItemBackground"
                                     android:layout_width="55dp"
                                     android:layout_height="55dp"
-                                    android:src="@drawable/guardian_message_box"
                                     android:background="#00000000"
+                                    android:src="@drawable/guardian_message_box"
                                     android:layout_margin="10dp"
                                     android:onClick="goToMessageBox"/>
                                 <TextView

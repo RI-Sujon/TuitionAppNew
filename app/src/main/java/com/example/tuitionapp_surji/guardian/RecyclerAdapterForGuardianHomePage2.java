@@ -1,5 +1,6 @@
 package com.example.tuitionapp_surji.guardian;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,61 +12,81 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.group.GroupHomePageActivity;
+import com.example.tuitionapp_surji.group.GroupInfo;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class RecyclerAdapterForGuardianHomePage2 extends RecyclerView.Adapter<RecyclerAdapterForGuardianHomePage2.FeaturedViewHolder> {
 
-    ArrayList<String> nameList ;
-    ArrayList<String> instituteList ;
-    ArrayList<String> profilePicUriList ;
+    private ArrayList<GroupInfo> groupInfoArrayList ;
+    private ArrayList<String> groupUidList ;
+    private ViewGroup parent ;
 
-    public RecyclerAdapterForGuardianHomePage2(ArrayList<String> nameList, ArrayList<String> instituteList, ArrayList<String> profilePicUriList) {
-        this.nameList = nameList;
-        this.instituteList = instituteList;
-        this.profilePicUriList = profilePicUriList;
+    public RecyclerAdapterForGuardianHomePage2(ArrayList<GroupInfo> groupInfoArrayList, ArrayList<String> groupUidList) {
+        this.groupInfoArrayList = groupInfoArrayList ;
+        this.groupUidList = groupUidList ;
     }
-
 
     @NonNull
     @Override
     public FeaturedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        this.parent = parent ;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_card_for_guardian_home_page, parent, false) ;
         FeaturedViewHolder featuredViewHolder = new FeaturedViewHolder(view) ;
         return featuredViewHolder ;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FeaturedViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FeaturedViewHolder holder, final int position) {
         holder.layout.setVisibility(View.VISIBLE);
-        //holder.name.setText(nameList.get(position));
-        //holder.instituteName.setText(instituteList.get(position));
-        //holder.profilePicUri.setImageResource(profilePicUriList.get(position));
+        holder.groupName.setText(groupInfoArrayList.get(position).getGroupName());
+        holder.classRange.setText(groupInfoArrayList.get(position).getClassRange());
+        holder.location.setText(groupInfoArrayList.get(position).getFullAddress() + "\n" + groupInfoArrayList.get(position).getAddress());
+
+        if(groupInfoArrayList.get(position).getGroupImageUri().equals("")){
+            holder.groupImage.setImageResource(R.drawable.create_group_icon);
+        }
+        else {
+            Picasso.get().load(groupInfoArrayList.get(position).getGroupImageUri()).into(holder.groupImage);
+        }
+
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(parent.getContext() , GroupHomePageActivity.class);
+                intent.putExtra("user", "guardianHomePage") ;
+                intent.putExtra("groupID", groupUidList.get(position)) ;
+                parent.getContext().startActivity(intent);
+            }
+        });
     }
 
 
     @Override
     public int getItemCount() {
-        return 5;
-        //return nameList.size();
+        return groupInfoArrayList.size();
     }
 
 
     public static class FeaturedViewHolder extends RecyclerView.ViewHolder{
 
         LinearLayout layout ;
-        TextView name ;
-        TextView instituteName ;
-        ImageView profilePicUri;
+        TextView groupName ;
+        TextView classRange ;
+        TextView location ;
+        ImageView groupImage;
 
 
         public FeaturedViewHolder(@NonNull View itemView){
             super(itemView);
 
             layout = itemView.findViewById(R.id.group_layout) ;
-            name = itemView.findViewById(R.id.name) ;
-            instituteName = itemView.findViewById(R.id.institute_name) ;
-            profilePicUri = itemView.findViewById(R.id.profile_image) ;
+            groupName = itemView.findViewById(R.id.group_name) ;
+            classRange = itemView.findViewById(R.id.class_range) ;
+            location = itemView.findViewById(R.id.location) ;
+            groupImage = itemView.findViewById(R.id.group_image) ;
         }
     }
 }

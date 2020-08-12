@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chaos.view.PinView;
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.system.HomePageActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,8 +39,9 @@ public class GuardianModuleStartActivity extends AppCompatActivity {
     private TextView phoneNumberTextView ;
     private EditText [] vc = new EditText[6];
     private RelativeLayout mobileNumberLayout, verificationCodeLayout ;
-    //private ProgressBar progressBar ;
+
     private FirebaseAuth mAuth;
+    private PinView pinView ;
 
     private String phoneNumber , verificationCode;
 
@@ -52,7 +54,7 @@ public class GuardianModuleStartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_guardian_module_start_new);
+        setContentView(R.layout.activity_guardian_module_start);
 
         mAuth = FirebaseAuth.getInstance() ;
 
@@ -99,6 +101,7 @@ public class GuardianModuleStartActivity extends AppCompatActivity {
         super.onStart();
         phoneNumberBox = findViewById(R.id.guardianMobileNumber) ;
         phoneNumberTextView = findViewById(R.id.mobileNumberTextView2) ;
+        pinView = findViewById(R.id.firstPinView) ;
         vc[0] = findViewById(R.id.vc1) ;
         vc[1] = findViewById(R.id.vc2) ;
         vc[2] = findViewById(R.id.vc3) ;
@@ -108,7 +111,7 @@ public class GuardianModuleStartActivity extends AppCompatActivity {
         mobileNumberLayout = findViewById(R.id.mobileNumberLayout) ;
         verificationCodeLayout = findViewById(R.id.verificationCodeLayout) ;
 
-        //progressBar = findViewById(R.id.progressBar) ;
+        
     }
 
     public void sendVerificationCodeToPhoneNumber(View view){
@@ -133,25 +136,29 @@ public class GuardianModuleStartActivity extends AppCompatActivity {
     }
 
     public void setVerificationCodeIntoBox(String code){
-        for(int i=0; i<code.length();i++ ){
+        /*for(int i=0; i<code.length();i++ ){
             vc[i].setText(code.charAt(i)+"");
-        }
+        }*/
+        pinView.setText(code);
     }
 
 
     public void signUpCompletion(View view){
         verificationCode = "" ;
 
-        for(int i=0; i<6; i++){
+        /*for(int i=0; i<6; i++){
             if(vc[i].equals("")){
                 vc[i].setError("");
                 vc[i].requestFocus();
                 return;
             }
             verificationCode = verificationCode + vc[i].getText().toString() ;
-        }
+        }*/
+        verificationCode = pinView.getText().toString() ;
 
-        verifyCode(verificationCode);
+        if(verificationCode.length()==6) {
+            verifyCode(verificationCode);
+        }
     }
 
     public void resend(View view){
@@ -176,12 +183,10 @@ public class GuardianModuleStartActivity extends AppCompatActivity {
 
     public void signInWithPhoneAuthCredential(PhoneAuthCredential credential){
 
-        //progressBar.setVisibility(View.VISIBLE);
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = task.getResult().getUser();
                             Toast.makeText(getApplicationContext(),"sign up successfully",Toast.LENGTH_SHORT).show();
                             goToNextPage();
 

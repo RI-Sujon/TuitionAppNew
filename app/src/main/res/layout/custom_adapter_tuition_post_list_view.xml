@@ -20,6 +20,7 @@
         android:layout_marginRight="15dp">
 
         <LinearLayout
+            android:id="@+id/cardLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -182,6 +183,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:minHeight="30dp"
                         android:paddingTop="5dp">
 
                         <TextView

@@ -84,7 +84,7 @@
                     android:maxLines="2"
                     android:onClick="goToGuardianPostForTuitionActivity"
                     android:text="CREATE \nNEW POST"
-                    android:textColor="@color/LimeGreen"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="13dp"
                     android:textStyle="bold"
                     android:visibility="gone" />

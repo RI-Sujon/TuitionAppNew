@@ -89,7 +89,7 @@
                 app:boxStrokeColor="@color/RoyalBlue"
                 app:endIconMode="password_toggle"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                app:startIconDrawable="@drawable/ic_action_name"
+                app:startIconDrawable="@drawable/key_logo"
                 app:startIconTint="@color/Black"
                 android:hint="PASSWORD"
                 app:boxCornerRadiusTopStart="10dp"

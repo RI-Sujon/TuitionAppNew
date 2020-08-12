@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.tuitionapp_surji.candidate_tutor.ReferInfo;
 import com.example.tuitionapp_surji.R;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,15 +19,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class VerifiedTutorNotificationActivity extends AppCompatActivity {
 
     private DatabaseReference myRefNotification ;
     private ArrayList<NotificationInfo>notificationInfoArrayList ;
-
     private ArrayList<String> notificationInfoUidList ;
+    private ArrayList<NotificationInfo>notificationInfoArrayList2 ;
+    private ArrayList<String> notificationInfoUidList2 ;
     private FirebaseUser user ;
 
     private ListView listView ;
@@ -51,6 +49,9 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
         notificationInfoArrayList = new ArrayList<>() ;
         notificationInfoUidList = new ArrayList<>() ;
 
+        notificationInfoArrayList2 = new ArrayList<>() ;
+        notificationInfoUidList2 = new ArrayList<>() ;
+
         myRefNotification.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -59,6 +60,12 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
                     notificationInfoArrayList.add(notificationInfo) ;
                     notificationInfoUidList.add(dS1.getKey()) ;
                 }
+
+                for(int i=notificationInfoArrayList.size()-1; i>=0 ; i--){
+                        notificationInfoArrayList2.add(notificationInfoArrayList.get(i)) ;
+                        notificationInfoUidList2.add(notificationInfoUidList.get(i)) ;
+                }
+
                 myRefNotification.removeEventListener(this);
                 addReferenceNotification() ;
             }
@@ -91,8 +98,9 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
         });
     }
 
+
     public void addReferenceNotification(){
-        CustomAdapterForVerifiedTutorNotification adapter = new CustomAdapterForVerifiedTutorNotification(this, notificationInfoArrayList,userInfo,notificationInfoUidList);
+        CustomAdapterForVerifiedTutorNotification adapter = new CustomAdapterForVerifiedTutorNotification(this, notificationInfoArrayList2, userInfo, notificationInfoUidList2);
         listView.setAdapter(adapter);
     }
 
@@ -110,5 +118,10 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed(){
+        backToHomePage(); ;
     }
 }

@@ -29,7 +29,6 @@
             android:maxWidth="170dp"
             android:maxLines="1"
             android:layout_height="wrap_content"
-            android:text="Rabiul Islam Sujon"
             android:textSize="16dp"
             android:paddingTop="5dp"
             android:textColor="#00004C"
@@ -39,7 +38,6 @@
             android:layout_width="wrap_content"
             android:maxWidth="170dp"
             android:layout_height="wrap_content"
-            android:text="Studying Institute Of Information Technology at"
             android:textSize="11dp"
             android:paddingTop="5dp"
             android:textColor="@color/Black" />
@@ -48,7 +46,6 @@
             android:layout_width="wrap_content"
             android:maxWidth="170dp"
             android:layout_height="wrap_content"
-            android:text="Shahajalal University Of Science And Technology"
             android:textSize="12dp"
             android:paddingTop="0dp"
             android:textColor="@color/Black"
@@ -89,7 +86,7 @@
                 android:textColor="#000000"
                 android:textStyle="bold"/>
             <TextView
-                android:id="@+id/location"
+                android:id="@+id/class_range"
                 android:layout_width="wrap_content"
                 android:maxWidth="160dp"
                 android:layout_height="wrap_content"
@@ -98,7 +95,7 @@
                 android:paddingTop="0dp"
                 android:textColor="@color/Black" />
             <TextView
-                android:id="@+id/group_location"
+                android:id="@+id/location"
                 android:layout_width="wrap_content"
                 android:maxWidth="160dp"
                 android:layout_height="wrap_content"

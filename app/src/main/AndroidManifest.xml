@@ -15,6 +15,8 @@
         android:roundIcon="@drawable/appicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".group.GroupProfileActivity"></activity>
+        <activity android:name=".tuition_post.TuitionPostViewSinglePageActivity" />
         <activity android:name=".message_box.MessageRequestActivity" />
         <activity android:name=".group.GroupCreationActivity" />
         <activity android:name=".demo_video.DemoVideoMainActivity" />
@@ -37,7 +39,7 @@
         <activity android:name=".admin.AdminTutorProfileViewActivity" />
         <activity android:name=".guardian.GuardianInformationActivity" />
         <activity android:name=".admin.AdminHomePageActivity" />
-        <activity android:name=".tuition_post.TuitionPostActivity" />
+        <activity android:name=".tuition_post.TuitionPostCreationActivity" />
         <activity android:name=".verified_tutor.VerifiedTutorHomePageActivity" />
         <activity android:name=".guardian.GuardianHomePageActivity" />
         <activity android:name=".verified_tutor.TutorSignUpActivityStep3" />
@@ -55,6 +57,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".notification_pack.MyService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".notification_pack.FirebaseIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="preloaded_fonts"

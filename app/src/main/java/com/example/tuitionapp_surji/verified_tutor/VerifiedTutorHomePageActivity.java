@@ -25,6 +25,7 @@ import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.group.GroupInfo;
 import com.example.tuitionapp_surji.message_box.MainMessageActivity;
 import com.example.tuitionapp_surji.note.Note_Home;
+import com.example.tuitionapp_surji.notification_pack.TokenInfo;
 import com.example.tuitionapp_surji.system.HomePageActivity;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostInfo;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostViewActivity;
@@ -42,6 +43,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -57,8 +59,9 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
     private VerifiedTutorInfo verifiedTutorInfo ;
 
     private ArrayList<String> userInfo ;
-    private ArrayList<TuitionPostInfo> tuitionPostInfoArrayList ;
-    private int count = 0 ;
+    private ArrayList<TuitionPostInfo> tuitionPostInfoArrayList1 ;
+    private ArrayList<TuitionPostInfo> tuitionPostInfoArrayList2 ;
+    private int count1 = 0, count2 = 0 ;
 
     private DrawerLayout drawerLayout ;
     private NavigationView navigationView ;
@@ -76,6 +79,9 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
 
         Intent intent = getIntent() ;
         userInfo = intent.getStringArrayListExtra("userInfo") ;
+        String refreshToken = FirebaseInstanceId.getInstance().getToken() ;
+        TokenInfo token = new TokenInfo(refreshToken) ;
+        FirebaseDatabase.getInstance().getReference("Tokens").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(token);
 
         drawerLayout = findViewById(R.id.drawer_layout) ;
         navigationView = findViewById(R.id.navigation_view) ;
@@ -114,7 +120,8 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
 
         String gender = userInfo.get(4) ;
 
-        tuitionPostInfoArrayList = new ArrayList<>() ;
+        tuitionPostInfoArrayList1 = new ArrayList<>() ;
+        tuitionPostInfoArrayList2 = new ArrayList<>() ;
 
         if(gender.equals("MALE")){
             gender = "Only Male" ;
@@ -142,17 +149,23 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
 
         final String address = verifiedTutorInfo.getPreferredAreas() ;
         final String group = verifiedTutorInfo.getPreferredGroup() ;
+        final String className = verifiedTutorInfo.getPreferredClasses() ;
 
         myRefTuitionPost.orderByChild("tutorGenderPreference").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 TuitionPostInfo tuitionPostInfo = dataSnapshot.getValue(TuitionPostInfo.class) ;
-                //if(tuitionPostInfo.getStudentAreaAddress().equals(address) && (tuitionPostInfo.getStudentGroup().equals(group)||tuitionPostInfo.getStudentGroup().equals(""))){
-                    tuitionPostInfoArrayList.add(tuitionPostInfo) ;
-                    count++ ;
-                //}
+                if((tuitionPostInfo.getStudentGroup().equals(group)||tuitionPostInfo.getStudentGroup().equals(""))){
+                    tuitionPostInfoArrayList1.add(tuitionPostInfo) ;
+                    count1++ ;
+                }
 
-                if(count>=4){
+                if(tuitionPostInfo.getStudentAreaAddress().equals(address) && (tuitionPostInfo.getStudentGroup().equals(group)||tuitionPostInfo.getStudentGroup().equals(""))){
+                    tuitionPostInfoArrayList2.add(tuitionPostInfo) ;
+                    count2++ ;
+                }
+
+                if(count2>=3){
                     recyclerViewOperation() ;
                     myRefTuitionPost.removeEventListener(this);
                 }
@@ -180,8 +193,9 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         recyclerView2.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
 
-        RecyclerAdapterForTutorHomePage adapter = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList) ;
-        recyclerView.setAdapter(adapter);
+        RecyclerAdapterForTutorHomePage adapter = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList1, userInfo,1) ;
+        RecyclerAdapterForTutorHomePage adapter2 = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList2, userInfo,2) ;
+        recyclerView.setAdapter(adapter2);
         recyclerView2.setAdapter(adapter);
     }
 
@@ -218,7 +232,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
                         intent.putStringArrayListExtra("userInfo", userInfo) ;
                         intent.putExtra("groupID", groupID) ;
                         startActivity(intent);
-                        finish();
+                        //finish();
 
                         flag = 1 ;
                         break ;
@@ -262,7 +276,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         intent.putExtra("user" , "tutor") ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     public void signOut() {

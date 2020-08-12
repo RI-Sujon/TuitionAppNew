@@ -1,8 +1,10 @@
 package com.example.tuitionapp_surji.guardian;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
+import com.example.tuitionapp_surji.tuition_post.TuitionPostViewSinglePageActivity;
+import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -19,21 +23,26 @@ import java.util.ArrayList;
 public class RecyclerAdapterForGuardianHomePage1 extends RecyclerView.Adapter<RecyclerAdapterForGuardianHomePage1.FeaturedViewHolder> {
 
     private ArrayList<CandidateTutorInfo> candidateTutorInfoArrayList ;
+    private ArrayList<String> tutorUidArrayList ;
+    private ViewGroup parent ;
 
-    public RecyclerAdapterForGuardianHomePage1(ArrayList<CandidateTutorInfo> candidateTutorInfoArrayList) {
-        this.candidateTutorInfoArrayList = candidateTutorInfoArrayList;
+    public RecyclerAdapterForGuardianHomePage1(ArrayList<CandidateTutorInfo> candidateTutorInfoArrayList, ArrayList<String> tutorUidArrayList) {
+        this.candidateTutorInfoArrayList = candidateTutorInfoArrayList ;
+        this.tutorUidArrayList = tutorUidArrayList ;
     }
 
     @NonNull
     @Override
     public FeaturedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        this.parent = parent ;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_card_for_guardian_home_page, parent, false) ;
+
         FeaturedViewHolder featuredViewHolder = new FeaturedViewHolder(view) ;
         return featuredViewHolder ;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FeaturedViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FeaturedViewHolder holder, final int position) {
         holder.layout.setVisibility(View.VISIBLE);
         holder.name.setText(candidateTutorInfoArrayList.get(position).getUserName());
         holder.instituteName.setText(candidateTutorInfoArrayList.get(position).getEdu_instituteName());
@@ -58,12 +67,23 @@ public class RecyclerAdapterForGuardianHomePage1 extends RecyclerView.Adapter<Re
                 holder.profilePic.setImageResource(R.drawable.female_pic);
             }
         }
+
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(parent.getContext(), VerifiedTutorProfileActivity.class);
+                intent.putExtra("user", "guardian") ;
+                intent.putExtra("tutorUid",tutorUidArrayList.get(position));
+                intent.putExtra("userEmail", candidateTutorInfoArrayList.get(position).getEmailPK()) ;
+                intent.putExtra("context", "homepage") ;
+                parent.getContext().startActivity(intent);
+            }
+        });
     }
 
 
     @Override
     public int getItemCount() {
-        //return 5;
         return candidateTutorInfoArrayList.size();
     }
 

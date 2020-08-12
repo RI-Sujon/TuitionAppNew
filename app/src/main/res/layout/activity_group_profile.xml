@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".group.GroupProfileActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="About This Group"
+            app:titleTextColor="@color/Black"
+            android:backgroundTint="#FFD600"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_marginTop="57dp">
+        <ScrollView
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="10dp"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/group_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/muli_black"
+                        android:textSize="22dp"
+                        android:text="Taz Education Village"
+                        android:textStyle="bold"
+                        android:layout_marginTop="7dp"
+                        android:textColor="@color/Blue"
+                        android:gravity="center"/>
+                    <ImageView
+                        android:id="@+id/groupProfileImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="200dp" />
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_marginTop="25dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="40dp"
+                                android:orientation="horizontal"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="4dp">
+                                <TextView
+                                    android:layout_width="130dp"
+                                    android:layout_height="match_parent"
+                                    android:text="LOCATION"
+                                    android:textStyle="bold"
+                                    android:textSize="14dp"
+                                    android:gravity="center"
+                                    android:textColor="@color/Navy"
+                                    android:background="#00C853"/>
+                                <TextView
+                                    android:id="@+id/location"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:textSize="15dp"
+                                    android:gravity="center"
+                                    android:textColor="@color/Black"
+                                    android:background="@color/DeepSkyBlue"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="40dp"
+                                android:orientation="horizontal"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="4dp">
+                                <TextView
+                                    android:layout_width="130dp"
+                                    android:layout_height="match_parent"
+                                    android:text="CLASS RANGE"
+                                    android:textStyle="bold"
+                                    android:textSize="14dp"
+                                    android:gravity="center"
+                                    android:textColor="@color/Navy"
+                                    android:background="#00C853"/>
+                                <TextView
+                                    android:id="@+id/class_range"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:textSize="15dp"
+                                    android:gravity="center"
+                                    android:textColor="@color/Black"
+                                    android:background="@color/DodgerBlue"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="50dp"
+                                android:orientation="horizontal"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="2dp">
+                                <TextView
+                                    android:layout_width="130dp"
+                                    android:layout_height="match_parent"
+                                    android:text="ABOUT GROUP"
+                                    android:textStyle="bold"
+                                    android:textSize="14dp"
+                                    android:gravity="center"
+                                    android:textColor="@color/Navy"
+                                    android:background="#00C853"/>
+                                <TextView
+                                    android:id="@+id/extraInfo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:textSize="15dp"
+                                    android:textColor="@color/Black"
+                                    android:gravity="center"
+                                    android:padding="3dp"
+                                    android:background="@color/DeepSkyBlue"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+            </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

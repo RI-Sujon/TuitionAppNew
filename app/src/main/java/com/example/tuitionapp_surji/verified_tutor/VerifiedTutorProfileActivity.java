@@ -40,8 +40,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static android.graphics.Color.GRAY;
-import static android.graphics.Color.GREEN;
 import static android.graphics.Color.RED;
 
 public class VerifiedTutorProfileActivity extends AppCompatActivity {
@@ -87,7 +85,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_verified_tutor_profile_new);
+        setContentView(R.layout.activity_verified_tutor_profile);
 
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;
@@ -342,6 +340,11 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                 else if(user.equals("GroupVisitor")){
                     intent.putExtra("tutorUid", tutorUid) ;
                     intent.putExtra("groupID", groupID) ;
+                }
+                else if(user.equals("guardian")) {
+                    intent.putExtra("tutorUid", tutorUid) ;
+                    intent.putExtra("userEmail", userEmail) ;
+                    intent.putExtra("context", contextType) ;
                 }
                 else {
                     intent.putExtra("tutorUid", tutorUid) ;
@@ -1210,21 +1213,24 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         }
         else if(user.equals("guardian")){
             Intent intent;
+
             if(contextType.equals("messenger")){
                 intent = new Intent(VerifiedTutorProfileActivity.this, MessageRequestActivity.class);
                 intent.putExtra("userId", tutorUid);
                 intent.putExtra("tutorEmail",tutorEmail);
+                intent.putExtra("user",user) ;
+                startActivity(intent) ;
+                finish() ;
             }
-
-            else{
+            else if(contextType.equals("homepage")){
+                finish();
+            }
+            else {
                 intent= new Intent(this, ViewingSearchingTutorProfileActivity.class);
-
+                intent.putExtra("user",user) ;
+                startActivity(intent) ;
+                finish() ;
             }
-
-            intent.putExtra("user",user) ;
-
-            startActivity(intent) ;
-            finish() ;
         }
         else if(user.equals("admin")){
             Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class);

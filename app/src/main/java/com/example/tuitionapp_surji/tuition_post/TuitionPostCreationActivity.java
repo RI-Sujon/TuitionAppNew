@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TuitionPostActivity extends AppCompatActivity {
+public class TuitionPostCreationActivity extends AppCompatActivity {
 
     private EditText postTitleBox, studentInstituteBox, studentFullAreaAddressBox, studentContactNoBox, extraNotesBox;
     private MultiAutoCompleteTextView subjectBox ;
@@ -55,7 +55,7 @@ public class TuitionPostActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tuition_post_create_new);
+        setContentView(R.layout.activity_tuition_post_creation);
 
         myRefTuitionPost = FirebaseDatabase.getInstance().getReference("TuitionPost") ;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
@@ -118,14 +118,14 @@ public class TuitionPostActivity extends AppCompatActivity {
         daysPerWeekList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.daysPerWeekOrMonth_array))) ;
         salaryList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.salary_array))) ;
 
-        mediumAdapter = new ArrayAdapter(TuitionPostActivity.this, android.R.layout.simple_dropdown_item_1line, mediumList);
+        mediumAdapter = new ArrayAdapter(TuitionPostCreationActivity.this, android.R.layout.simple_dropdown_item_1line, mediumList);
         mediumBox.setAdapter(mediumAdapter);
 
-        subjectAdapter = new ArrayAdapter(TuitionPostActivity.this, android.R.layout.simple_dropdown_item_1line, generalSubjectList);
+        subjectAdapter = new ArrayAdapter(TuitionPostCreationActivity.this, android.R.layout.simple_dropdown_item_1line, generalSubjectList);
         subjectBox.setAdapter(subjectAdapter);
         subjectBox.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
-        daysPerWeekAdapter = new ArrayAdapter(TuitionPostActivity.this, android.R.layout.simple_dropdown_item_1line, daysPerWeekList);
+        daysPerWeekAdapter = new ArrayAdapter(TuitionPostCreationActivity.this, android.R.layout.simple_dropdown_item_1line, daysPerWeekList);
         daysPerWeekOrMonthBox.setAdapter(daysPerWeekAdapter);
 
         selectStudentClass() ;
@@ -231,7 +231,7 @@ public class TuitionPostActivity extends AppCompatActivity {
 
         if(tuitionPostInfo.getStudentMedium().equals("English Medium")){
             mediumBox.setSelection(2);
-            classAdapter = new ArrayAdapter(TuitionPostActivity.this, android.R.layout.simple_dropdown_item_1line,englishMediumClassList);
+            classAdapter = new ArrayAdapter(TuitionPostCreationActivity.this, android.R.layout.simple_dropdown_item_1line,englishMediumClassList);
             classBox.setAdapter(classAdapter);
             for(int i=0 ; i<englishMediumClassList.size() ; i++){
                 if(englishMediumClassList.get(i).equals(tuitionPostInfo.getStudentClass())){
@@ -241,7 +241,7 @@ public class TuitionPostActivity extends AppCompatActivity {
             }
         }
         else{
-            classAdapter = new ArrayAdapter(TuitionPostActivity.this, android.R.layout.simple_dropdown_item_1line,banglaMediumClassList);
+            classAdapter = new ArrayAdapter(TuitionPostCreationActivity.this, android.R.layout.simple_dropdown_item_1line,banglaMediumClassList);
             classBox.setAdapter(classAdapter);
             mediumBox.setSelection(1);
             for(int i=0 ; i<banglaMediumClassList.size() ; i++){
@@ -255,7 +255,7 @@ public class TuitionPostActivity extends AppCompatActivity {
 
 
         if(!tuitionPostInfo.getStudentGroup().equals("")){
-            groupAdapter = new ArrayAdapter(TuitionPostActivity.this, android.R.layout.simple_dropdown_item_1line,groupList);
+            groupAdapter = new ArrayAdapter(TuitionPostCreationActivity.this, android.R.layout.simple_dropdown_item_1line,groupList);
             groupBox.setAdapter(groupAdapter);
             for(int i=0 ; i<groupList.size() ; i++){
                 if(groupList.get(i).equals(tuitionPostInfo.getStudentGroup())){
@@ -355,10 +355,10 @@ public class TuitionPostActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(typeFlag==1){
                     if(mediumList.get(position).equals("English Medium")) {
-                        classAdapter = new ArrayAdapter(TuitionPostActivity.this, android.R.layout.simple_dropdown_item_1line,englishMediumClassList);
+                        classAdapter = new ArrayAdapter(TuitionPostCreationActivity.this, android.R.layout.simple_dropdown_item_1line,englishMediumClassList);
                     }
                     else {
-                        classAdapter = new ArrayAdapter(TuitionPostActivity.this, android.R.layout.simple_dropdown_item_1line,banglaMediumClassList);
+                        classAdapter = new ArrayAdapter(TuitionPostCreationActivity.this, android.R.layout.simple_dropdown_item_1line,banglaMediumClassList);
                     }
                     classBox.setAdapter(classAdapter) ;
                 }
@@ -376,7 +376,7 @@ public class TuitionPostActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                if(typeFlag==1){
-                   groupAdapter = new ArrayAdapter(TuitionPostActivity.this, android.R.layout.simple_dropdown_item_1line,groupList);
+                   groupAdapter = new ArrayAdapter(TuitionPostCreationActivity.this, android.R.layout.simple_dropdown_item_1line,groupList);
                    groupBox.setAdapter(groupAdapter);
                    if(position>5){
                         groupBox.setVisibility(View.GONE);
@@ -410,19 +410,19 @@ public class TuitionPostActivity extends AppCompatActivity {
                             for(int i=0 ; i<generalSubjectList.size() ; i++){
                                 scienceSubjectList.add(generalSubjectList.get(i)) ;
                             }
-                            subjectAdapter = new ArrayAdapter(TuitionPostActivity.this,android.R.layout.simple_dropdown_item_1line,scienceSubjectList);
+                            subjectAdapter = new ArrayAdapter(TuitionPostCreationActivity.this,android.R.layout.simple_dropdown_item_1line,scienceSubjectList);
                         }
                         else if(studentGroup.equals("Commerce")){
                             for(int i=0 ; i<generalSubjectList.size() ; i++){
                                 commerceSubjectList.add(generalSubjectList.get(i)) ;
                             }
-                            subjectAdapter = new ArrayAdapter(TuitionPostActivity.this,android.R.layout.simple_dropdown_item_1line,commerceSubjectList);
+                            subjectAdapter = new ArrayAdapter(TuitionPostCreationActivity.this,android.R.layout.simple_dropdown_item_1line,commerceSubjectList);
                         }
                         else if(studentGroup.equals("Arts")){
                             for(int i=0 ; i<generalSubjectList.size() ; i++){
                                 artsSubjectList.add(generalSubjectList.get(i)) ;
                             }
-                            subjectAdapter = new ArrayAdapter(TuitionPostActivity.this,android.R.layout.simple_dropdown_item_1line,artsSubjectList);
+                            subjectAdapter = new ArrayAdapter(TuitionPostCreationActivity.this,android.R.layout.simple_dropdown_item_1line,artsSubjectList);
                         }
 
 
@@ -474,7 +474,7 @@ public class TuitionPostActivity extends AppCompatActivity {
                     for(int i=position; i<salaryList.size() ;i++){
                         salaryList2.add(salaryList.get(i)) ;
                     }
-                    salaryAdapter = new ArrayAdapter(TuitionPostActivity.this,android.R.layout.simple_dropdown_item_1line,salaryList2);
+                    salaryAdapter = new ArrayAdapter(TuitionPostCreationActivity.this,android.R.layout.simple_dropdown_item_1line,salaryList2);
                     salaryBox2.setAdapter(salaryAdapter);
                 }
             }

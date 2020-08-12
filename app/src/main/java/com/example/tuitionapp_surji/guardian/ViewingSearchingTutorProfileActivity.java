@@ -19,7 +19,6 @@ import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.group.GroupHomePageActivity;
 import com.example.tuitionapp_surji.group.GroupInfo;
 import com.example.tuitionapp_surji.R;
-import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorInfo;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,8 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
 
@@ -222,8 +219,8 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
 
     public void backToHomePage(View view){
         if(user.equals("guardian")){
-            Intent intent = new Intent(this, GuardianHomePageActivity.class);
-            startActivity(intent);
+            //Intent intent = new Intent(this, GuardianHomePageActivity.class);
+            //startActivity(intent);
             finish();
         }
         else if(user.equals("admin")){

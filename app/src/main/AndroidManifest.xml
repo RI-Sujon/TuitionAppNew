@@ -37,7 +37,7 @@
         <activity android:name=".group.GroupHomePageActivity" />
         <activity android:name=".tuition_post.TuitionPostViewActivity" />
         <activity android:name=".guardian.ViewingSearchingTutorProfileActivity" />
-        <activity android:name=".verified_tutor.VerifiedTutorNotificationActivity" />
+        <activity android:name=".notification_pack.NotificationViewActivity" />
         <activity android:name=".admin.AdminTutorProfileViewActivity" />
         <activity android:name=".guardian.GuardianInformationActivity" />
         <activity android:name=".admin.AdminHomePageActivity" />

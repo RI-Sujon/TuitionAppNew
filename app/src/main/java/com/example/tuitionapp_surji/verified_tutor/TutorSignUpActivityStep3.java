@@ -327,4 +327,9 @@ public class TutorSignUpActivityStep3 extends AppCompatActivity{
             preferredSubjectBox.setAdapter(adapter);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

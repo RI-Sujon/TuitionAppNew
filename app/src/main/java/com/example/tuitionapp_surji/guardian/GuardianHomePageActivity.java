@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +23,7 @@ import com.example.tuitionapp_surji.group.GroupInfo;
 import com.example.tuitionapp_surji.message_box.MainMessageActivity;
 import com.example.tuitionapp_surji.system.HomePageActivity;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostViewActivity;
+import com.example.tuitionapp_surji.notification_pack.NotificationViewActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -247,14 +247,20 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         //finish();
     }
 
+    public void goToVerifiedTutorNotificationActivity(View view){
+        Intent intent = new Intent(this, NotificationViewActivity.class) ;
+        intent.putExtra("user", "guardian") ;
+        startActivity(intent);
+        //finish();
+    }
+
     public void signOut() {
         mAuth.signOut();
 
         Intent intent = new Intent(GuardianHomePageActivity.this, HomePageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) ;
         startActivity(intent);
-        //finish();
+        finish();
     }
-
 
     private void status(String status){
 
@@ -266,7 +272,6 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("status", status);
             reference.updateChildren(hashMap);
-
 
     }
 

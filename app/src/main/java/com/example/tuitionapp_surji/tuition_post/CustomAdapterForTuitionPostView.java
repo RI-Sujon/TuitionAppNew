@@ -18,6 +18,8 @@ import androidx.annotation.NonNull;
 
 import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.notification_pack.SendNotification;
+import com.example.tuitionapp_surji.notification_pack.NotificationInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +36,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
     private ArrayList<TuitionPostInfo> tuitionPostInfo ;
     private ArrayList<String> tutorInfo ;
     private ArrayList<String> tuitionPostInfoUid ;
+    private int [] responsePostArray ;
     private String userFlag ;
     private MessageBoxInfo messageBoxInfo;
     private Calendar calendar = Calendar.getInstance();
@@ -41,19 +44,25 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
     private String today ;
     private String yesterday ;
 
-    private DatabaseReference myRefMessageBox, myRefTuitionPost ;
+    private DatabaseReference myRefNotification, myRefTuitionPost, myRefResponsePost, myRefNotification2 ;
 
-    public CustomAdapterForTuitionPostView(Context context, ArrayList<TuitionPostInfo> tuitionPostInfo, ArrayList<String> tutorInfo, ArrayList<String> tuitionPostInfoUid, String userFlag) {
+    public CustomAdapterForTuitionPostView(Context context, ArrayList<TuitionPostInfo> tuitionPostInfo, ArrayList<String> tutorInfo, ArrayList<String> tuitionPostInfoUid, String userFlag, int [] responsePostArray) {
         this.context = context;
         this.tuitionPostInfo = tuitionPostInfo;
         this.tutorInfo = tutorInfo  ;
         this.tuitionPostInfoUid = tuitionPostInfoUid;
         this.userFlag = userFlag ;
-        myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
+        this.responsePostArray = responsePostArray ;
+        myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Guardian") ;
+
+        if(userFlag.equals("tutor")) {
+            myRefResponsePost = FirebaseDatabase.getInstance().getReference("ResponsePost").child(tutorInfo.get(3));
+        }
 
         today = simpleDateFormat2.format(calendar.getTime());
         calendar.add(Calendar.DATE,-1);
         yesterday = simpleDateFormat2.format(calendar.getTime());
+
     }
 
 
@@ -87,6 +96,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
             holder.cardLayout = convertView.findViewById(R.id.cardLayout) ;
             holder.responseButton = convertView.findViewById(R.id.responseButton) ;
             holder.responseButtonLayout = convertView.findViewById(R.id.responseButtonLayout) ;
+            holder.responseButtonPressedLayout = convertView.findViewById(R.id.responseButtonPressedLayout) ;
 
             holder.postImage = convertView.findViewById(R.id.image_view) ;
             holder.postTitle = convertView.findViewById(R.id.postTitle) ;
@@ -152,7 +162,15 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
 
                 }
             } else {
-                holder.responseButtonLayout.setVisibility(View.VISIBLE);
+
+                if(responsePostArray[position]==0){
+                    holder.responseButtonLayout.setVisibility(View.VISIBLE);
+                    holder.responseButtonPressedLayout.setVisibility(View.GONE);
+                }
+                else{
+                    holder.responseButtonPressedLayout.setVisibility(View.VISIBLE);
+                    holder.responseButtonLayout.setVisibility(View.GONE);
+                }
             }
 
             String genderString = tuitionPostInfo.get(position).getTutorGenderPreference();
@@ -242,35 +260,23 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
             }
 
 
+
             holder.responseButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    messageBoxInfo = new MessageBoxInfo(tuitionPostInfo.get(position).getGuardianMobileNumberFK(),
-                            tuitionPostInfo.get(position).getGuardianUidFK(), tutorInfo.get(2), tutorInfo.get(3), false, true);
+                    myRefNotification2 = myRefNotification.child(tuitionPostInfo.get(position).getGuardianUidFK()) ;
+                    NotificationInfo notificationInfo = new NotificationInfo("response" , tutorInfo.get(0), tutorInfo.get(2), tutorInfo.get(3), tuitionPostInfoUid.get(position)) ;
+                    myRefNotification2.push().setValue(notificationInfo) ;
 
-                    myRefMessageBox.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            int flag = 0;
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
-                                if (messageBoxInfo1.getGuardianUid().equals(tuitionPostInfo.get(position).getGuardianUidFK())
-                                        && messageBoxInfo1.getTutorUid().equals(tutorInfo.get(3))) {
-                                    flag = 1;
-                                }
-                            }
-                            if (flag == 0)
-                                myRefMessageBox.push().setValue(messageBoxInfo);
-                        }
+                    ResponsePost responsePost = new ResponsePost(tuitionPostInfoUid.get(position)) ;
+                    myRefResponsePost.push().setValue(responsePost) ;
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
 
                     holder.responseButton.setBackgroundColor(Color.GRAY);
                     holder.responseButtonLayout.setEnabled(false);
+
+                    SendNotification sendNotification = new SendNotification(tuitionPostInfo.get(position).getGuardianUidFK(), "Response Post", "A tutor response to your post") ;
+                    sendNotification.sendNotificationOperation();
                 }
             });
 
@@ -333,6 +339,8 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
                 intent.putStringArrayListExtra("tutorInfo", tutorInfo);
                 intent.putExtra("guardianUid", tuitionPostInfo.get(position).getGuardianUidFK()) ;
                 intent.putExtra("user", userFlag) ;
+                intent.putExtra("response", String.valueOf(responsePostArray[position])) ;
+                intent.putExtra("tuitionPostUid", tuitionPostInfoUid.get(position)) ;
 
                 intent.putExtra("postTitle", tuitionPostInfo.get(position).getPostTitle()) ;
                 intent.putExtra("medium", tuitionPostInfo.get(position).getStudentMedium()) ;
@@ -362,6 +370,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
         TextView postTitle, class_name, medium, subject, location, days, salary, schoolName, contactNo, extra, availability ;
         ImageButton responseButton ;
         RelativeLayout responseButtonLayout ;
+        RelativeLayout responseButtonPressedLayout ;
 
         RelativeLayout layout2 ;
         ImageButton createNewPostButton ;

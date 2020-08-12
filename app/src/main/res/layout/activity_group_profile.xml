@@ -39,8 +39,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_margin="10dp"
-                    android:gravity="center">
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:background="@drawable/border4"
+                    android:backgroundTintMode="screen"
+                    android:backgroundTint="#FFD600">
                     <TextView
                         android:id="@+id/group_name"
                         android:layout_width="wrap_content"
@@ -71,7 +75,7 @@
                                 android:orientation="horizontal"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:layout_marginBottom="4dp">
+                                android:layout_marginBottom="5dp">
                                 <TextView
                                     android:layout_width="130dp"
                                     android:layout_height="match_parent"
@@ -80,7 +84,7 @@
                                     android:textSize="14dp"
                                     android:gravity="center"
                                     android:textColor="@color/Navy"
-                                    android:background="#00C853"/>
+                                    android:background="@drawable/border4"/>
                                 <TextView
                                     android:id="@+id/location"
                                     android:layout_width="match_parent"
@@ -89,7 +93,7 @@
                                     android:textSize="15dp"
                                     android:gravity="center"
                                     android:textColor="@color/Black"
-                                    android:background="@color/DeepSkyBlue"/>
+                                    android:background="@drawable/border6"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -99,7 +103,7 @@
                                 android:orientation="horizontal"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:layout_marginBottom="4dp">
+                                android:layout_marginBottom="5dp">
                                 <TextView
                                     android:layout_width="130dp"
                                     android:layout_height="match_parent"
@@ -108,7 +112,9 @@
                                     android:textSize="14dp"
                                     android:gravity="center"
                                     android:textColor="@color/Navy"
-                                    android:background="#00C853"/>
+                                    android:background="@drawable/border4"
+                                    android:backgroundTint="@color/Red"
+                                    android:backgroundTintMode="screen"/>
                                 <TextView
                                     android:id="@+id/class_range"
                                     android:layout_width="match_parent"
@@ -117,7 +123,9 @@
                                     android:textSize="15dp"
                                     android:gravity="center"
                                     android:textColor="@color/Black"
-                                    android:background="@color/DodgerBlue"/>
+                                    android:background="@drawable/border6"
+                                    android:backgroundTint="@color/Red"
+                                    android:backgroundTintMode="screen"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -136,7 +144,9 @@
                                     android:textSize="14dp"
                                     android:gravity="center"
                                     android:textColor="@color/Navy"
-                                    android:background="#00C853"/>
+                                    android:background="@drawable/border4"
+                                    android:backgroundTintMode="screen"
+                                    android:backgroundTint="@color/Green"/>
                                 <TextView
                                     android:id="@+id/extraInfo"
                                     android:layout_width="match_parent"
@@ -146,7 +156,9 @@
                                     android:textColor="@color/Black"
                                     android:gravity="center"
                                     android:padding="3dp"
-                                    android:background="@color/DeepSkyBlue"/>
+                                    android:background="@drawable/border6"
+                                    android:backgroundTint="@color/ForestGreen"
+                                    android:backgroundTintMode="screen"/>
                             </LinearLayout>
 
                         </LinearLayout>

@@ -265,7 +265,34 @@
                 android:layout_centerInParent="true"/>
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/responseButtonPressedLayout"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:visibility="gone">
 
+            <ImageButton
+                android:id="@+id/responseButtonPressed"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="-4dp"
+                android:layout_marginRight="-4dp"
+                android:layout_marginBottom="-4dp"
+                android:visibility="visible"
+                android:backgroundTint="@color/DeepSkyBlue"
+                android:backgroundTintMode="screen"
+                android:background="@drawable/border_tuition_post_background" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ALREADY RESPONSE"
+                android:textColor="@color/White"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"

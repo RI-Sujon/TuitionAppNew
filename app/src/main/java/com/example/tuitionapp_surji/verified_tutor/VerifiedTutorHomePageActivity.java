@@ -27,7 +27,7 @@ import com.example.tuitionapp_surji.message_box.MainMessageActivity;
 import com.example.tuitionapp_surji.note.Note_Home;
 import com.example.tuitionapp_surji.notification_pack.TokenInfo;
 import com.example.tuitionapp_surji.notification_pack.NotificationViewActivity;
-import com.example.tuitionapp_surji.system.HomePageActivity;
+import com.example.tuitionapp_surji.starting.HomePageActivity;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostInfo;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostViewActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;

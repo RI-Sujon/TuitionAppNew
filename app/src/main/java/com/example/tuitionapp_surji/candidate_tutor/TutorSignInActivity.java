@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.example.tuitionapp_surji.admin.AdminHomePageActivity;
 import com.example.tuitionapp_surji.admin.ApproveAndBlockInfo;
 import com.example.tuitionapp_surji.R;
-import com.example.tuitionapp_surji.system.HomePageActivity;
+import com.example.tuitionapp_surji.starting.HomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.TutorSignUpActivityStep3;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorInfo;

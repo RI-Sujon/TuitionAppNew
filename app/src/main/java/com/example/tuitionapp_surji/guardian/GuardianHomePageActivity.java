@@ -21,7 +21,7 @@ import com.example.tuitionapp_surji.admin.ApproveAndBlockInfo;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.group.GroupInfo;
 import com.example.tuitionapp_surji.message_box.MainMessageActivity;
-import com.example.tuitionapp_surji.system.HomePageActivity;
+import com.example.tuitionapp_surji.starting.HomePageActivity;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostViewActivity;
 import com.example.tuitionapp_surji.notification_pack.NotificationViewActivity;
 import com.google.android.material.navigation.NavigationView;

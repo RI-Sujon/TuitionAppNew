@@ -8,12 +8,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 
 import com.example.tuitionapp_surji.R;
-import com.example.tuitionapp_surji.system.MainActivity;
+import com.example.tuitionapp_surji.starting.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

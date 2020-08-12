@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.tuitionapp_surji.guardian.ViewingSearchingTutorProfileActivity;
 import com.example.tuitionapp_surji.R;
-import com.example.tuitionapp_surji.system.HomePageActivity;
+import com.example.tuitionapp_surji.starting.HomePageActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;

@@ -1,4 +1,4 @@
-package com.example.tuitionapp_surji.system;
+package com.example.tuitionapp_surji.starting;
 
 import androidx.appcompat.app.AppCompatActivity;
 

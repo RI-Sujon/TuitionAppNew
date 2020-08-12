@@ -51,8 +51,8 @@
         <activity android:name=".candidate_tutor.TutorSignUpActivity" />
         <activity android:name=".candidate_tutor.TutorSignInActivity" />
         <activity android:name=".guardian.GuardianModuleStartActivity" />
-        <activity android:name=".system.HomePageActivity" />
-        <activity android:name=".system.MainActivity">
+        <activity android:name=".starting.HomePageActivity" />
+        <activity android:name=".starting.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

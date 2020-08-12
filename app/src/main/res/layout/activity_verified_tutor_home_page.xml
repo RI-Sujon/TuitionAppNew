@@ -17,332 +17,332 @@
         app:headerLayout="@layout/activity_verified_tutor_home_page_drawer"
         app:menu="@menu/verified_tutor_home_page_drawer" />
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/White">
+
+        <ImageButton
+            android:id="@+id/drawer_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/drawer_button"
+            android:background="#00000000"
+            android:padding="25dp"
+            android:onClick="openDrawerOperation"/>
+
+        <ImageButton
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="20dp"
+            android:background="#00000000"
+            android:src="@drawable/notification_icon"
+            android:onClick="goToVerifiedTutorNotificationActivity"/>
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/White">
-
-            <ImageButton
-                android:id="@+id/drawer_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/drawer_button"
-                android:background="#00000000"
-                android:padding="25dp"
-                android:onClick="openDrawerOperation"/>
-
-            <ImageButton
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="20dp"
-                android:background="#00000000"
-                android:src="@drawable/notification_icon"
-                android:onClick="goToVerifiedTutorNotificationActivity"/>
-
-            <ScrollView
+            android:layout_marginTop="75dp">
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="75dp">
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/niconne"
+                    android:text="Get  A  Way"
+                    android:textColor="@color/Black"
+                    android:textSize="30dp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:layout_marginTop="0dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:padding="10dp"
+                    android:background="@drawable/border_homepage_blue_white_gradient">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:backgroundTint="@color/RoyalBlue"
+                                android:layout_width="55dp"
+                                android:layout_height="55dp"
+                                android:src="@drawable/tuition_post_icon"
+                                android:background="#00000000"
+                                android:layout_margin="10dp"
+                                android:onClick="goToVerifiedTutorViewPostActivity"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text = "Tuition Post"
+                                android:textColor="@color/Black"
+                                android:textSize="13dp"
+                                android:layout_marginTop="-10dp"
+                                android:fontFamily="sans-serif-condensed"/>
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <de.hdodenhof.circleimageview.CircleImageView
+
+                                android:layout_width="55dp"
+                                android:layout_height="55dp"
+                                android:src="@drawable/guardian_message_box"
+                                android:background="#00000000"
+                                android:layout_margin="10dp"
+                                android:onClick="goToMessageBox"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text = "Message Box"
+                                android:textColor="@color/Black"
+                                android:textSize="13dp"
+                                android:layout_marginTop="-10dp"
+                                android:fontFamily="sans-serif-condensed"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:clickable="true"
+                                android:layout_width="55dp"
+                                android:layout_height="55dp"
+                                android:src="@drawable/classroom03"
+                                android:background="#00000000"
+                                android:layout_margin="10dp"
+                                android:onClick="goToVerifiedTutorGroupActivity"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text = "My Group"
+                                android:textColor="@color/Black"
+                                android:textSize="13dp"
+                                android:layout_marginTop="-10dp"
+                                android:fontFamily="sans-serif-condensed"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:layout_width="55dp"
+                                android:layout_height="55dp"
+                                android:src="@drawable/demo_video_icon"
+                                android:background="#00000000"
+                                android:layout_margin="20dp"
+                                android:onClick="goToDemoVideo"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text = "Demo Video"
+                                android:textColor="@color/Black"
+                                android:textSize="13dp"
+                                android:layout_marginTop="-20dp"
+                                android:fontFamily="sans-serif-condensed"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:layout_width="55dp"
+                                android:layout_height="55dp"
+                                android:backgroundTint="@color/colorAccent"
+                                android:src="@drawable/utilities_icon_button"
+                                android:background="#00000000"
+                                android:layout_margin="20dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text = "Utilities"
+                                android:textColor="@color/Black"
+                                android:textSize="13dp"
+                                android:layout_marginTop="-20dp"
+                                android:fontFamily="sans-serif-condensed"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:fontFamily="@font/niconne"
-                        android:text="Get  A  Way"
+                        android:text="Recommended"
+                        android:padding="15dp"
                         android:textColor="@color/Black"
-                        android:textSize="30dp" />
+                        android:textAllCaps="true"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="VIEW ALL"
+                        android:layout_alignParentRight="true"
+                        android:padding="15dp"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:onClick="goToVerifiedTutorViewPostActivity"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@color/AliceBlue">
 
                     <LinearLayout
+                        android:id="@+id/heading"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:padding="10dp"
-                        android:background="@drawable/border_homepage_blue_white_gradient">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center">
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:gravity="center">
+                        android:layout_height="wrap_content">
 
-                                <de.hdodenhof.circleimageview.CircleImageView
-                                    android:foreground="?android:attr/selectableItemBackground"
-                                    android:clickable="true"
-                                    android:backgroundTint="@color/RoyalBlue"
-                                    android:layout_width="55dp"
-                                    android:layout_height="55dp"
-                                    android:src="@drawable/tuition_post_icon"
-                                    android:background="#00000000"
-                                    android:layout_margin="10dp"
-                                    android:onClick="goToVerifiedTutorViewPostActivity"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text = "Tuition Post"
-                                    android:textColor="@color/Black"
-                                    android:textSize="13dp"
-                                    android:layout_marginTop="-10dp"
-                                    android:fontFamily="sans-serif-condensed"/>
-
-                            </LinearLayout>
-
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="vertical">
-                                <de.hdodenhof.circleimageview.CircleImageView
-
-                                    android:layout_width="55dp"
-                                    android:layout_height="55dp"
-                                    android:src="@drawable/guardian_message_box"
-                                    android:background="#00000000"
-                                    android:layout_margin="10dp"
-                                    android:onClick="goToMessageBox"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text = "Message Box"
-                                    android:textColor="@color/Black"
-                                    android:textSize="13dp"
-                                    android:layout_marginTop="-10dp"
-                                    android:fontFamily="sans-serif-condensed"/>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:gravity="center">
-                                <de.hdodenhof.circleimageview.CircleImageView
-                                    android:foreground="?android:attr/selectableItemBackground"
-                                    android:clickable="true"
-                                    android:layout_width="55dp"
-                                    android:layout_height="55dp"
-                                    android:src="@drawable/classroom03"
-                                    android:background="#00000000"
-                                    android:layout_margin="10dp"
-                                    android:onClick="goToVerifiedTutorGroupActivity"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text = "My Group"
-                                    android:textColor="@color/Black"
-                                    android:textSize="13dp"
-                                    android:layout_marginTop="-10dp"
-                                    android:fontFamily="sans-serif-condensed"/>
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center">
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:gravity="center">
-                                <de.hdodenhof.circleimageview.CircleImageView
-                                    android:layout_width="55dp"
-                                    android:layout_height="55dp"
-                                    android:src="@drawable/demo_video_icon"
-                                    android:background="#00000000"
-                                    android:layout_margin="20dp"
-                                    android:onClick="goToDemoVideo"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text = "Demo Video"
-                                    android:textColor="@color/Black"
-                                    android:textSize="13dp"
-                                    android:layout_marginTop="-20dp"
-                                    android:fontFamily="sans-serif-condensed"/>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:gravity="center">
-                                <de.hdodenhof.circleimageview.CircleImageView
-                                    android:layout_width="55dp"
-                                    android:layout_height="55dp"
-                                    android:backgroundTint="@color/colorAccent"
-                                    android:src="@drawable/utilities_icon_button"
-                                    android:background="#00000000"
-                                    android:layout_margin="20dp" />
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text = "Utilities"
-                                    android:textColor="@color/Black"
-                                    android:textSize="13dp"
-                                    android:layout_marginTop="-20dp"
-                                    android:fontFamily="sans-serif-condensed"/>
-                            </LinearLayout>
-
-                        </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_toRightOf="@+id/heading" />
 
                     </LinearLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp">
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Recommended"
-                            android:padding="15dp"
-                            android:textColor="@color/Black"
-                            android:textAllCaps="true"
-                            android:textStyle="bold"/>
+                        android:text="Recommended"
+                        android:padding="15dp"
+                        android:textColor="@color/Black"
+                        android:textAllCaps="true"
+                        android:textStyle="bold"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="VIEW ALL"
-                            android:layout_alignParentRight="true"
-                            android:padding="15dp"
-                            android:textStyle="bold"
-                            android:textAllCaps="true"
-                            android:onClick="goToVerifiedTutorViewPostActivity"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="-10dp"
-                        android:layout_marginStart="10dp"
-                        android:background="@color/AliceBlue">
+                        android:text="VIEW ALL"
+                        android:layout_alignParentRight="true"
+                        android:padding="15dp"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:onClick="goToVerifiedTutorViewPostActivity"/>
+                </RelativeLayout>
 
-                        <LinearLayout
-                            android:id="@+id/heading"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/recycler_view"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_toRightOf="@+id/heading" />
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Recommended"
-                            android:padding="15dp"
-                            android:textColor="@color/Black"
-                            android:textAllCaps="true"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="VIEW ALL"
-                            android:layout_alignParentRight="true"
-                            android:padding="15dp"
-                            android:textStyle="bold"
-                            android:textAllCaps="true"
-                            android:onClick="goToVerifiedTutorViewPostActivity"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="-10dp"
-                        android:layout_marginStart="10dp"
-                        android:background="@color/AliceBlue">
-
-                        <LinearLayout
-                            android:id="@+id/heading2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/recycler_view2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_toRightOf="@+id/heading" />
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@color/AliceBlue">
 
                     <LinearLayout
+                        android:id="@+id/heading2"
                         android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        android:layout_marginTop="200dp"
-                        android:background="@color/Navy"
-                        android:padding="30dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Contact us:"
-                            android:paddingBottom="10dp"
-                            android:textColor="@color/Aqua"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:pointerIcon="arrow"
-                            android:textSize="15dp"
-                            android:textColor="@color/LightYellow"
-                            android:text="Rabiul Islam Sujon"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12dp"
-                            android:paddingBottom="15dp"
-                            android:textColor="@color/Orange"
-                            android:text="s.rabiulislam429@gmail.com"/>
+                        android:layout_height="wrap_content">
 
-                        <TextView
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view2"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:textColor="@color/LightYellow"
-                            android:text="Md. Nadim Ahmed"/>
+                            android:layout_height="match_parent"
+                            android:layout_toRightOf="@+id/heading" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:pointerIcon="hand"
-                            android:textSize="12dp"
-                            android:textColor="@color/Orange"
-                            android:text="nadim1028@gmail.com"/>
                     </LinearLayout>
 
+                </RelativeLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="200dp"
+                    android:background="@color/Navy"
+                    android:padding="30dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Contact us:"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/Aqua"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:pointerIcon="arrow"
+                        android:textSize="15dp"
+                        android:textColor="@color/LightYellow"
+                        android:text="Rabiul Islam Sujon"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12dp"
+                        android:paddingBottom="15dp"
+                        android:textColor="@color/Orange"
+                        android:text="s.rabiulislam429@gmail.com"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:textColor="@color/LightYellow"
+                        android:text="Md. Nadim Ahmed"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:pointerIcon="hand"
+                        android:textSize="12dp"
+                        android:textColor="@color/Orange"
+                        android:text="nadim1028@gmail.com"/>
                 </LinearLayout>
-            </ScrollView>
-        </RelativeLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

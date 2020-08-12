@@ -1,4 +1,4 @@
-package com.example.tuitionapp_surji.verified_tutor;
+package com.example.tuitionapp_surji.notification_pack;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,28 +16,22 @@ public class NotificationInfo {
     public NotificationInfo() {
     }
 
-    public NotificationInfo(String types, String message1) {
-        this.types = types;
-        this.message1 = message1;
-
-        postTime = simpleDateFormat.format(calendar.getTime());
-        postDate = simpleDateFormat2.format(calendar.getTime());
-    }
-
-    public NotificationInfo(String types, String message1, String message2) {
-        this.types = types;
-        this.message1 = message1;
-        this.message2 = message2;
-
-        postTime = simpleDateFormat.format(calendar.getTime());
-        postDate = simpleDateFormat2.format(calendar.getTime());
-    }
-
     public NotificationInfo(String types, String message1, String message2, String message3) {
         this.types = types;
         this.message1 = message1;
         this.message2 = message2;
         this.message3 = message3;
+
+        postTime = simpleDateFormat.format(calendar.getTime());
+        postDate = simpleDateFormat2.format(calendar.getTime());
+    }
+
+    public NotificationInfo(String types, String message1, String message2, String message3, String message4) {
+        this.types = types;
+        this.message1 = message1;
+        this.message2 = message2;
+        this.message3 = message3;
+        this.message4 = message4;
 
         postTime = simpleDateFormat.format(calendar.getTime());
         postDate = simpleDateFormat2.format(calendar.getTime());

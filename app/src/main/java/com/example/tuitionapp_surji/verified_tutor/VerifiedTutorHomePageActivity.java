@@ -26,6 +26,7 @@ import com.example.tuitionapp_surji.group.GroupInfo;
 import com.example.tuitionapp_surji.message_box.MainMessageActivity;
 import com.example.tuitionapp_surji.note.Note_Home;
 import com.example.tuitionapp_surji.notification_pack.TokenInfo;
+import com.example.tuitionapp_surji.notification_pack.NotificationViewActivity;
 import com.example.tuitionapp_surji.system.HomePageActivity;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostInfo;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostViewActivity;
@@ -81,7 +82,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         userInfo = intent.getStringArrayListExtra("userInfo") ;
         String refreshToken = FirebaseInstanceId.getInstance().getToken() ;
         TokenInfo token = new TokenInfo(refreshToken) ;
-        FirebaseDatabase.getInstance().getReference("Tokens").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(token);
+        FirebaseDatabase.getInstance().getReference("Notification").child("Tokens").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(token);
 
         drawerLayout = findViewById(R.id.drawer_layout) ;
         navigationView = findViewById(R.id.navigation_view) ;
@@ -210,10 +211,11 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
 
 
     public void goToVerifiedTutorNotificationActivity(View view){
-        Intent intent = new Intent(this, VerifiedTutorNotificationActivity.class) ;
+        Intent intent = new Intent(this, NotificationViewActivity.class) ;
+        intent.putExtra("user", "tutor") ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     public void goToVerifiedTutorGroupActivity(View view){
@@ -291,7 +293,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
 
         Intent intent = new Intent(this, HomePageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) ;
         startActivity(intent);
-        //finish();
+        finish();
     }
 
     private void status(String status){

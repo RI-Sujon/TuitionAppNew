@@ -241,4 +241,9 @@ public class TutorSignUpActivityStep1 extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
 }

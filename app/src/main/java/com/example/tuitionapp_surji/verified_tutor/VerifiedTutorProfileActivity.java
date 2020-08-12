@@ -28,6 +28,7 @@ import com.example.tuitionapp_surji.guardian.ViewingSearchingTutorProfileActivit
 import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.message_box.MessageRequestActivity;
+import com.example.tuitionapp_surji.notification_pack.NotificationViewActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -52,8 +53,8 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     private ApproveAndBlockInfo approveAndBlockInfo ;
     private MessageBoxInfo messageBoxInfo;
 
-    private String user,userEmail ,groupID,tutorUid,contextType,tutorEmail;
-    private ArrayList<ReportInfo>reportInfoArrayList ;
+    private String user, userEmail, groupID, tutorUid, contextType, tutorEmail;
+    private ArrayList<ReportInfo> reportInfoArrayList ;
     private ArrayList<String> userInfo ;
 
     private EditText phoneNumber,email,gender,areaAddress,currentPosition,instituteName,subject ;
@@ -91,7 +92,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         user = intent.getStringExtra("user") ;
         tutorUid = intent.getStringExtra("tutorUid");
         contextType =  intent.getStringExtra("context");
-        tutorEmail =  intent.getStringExtra("userEmail");
+        tutorEmail =  intent.getStringExtra("tutorEmail");
 
         userProfilePicImageView = findViewById(R.id.profilePicImageView) ;
         idCardImageView = findViewById(R.id.idCardImageView) ;
@@ -186,6 +187,8 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         }
         else if(user.equals("guardian")){
             userEmail = intent.getStringExtra("userEmail") ;
+            System.out.println("=========????>>" + tutorUid);
+
             myRefCandidateTutorInfo = myRefCandidateTutorInfo.child(tutorUid) ;
             myRefVerifiedTutorInfo = myRefVerifiedTutorInfo.child(tutorUid) ;
             messageRequestButton = findViewById(R.id.messageRequestButton) ;
@@ -1214,21 +1217,26 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         else if(user.equals("guardian")){
             Intent intent;
 
-            if(contextType.equals("messenger")){
-                intent = new Intent(VerifiedTutorProfileActivity.this, MessageRequestActivity.class);
-                intent.putExtra("userId", tutorUid);
-                intent.putExtra("tutorEmail",tutorEmail);
-                intent.putExtra("user",user) ;
-                startActivity(intent) ;
-                finish() ;
-            }
-            else if(contextType.equals("homepage")){
-                finish();
+            if(contextType!=null){
+                if(contextType.equals("messenger")){
+                    intent = new Intent(VerifiedTutorProfileActivity.this, MessageRequestActivity.class);
+                    intent.putExtra("userId", tutorUid);
+                    intent.putExtra("tutorEmail",tutorEmail);
+                    intent.putExtra("user",user) ;
+                    startActivity(intent) ;
+                    finish() ;
+                }
+                else if(contextType.equals("homepage")){
+                    finish();
+                }
+                else {
+                    intent= new Intent(this, ViewingSearchingTutorProfileActivity.class);
+                    intent.putExtra("user",user) ;
+                    startActivity(intent) ;
+                    finish() ;
+                }
             }
             else {
-                intent= new Intent(this, ViewingSearchingTutorProfileActivity.class);
-                intent.putExtra("user",user) ;
-                startActivity(intent) ;
                 finish() ;
             }
         }
@@ -1261,7 +1269,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             finish() ;
         }
         else if(user.equals("referFriend")){
-            Intent intent = new Intent(this, VerifiedTutorNotificationActivity.class) ;
+            Intent intent = new Intent(this, NotificationViewActivity.class) ;
             intent.putStringArrayListExtra("userInfo", userInfo) ;
             startActivity(intent) ;
             finish() ;

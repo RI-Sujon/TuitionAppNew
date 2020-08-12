@@ -1,4 +1,4 @@
-package com.example.tuitionapp_surji.verified_tutor;
+package com.example.tuitionapp_surji.notification_pack;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,18 +21,19 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class VerifiedTutorNotificationActivity extends AppCompatActivity {
+public class NotificationViewActivity extends AppCompatActivity {
 
     private DatabaseReference myRefNotification ;
     private ArrayList<NotificationInfo>notificationInfoArrayList ;
     private ArrayList<String> notificationInfoUidList ;
     private ArrayList<NotificationInfo>notificationInfoArrayList2 ;
     private ArrayList<String> notificationInfoUidList2 ;
-    private FirebaseUser user ;
+    private FirebaseUser firebaseUser ;
 
     private ListView listView ;
 
     private ArrayList<String>userInfo ;
+    private String user ;
     private MaterialToolbar materialToolbar ;
 
     @Override
@@ -40,10 +42,17 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verified_tutor_notification);
 
         Intent intent = getIntent() ;
-        userInfo = intent.getStringArrayListExtra("userInfo") ;
+        user = intent.getStringExtra("user") ;
 
-        myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child(userInfo.get(3)) ;
-        user = FirebaseAuth.getInstance().getCurrentUser() ;
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        if(user.equals("tutor")) {
+            userInfo = intent.getStringArrayListExtra("userInfo") ;
+            myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Tutor").child(userInfo.get(3));
+        }
+        else{
+            myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Guardian").child(firebaseUser.getUid());
+        }
+
         listView = findViewById(R.id.listView) ;
 
         notificationInfoArrayList = new ArrayList<>() ;
@@ -80,7 +89,13 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String tutorUid = notificationInfoArrayList.get(position).getMessage3() ;
-                goToSelectedTutorProfile(tutorUid);
+                String tutorEmail = notificationInfoArrayList.get(position).getMessage2() ;
+                if(user.equals("guardian")){
+                    goToSelectedTutorProfile(tutorUid, tutorEmail);
+                }
+                else{
+                    goToSelectedTutorProfile(tutorUid, tutorEmail );
+                }
             }
         });
     }
@@ -100,23 +115,30 @@ public class VerifiedTutorNotificationActivity extends AppCompatActivity {
 
 
     public void addReferenceNotification(){
-        CustomAdapterForVerifiedTutorNotification adapter = new CustomAdapterForVerifiedTutorNotification(this, notificationInfoArrayList2, userInfo, notificationInfoUidList2);
+        CustomAdapterForNotificationView adapter = new CustomAdapterForNotificationView(this, notificationInfoArrayList2, userInfo, notificationInfoUidList2, user);
         listView.setAdapter(adapter);
     }
 
-    public void goToSelectedTutorProfile(String tutorUid){
+    public void goToSelectedTutorProfile(String tutorUid, String tutorEmail){
         Intent intent = new Intent(this, VerifiedTutorProfileActivity.class);
         intent.putExtra("tutorUid", tutorUid) ;
-        intent.putExtra("user", "referFriend") ;
+
+        if(user.equals("tutor")) {
+            intent.putExtra("user", "referFriend");
+        }
+        else {
+            intent.putExtra("user", user);
+            intent.putExtra("tutorEmail", tutorEmail);
+        }
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     public void backToHomePage(){
-        Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
-        intent.putStringArrayListExtra("userInfo", userInfo) ;
-        startActivity(intent);
+        //Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+        //intent.putStringArrayListExtra("userInfo", userInfo) ;
+        //startActivity(intent);
         finish();
     }
 

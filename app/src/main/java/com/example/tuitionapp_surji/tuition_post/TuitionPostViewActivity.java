@@ -33,7 +33,7 @@ import java.util.List;
 public class TuitionPostViewActivity extends AppCompatActivity {
 
     private FirebaseUser firebaseUser ;
-    private DatabaseReference myRefTuitionPost;
+    private DatabaseReference myRefTuitionPost, myRefResponsePost;
     private ArrayList<ArrayList<TuitionPostInfo>> filteredTuitionPost ;
     private CustomAdapterForTuitionPostView adapter ;
 
@@ -42,6 +42,8 @@ public class TuitionPostViewActivity extends AppCompatActivity {
     private String filterListString ;
 
     private ArrayList<String> tuitionPostUidList ;
+    private ArrayList<String> responseTuitionPostList ;
+    private int [] responsePostArray ;
 
     private PopupMenu popup ;
     private Menu menu ;
@@ -58,6 +60,7 @@ public class TuitionPostViewActivity extends AppCompatActivity {
     private List<String> areaList, classList, groupList ;
 
     private int areaFlag = 1, classFlag = 1, groupFlag = 1 ;
+    private String reverseGender = "" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class TuitionPostViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tuition_post_view);
 
         tuitionPostUidList = new ArrayList<>() ;
+        responseTuitionPostList = new ArrayList<>() ;
 
         listView = findViewById(R.id.tuitionPostList) ;
         filterByLayout = findViewById(R.id.filtered_option_layout) ;
@@ -79,6 +83,7 @@ public class TuitionPostViewActivity extends AppCompatActivity {
         user = intent.getStringExtra("user") ;
 
         myRefTuitionPost = FirebaseDatabase.getInstance().getReference("TuitionPost") ;
+        myRefResponsePost = FirebaseDatabase.getInstance().getReference("ResponsePost") ;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if(user.equals("tutor")){
@@ -88,7 +93,6 @@ public class TuitionPostViewActivity extends AppCompatActivity {
             userInfo = intent.getStringArrayListExtra("userInfo") ;
             tutorEmail = userInfo.get(2) ;
             tutorUid = userInfo.get(3) ;
-            String reverseGender = "" ;
 
             if(userInfo.get(4).equals("MALE")){
                 reverseGender = "Only Female" ;
@@ -99,7 +103,26 @@ public class TuitionPostViewActivity extends AppCompatActivity {
             filterListString = "GENDER: " + userInfo.get(4) ;
             filterList.setText(filterListString);
 
-            filterByGender(reverseGender);
+            myRefResponsePost = myRefResponsePost.child(userInfo.get(3)) ;
+
+            myRefResponsePost.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot dS1 : dataSnapshot.getChildren()){
+                        ResponsePost responsePost = dS1.getValue(ResponsePost.class) ;
+                        responseTuitionPostList.add(responsePost.getPostUid()) ;
+                    }
+
+                    myRefResponsePost.removeEventListener(this);
+                    filterByGender(reverseGender);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            }) ;
+
             //filterByArea(userInfo.get((5)));
             //filterByGroup(userInfo.get((6)));
         }
@@ -121,7 +144,26 @@ public class TuitionPostViewActivity extends AppCompatActivity {
     }
 
     public void viewTuitionPost(){
-        adapter  = new CustomAdapterForTuitionPostView(this,filteredTuitionPost.get(0), userInfo, tuitionPostUidList, user) ;
+        responsePostArray = new int[tuitionPostUidList.size()] ;
+
+        for (int i=0 ; i<responsePostArray.length ; i++){
+            responsePostArray[i] = 0 ;
+        }
+
+        for(int i=0 ; i<tuitionPostUidList.size() ; i++){
+            for(int j=0 ; j<responseTuitionPostList.size() ; j++){
+                if(tuitionPostUidList.get(i).equals(responseTuitionPostList.get(j))){
+                    responsePostArray[i] = 1 ;
+                    break ;
+                }
+            }
+        }
+
+        for (int i=0 ; i<responsePostArray.length ; i++){
+            System.out.println(i + "))============#######" +responsePostArray[i]);
+        }
+
+        adapter  = new CustomAdapterForTuitionPostView(this,filteredTuitionPost.get(0), userInfo, tuitionPostUidList, user, responsePostArray) ;
         listView.setAdapter(adapter);
     }
 
@@ -261,6 +303,7 @@ public class TuitionPostViewActivity extends AppCompatActivity {
 
     public void filterByGender(final String gender){
         final ArrayList<TuitionPostInfo> helpArrayList = new ArrayList<>() ;
+        final ArrayList<String> helpArrayList2 = new ArrayList<>() ;
 
         myRefTuitionPost.addValueEventListener(new ValueEventListener() {
             @Override
@@ -269,11 +312,13 @@ public class TuitionPostViewActivity extends AppCompatActivity {
                     TuitionPostInfo tuitionPostInfo = dS1.getValue(TuitionPostInfo.class) ;
                     if(!tuitionPostInfo.getTutorGenderPreference().equals(gender)){
                         helpArrayList.add(tuitionPostInfo);
+                        helpArrayList2.add(dS1.getKey()) ;
                     }
                 }
 
                 for(int i=helpArrayList.size()-1 ; i>=0 ; i--){
                     filteredTuitionPost.get(0).add(helpArrayList.get(i)) ;
+                    tuitionPostUidList.add(helpArrayList2.get(i));
                 }
                 helpArrayList.clear();
                 viewTuitionPost();

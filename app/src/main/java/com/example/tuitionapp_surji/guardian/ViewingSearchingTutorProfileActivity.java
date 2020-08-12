@@ -80,8 +80,8 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String tutorUid = tutorUidInfoArrayList.get(position) ;
-                String userEmail = candidateTutorInfoArrayList.get(position).getEmailPK() ;
-                goToSelectedVerifiedTutorProfile(userEmail,tutorUid) ;
+                String tutorEmail = candidateTutorInfoArrayList.get(position).getEmailPK() ;
+                goToSelectedVerifiedTutorProfile(tutorEmail,tutorUid) ;
             }
         });
 
@@ -89,7 +89,7 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String groupID = groupIDList.get(position) ;
-               // String userEmail = emailList.get(position) ;
+               // String tutorEmail = emailList.get(position) ;
 
                 String adminEmail = groupAdminEmailList.get(position) ;
                 String groupAdminUid = groupInfoList.get(position).getGroupAdminUid();
@@ -235,21 +235,21 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
         backToHomePage(null);
     }
 
-    public void goToSelectedVerifiedTutorProfile(String userEmail,String tutorUid){
+    public void goToSelectedVerifiedTutorProfile(String tutorEmail,String tutorUid){
         Intent intent = new Intent(this, VerifiedTutorProfileActivity.class);
         intent.putExtra("user", user) ;
         intent.putExtra("tutorUid",tutorUid);
-        intent.putExtra("userEmail", userEmail) ;
+        intent.putExtra("tutorEmail", tutorEmail) ;
         intent.putExtra("context", "guardian_view") ;
         startActivity(intent);
         finish();
     }
 
-    public void goToSelectedGroup(String groupID, String tutorUid, String userEmail){
+    public void goToSelectedGroup(String groupID, String tutorUid, String tutorEmail){
         Intent intent = new Intent(this, GroupHomePageActivity.class);
         intent.putExtra("user", user) ;
         intent.putExtra("tutorUid", tutorUid) ;
-        intent.putExtra("userEmail", userEmail) ;
+        intent.putExtra("tutorEmail", tutorEmail) ;
         intent.putExtra("groupID", groupID) ;
         startActivity(intent);
         finish();

@@ -1,6 +1,5 @@
 package com.example.tuitionapp_surji.tuition_post;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,13 +11,12 @@ import android.widget.TextView;
 
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
+import com.example.tuitionapp_surji.notification_pack.SendNotification;
+import com.example.tuitionapp_surji.notification_pack.NotificationInfo;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -26,6 +24,7 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
 
     private TextView postTitleTV, genderPreferableTV, genderPreferableNoticeTV, mediumTV, class_nameTV, groupTV, subjectTV, studentInstituteNameTV, addressTV, contactNoTV, daysPerWeekTV, salaryTV, extraInfoTV, postTimeTV ;
     private String postTitle, genderPreferable, medium, class_name, group, subject, studentInstituteName, address, contactNo, daysPerWeek, salary, extraInfo, date, time ;
+    private String response,tuitionPostUid ;
 
     private ArrayList<String> tutorInfo ;
     private String guardianUid, user ;
@@ -34,7 +33,7 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
 
     private ImageView postImage ;
 
-    private DatabaseReference myRefMessageBox ;
+    private DatabaseReference myRefMessageBox, myRefResponsePost, myRefNotification ;
     private MessageBoxInfo messageBoxInfo ;
 
     private MaterialToolbar materialToolbar ;
@@ -69,6 +68,14 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
         if(user.equals("tutor")){
             tutorInfo = intent.getStringArrayListExtra("tutorInfo") ;
             guardianUid = intent.getStringExtra("guardianUid") ;
+            tuitionPostUid = intent.getStringExtra("tuitionPostUid") ;
+            response = intent.getStringExtra("response") ;
+            if(response.equals("1")){
+                responseButton.setBackgroundColor(Color.GRAY);
+                responseButton.setText("ALREADY Response");
+                responseButton.setEnabled(false);
+                responseButton.setFocusable(false);
+            }
         }
         else {
             responseButton.setVisibility(View.GONE);
@@ -141,6 +148,8 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
         materialToolbar = findViewById(R.id.topAppBar) ;
 
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
+        myRefResponsePost = FirebaseDatabase.getInstance().getReference("ResponsePost").child(tutorInfo.get(3)) ;
+        myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Guardian") ;
 
         materialToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +161,15 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
         responseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                myRefNotification = myRefNotification.child(guardianUid) ;
+                NotificationInfo notificationInfo = new NotificationInfo("response" , tutorInfo.get(0), tutorInfo.get(2), tutorInfo.get(3), tuitionPostUid) ;
+                myRefNotification.push().setValue(notificationInfo) ;
+
+                ResponsePost responsePost = new ResponsePost(tuitionPostUid) ;
+                myRefResponsePost.push().setValue(responsePost) ;
+
+                /*
                 messageBoxInfo = new MessageBoxInfo(contactNo,
                         guardianUid, tutorInfo.get(2), tutorInfo.get(3), false, true);
 
@@ -161,25 +179,36 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
                         int flag = 0;
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
-                            if (messageBoxInfo1.getGuardianUid().equals(guardianUid)
-                                    && messageBoxInfo1.getTutorUid().equals(tutorInfo.get(3))) {
-                                flag = 1;
+
+                            if(messageBoxInfo1.getTutorUid()!=null){
+                                if (messageBoxInfo1.getGuardianUid().equals(guardianUid)
+                                        && messageBoxInfo1.getTutorUid().equals(tutorInfo.get(3))) {
+                                    flag = 1;
+                                }
                             }
                         }
                         if (flag == 0)
                             myRefMessageBox.push().setValue(messageBoxInfo);
+
+                        ResponsePost responsePost = new ResponsePost(tuitionPostUid) ;
+                        myRefResponsePost.push().setValue(responsePost) ;
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
-                });
+                });*/
 
-                responseButton.setBackgroundColor(Color.GRAY) ;
+                responseButton.setBackgroundColor(Color.DKGRAY) ;
+
+                SendNotification sendNotification = new SendNotification(guardianUid, "Response Post", "A tutor response to your post") ;
+                sendNotification.sendNotificationOperation();
             }
         });
     }
+
+
 
     public void goToBackPage(){
         finish();

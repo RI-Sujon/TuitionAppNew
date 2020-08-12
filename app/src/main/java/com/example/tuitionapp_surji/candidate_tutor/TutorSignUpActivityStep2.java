@@ -17,13 +17,8 @@ import android.widget.Toast;
 
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.admin.ApproveAndBlockInfo;
-import com.example.tuitionapp_surji.notification_pack.APIService;
-import com.example.tuitionapp_surji.notification_pack.Client;
-import com.example.tuitionapp_surji.notification_pack.Data;
-import com.example.tuitionapp_surji.notification_pack.MyResponse;
-import com.example.tuitionapp_surji.notification_pack.NotificationSender;
-import com.example.tuitionapp_surji.notification_pack.TokenInfo;
-import com.example.tuitionapp_surji.verified_tutor.NotificationInfo;
+import com.example.tuitionapp_surji.notification_pack.SendNotification;
+import com.example.tuitionapp_surji.notification_pack.NotificationInfo;
 import com.example.tuitionapp_surji.verified_tutor.TutorSignUpActivityStep3;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorInfo;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,7 +30,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -44,10 +38,6 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class TutorSignUpActivityStep2 extends AppCompatActivity {
 
@@ -60,7 +50,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private FirebaseUser firebaseUser ;
-    private DatabaseReference myRefCandidateTutor, myRefRefer, myRefVerifiedTutor, myRefApprove, myRefNotification, myRefNotification2, myRefNotificationToken ;
+    private DatabaseReference myRefCandidateTutor, myRefRefer, myRefVerifiedTutor, myRefApprove, myRefNotification, myRefNotification2 ;
 
     private String emailPrimaryKey ;
     private String imageUriString ;
@@ -75,8 +65,6 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     private CandidateTutorInfo candidateTutorInfo ;
 
     private Bitmap bitmapImage ;
-
-    private APIService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +84,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
         myRefVerifiedTutor = FirebaseDatabase.getInstance().getReference("VerifiedTutor") ;
         myRefRefer = FirebaseDatabase.getInstance().getReference("Refer").child(firebaseUser.getUid()) ;
         myRefApprove = FirebaseDatabase.getInstance().getReference("ApproveAndBlock").child(firebaseUser.getUid()) ;
-        myRefNotification = FirebaseDatabase.getInstance().getReference("Notification") ;
+        myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Tutor") ;
 
         emailPrimaryKey = firebaseUser.getEmail() ;
 
@@ -127,15 +115,6 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                 // Failed to read value
             }
         });
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
-
-        myRefNotificationToken = FirebaseDatabase.getInstance().getReference("Tokens") ;
 
     }
 
@@ -211,7 +190,8 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                     NotificationInfo notificationInfo = new NotificationInfo("refer",candidateTutorInfo.getUserName(),candidateTutorInfo.getEmailPK(),firebaseUser.getUid()) ;
                     myRefNotification2.push().setValue(notificationInfo) ;
 
-                    sendNotificationOperation(reference1Uid);
+                    SendNotification sendNotification = new SendNotification(reference1Uid, "New Friend", "A friend wants to join TutorApp.Do You know him?") ;
+                    sendNotification.sendNotificationOperation();
                 }
                 if (flag2 == 1) {
                     ReferInfo referInfo2 = new ReferInfo(reference2str);
@@ -221,7 +201,8 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                     NotificationInfo notificationInfo = new NotificationInfo("refer",candidateTutorInfo.getUserName(),candidateTutorInfo.getEmailPK(),firebaseUser.getUid()) ;
                     myRefNotification2.push().setValue(notificationInfo) ;
 
-                    sendNotificationOperation(reference2Uid);
+                    SendNotification sendNotification = new SendNotification(reference2Uid, "New Friend", "A friend wants to join TutorApp.Do You know him?") ;
+                    sendNotification.sendNotificationOperation();
                 }
 
                 uploadFinish();
@@ -293,51 +274,14 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
         goToTutorSignUpActivityStep3();
     }
 
-    public void sendNotificationOperation(String receiverUid){
-        myRefNotificationToken.child(receiverUid).child("token").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String userToken = dataSnapshot.getValue(String.class);
-                sendNotifications(userToken);
-                System.out.println("\nuserToken: " + userToken);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        }) ;
-        updateToken();
-    }
-
-    public void sendNotifications(String userToken){
-        Data data = new Data("New Friend","A friend wants to join TutorApp.Do You know him?");
-        NotificationSender sender = new NotificationSender(data, userToken) ;
-        apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
-            @Override
-            public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                if (response.code() == 200) {
-                    if (response.body().success != 1) {
-                        Toast.makeText(TutorSignUpActivityStep2.this, "Failed to Send Notification", Toast.LENGTH_LONG);
-                    }
-                }else {
-                    Toast.makeText(TutorSignUpActivityStep2.this, "Hello22222222 to Send Notification", Toast.LENGTH_LONG);
-                }
-            }
-            @Override
-            public void onFailure(Call<MyResponse> call, Throwable t) {
-            }
-        });
-    }
-
-    public void updateToken(){
-        String refreshToken = FirebaseInstanceId.getInstance().getToken() ;
-        TokenInfo token = new TokenInfo(refreshToken) ;
-        myRefNotificationToken.child(firebaseUser.getUid()).setValue(token) ;
-    }
-
     public void goToTutorSignUpActivityStep3 () {
         Intent intent = new Intent(TutorSignUpActivityStep2.this, TutorSignUpActivityStep3.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

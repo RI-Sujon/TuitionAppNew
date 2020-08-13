@@ -21,6 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.guardian.GuardianInfo;
+import com.example.tuitionapp_surji.notification_pack.NotificationInfo;
+import com.example.tuitionapp_surji.notification_pack.NotificationSender;
+import com.example.tuitionapp_surji.notification_pack.SendNotification;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -315,6 +318,9 @@ public class MessageActivity extends AppCompatActivity
         hashMap.put("messageDate",messageDate);
 
         reference.child("Chats").push().setValue(hashMap);
+
+        SendNotification sendNotification = new SendNotification(receiver,"Message","You have a new message");
+        sendNotification.sendNotificationOperation();
     }
 
 

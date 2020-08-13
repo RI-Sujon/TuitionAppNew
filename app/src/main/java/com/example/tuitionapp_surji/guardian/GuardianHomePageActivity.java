@@ -21,6 +21,7 @@ import com.example.tuitionapp_surji.admin.ApproveAndBlockInfo;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.group.GroupInfo;
 import com.example.tuitionapp_surji.message_box.MainMessageActivity;
+import com.example.tuitionapp_surji.notification_pack.TokenInfo;
 import com.example.tuitionapp_surji.starting.HomePageActivity;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostViewActivity;
 import com.example.tuitionapp_surji.notification_pack.NotificationViewActivity;
@@ -32,6 +33,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -68,6 +70,11 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guardian_home_page);
+
+        String refreshToken = FirebaseInstanceId.getInstance().getToken() ;
+        TokenInfo token = new TokenInfo(refreshToken) ;
+        FirebaseDatabase.getInstance().getReference("Notification").child("Tokens").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(token);
+
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser().getUid();

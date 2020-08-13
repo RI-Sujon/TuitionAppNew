@@ -85,7 +85,7 @@ public class MyService extends FirebaseMessagingService {
 
     private void scheduleJob(String title, String body) {
         Intent intent = new Intent(MyService.this, MainActivity.class) ;
-        PendingIntent pi = PendingIntent.getActivity(MyService.this, 1, intent, Intent.FLAG_ACTIVITY_NEW_TASK) ;
+        //PendingIntent pi = PendingIntent.getActivity(MyService.this, 1, intent, Intent.FLAG_ACTIVITY_NEW_TASK) ;
 
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "example.myapplication.service.test";
@@ -113,8 +113,9 @@ public class MyService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(body)
                 .setContentInfo("Info")
-                .setContentIntent(pi)
                 .setPriority(Notification.PRIORITY_HIGH);
+
+        //.setContentIntent(pi)
 
         if (Build.VERSION.SDK_INT >= 21) notificationBuilder.setVibrate(new long[0]);
 

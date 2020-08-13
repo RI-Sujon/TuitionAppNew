@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,6 +20,8 @@ import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.group.GroupHomePageActivity;
 import com.example.tuitionapp_surji.group.GroupInfo;
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.starting.HomePageActivity;
+import com.example.tuitionapp_surji.tuition_post.TuitionPostViewSinglePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -133,7 +136,6 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
         groupInfoList = new ArrayList<>() ;
         groupNameList = new ArrayList<>() ;
         groupIDList = new ArrayList<>() ;
-
 
         myRefApproveAndBlock.addValueEventListener(new ValueEventListener() {
             @Override
@@ -254,5 +256,39 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    double x1, x2, y1, y2 ;
+
+    public boolean onTouchEvent(MotionEvent touchEvent){
+        switch(touchEvent.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                x1 = touchEvent.getX();
+                y1 = touchEvent.getY();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = touchEvent.getX();
+                y2 = touchEvent.getY();
+
+                if( x1<x2 || x1>x2 ){
+                    if(viewFlipper.getDisplayedChild()==1){
+                        viewFlipper.setDisplayedChild(0);
+                        tutorListViewButton.setVisibility(View.GONE);
+                        tutorListViewButton2.setVisibility(View.VISIBLE);
+                        groupListViewButton.setVisibility(View.VISIBLE);
+                        groupListViewButton2.setVisibility(View.GONE);
+                    }
+                    else if(viewFlipper.getDisplayedChild()==0){
+                        viewFlipper.setDisplayedChild(1);
+                        tutorListViewButton.setVisibility(View.VISIBLE);
+                        tutorListViewButton2.setVisibility(View.GONE);
+                        groupListViewButton.setVisibility(View.GONE);
+                        groupListViewButton2.setVisibility(View.VISIBLE);
+                    }
+                }
+                break;
+        }
+        return false;
+    }
+
 }
 

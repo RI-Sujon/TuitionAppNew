@@ -168,7 +168,6 @@ public class MainMessageActivity extends AppCompatActivity {
                         if(user.getTutorUid().equals(firebaseUser.getUid())){
                             messageBoxUser = user;
                         }
-
                     }
 
                   //  final String tutorEmail = messageBoxUser.getTutorEmail();

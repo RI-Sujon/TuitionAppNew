@@ -159,10 +159,6 @@ public class TuitionPostViewActivity extends AppCompatActivity {
             }
         }
 
-        for (int i=0 ; i<responsePostArray.length ; i++){
-            System.out.println(i + "))============#######" +responsePostArray[i]);
-        }
-
         adapter  = new CustomAdapterForTuitionPostView(this,filteredTuitionPost.get(0), userInfo, tuitionPostUidList, user, responsePostArray) ;
         listView.setAdapter(adapter);
     }

@@ -28,6 +28,7 @@ import com.example.tuitionapp_surji.note.Note_Home;
 import com.example.tuitionapp_surji.notification_pack.TokenInfo;
 import com.example.tuitionapp_surji.notification_pack.NotificationViewActivity;
 import com.example.tuitionapp_surji.starting.HomePageActivity;
+import com.example.tuitionapp_surji.tuition_post.ResponsePost;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostInfo;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostViewActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -54,7 +55,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
 
     private FirebaseAuth mAuth ;
     private GoogleSignInClient mGoogleSignInClient ;
-    private DatabaseReference myRefTuitionPost, myRefVerifiedTutor, myRefGroup ;
+    private DatabaseReference myRefTuitionPost, myRefVerifiedTutor, myRefGroup, myRefResponsePost ;
     private FirebaseUser user ;
 
     private VerifiedTutorInfo verifiedTutorInfo ;
@@ -62,6 +63,8 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
     private ArrayList<String> userInfo ;
     private ArrayList<TuitionPostInfo> tuitionPostInfoArrayList1 ;
     private ArrayList<TuitionPostInfo> tuitionPostInfoArrayList2 ;
+    private ArrayList<String> tuitionPostUidList1, tuitionPostUidList2, responseTuitionPostArrayList ;
+    private int [] responseTuitionPostArray1, responseTuitionPostArray2 ;
     private int count1 = 0, count2 = 0 ;
 
     private DrawerLayout drawerLayout ;
@@ -118,6 +121,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         myRefTuitionPost = FirebaseDatabase.getInstance().getReference("TuitionPost");
         myRefVerifiedTutor = FirebaseDatabase.getInstance().getReference("VerifiedTutor").child(user.getUid());
         myRefGroup = FirebaseDatabase.getInstance().getReference("Group");
+        myRefResponsePost = FirebaseDatabase.getInstance().getReference("ResponsePost");
 
         String gender = userInfo.get(4) ;
 
@@ -152,22 +156,47 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         final String group = verifiedTutorInfo.getPreferredGroup() ;
         final String className = verifiedTutorInfo.getPreferredClasses() ;
 
+        tuitionPostUidList1 = new ArrayList<>() ;
+        tuitionPostUidList2 = new ArrayList<>() ;
+        responseTuitionPostArrayList = new ArrayList<>() ;
+
         myRefTuitionPost.orderByChild("tutorGenderPreference").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 TuitionPostInfo tuitionPostInfo = dataSnapshot.getValue(TuitionPostInfo.class) ;
                 if((tuitionPostInfo.getStudentGroup().equals(group)||tuitionPostInfo.getStudentGroup().equals(""))){
                     tuitionPostInfoArrayList1.add(tuitionPostInfo) ;
+                    tuitionPostUidList1.add(dataSnapshot.getKey()) ;
                     count1++ ;
                 }
 
                 if(tuitionPostInfo.getStudentAreaAddress().equals(address) && (tuitionPostInfo.getStudentGroup().equals(group)||tuitionPostInfo.getStudentGroup().equals(""))){
                     tuitionPostInfoArrayList2.add(tuitionPostInfo) ;
+                    tuitionPostUidList2.add(dataSnapshot.getKey()) ;
                     count2++ ;
                 }
 
                 if(count2>=3){
-                    recyclerViewOperation() ;
+                    myRefResponsePost = myRefResponsePost.child(user.getUid()) ;
+
+                    myRefResponsePost.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(DataSnapshot dS1 : dataSnapshot.getChildren()){
+                                ResponsePost responsePost = dS1.getValue(ResponsePost.class) ;
+                                responseTuitionPostArrayList.add(responsePost.getPostUid()) ;
+                            }
+
+                            myRefResponsePost.removeEventListener(this);
+                            recyclerViewOperation() ;
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    }) ;
+
                     myRefTuitionPost.removeEventListener(this);
                 }
             }
@@ -194,8 +223,40 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         recyclerView2.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
 
-        RecyclerAdapterForTutorHomePage adapter = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList1, userInfo,1) ;
-        RecyclerAdapterForTutorHomePage adapter2 = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList2, userInfo,2) ;
+        responseTuitionPostArray1 = new int[tuitionPostInfoArrayList1.size()] ;
+        responseTuitionPostArray2 = new int[tuitionPostInfoArrayList2.size()] ;
+
+
+        for (int i=0; i<responseTuitionPostArray1.length ; i++){
+            responseTuitionPostArray1[i] = 0 ;
+        }
+
+        for (int i=0; i<responseTuitionPostArray2.length ; i++){
+            responseTuitionPostArray2[i] = 0 ;
+        }
+
+        System.out.println(responseTuitionPostArrayList.size() + "+++++Sujon_++++++++:" + tuitionPostInfoArrayList1.size() );
+        for(int i=0 ; i<tuitionPostUidList1.size() ; i++){
+            for(int j=0 ; j<responseTuitionPostArrayList.size() ; j++){
+                System.out.println(responseTuitionPostArrayList.get(j) + ":+++++Sujon222222_++++++++:" + tuitionPostInfoArrayList1.get(i) );
+                if(tuitionPostUidList1.get(i).equals(responseTuitionPostArrayList.get(j))){
+                    responseTuitionPostArray1[i] = 1 ;
+                    System.out.println(i + "============>>>" +  tuitionPostInfoArrayList1.get(i));
+                    //break ;
+                }
+
+                if(i<tuitionPostUidList2.size()){
+                    if(tuitionPostUidList2.get(i).equals(responseTuitionPostArrayList.get(j))){
+                        responseTuitionPostArray2[i] = 1 ;
+                        //break ;
+                    }
+                }
+            }
+        }
+
+
+        RecyclerAdapterForTutorHomePage adapter = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList1, userInfo, tuitionPostUidList1, responseTuitionPostArray1,1) ;
+        RecyclerAdapterForTutorHomePage adapter2 = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList2, userInfo, tuitionPostUidList2, responseTuitionPostArray2,2) ;
         recyclerView.setAdapter(adapter2);
         recyclerView2.setAdapter(adapter);
     }

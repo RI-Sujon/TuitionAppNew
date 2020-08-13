@@ -70,9 +70,12 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
             guardianUid = intent.getStringExtra("guardianUid") ;
             tuitionPostUid = intent.getStringExtra("tuitionPostUid") ;
             response = intent.getStringExtra("response") ;
-            if(response.equals("1")){
+            if(response==null){
+
+            }
+            else if(response.equals("1")){
                 responseButton.setBackgroundColor(Color.GRAY);
-                responseButton.setText("ALREADY Response");
+                responseButton.setText("ALREADY RESPONSE");
                 responseButton.setEnabled(false);
                 responseButton.setFocusable(false);
             }
@@ -148,8 +151,10 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
         materialToolbar = findViewById(R.id.topAppBar) ;
 
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
-        myRefResponsePost = FirebaseDatabase.getInstance().getReference("ResponsePost").child(tutorInfo.get(3)) ;
-        myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Guardian") ;
+        if(user.equals("tutor")) {
+            myRefResponsePost = FirebaseDatabase.getInstance().getReference("ResponsePost").child(tutorInfo.get(3));
+            myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Guardian");
+        }
 
         materialToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

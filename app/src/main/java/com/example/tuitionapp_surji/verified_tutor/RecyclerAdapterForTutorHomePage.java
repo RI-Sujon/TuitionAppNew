@@ -21,13 +21,18 @@ public class RecyclerAdapterForTutorHomePage extends RecyclerView.Adapter<Recycl
 
     private ArrayList<TuitionPostInfo> tuitionPostInfoArrayList ;
     private ArrayList<String> tutorInfo ;
+    private ArrayList<String> tuitionPostInfoUid ;
+    private int [] responsePostArray ;
     private int flag ;
     private ViewGroup parent ;
 
-    public RecyclerAdapterForTutorHomePage(ArrayList<TuitionPostInfo> tuitionPostInfoArrayList, ArrayList<String> tutorInfo, int flag) {
-        this.tuitionPostInfoArrayList = tuitionPostInfoArrayList ;
-        this.tutorInfo = tutorInfo ;
-        this.flag = flag ;
+
+    public RecyclerAdapterForTutorHomePage(ArrayList<TuitionPostInfo> tuitionPostInfoArrayList, ArrayList<String> tutorInfo, ArrayList<String> tuitionPostInfoUid, int[] responsePostArray, int flag) {
+        this.tuitionPostInfoArrayList = tuitionPostInfoArrayList;
+        this.tutorInfo = tutorInfo;
+        this.tuitionPostInfoUid = tuitionPostInfoUid;
+        this.responsePostArray = responsePostArray;
+        this.flag = flag;
     }
 
     @NonNull
@@ -98,6 +103,8 @@ public class RecyclerAdapterForTutorHomePage extends RecyclerView.Adapter<Recycl
                 intent.putStringArrayListExtra("tutorInfo", tutorInfo) ;
                 intent.putExtra("guardianUid", tuitionPostInfoArrayList.get(position).getGuardianUidFK()) ;
                 intent.putExtra("user", "tutor") ;
+                intent.putExtra("response", String.valueOf(responsePostArray[position])) ;
+                intent.putExtra("tuitionPostUid", tuitionPostInfoUid.get(position)) ;
 
                 intent.putExtra("postTitle", tuitionPostInfoArrayList.get(position).getPostTitle()) ;
                 intent.putExtra("medium", tuitionPostInfoArrayList.get(position).getStudentMedium()) ;

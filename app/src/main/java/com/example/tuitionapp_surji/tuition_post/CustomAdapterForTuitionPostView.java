@@ -107,10 +107,11 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
             holder.location = convertView.findViewById(R.id.location) ;
             holder.days = convertView.findViewById(R.id.days) ;
             holder.salary = convertView.findViewById(R.id.salary) ;
-            holder.schoolName = convertView.findViewById(R.id.institute_name) ;
-            holder.contactNo = convertView.findViewById(R.id.contactNo) ;
+            holder.genderPreferable = convertView.findViewById(R.id.genderPreferable) ;
             holder.extra = convertView.findViewById(R.id.extraNotes) ;
             holder.availability = convertView.findViewById(R.id.availability) ;
+
+            holder.mediumLayout = convertView.findViewById(R.id.mediumLayout) ;
 
             holder.setAvailabilityButton = convertView.findViewById(R.id.set_availability_button) ;
             holder.editPostButton = convertView.findViewById(R.id.edit_post_button) ;
@@ -173,13 +174,8 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
                 }
             }
 
-            String genderString = tuitionPostInfo.get(position).getTutorGenderPreference();
+            holder.postTitle.setText(tuitionPostInfo.get(position).getPostTitle());
 
-            if (genderString.equals("Male Tutor Preferable") || genderString.equals("Female Tutor Preferable")) {
-                holder.postTitle.setText(tuitionPostInfo.get(position).getPostTitle() + "(" + genderString + ")");
-            } else {
-                holder.postTitle.setText(tuitionPostInfo.get(position).getPostTitle());
-            }
 
             String time = tuitionPostInfo.get(position).getPostTime();
             String day = tuitionPostInfo.get(position).getPostDate();
@@ -195,8 +191,9 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
 
             String mediumString = tuitionPostInfo.get(position).getStudentMedium();
             if (!mediumString.equals("Bangla Medium")) {
-                holder.medium.setText("(" + mediumString + ")");
+                holder.medium.setText(mediumString);
             }
+            else holder.mediumLayout.setVisibility(View.GONE);
 
             holder.subject.setText(tuitionPostInfo.get(position).getStudentSubjectList());
 
@@ -206,19 +203,14 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
             holder.days.setText(tuitionPostInfo.get(position).getDaysPerWeekOrMonth());
             holder.salary.setText(tuitionPostInfo.get(position).getSalary());
 
-            holder.schoolName.setVisibility(View.VISIBLE);
-            holder.contactNo.setVisibility(View.VISIBLE);
+            holder.genderPreferable.setVisibility(View.VISIBLE);
             holder.extra.setVisibility(View.VISIBLE);
 
-            if (!tuitionPostInfo.get(position).getStudentInstitute().equals("")) {
-                holder.schoolName.setText("*Student From " + tuitionPostInfo.get(position).getStudentInstitute());
-            } else if (tuitionPostInfo.get(position).getStudentInstitute().equals(""))
-                holder.schoolName.setVisibility(View.GONE);
 
-            if (!tuitionPostInfo.get(position).getStudentContactNo().equals("")) {
-                holder.contactNo.setText("**Contact No: " + tuitionPostInfo.get(position).getStudentContactNo());
+            if (!tuitionPostInfo.get(position).getTutorGenderPreference().equals("Both Male And Female")) {
+                holder.genderPreferable.setText("*Tutor Preferable: " + tuitionPostInfo.get(position).getTutorGenderPreference());
             } else if (tuitionPostInfo.get(position).getStudentContactNo().equals("")) {
-                holder.contactNo.setVisibility(View.GONE);
+                holder.genderPreferable.setVisibility(View.GONE);
             }
 
             if (!tuitionPostInfo.get(position).getExtra().equals("")) {
@@ -258,7 +250,6 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
             else {
                 holder.postImage.setImageResource(R.drawable.logo_else_class);
             }
-
 
 
             holder.responseButton.setOnClickListener(new View.OnClickListener() {
@@ -348,8 +339,12 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
                 intent.putExtra("group", tuitionPostInfo.get(position).getStudentGroup()) ;
                 intent.putExtra("subject", tuitionPostInfo.get(position).getStudentSubjectList()) ;
                 intent.putExtra("studentInstituteName", tuitionPostInfo.get(position).getStudentInstitute()) ;
-                intent.putExtra("address", tuitionPostInfo.get(position).getStudentFullAddress() +", " + tuitionPostInfo.get(position).getStudentAreaAddress()) ;
-                intent.putExtra("contactNo", tuitionPostInfo.get(position).getStudentContactNo()) ;
+                if(!tuitionPostInfo.get(position).getStudentFullAddress().equals("")){
+                    intent.putExtra("address", tuitionPostInfo.get(position).getStudentFullAddress() +", " + tuitionPostInfo.get(position).getStudentAreaAddress()) ;
+                }else{
+                    intent.putExtra("address",  tuitionPostInfo.get(position).getStudentAreaAddress()) ;
+                }
+                intent.putExtra("genderPreferable", tuitionPostInfo.get(position).getStudentContactNo()) ;
                 intent.putExtra("daysPerWeek", tuitionPostInfo.get(position).getDaysPerWeekOrMonth()) ;
                 intent.putExtra("salary", tuitionPostInfo.get(position).getSalary()) ;
                 intent.putExtra("extraInfo", tuitionPostInfo.get(position).getExtra()) ;
@@ -367,7 +362,8 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
         ImageView postImage ;
         LinearLayout layout ;
         TextView postTime ;
-        TextView postTitle, class_name, medium, subject, location, days, salary, schoolName, contactNo, extra, availability ;
+        TextView postTitle, class_name, medium, subject, location, days, salary, genderPreferable, extra, availability ;
+        LinearLayout mediumLayout ;
         ImageButton responseButton ;
         RelativeLayout responseButtonLayout ;
         RelativeLayout responseButtonPressedLayout ;

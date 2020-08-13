@@ -148,7 +148,7 @@
                     android:id="@+id/verifiedTutorList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:dividerHeight="15dp"
+                    android:dividerHeight="5dp"
                     android:divider="#00000000"
                     android:padding="20dp" />
             </LinearLayout>
@@ -157,7 +157,7 @@
                 android:id="@+id/groupListLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-20dp"
+                android:layout_marginTop="0dp"
                 android:orientation="vertical">
 
                 <ListView

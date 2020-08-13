@@ -88,14 +88,28 @@
                             android:textSize="11dp"
                             android:textStyle="bold" />
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/mediumLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="1dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="MEDIUM :  "
+                            android:textSize="11dp"
+                            android:textColor="@color/Black"/>
+
                         <TextView
                             android:id="@+id/medium"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-condensed"
                             android:textColor="@color/Black"
-                            android:textSize="11dp"
-                            android:textStyle="bold" />
+                            android:textSize="11dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -187,14 +201,7 @@
                         android:paddingTop="5dp">
 
                         <TextView
-                            android:id="@+id/institute_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-condensed"
-                            android:textColor="@color/Black"
-                            android:textSize="11dp" />
-                        <TextView
-                            android:id="@+id/contactNo"
+                            android:id="@+id/genderPreferable"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-condensed"

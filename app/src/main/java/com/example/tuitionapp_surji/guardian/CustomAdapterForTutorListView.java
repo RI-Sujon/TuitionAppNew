@@ -50,6 +50,7 @@ public class CustomAdapterForTutorListView extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.custom_adapter_tutor_list_view, null);
             holder.layout = convertView.findViewById(R.id.tutor_searching_result);
             holder.imageView = convertView.findViewById(R.id.profile_pic);
+            holder.imageView2 = convertView.findViewById(R.id.profile_pic2);
             holder.name = convertView.findViewById(R.id.name);
             holder.institute = convertView.findViewById(R.id.institute);
             holder.department = convertView.findViewById(R.id.subject);
@@ -61,15 +62,30 @@ public class CustomAdapterForTutorListView extends BaseAdapter {
 
         if(candidateTutorInfoArrayList.get(position).getProfilePictureUri()!=null){
             if(!candidateTutorInfoArrayList.get(position).getProfilePictureUri().equals("")){
+                holder.imageView.setVisibility(View.VISIBLE);
+                holder.imageView2.setVisibility(View.GONE);
                 Picasso.get().load(candidateTutorInfoArrayList.get(position).getProfilePictureUri()).into(holder.imageView) ;
+                System.out.println(candidateTutorInfoArrayList.get(position).getProfilePictureUri() + " <=======> " + candidateTutorInfoArrayList.get(position).getUserName() );
+            }
+            else{
+                holder.imageView.setVisibility(View.GONE);
+                holder.imageView2.setVisibility(View.VISIBLE);
+                if(candidateTutorInfoArrayList.get(position).getGender().equals("MALE")){
+                    holder.imageView2.setImageResource(R.drawable.male_pic);
+                }
+                else{
+                    holder.imageView2.setImageResource(R.drawable.female_pic);
+                }
             }
         }
         else{
+            holder.imageView.setVisibility(View.GONE);
+            holder.imageView2.setVisibility(View.VISIBLE);
             if(candidateTutorInfoArrayList.get(position).getGender().equals("MALE")){
-                holder.imageView.setImageResource(R.drawable.male_pic);
+                holder.imageView2.setImageResource(R.drawable.male_pic);
             }
             else{
-                holder.imageView.setImageResource(R.drawable.female_pic);
+                holder.imageView2.setImageResource(R.drawable.female_pic);
             }
         }
         holder.name.setText(candidateTutorInfoArrayList.get(position).getUserName());
@@ -93,7 +109,7 @@ public class CustomAdapterForTutorListView extends BaseAdapter {
 
     class ViewHolder {
         LinearLayout layout ;
-        ImageView imageView ;
+        ImageView imageView, imageView2 ;
         TextView  name ;
         TextView institute ;
         TextView department ;

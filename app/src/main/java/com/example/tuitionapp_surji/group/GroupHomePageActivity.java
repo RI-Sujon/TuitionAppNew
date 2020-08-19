@@ -399,6 +399,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
 
     public void goToMessageBox(View view){
         Intent intent = new Intent(this, MainMessageActivity.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
         intent.putExtra("user",user) ;
         startActivity(intent);
         finish();
@@ -410,7 +411,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
         userEmail = intent.getStringExtra("userEmail");
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
 
-        messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail,tutorUid, true ,false) ;
+        messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),groupInfo.getGroupAdminEmail(),groupInfo.getGroupAdminUid(), true ,false) ;
 
         myRefMessageBox.addValueEventListener(new ValueEventListener() {
             @Override
@@ -420,7 +421,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
                 {
                     MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
                     if(messageBoxInfo1.getGuardianUid().equals(firebaseUser.getUid())
-                            && messageBoxInfo1.getTutorUid().equals(tutorUid)){
+                            && messageBoxInfo1.getTutorUid().equals(groupInfo.getGroupAdminUid())){
                         flag=1;
                     }
 

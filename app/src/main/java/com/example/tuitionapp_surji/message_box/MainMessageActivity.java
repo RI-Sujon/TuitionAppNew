@@ -239,15 +239,15 @@ public class MainMessageActivity extends AppCompatActivity {
 
                     Intent intent1 = getIntent() ;
                     userInfo = intent1.getStringArrayListExtra("userInfo") ;
-                    Intent intent = new Intent(MainMessageActivity.this, VerifiedTutorHomePageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    Intent intent = new Intent(MainMessageActivity.this, VerifiedTutorHomePageActivity.class);//.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putStringArrayListExtra("userInfo", userInfo) ;
                     startActivity(intent);
-                    //finish();
+                    finish();
                 }
                 else if(checkUser.equals("guardian")){
-                    Intent intent = new Intent(MainMessageActivity.this, GuardianHomePageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    Intent intent = new Intent(MainMessageActivity.this, GuardianHomePageActivity.class);//.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                    //finish();
+                    finish();
                 }
             }
         });
@@ -366,4 +366,22 @@ public class MainMessageActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if(checkUser.equals("tutor")){
+
+            Intent intent1 = getIntent() ;
+            userInfo = intent1.getStringArrayListExtra("userInfo") ;
+            Intent intent = new Intent(MainMessageActivity.this, VerifiedTutorHomePageActivity.class);//.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putStringArrayListExtra("userInfo", userInfo) ;
+            startActivity(intent);
+            finish();
+        }
+        else if(checkUser.equals("guardian")){
+            Intent intent = new Intent(MainMessageActivity.this, GuardianHomePageActivity.class);//.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
+    }
 }

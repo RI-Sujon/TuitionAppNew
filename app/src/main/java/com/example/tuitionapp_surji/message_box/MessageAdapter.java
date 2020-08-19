@@ -1,11 +1,13 @@
 package com.example.tuitionapp_surji.message_box;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -101,6 +103,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 holder.show_date.setVisibility(View.GONE);
                 holder.txt_seen.setVisibility(View.GONE);
                 holder.profile_image_messenger.setVisibility(View.GONE);
+
+                holder.show_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Toast.makeText(mContext, "Image will be shown", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(mContext,ImageLargeViewActivity.class);
+                        intent.putExtra("imageUri",chat.getMessage());
+                        mContext.startActivity(intent);
+                    }
+                });
             }
         }
 
@@ -175,6 +187,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
                 }
             });
+
+
 
         }
 

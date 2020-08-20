@@ -116,7 +116,6 @@ public class Note_Home extends AppCompatActivity {
                         addNoteKeyArrayList.add(dS1.getKey());
                     }
 
-
                     goToNoteListView();
                 }
                 myRefNote.removeEventListener(this);
@@ -186,6 +185,7 @@ public class Note_Home extends AppCompatActivity {
 
     public void goToNoteListView(){
         CustomAdapterForNote adapter = new CustomAdapterForNote(this,addNoteInfoArrayList) ;
+        noteMaterialEditText.setVisibility(View.INVISIBLE);
         noteListView.setAdapter(adapter);
     }
 
@@ -195,6 +195,7 @@ public class Note_Home extends AppCompatActivity {
         toolbarMenu.findItem(R.id.note_attachment).setVisible(false);
         toolbarMenu.findItem(R.id.note_addPost).setVisible(true);
         note_tool_bar.setTitle("EDIT NOTE");
+        noteMaterialEditText.setVisibility(View.VISIBLE);
 
         noteMaterialEditText.setText(selectedNote.getNote_post());
 

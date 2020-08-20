@@ -38,6 +38,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private ArrayList<CandidateTutorInfo> imageUriStrings;
 
 
+
     public UserAdapter(Context mContext, List<MessageBoxUser> mUsers, String checkUser, boolean isChat, ArrayList<String> userInfo) {
         this.mContext = mContext;
         this.mUsers = mUsers;
@@ -50,7 +51,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(mContext).inflate(R.layout.messagebox_user_item,parent,false);
-
         return new UserAdapter.ViewHolder(view);
     }
 

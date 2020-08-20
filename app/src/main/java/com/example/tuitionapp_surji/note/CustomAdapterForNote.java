@@ -56,6 +56,7 @@ public class CustomAdapterForNote extends BaseAdapter {
         holder.note.setText(post);
         holder.note.setVisibility(View.VISIBLE);
 
+
         holder.noteDate.setText(addNoteInfoArrayList.get(position).getNoteDate() + ",  " +addNoteInfoArrayList.get(position).getNoteTime());
 
         return convertView ;

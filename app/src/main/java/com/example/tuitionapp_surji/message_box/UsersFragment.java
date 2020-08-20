@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -34,6 +35,7 @@ public class UsersFragment extends Fragment
     private String checkUser;
     private String tutorName;
     ArrayList<String> userInfo ;
+    TextView no_users;
 
 
 
@@ -53,6 +55,9 @@ public class UsersFragment extends Fragment
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        no_users =  view.findViewById(R.id.no_users);
+
 
         mUsers = new ArrayList<>();
         readUsers();
@@ -103,6 +108,9 @@ public class UsersFragment extends Fragment
 
                 userAdapter = new UserAdapter(getContext(), mUsers,checkUser,true,userInfo) ;
                 recyclerView.setAdapter(userAdapter);
+
+                if(mUsers.size()==0)
+                    no_users.setVisibility(View.VISIBLE);
             }
 
             @Override

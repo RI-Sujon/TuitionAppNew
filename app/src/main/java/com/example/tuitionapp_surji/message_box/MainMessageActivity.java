@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -50,6 +51,7 @@ public class MainMessageActivity extends AppCompatActivity {
     String tutorEmail;
 
     ImageView chats_btn,request_btn;
+    TextView txt1,txt2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,9 @@ public class MainMessageActivity extends AppCompatActivity {
         //Toolbar toolbar=findViewById(R.id.toolbar_message);
        // setSupportActionBar(toolbar);
        // getSupportActionBar().setTitle(" ");
+
+        txt1 = findViewById(R.id.fragment_text01);
+        txt2 = findViewById(R.id.fragment_text02);
 
         profile_image=findViewById(R.id.profile_image);
         chats_btn = findViewById(R.id.chats_button);
@@ -277,6 +282,7 @@ public class MainMessageActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 viewPager.setCurrentItem(1);
+                //txt1.setTextColor(Color.BLACK);
             }
         });
 

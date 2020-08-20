@@ -14,11 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -200,7 +203,6 @@ public class BatchStudentInfoTableActivity extends AppCompatActivity {
     }
 
     public void createNewStudentTable(){
-
         toolbarMenu.findItem(R.id.create_table).setVisible(true);
         TableLayout.LayoutParams layoutParams = new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT) ;
         layoutParams.bottomMargin = 2 ;
@@ -299,6 +301,33 @@ public class BatchStudentInfoTableActivity extends AppCompatActivity {
         intent.putExtra("groupAddress" , groupAddress) ;
         startActivity(intent);
         finish();
+    }
+
+    public void editTable(){
+
+    }
+
+    public void onPopupButtonClick(View view) {
+        final PopupMenu popup = new PopupMenu(this, view) ;
+        if(user.equals("tutor")){
+            popup.getMenuInflater().inflate(R.menu.profile_menu, popup.getMenu()) ;
+        }
+        else if(user.equals("guardian")){
+            popup.getMenuInflater().inflate(R.menu.tutor_profile_popup_for_guardian, popup.getMenu()) ;
+        }
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                if(item.getTitle().equals("Edit Table")){
+                    editTable() ;
+                }
+
+                popup.dismiss() ;
+                return true ;
+            }
+        });
+
+        popup.show();
     }
 
     @Override

@@ -51,7 +51,6 @@
                         android:paddingBottom="100dp">
 
 
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -61,7 +60,7 @@
                             android:paddingLeft="3dp"
                             android:text="Batch Information :"
                             android:fontFamily="sans-serif-condensed-medium"
-                            android:textColor="#4BA3EF"
+                            android:textColor="@color/Blue"
                             android:textSize="16dp" />
 
                         <LinearLayout
@@ -239,8 +238,9 @@
                                     android:layout_column="1"
                                     android:background="@color/AliceBlue"
                                     android:gravity="center"
-                                    android:text="8.00AM"
-                                    android:textSize="16dp"
+                                    android:text="0.00 AM"
+                                    android:textColor="@color/Navy"
+                                    android:textSize="14dp"
                                     android:textStyle="bold" />
 
                                 <EditText
@@ -250,8 +250,9 @@
                                     android:layout_column="2"
                                     android:background="@color/SkyBlue"
                                     android:gravity="center"
-                                    android:text="8.00AM"
-                                    android:textSize="16dp"
+                                    android:text="0.00 AM"
+                                    android:textColor="@color/Navy"
+                                    android:textSize="14dp"
                                     android:textStyle="bold" />
 
                                 <EditText
@@ -261,9 +262,10 @@
                                     android:layout_column="3"
                                     android:background="@color/AliceBlue"
                                     android:gravity="center"
-                                    android:text="8.00AM"
-                                    android:textSize="16dp"
+                                    android:text="0.00 AM"
+                                    android:textSize="14dp"
                                     android:textStyle="bold"
+                                    android:textColor="@color/Navy"
                                     android:visibility="visible" />
                             </TableRow>
 

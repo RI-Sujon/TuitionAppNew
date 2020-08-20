@@ -33,8 +33,7 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
 
     private ImageView postImage ;
 
-    private DatabaseReference myRefMessageBox, myRefResponsePost, myRefNotification ;
-    private MessageBoxInfo messageBoxInfo ;
+    private DatabaseReference myRefResponsePost, myRefNotification ;
 
     private MaterialToolbar materialToolbar ;
 
@@ -150,7 +149,6 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
 
         materialToolbar = findViewById(R.id.topAppBar) ;
 
-        myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
         if(user.equals("tutor")) {
             myRefResponsePost = FirebaseDatabase.getInstance().getReference("ResponsePost").child(tutorInfo.get(3));
             myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Guardian");
@@ -173,37 +171,6 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
 
                 ResponsePost responsePost = new ResponsePost(tuitionPostUid) ;
                 myRefResponsePost.push().setValue(responsePost) ;
-
-                /*
-                messageBoxInfo = new MessageBoxInfo(contactNo,
-                        guardianUid, tutorInfo.get(2), tutorInfo.get(3), false, true);
-
-                myRefMessageBox.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        int flag = 0;
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
-
-                            if(messageBoxInfo1.getTutorUid()!=null){
-                                if (messageBoxInfo1.getGuardianUid().equals(guardianUid)
-                                        && messageBoxInfo1.getTutorUid().equals(tutorInfo.get(3))) {
-                                    flag = 1;
-                                }
-                            }
-                        }
-                        if (flag == 0)
-                            myRefMessageBox.push().setValue(messageBoxInfo);
-
-                        ResponsePost responsePost = new ResponsePost(tuitionPostUid) ;
-                        myRefResponsePost.push().setValue(responsePost) ;
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });*/
 
                 responseButton.setBackgroundColor(Color.DKGRAY) ;
 

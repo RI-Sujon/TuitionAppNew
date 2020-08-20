@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.tuitionapp_surji.guardian.GuardianInformationViewActivity;
 import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.notification_pack.SendNotification;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -98,6 +100,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
             holder.responseButtonLayout = convertView.findViewById(R.id.responseButtonLayout) ;
             holder.responseButtonPressedLayout = convertView.findViewById(R.id.responseButtonPressedLayout) ;
 
+            holder.guardianPic = convertView.findViewById(R.id.guardianPic) ;
             holder.postImage = convertView.findViewById(R.id.image_view) ;
             holder.postTitle = convertView.findViewById(R.id.postTitle) ;
             holder.postTime = convertView.findViewById(R.id.postTime) ;
@@ -174,8 +177,13 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
                 }
             }
 
-            holder.postTitle.setText(tuitionPostInfo.get(position).getPostTitle());
+            if(tuitionPostInfo.get(position).getGuardianProfilePicUri()!=null){
+                if(!tuitionPostInfo.get(position).getGuardianProfilePicUri().equals("")){
+                    Picasso.get().load(tuitionPostInfo.get(position).getGuardianProfilePicUri()).into(holder.guardianPic);
+                }
+            }
 
+            holder.postTitle.setText(tuitionPostInfo.get(position).getPostTitle());
 
             String time = tuitionPostInfo.get(position).getPostTime();
             String day = tuitionPostInfo.get(position).getPostDate();
@@ -251,7 +259,6 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
                 holder.postImage.setImageResource(R.drawable.logo_else_class);
             }
 
-
             holder.responseButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -322,6 +329,19 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
 
         }
 
+        if(userFlag.equals("tutor")){
+            holder.guardianPic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(parent.getContext(), GuardianInformationViewActivity.class) ;
+                    intent.putExtra("guardianUid",tuitionPostInfo.get(position).getGuardianUidFK()) ;
+                    intent.putExtra("user", "tutor") ;
+                    intent.putStringArrayListExtra("tutorInfo", tutorInfo) ;
+                    parent.getContext().startActivity(intent) ;
+                }
+            });
+        }
+
         holder.cardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -359,6 +379,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
 
     class ViewHolder{
         LinearLayout cardLayout ;
+        ImageView guardianPic ;
         ImageView postImage ;
         LinearLayout layout ;
         TextView postTime ;

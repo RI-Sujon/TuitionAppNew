@@ -39,7 +39,7 @@ public class NotificationViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_verified_tutor_notification);
+        setContentView(R.layout.activity_notification_view);
 
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;

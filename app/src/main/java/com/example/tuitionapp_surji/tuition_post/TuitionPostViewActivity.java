@@ -55,7 +55,7 @@ public class TuitionPostViewActivity extends AppCompatActivity {
     private TextView createNewPostButton ;
 
     private ArrayList<String> userInfo ;
-    private String user, tutorEmail = "", tutorUid = "" ;
+    private String user, tutorEmail = "", tutorUid = "", guardianProfilePicUri ;
 
     private List<String> areaList, classList, groupList ;
 
@@ -128,9 +128,10 @@ public class TuitionPostViewActivity extends AppCompatActivity {
         }
 
         if(user.equals("guardian")){
+            guardianProfilePicUri = intent.getStringExtra("guardianProfilePicUri") ;
             createNewPostButton = findViewById(R.id.create_new_post) ;
             createNewPostButton.setVisibility(View.VISIBLE);
-            filterByGuardian(firebaseUser.getPhoneNumber());
+            filterByGuardian(firebaseUser.getUid());
         }
     }
 
@@ -260,7 +261,7 @@ public class TuitionPostViewActivity extends AppCompatActivity {
         finish();
     }
 
-    public void filterByGuardian(final String mobileNumber){
+    public void filterByGuardian(final String guardianUid){
         final ArrayList<TuitionPostInfo> helpArrayList = new ArrayList<>() ;
         final ArrayList<String> helpArrayList2 = new ArrayList<>() ;
 
@@ -270,7 +271,7 @@ public class TuitionPostViewActivity extends AppCompatActivity {
                 for(DataSnapshot dS1: dataSnapshot.getChildren()){
                     TuitionPostInfo tuitionPostInfo = dS1.getValue(TuitionPostInfo.class) ;
 
-                    if(tuitionPostInfo.getGuardianMobileNumberFK().equals(mobileNumber)){
+                    if(tuitionPostInfo.getGuardianUidFK().equals(guardianUid)){
                         helpArrayList.add(tuitionPostInfo);
                         helpArrayList2.add(dS1.getKey()) ;
                     }

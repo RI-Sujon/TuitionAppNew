@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".guardian.GuardianInformationViewActivity"></activity>
+        <activity android:name=".message_box.ImageLargeViewActivity"></activity>
         <activity android:name=".group.GroupProfileActivity" />
         <activity android:name=".tuition_post.TuitionPostViewSinglePageActivity" />
         <activity android:name=".message_box.MessageRequestActivity" />

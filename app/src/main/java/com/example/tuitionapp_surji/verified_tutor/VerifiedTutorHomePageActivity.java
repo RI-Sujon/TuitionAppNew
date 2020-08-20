@@ -235,13 +235,10 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
             responseTuitionPostArray2[i] = 0 ;
         }
 
-        System.out.println(responseTuitionPostArrayList.size() + "+++++Sujon_++++++++:" + tuitionPostInfoArrayList1.size() );
         for(int i=0 ; i<tuitionPostUidList1.size() ; i++){
             for(int j=0 ; j<responseTuitionPostArrayList.size() ; j++){
-                System.out.println(responseTuitionPostArrayList.get(j) + ":+++++Sujon222222_++++++++:" + tuitionPostInfoArrayList1.get(i) );
                 if(tuitionPostUidList1.get(i).equals(responseTuitionPostArrayList.get(j))){
                     responseTuitionPostArray1[i] = 1 ;
-                    System.out.println(i + "============>>>" +  tuitionPostInfoArrayList1.get(i));
                     //break ;
                 }
 

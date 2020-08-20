@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.tuitionapp_surji.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,6 +26,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -43,8 +45,10 @@ public class GuardianInformationActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog ;
 
+    private MaterialToolbar materialToolbar ;
 
-    private String nameString, addressString, mobileNumberString, profilePicUriString ;
+
+    private String nameString, addressString, mobileNumberString, profilePicUriString, type, profilePicUriString2 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +64,34 @@ public class GuardianInformationActivity extends AppCompatActivity {
 
         name = findViewById(R.id.guardianName) ;
         address = findViewById(R.id.guardianAddress) ;
-
         imageView = findViewById(R.id.imgView) ;
+        materialToolbar = findViewById(R.id.topAppBar) ;
+
+        materialToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        Intent intent = getIntent() ;
+        type = intent.getStringExtra("type") ;
+
+        if(type!=null){
+            nameString = intent.getStringExtra("name");
+            addressString = intent.getStringExtra("address");
+
+            name.setText(nameString);
+            address.setText(addressString);
+
+            profilePicUriString2 = intent.getStringExtra("guardianProfilePicUri") ;
+            if(!profilePicUriString2.equals("1")) {
+                Picasso.get().load(profilePicUriString2).into(imageView);
+            }
+        }
+        else {
+
+        }
     }
 
     public void selectImage(View view) {
@@ -111,7 +141,7 @@ public class GuardianInformationActivity extends AppCompatActivity {
 
                                 myRefGuardian.setValue(guardianInfo) ;
 
-                                goToGuardianHomePageActivity();
+                                goToNextPageActivity();
                             }
                         });
                     }
@@ -151,17 +181,31 @@ public class GuardianInformationActivity extends AppCompatActivity {
             uploadFinish();
         }
         else {
-            GuardianInfo guardianInfo = new GuardianInfo(nameString, addressString, mobileNumberString, "1" ) ;
+            GuardianInfo guardianInfo ;
+            if(type==null){
+                guardianInfo = new GuardianInfo(nameString, addressString, mobileNumberString, "1" ) ;
+            }
+            else {
+                guardianInfo = new GuardianInfo(nameString, addressString, mobileNumberString, profilePicUriString2 ) ;
+            }
 
             myRefGuardian.setValue(guardianInfo) ;
 
-            goToGuardianHomePageActivity();
+            goToNextPageActivity();
         }
     }
 
-    private void goToGuardianHomePageActivity(){
-        Intent intent = new Intent(this, GuardianHomePageActivity.class);
-        startActivity(intent);
-        finish() ;
+    private void goToNextPageActivity(){
+        if(type==null){
+            Intent intent = new Intent(this, GuardianHomePageActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Intent intent = new Intent(this, GuardianInformationViewActivity.class);
+            intent.putExtra("user", "guardian") ;
+            startActivity(intent);
+        }
+
+        finish();
     }
 }

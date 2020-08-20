@@ -13,10 +13,11 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/appicon"
-        android:label="eTUTOR"
+        android:label="TutorPlanet"
         android:roundIcon="@drawable/appicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".guardian.GuardianInformationViewActivity"></activity>
         <activity android:name=".message_box.ImageLargeViewActivity"></activity>
         <activity android:name=".group.GroupProfileActivity" />
         <activity android:name=".tuition_post.TuitionPostViewSinglePageActivity" />

@@ -6,7 +6,7 @@ import java.util.Calendar;
 public class TuitionPostInfo {
     private String postTitle, studentInstitute, studentClass, studentGroup, studentMedium, studentSubjectList,
             tutorGenderPreference, daysPerWeekOrMonth, studentAreaAddress, studentFullAddress, studentContactNo,
-            salary , extra, availability, guardianMobileNumberFK,guardianUidFK;
+            salary , extra, availability, guardianProfilePicUri,guardianUidFK;
     private String postDate ;
     private String postTime ;
     private Calendar calendar = Calendar.getInstance();
@@ -16,7 +16,7 @@ public class TuitionPostInfo {
     public TuitionPostInfo() {
     }
 
-    public TuitionPostInfo(String postTitle, String studentInstitute, String studentClass, String studentGroup, String studentMedium, String studentSubjectList, String tutorGenderPreference, String daysPerWeekOrMonth, String studentAreaAddress, String studentFullAddress, String studentContactNo, String salary, String extra, String availability, String guardianMobileNumberFK, String guardianUidFK) {
+    public TuitionPostInfo(String postTitle, String studentInstitute, String studentClass, String studentGroup, String studentMedium, String studentSubjectList, String tutorGenderPreference, String daysPerWeekOrMonth, String studentAreaAddress, String studentFullAddress, String studentContactNo, String salary, String extra, String availability, String guardianProfilePicUri, String guardianUidFK) {
         this.postTitle = postTitle;
         this.studentInstitute = studentInstitute;
         this.studentClass = studentClass;
@@ -31,7 +31,7 @@ public class TuitionPostInfo {
         this.salary = salary;
         this.extra = extra;
         this.availability = availability;
-        this.guardianMobileNumberFK = guardianMobileNumberFK;
+        this.guardianProfilePicUri = guardianProfilePicUri;
         this.guardianUidFK = guardianUidFK;
         postTime = simpleDateFormat.format(calendar.getTime());
         postDate = simpleDateFormat2.format(calendar.getTime());
@@ -149,12 +149,12 @@ public class TuitionPostInfo {
         this.availability = availability;
     }
 
-    public String getGuardianMobileNumberFK() {
-        return guardianMobileNumberFK;
+    public String getGuardianProfilePicUri() {
+        return guardianProfilePicUri;
     }
 
-    public void setGuardianMobileNumberFK(String guardianMobileNumberFK) {
-        this.guardianMobileNumberFK = guardianMobileNumberFK;
+    public void setGuardianProfilePicUri(String guardianProfilePicUri) {
+        this.guardianProfilePicUri = guardianProfilePicUri;
     }
 
     public String getGuardianUidFK() {

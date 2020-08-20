@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.guardian.GuardianInfo;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,27 +43,41 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
     private String postTitle="", studentInstitute="", studentClass="", studentGroup="", studentMedium="", studentSubjectList="",
             tutorGenderPreference="", daysPerWeekOrMonth="", studentAreaAddress="", studentFullAddress="", studentContactNo="", salary="",salary2="", extra="" ;
     private  TuitionPostInfo tuitionPostInfo ;
-    private DatabaseReference myRefTuitionPost ;
+    private DatabaseReference myRefTuitionPost, myRefGuardianInfo ;
     private FirebaseUser firebaseUser ;
     private TextView createPostLayoutHeading ;
 
     private TextView groupTextView ;
 
-    private String postID, type ;
+    private String postID, type, guardianProfilePicUri = "" ;
     private int typeFlag = 0 ;
 
-    FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance();
+    private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tuition_post_creation);
 
-        myRefTuitionPost = FirebaseDatabase.getInstance().getReference("TuitionPost") ;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-
+        myRefTuitionPost = FirebaseDatabase.getInstance().getReference("TuitionPost") ;
+        myRefGuardianInfo = FirebaseDatabase.getInstance().getReference("GuardianInfo").child(firebaseUser.getUid()) ;
 
         Intent intent = getIntent() ;
         type = intent.getStringExtra("type") ;
+
+        myRefGuardianInfo.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GuardianInfo guardianInfo = dataSnapshot.getValue(GuardianInfo.class) ;
+                guardianProfilePicUri = guardianInfo.getProfilePicUri() ;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        }) ;
 
         if(type.equals("editPost")) {
             typeFlag = -1;
@@ -198,9 +213,9 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
             salary = salary + " to " + salary2 ;
         }
 
-        String guardianMobileNumberFK = firebaseUser.getPhoneNumber() ;
+
         TuitionPostInfo guardianPostInfo = new TuitionPostInfo(postTitle, studentInstitute ,studentClass , studentGroup, studentMedium, studentSubjectList,
-                tutorGenderPreference, daysPerWeekOrMonth, studentAreaAddress, studentFullAddress, studentContactNo, salary, extra, "Available", guardianMobileNumberFK,firebaseUser.getUid()) ;
+                tutorGenderPreference, daysPerWeekOrMonth, studentAreaAddress, studentFullAddress, studentContactNo, salary, extra, "Available", guardianProfilePicUri,firebaseUser.getUid()) ;
 
         if(type.equals("editPost")){
             myRefTuitionPost.setValue(guardianPostInfo) ;
@@ -211,12 +226,10 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
         databaseFireStore.collection("TuitionPost").add(guardianPostInfo).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-                System.out.println("Passsssssed");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                System.out.println("FAILlllllllllllll");
             }
         }) ;
 

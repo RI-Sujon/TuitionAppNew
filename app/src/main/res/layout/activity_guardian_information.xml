@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".guardian.GuardianInformationActivity"
-    android:background="#4c72e0">
+    android:background="@color/RoyalBlue"
+    tools:context=".guardian.GuardianInformationActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Guardian Info"
+            android:backgroundTint="#2c30e7"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,10 +32,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="GUARDIAN INFORMATION"
-            android:fontFamily="@font/muli_black"
-            android:textColor="@color/Black"
-            android:textSize="18dp"
-            android:layout_marginTop="40dp"
+            android:fontFamily="@font/arbutus"
+            android:textColor="@color/MidnightBlue"
+            android:textSize="28dp"
+            android:textStyle="italic"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center"/>
 
@@ -38,17 +54,19 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxStrokeColor="@color/RoyalBlue"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            app:boxStrokeColor="@color/Navy"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:hint="Name"
             app:startIconDrawable="@drawable/ic_stars_black_24dp"
             app:startIconTint="@color/Black"
             app:endIconMode="clear_text"
-            android:layout_marginBottom="15dp"
-            android:background="@color/White">
+            android:layout_marginBottom="15dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/guardianName"
                 android:layout_width="match_parent"
+                android:maxLength="18"
+                android:maxLines="1"
+                android:backgroundTint="@color/AliceBlue"
                 android:layout_height="match_parent"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,21 +74,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            app:boxStrokeColor="@color/RoyalBlue"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            app:startIconDrawable="@drawable/ic_add_location_black_24dp"
+            app:boxStrokeColor="@color/Navy"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            app:startIconDrawable="@drawable/ic_location_city_black_24dp"
             app:startIconTint="@color/Black"
             android:hint="Address"
             app:hintTextColor="@color/Black"
             app:endIconMode="clear_text"
-            android:layout_marginBottom="20dp"
-            android:background="@color/White">
+            android:layout_marginBottom="20dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/guardianAddress"
                 android:layout_width="match_parent"
+                android:backgroundTint="@color/AliceBlue"
                 android:layout_height="wrap_content"
-                android:textColor="@color/Black"/>
+                android:textColor="@color/Black"
+                android:maxLength="35"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -81,8 +100,9 @@
             android:padding="10dp"
             android:backgroundTint="@color/Navy"
             android:onClick="registerGuardianInfo"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

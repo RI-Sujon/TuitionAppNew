@@ -123,7 +123,6 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         }) ;
 
 
-
         Menu menu = navigationView.getMenu();
         menu.findItem(R.id.view_profile).setVisible(false) ;
         menu.findItem(R.id.calenderMenuId).setVisible(false) ;
@@ -261,6 +260,12 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         //finish();
     }
 
+    public void goToGuardianProfileViewActivity(){
+        Intent intent = new Intent(this, GuardianInformationViewActivity.class) ;
+        intent.putExtra("user", "guardian") ;
+        startActivity(intent);
+    }
+
     public void signOut() {
         mAuth.signOut();
 
@@ -270,11 +275,6 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
     }
 
     private void status(String status){
-
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(firebaseUser!=null)
-            System.out.println("============================ "+ firebaseUser.getUid());
-
          reference = FirebaseDatabase.getInstance().getReference("Guardian").child(user);
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("status", status);
@@ -312,9 +312,15 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
             case R.id.log_out:
                 signOut();
                 break;
+
+            case R.id.edit_profile:
+                goToGuardianProfileViewActivity();
+                break;
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

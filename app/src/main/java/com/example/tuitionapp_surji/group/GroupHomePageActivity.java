@@ -46,7 +46,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
     private DatabaseReference myRefGroup, myRefMessageBox, myRefReport, myRefBatch, myRefAddTutor, myRefCandidateTutor ;
     private FirebaseUser firebaseUser ;
     private MessageBoxInfo messageBoxInfo;
-    private String user, userEmail, groupID , tutorUid, batchID , groupName, groupAddress, context;
+    private String user, userEmail, groupID , tutorUid, batchID , groupName, groupAddress, context, viewType;
     private ArrayList<String>userInfo ;
 
     private TextView groupNameTextView, fullAddressTextView ;
@@ -89,6 +89,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
         userInfo = intent.getStringArrayListExtra("userInfo") ;
         user = intent.getStringExtra("user") ;
         groupID = intent.getStringExtra("groupID") ;
+        viewType = intent.getStringExtra("viewType") ;
 
         myRefGroup = FirebaseDatabase.getInstance().getReference("Group").child(groupID) ;
         myRefBatch = FirebaseDatabase.getInstance().getReference("Batch");
@@ -183,6 +184,15 @@ public class GroupHomePageActivity extends AppCompatActivity {
                 goToNoticeBoardManagement();
             }
         });
+
+        if(viewType!=null){
+            if(viewType.equals("batchView")){
+                goToBatchManagement();
+            }
+            else if(viewType.equals("tutorView")){
+                goToGroupTutorManagement();
+            }
+        }
     }
 
     public void groupHomePage(){
@@ -199,10 +209,14 @@ public class GroupHomePageActivity extends AppCompatActivity {
     public void goToGroupProfile(View view){
         Intent intent = new Intent(this, GroupProfileActivity.class) ;
         intent.putExtra("groupName", groupInfo.getGroupName());
-        intent.putExtra("location", groupInfo.getFullAddress() + ", " + groupInfo.getAddress());
+        intent.putExtra("groupAddress", groupInfo.getAddress());
+        intent.putExtra("groupFullAddress", groupInfo.getFullAddress());
         intent.putExtra("classRange", groupInfo.getClassRange());
         intent.putExtra("extraInfo", groupInfo.getExtraInfo());
         intent.putExtra("groupImage", groupInfo.getGroupImageUri());
+        intent.putExtra("groupID", groupID) ;
+        intent.putExtra("user", user) ;
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
 
     }

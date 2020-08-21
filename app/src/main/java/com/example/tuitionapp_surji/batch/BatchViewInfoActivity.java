@@ -1,9 +1,12 @@
 package com.example.tuitionapp_surji.batch;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -36,6 +39,7 @@ public class BatchViewInfoActivity extends AppCompatActivity {
     private String batchID, user , groupID , groupName, groupAddress ;
 
     private MaterialToolbar materialToolbar ;
+    private Menu toolbarMenu ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,7 @@ public class BatchViewInfoActivity extends AppCompatActivity {
         Intent intent = getIntent() ;
         batchID = intent.getStringExtra("batchID") ;
         groupID = intent.getStringExtra("groupID") ;
-        user = intent.getStringExtra("user");
+        user = intent.getStringExtra("user") ;
         groupName = intent.getStringExtra("groupName") ;
         groupAddress = intent.getStringExtra("groupAddress") ;
 
@@ -120,6 +124,26 @@ public class BatchViewInfoActivity extends AppCompatActivity {
         scheduleEditText[21] = findViewById(R.id.T35) ;
         scheduleEditText[22] = findViewById(R.id.T36) ;
         scheduleEditText[23] = findViewById(R.id.T37) ;
+
+
+        toolbarMenu = materialToolbar.getMenu() ;
+        toolbarMenu.findItem(R.id.create_batch).setVisible(false);
+
+        if(user.equals("guardian")){
+            toolbarMenu.findItem(R.id.edit_info).setVisible(false);
+        }
+
+        materialToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.edit_info:
+                        editBatchInformation();
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     public void viewBatchInformation(){
@@ -146,7 +170,23 @@ public class BatchViewInfoActivity extends AppCompatActivity {
                 i = i + 8 ;
             }
         }
+    }
 
+    public void editBatchInformation(){
+        Intent intent = new Intent(this, BatchCreationActivity.class);
+        if(user.equals("tutor")){
+            intent.putStringArrayListExtra("userInfo",userInfo) ;
+        }
+
+        intent.putExtra("batchID",batchID) ;
+        intent.putExtra("user" , user) ;
+        intent.putExtra("groupID" , groupID) ;
+        intent.putExtra("groupName" , groupName) ;
+        intent.putExtra("groupAddress" , groupAddress) ;
+        intent.putExtra("type", "edit") ;
+
+        startActivity(intent);
+        finish();
     }
 
     public void goToAddStudentInfo(View view){
@@ -172,6 +212,7 @@ public class BatchViewInfoActivity extends AppCompatActivity {
 
         intent.putExtra("user", user) ;
         intent.putExtra("groupID", groupID) ;
+        intent.putExtra("viewType", "batchView") ;
         startActivity(intent);
         finish();
     }

@@ -1258,6 +1258,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             intent.putExtra("user","tutor") ;
             intent.putStringArrayListExtra("userInfo",userInfo) ;
             intent.putExtra("groupID", groupID) ;
+            intent.putExtra("viewType", "tutorView") ;
             startActivity(intent) ;
             finish() ;
         }
@@ -1265,6 +1266,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(this, GroupHomePageActivity.class) ;
             intent.putExtra("user","guardian") ;
             intent.putExtra("groupID", groupID) ;
+            intent.putExtra("viewType", "tutorView") ;
             startActivity(intent) ;
             finish() ;
         }

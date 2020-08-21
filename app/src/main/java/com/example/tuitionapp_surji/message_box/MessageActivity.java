@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.guardian.GuardianInfo;
+import com.example.tuitionapp_surji.note.NoteInfo;
 import com.example.tuitionapp_surji.notification_pack.NotificationInfo;
 import com.example.tuitionapp_surji.notification_pack.NotificationSender;
 import com.example.tuitionapp_surji.notification_pack.SendNotification;
@@ -83,6 +86,8 @@ public class MessageActivity extends AppCompatActivity
     ArrayList<String> userInfo ;
 
     ValueEventListener seenListener;
+
+    DatabaseReference messageBlock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -500,4 +505,86 @@ public class MessageActivity extends AppCompatActivity
 
     }
 
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.block_user_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.block_in_messenger:
+
+
+                blockTheUser();
+                Intent intent = new Intent(MessageActivity.this,MainMessageActivity.class);
+                if(checkUser.equals("guardian")){
+                    intent.putExtra("user","guardian");
+                }
+
+                else {
+                    intent.putExtra("user","tutor");
+                    intent.putStringArrayListExtra("userInfo", userInfo) ;
+                }
+                startActivity(intent);
+                finish();
+
+
+                return true;
+        }
+
+        return false;
+    }
+
+    private void blockTheUser() {
+        final String  userId = intent.getStringExtra("userId");
+
+        messageBlock = FirebaseDatabase.getInstance().getReference("MessageBox");
+         final String currentUser= FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+
+        messageBlock.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot dS1: dataSnapshot.getChildren()){
+                    MessageBoxInfo messageBoxInfo = dS1.getValue(MessageBoxInfo.class);
+
+                   // System.out.println("User          ========================  "+checkUser);
+
+                  /*  System.out.println(messageBoxInfo.getGuardianUid());
+                    System.out.println("currentUser == "+currentUser);
+                    System.out.println(messageBoxInfo.getTutorUid());
+                    System.out.println("userId == "+userId);*/
+
+                    if(checkUser.equals("guardian")){
+                        System.out.println("Key ====================== "+dS1.getKey());
+                        if(messageBoxInfo.getGuardianUid().equals(currentUser) && messageBoxInfo.getTutorUid().equals(userId)){
+                            messageBlock.child(dS1.getKey()).removeValue();
+                            break;
+                        }
+                    }
+
+                    else if(checkUser.equals("tutor")){
+                        System.out.println("Key ====================== "+dS1.getKey());
+                        if(messageBoxInfo.getGuardianUid().equals(userId) && messageBoxInfo.getTutorUid().equals(currentUser)){
+                            messageBlock.child(dS1.getKey()).removeValue();
+                            break;
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 }

@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.group.GroupHomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,7 +77,7 @@ public class NotificationViewActivity extends AppCompatActivity {
                 }
 
                 myRefNotification.removeEventListener(this);
-                addReferenceNotification() ;
+                createNotificationList(); ;
             }
 
             @Override
@@ -88,13 +89,18 @@ public class NotificationViewActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String tutorUid = notificationInfoArrayList.get(position).getMessage3() ;
-                String tutorEmail = notificationInfoArrayList.get(position).getMessage2() ;
+                String uid = notificationInfoArrayList2.get(position).getMessage3() ;
+                String tutorEmail = notificationInfoArrayList2.get(position).getMessage2() ;
                 if(user.equals("guardian")){
-                    goToSelectedTutorProfile(tutorUid, tutorEmail);
+                    goToSelectedTutorProfile(uid, tutorEmail);
                 }
-                else{
-                    goToSelectedTutorProfile(tutorUid, tutorEmail );
+                else if(user.equals("tutor")){
+                    if(notificationInfoArrayList2.get(position).getTypes().equals("refer")) {
+                        goToSelectedTutorProfile(uid, tutorEmail );
+                    }
+                    else if(notificationInfoArrayList2.get(position).getTypes().equals("groupTutor")){
+                        goToSelectedGroup(uid) ;
+                    }
                 }
             }
         });
@@ -114,7 +120,7 @@ public class NotificationViewActivity extends AppCompatActivity {
     }
 
 
-    public void addReferenceNotification(){
+    public void createNotificationList(){
         CustomAdapterForNotificationView adapter = new CustomAdapterForNotificationView(this, notificationInfoArrayList2, userInfo, notificationInfoUidList2, user);
         listView.setAdapter(adapter);
     }
@@ -130,6 +136,17 @@ public class NotificationViewActivity extends AppCompatActivity {
             intent.putExtra("user", user);
             intent.putExtra("tutorEmail", tutorEmail);
         }
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
+        startActivity(intent);
+        //finish();
+    }
+
+    public void goToSelectedGroup(String groupID){
+        Intent intent = new Intent(this, GroupHomePageActivity.class);
+        intent.putExtra("groupID", groupID) ;
+
+        intent.putExtra("user", "groupVisitor");
+
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         //finish();

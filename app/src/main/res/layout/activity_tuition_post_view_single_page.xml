@@ -46,11 +46,11 @@
                         android:id="@+id/postTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/arbutus"
+                        android:fontFamily="@font/merienda_one"
                         android:textSize="25dp"
                         android:textStyle="bold"
                         android:layout_marginTop="7dp"
-                        android:textColor="@color/Blue"
+                        android:textColor="#0404BA"
                         android:gravity="center"/>
                     <ImageView
                         android:id="@+id/postPic"

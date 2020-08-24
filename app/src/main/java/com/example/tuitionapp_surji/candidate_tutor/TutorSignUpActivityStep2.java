@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,9 +42,10 @@ import java.util.ArrayList;
 
 public class TutorSignUpActivityStep2 extends AppCompatActivity {
 
-    private ImageView imageView;
+    private ImageView imageView ;
     private TextView filePathView ;
-    private EditText reference1, reference2;
+    private EditText reference1, reference2 ;
+    private Button uploadButton ;
 
     private Uri filePath;
     private int PICK_IMAGE_REQUEST = 120;
@@ -76,6 +78,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
         filePathView = findViewById(R.id.filePathName) ;
         reference1 = findViewById(R.id.reference1) ;
         reference2 = findViewById(R.id.reference2) ;
+        uploadButton = findViewById(R.id.upload_btn) ;
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -133,6 +136,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
             filePath = data.getData();
             filePathView.setText(filePath.toString());
             filePathView.setVisibility(View.VISIBLE);
+            uploadButton.setVisibility(View.VISIBLE);
             try {
                 bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imageView.setImageBitmap(bitmapImage);
@@ -143,8 +147,8 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     }
 
     public void candidateTutorRegistrationCompletion(View view) {
-        if(filePath==null){
-            Toast.makeText(getApplicationContext(), "Please Add Your Id Card's Photo.", Toast.LENGTH_SHORT).show();
+        if(imageUriString==null){
+            Toast.makeText(getApplicationContext(), "Please Upload Your Id Card's Photo.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -186,9 +190,9 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                     ReferInfo referInfo1 = new ReferInfo(reference1str);
                     myRefRefer.push().setValue(referInfo1);
 
-                    myRefNotification2 = myRefNotification.child(reference1Uid) ;
+                    myRefNotification2 = myRefNotification.child(reference1Uid).child(firebaseUser.getUid()) ;
                     NotificationInfo notificationInfo = new NotificationInfo("refer",candidateTutorInfo.getUserName(),candidateTutorInfo.getEmailPK(),firebaseUser.getUid()) ;
-                    myRefNotification2.push().setValue(notificationInfo) ;
+                    myRefNotification2.setValue(notificationInfo) ;
 
                     SendNotification sendNotification = new SendNotification(reference1Uid, "New Friend", "A friend wants to join TutorApp.Do You know him?") ;
                     sendNotification.sendNotificationOperation();
@@ -197,28 +201,35 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                     ReferInfo referInfo2 = new ReferInfo(reference2str);
                     myRefRefer.push().setValue(referInfo2);
 
-                    myRefNotification2 = myRefNotification.child(reference2Uid) ;
+                    myRefNotification2 = myRefNotification.child(reference2Uid).child(firebaseUser.getUid()) ;
                     NotificationInfo notificationInfo = new NotificationInfo("refer",candidateTutorInfo.getUserName(),candidateTutorInfo.getEmailPK(),firebaseUser.getUid()) ;
-                    myRefNotification2.push().setValue(notificationInfo) ;
+                    myRefNotification2.setValue(notificationInfo) ;
 
                     SendNotification sendNotification = new SendNotification(reference2Uid, "New Friend", "A friend wants to join TutorApp.Do You know him?") ;
                     sendNotification.sendNotificationOperation();
                 }
 
-                uploadFinish();
-                progressDialog.setTitle("Uploading...");
-                progressDialog.show();
+                //uploadFinish();
+                ApproveAndBlockInfo approveAndBlockInfo = new ApproveAndBlockInfo("waiting");
+                myRefApprove.setValue(approveAndBlockInfo);
+
+                goToTutorSignUpActivityStep3();
+
             }
         }
         else {
-            Toast.makeText(getApplicationContext(), "You need minimum 1 Reference", Toast.LENGTH_SHORT).show();
-            uploadFinish();
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
+            //Toast.makeText(getApplicationContext(), "You need minimum 1 Reference", Toast.LENGTH_SHORT).show();
+            //uploadFinish();
+            ApproveAndBlockInfo approveAndBlockInfo = new ApproveAndBlockInfo("waiting");
+            myRefApprove.setValue(approveAndBlockInfo);
+
+            goToTutorSignUpActivityStep3();
         }
     }
 
-    private void uploadFinish(){
+    public void uploadFinish(View view){
+        progressDialog.setTitle("Uploading...");
+        progressDialog.show();
         if (filePath != null) {
             final StorageReference imageRef = storageReference.child("idCardImage/" + emailPrimaryKey);
 
@@ -227,7 +238,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                 bitmapImage.compress(Bitmap.CompressFormat.JPEG, 50, baos);
                 byte[] data = baos.toByteArray();
 
-                UploadTask uploadTask = imageRef.putBytes(data);
+                final UploadTask uploadTask = imageRef.putBytes(data);
                 uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -265,17 +276,13 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     }
 
     public void updateCandidateTutorDatabase() {
-        ApproveAndBlockInfo approveAndBlockInfo = new ApproveAndBlockInfo("waiting");
-        myRefApprove.setValue(approveAndBlockInfo);
-
         candidateTutorInfo.setIdCardImageUri(imageUriString);
         myRefCandidateTutor.setValue(candidateTutorInfo);
-
-        goToTutorSignUpActivityStep3();
+        uploadButton.setVisibility(View.GONE);
     }
 
     public void goToTutorSignUpActivityStep3 () {
-        Intent intent = new Intent(TutorSignUpActivityStep2.this, TutorSignUpActivityStep3.class);
+        Intent intent = new Intent(this, TutorSignUpActivityStep3.class);
         startActivity(intent);
         finish();
     }

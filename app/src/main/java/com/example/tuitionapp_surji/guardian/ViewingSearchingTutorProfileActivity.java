@@ -23,6 +23,7 @@ import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.starting.HomePageActivity;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostViewSinglePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,7 +55,7 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
     private EditText searchBar ;
     private ViewFlipper viewFlipper ;
     private Button tutorListViewButton, groupListViewButton ;
-    private ImageView tutorListViewButton2, groupListViewButton2 ;
+    private MaterialButton tutorListViewButton2, groupListViewButton2 ;
 
 
     @Override
@@ -70,9 +71,9 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
         searchBar = findViewById(R.id.search_bar) ;
         viewFlipper = findViewById(R.id.viewFlipper) ;
         tutorListViewButton = findViewById(R.id.tutorListViewButton) ;
-        tutorListViewButton2 = findViewById(R.id.tutor_list_button_image_view) ;
+        tutorListViewButton2 = findViewById(R.id.tutor_list_button) ;
         groupListViewButton = findViewById(R.id.groupListViewButton) ;
-        groupListViewButton2 = findViewById(R.id.group_list_button_image_view) ;
+        groupListViewButton2 = findViewById(R.id.group_list_button) ;
 
         myRefVerifiedTutor = FirebaseDatabase.getInstance().getReference("VerifiedTutor") ;
         myRefCandidateTutor = FirebaseDatabase.getInstance().getReference("CandidateTutor") ;

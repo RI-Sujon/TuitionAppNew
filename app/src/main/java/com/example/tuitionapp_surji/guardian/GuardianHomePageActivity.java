@@ -236,7 +236,7 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         Intent intent = new Intent(this, TuitionPostViewActivity.class);
         intent.putExtra("user", "guardian") ;
         startActivity(intent);
-        //finish();
+        finish();
     }
 
     public void goToMessageBox(View view){
@@ -303,7 +303,13 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         if(drawerLayout.isDrawerVisible(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }
-        else super.onBackPressed();
+        else{
+            super.onBackPressed();
+            //Intent intent = new Intent(Intent.ACTION_MAIN) ;
+            //intent.addCategory(Intent.CATEGORY_HOME);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //startActivity(intent);
+        }
     }
 
     @Override

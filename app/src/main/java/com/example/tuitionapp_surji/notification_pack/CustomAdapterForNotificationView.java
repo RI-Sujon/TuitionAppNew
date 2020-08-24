@@ -108,103 +108,112 @@ public class CustomAdapterForNotificationView extends BaseAdapter {
         }
 
         if(user.equals("tutor")){
-            if(notificationInfoArrayList.get(position).getMessage4()==null){
-                holder.message.setText("Do you know " + notificationInfoArrayList.get(position).getMessage1() + " (email: " + notificationInfoArrayList.get(position).getMessage2() + ") ?");
-                holder.buttonYes.setVisibility(View.VISIBLE);
-                holder.buttonNo.setVisibility(View.VISIBLE);
+            if(notificationInfoArrayList.get(position).getTypes().equals("refer")){
+                if(notificationInfoArrayList.get(position).getMessage4()==null){
+                    holder.message.setText("Do you know " + notificationInfoArrayList.get(position).getMessage1() + " (email: " + notificationInfoArrayList.get(position).getMessage2() + ") ?");
+                    holder.buttonYes.setVisibility(View.VISIBLE);
+                    holder.buttonNo.setVisibility(View.VISIBLE);
 
-                holder.message.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(parent.getContext(), VerifiedTutorProfileActivity.class);
-                        intent.putExtra("tutorUid", notificationInfoArrayList.get(position).getMessage3()) ;
-                        intent.putExtra("user", "referFriend") ;
-                        intent.putStringArrayListExtra("userInfo", userInfo) ;
-                        parent.getContext().startActivity(intent);
-                    }
-                });
+                    holder.message.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(parent.getContext(), VerifiedTutorProfileActivity.class);
+                            intent.putExtra("tutorUid", notificationInfoArrayList.get(position).getMessage3()) ;
+                            intent.putExtra("user", "referFriend") ;
+                            intent.putStringArrayListExtra("userInfo", userInfo) ;
+                            parent.getContext().startActivity(intent);
+                        }
+                    });
 
-                holder.buttonYes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        myRefRefer2 = myRefRefer.child(notificationInfoArrayList.get(position).getMessage3()) ;
-                        myRefNotification2 = myRefNotification.child(notificationInfoUidList.get(position)) ;
+                    holder.buttonYes.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            myRefRefer2 = myRefRefer.child(notificationInfoArrayList.get(position).getMessage3()) ;
+                            myRefNotification2 = myRefNotification.child(notificationInfoUidList.get(position)) ;
 
-                        myRefRefer2.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                myRefRefer2.removeEventListener(this);
-                                for (DataSnapshot dS1: dataSnapshot.getChildren()){
-                                    ReferInfo referInfo = dS1.getValue(ReferInfo.class) ;
-                                    if(referInfo.getVerifiedTutorEmail().equals(userInfo.get(2))){
-                                        referInfo.setReferApprove("yes");
-                                        myRefRefer2.child(dS1.getKey()).setValue(referInfo) ;
+                            myRefRefer2.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    myRefRefer2.removeEventListener(this);
+                                    for (DataSnapshot dS1: dataSnapshot.getChildren()){
+                                        ReferInfo referInfo = dS1.getValue(ReferInfo.class) ;
+                                        if(referInfo.getVerifiedTutorEmail().equals(userInfo.get(2))){
+                                            referInfo.setReferApprove("yes");
+                                            myRefRefer2.child(dS1.getKey()).setValue(referInfo) ;
 
-                                        NotificationInfo notificationInfo = notificationInfoArrayList.get(position) ;
-                                        notificationInfo.setMessage4("yes");
-                                        myRefNotification2.setValue(notificationInfo) ;
+                                            NotificationInfo notificationInfo = notificationInfoArrayList.get(position) ;
+                                            notificationInfo.setMessage4("yes");
+                                            myRefNotification2.setValue(notificationInfo) ;
 
-                                        Intent intent = new Intent(parent.getContext(), NotificationViewActivity.class);
-                                        intent.putStringArrayListExtra("userInfo", userInfo) ;
-                                        parent.getContext().startActivity(intent);
+                                            Intent intent = new Intent(parent.getContext(), NotificationViewActivity.class);
+                                            intent.putStringArrayListExtra("userInfo", userInfo) ;
+                                            intent.putExtra("user", user) ;
+                                            parent.getContext().startActivity(intent);
 
-                                        break;
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        }) ;
-                    }
-                }) ;
+                                }
+                            }) ;
+                        }
+                    }) ;
 
-                holder.buttonNo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        myRefRefer2 = myRefRefer.child(notificationInfoArrayList.get(position).getMessage3()) ;
-                        myRefNotification2 = myRefNotification.child(notificationInfoUidList.get(position)) ;
+                    holder.buttonNo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            myRefRefer2 = myRefRefer.child(notificationInfoArrayList.get(position).getMessage3()) ;
+                            myRefNotification2 = myRefNotification.child(notificationInfoUidList.get(position)) ;
 
-                        myRefRefer2.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                myRefRefer2.removeEventListener(this);
-                                for (DataSnapshot dS1: dataSnapshot.getChildren()){
-                                    ReferInfo referInfo = dS1.getValue(ReferInfo.class) ;
-                                    if(referInfo.getVerifiedTutorEmail().equals(userInfo.get(2))){
-                                        referInfo.setReferApprove("no");
-                                        myRefRefer2.child(dS1.getKey()).setValue(referInfo) ;
+                            myRefRefer2.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    myRefRefer2.removeEventListener(this);
+                                    for (DataSnapshot dS1: dataSnapshot.getChildren()){
+                                        ReferInfo referInfo = dS1.getValue(ReferInfo.class) ;
+                                        if(referInfo.getVerifiedTutorEmail().equals(userInfo.get(2))){
+                                            referInfo.setReferApprove("no");
+                                            myRefRefer2.child(dS1.getKey()).setValue(referInfo) ;
 
-                                        NotificationInfo notificationInfo = notificationInfoArrayList.get(position) ;
-                                        notificationInfo.setMessage4("no");
-                                        myRefNotification2.setValue(notificationInfo) ;
+                                            NotificationInfo notificationInfo = notificationInfoArrayList.get(position) ;
+                                            notificationInfo.setMessage4("no");
+                                            myRefNotification2.setValue(notificationInfo) ;
 
-                                        Intent intent = new Intent(parent.getContext(), NotificationViewActivity.class);
-                                        intent.putStringArrayListExtra("userInfo", userInfo) ;
-                                        parent.getContext().startActivity(intent);
+                                            Intent intent = new Intent(parent.getContext(), NotificationViewActivity.class);
+                                            intent.putStringArrayListExtra("userInfo", userInfo) ;
+                                            intent.putExtra("user", user) ;
+                                            parent.getContext().startActivity(intent);
+                                            //((NotificationViewActivity)context).finish();
 
-                                        break;
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        }) ;
-                    }
-                }) ;
+                                }
+                            }) ;
+                        }
+                    }) ;
 
+                }
+                else if (notificationInfoArrayList.get(position).getMessage4().equals("yes")){
+                    holder.message.setText("Your friend " + notificationInfoArrayList.get(position).getMessage1() + " (email: " + notificationInfoArrayList.get(position).getMessage2() + ") now in Tuition App.");
+                }
+                else if (notificationInfoArrayList.get(position).getMessage4().equals("no")){
+                    holder.message.setText("An Unknown Person. (Name: " + notificationInfoArrayList.get(position).getMessage1() + ", Email: " + notificationInfoArrayList.get(position).getMessage2() + ")");
+                }
             }
-            else if (notificationInfoArrayList.get(position).getMessage4().equals("yes")){
-                holder.message.setText("Your friend " + notificationInfoArrayList.get(position).getMessage1() + " (email: " + notificationInfoArrayList.get(position).getMessage2() + ") now in Tuition App.");
-            }
-            else if (notificationInfoArrayList.get(position).getMessage4().equals("no")){
-                holder.message.setText("An Unknown Person. (Name: " + notificationInfoArrayList.get(position).getMessage1() + ", Email: " + notificationInfoArrayList.get(position).getMessage2() + ")");
+            else if(notificationInfoArrayList.get(position).getTypes().equals("groupTutor")){
+                holder.message.setText("You have been added to \"" + notificationInfoArrayList.get(position).getMessage1() + "\" group");
+
             }
         }
-        else {
+        else if(user.equals("guardian")){
             holder.message.setText(notificationInfoArrayList.get(position).getMessage1() + " response to your post ");
         }
 

@@ -56,8 +56,9 @@ public class RecyclerAdapterForGuardianHomePage2 extends RecyclerView.Adapter<Re
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(parent.getContext() , GroupHomePageActivity.class);
-                intent.putExtra("user", "guardianHomePage") ;
+                intent.putExtra("user", "guardian") ;
                 intent.putExtra("groupID", groupUidList.get(position)) ;
+                intent.putExtra("context", "homepage") ;
                 parent.getContext().startActivity(intent);
             }
         });

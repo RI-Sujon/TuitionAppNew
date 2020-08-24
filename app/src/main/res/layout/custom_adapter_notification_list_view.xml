@@ -24,7 +24,6 @@
                 android:id="@+id/message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Do you know Rabiul Islam Sujon(email: bsse1012@iit.du.ac.bd) ?"
                 android:textColor="@color/Black"
                 android:textSize="16dp"
                 android:textStyle="bold"
@@ -64,7 +63,6 @@
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5 minute ago"
                 android:layout_marginLeft="12dp"/>
 
         </LinearLayout>

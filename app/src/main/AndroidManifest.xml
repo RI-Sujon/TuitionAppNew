@@ -30,7 +30,7 @@
         <activity android:name=".note.Note_Home" />
         <activity android:name=".batch.BatchStudentInfoTableActivity" />
         <activity android:name=".notice_board.NoticeBoardViewAndCreateActivity" />
-        <activity android:name=".group.GroupTutorViewActivity" />
+        <activity android:name=".group.GroupTutorAddActivity" />
         <activity android:name=".batch.BatchViewInfoActivity" />
         <activity android:name=".message_box.MainMessageActivity" />
         <activity android:name=".message_box.MessageActivity" />

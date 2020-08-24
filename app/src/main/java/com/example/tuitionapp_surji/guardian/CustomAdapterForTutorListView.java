@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 public class CustomAdapterForTutorListView extends BaseAdapter {
     private Context context;
-
     private ArrayList<CandidateTutorInfo> candidateTutorInfoArrayList ;
     private String viewFlag ;
 
@@ -65,7 +64,6 @@ public class CustomAdapterForTutorListView extends BaseAdapter {
                 holder.imageView.setVisibility(View.VISIBLE);
                 holder.imageView2.setVisibility(View.GONE);
                 Picasso.get().load(candidateTutorInfoArrayList.get(position).getProfilePictureUri()).into(holder.imageView) ;
-                System.out.println(candidateTutorInfoArrayList.get(position).getProfilePictureUri() + " <=======> " + candidateTutorInfoArrayList.get(position).getUserName() );
             }
             else{
                 holder.imageView.setVisibility(View.GONE);

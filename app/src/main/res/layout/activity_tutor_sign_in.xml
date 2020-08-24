@@ -24,24 +24,33 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="16dp"
             android:onClick="goToBackPageActivity"/>
-        <ImageView
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="18.03dp"
             android:layout_marginTop="74.72dp"
-            android:src="@drawable/welcome_back" />
+            android:fontFamily="@font/petit_formal_script"
+            android:textStyle="bold"
+            android:text="Welcome Back,"
+            android:textColor="@color/White"
+            android:textSize="15dp" />
 
 
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="110.341dp"
-            android:src="@drawable/log_in_" />
+            android:layout_marginStart="12.83dp"
+            android:layout_marginTop="100dp"
+            android:fontFamily="@font/merienda_one"
+            android:text="Log In!"
+            android:textColor="@color/White"
+            android:textSize="47dp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
@@ -155,12 +164,16 @@
             android:src="@drawable/sign_in_background"
             android:onClick="signInCompletion"/>
 
-        <ImageView
-            android:layout_width="53.53dp"
-            android:layout_height="21.81dp"
-            android:layout_marginStart="169.65dp"
-            android:layout_marginTop="471.13dp"
-            android:src="@drawable/log_in_text_white"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="467dp"
+            android:text="Log in"
+            android:textSize="20dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textStyle="bold"
+            android:textColor="@color/White"/>
 
     </RelativeLayout>
     <RelativeLayout

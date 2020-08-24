@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         startModule();
     }
 
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         myRefApproveAndBlockInfo.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                myRefApproveAndBlockInfo.removeEventListener(this);
                 if(dataSnapshot.exists()){
                     ApproveAndBlockInfo approveAndBlockInfo = dataSnapshot.getValue(ApproveAndBlockInfo.class) ;
                     if(approveAndBlockInfo.getStatus().equals("blocked")){

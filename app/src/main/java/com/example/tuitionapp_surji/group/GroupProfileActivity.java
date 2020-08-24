@@ -107,7 +107,7 @@ public class GroupProfileActivity extends AppCompatActivity {
 
         toolbarMenu = materialToolbar.getMenu() ;
 
-        if(user.equals("guardian")){
+        if(!user.equals("tutor")){
             toolbarMenu.findItem(R.id.edit_info).setVisible(false);
             toolbarMenu.findItem(R.id.change_pic).setVisible(false) ;
         }

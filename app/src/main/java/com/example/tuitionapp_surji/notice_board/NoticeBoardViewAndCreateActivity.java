@@ -73,6 +73,8 @@ public class NoticeBoardViewAndCreateActivity extends AppCompatActivity {
     private MaterialToolbar toolbar ;
     private Menu toolbarMenu ;
 
+    private int pageFlag = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +88,7 @@ public class NoticeBoardViewAndCreateActivity extends AppCompatActivity {
             user = "tutor" ;
         }
         else if(user.equals("groupVisitor")){
-            user = "guardian" ;
+            //user = "guardian" ;
         }
         else {
             userEmail = intent.getStringExtra("userEmail") ;
@@ -185,6 +187,7 @@ public class NoticeBoardViewAndCreateActivity extends AppCompatActivity {
     }
 
     private void prepareForPostOperation(){
+        pageFlag = 1 ;
         toolbarMenu.findItem(R.id.post).setVisible(false);
         toolbarMenu.findItem(R.id.attachment).setVisible(false);
         toolbarMenu.findItem(R.id.addPostNotice).setVisible(true);
@@ -199,6 +202,7 @@ public class NoticeBoardViewAndCreateActivity extends AppCompatActivity {
     }
 
     private void prepareForAttachmentOperation(){
+        pageFlag = 2 ;
         toolbarMenu.findItem(R.id.post).setVisible(false);
         toolbarMenu.findItem(R.id.attachment).setVisible(false);
         toolbarMenu.findItem(R.id.addAttachmentNotice).setVisible(true);
@@ -237,22 +241,18 @@ public class NoticeBoardViewAndCreateActivity extends AppCompatActivity {
         intent.putExtra("user",user) ;
         intent.putExtra("groupID" , groupID) ;
 
-        if(user.equals("tutor")){
-            intent.putStringArrayListExtra("userInfo",userInfo) ;
-        }
-        else if(user.equals("guardian")){
-            intent.putExtra("userEmail" , userEmail) ;
-        }
+        intent.putStringArrayListExtra("userInfo",userInfo) ;
+
         startActivity(intent);
         finish();
     }
 
     private void getPDF() {
+        prepareForAttachmentOperation();
         Intent intent = new Intent();
         intent.setType("application/pdf");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_PDF_CODE);
-        prepareForAttachmentOperation();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -329,25 +329,53 @@ public class NoticeBoardViewAndCreateActivity extends AppCompatActivity {
         intent.putExtra("user",user) ;
         intent.putExtra("groupID" , groupID) ;
 
-        if(user.equals("tutor")){
-            intent.putStringArrayListExtra("userInfo",userInfo) ;
-        }
-        else if(user.equals("guardian")){
-            intent.putExtra("userEmail" , userEmail) ;
-        }
+        intent.putStringArrayListExtra("userInfo",userInfo) ;
+
         startActivity(intent);
         finish();
     }
 
     public void goToBackPageActivity(){
-        Intent intent = new Intent(this, GroupHomePageActivity.class);
-        intent.putExtra("groupID", groupID) ;
-        if(user.equals("tutor")){
-            intent.putStringArrayListExtra("userInfo",userInfo) ;
+        if(pageFlag==0){
+            if(user.equals("tutor")){
+                Intent intent = new Intent(this, GroupHomePageActivity.class);
+                intent.putExtra("groupID", groupID) ;
+                intent.putStringArrayListExtra("userInfo",userInfo) ;
+                intent.putExtra("user", user) ;
+                startActivity(intent);
+            }
+            finish();
         }
-        intent.putExtra("user", user) ;
-        startActivity(intent);
-        finish();
+        else {
+            toolbarMenu.findItem(R.id.post).setVisible(true);
+            toolbarMenu.findItem(R.id.attachment).setVisible(true);
+            toolbar.setTitle("NoticeBoard");
+            titleTV.setVisibility(View.GONE);
+            bodyTV.setVisibility(View.GONE);
+            noticeTitleEditText.setText("");
+            noticeTitleEditTextLayout.setVisibility(View.GONE);
+
+            if(pageFlag==1){
+                toolbarMenu.findItem(R.id.addPostNotice).setVisible(false);
+
+                noticePostEditTextLayout.setVisibility(View.GONE);
+                addPostButton.setVisibility(View.GONE);
+                postListView.setVisibility(View.VISIBLE);
+
+                postEditText.setText("");
+                pageFlag = 0 ;
+            }
+            else if(pageFlag==2){
+                toolbarMenu.findItem(R.id.addAttachmentNotice).setVisible(false);
+
+                attachmentTextView.setText("Select a PDF File");
+                attachmentTextView.setVisibility(View.GONE);
+                addAttachmentButton.setVisibility(View.GONE);
+                postListView.setVisibility(View.VISIBLE);
+                pageFlag = 0 ;
+            }
+        }
+
     }
 
     @Override

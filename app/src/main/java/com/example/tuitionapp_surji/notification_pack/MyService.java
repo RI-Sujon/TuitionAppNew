@@ -26,7 +26,6 @@ public class MyService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        System.out.println("------------------->>" + remoteMessage.getFrom());
 
         if (remoteMessage.getData().size() > 0) {
             if (true) {

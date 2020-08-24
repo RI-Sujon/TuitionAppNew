@@ -24,34 +24,32 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="16dp"
             android:onClick="goToBackPageActivity"/>
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="22dp"
+            android:layout_marginStart="18.03dp"
             android:layout_marginTop="74.72dp"
-            android:src="@drawable/hello" />
+            android:fontFamily="@font/petit_formal_script"
+            android:textStyle="bold"
+            android:text="Hello,"
+            android:textColor="@color/White"
+            android:textSize="20dp" />
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/niconne"
-            android:text="Welcome Back"
-            android:layout_marginTop="70dp"
-            android:layout_marginStart="18dp"
-            android:textSize="25dp"
-            android:textColor="@color/White"
-            android:visibility="gone"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="110.341dp"
-            android:src="@drawable/log_in_" />
+            android:layout_marginStart="12.83dp"
+            android:layout_marginTop="100dp"
+            android:fontFamily="@font/merienda_one"
+            android:text="Log In!"
+            android:textColor="@color/White"
+            android:textSize="45dp"
+            android:textStyle="bold" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -67,18 +65,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible">
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/enter_your_mobile_number"
-            android:layout_marginTop="300dp"
+            android:text="Enter Your Mobile Number"
+            android:fontFamily="sans-serif-smallcaps"
+            android:layout_marginTop="280dp"
+            android:textSize="19dp"
+            android:textColor="#0303C6"
             android:layout_centerHorizontal="true"/>
         <EditText
             android:id="@+id/guardianMobileNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/guardian_mobile_number_edit_text"
-            android:layout_marginTop="330dp"
+            android:layout_marginTop="310dp"
             android:inputType="number"
             android:paddingLeft="110dp"
             android:paddingRight="10dp"
@@ -89,22 +90,64 @@
             android:fontFamily="sans-serif-condensed-medium"
             android:layout_centerHorizontal="true" />
 
-        <ImageView
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/we_will_send_code2"
-            android:layout_marginTop="440dp"
-            android:layout_marginStart="130dp"/>
+            android:layout_marginTop="420dp"
+            android:layout_marginRight="40dp"
+            android:layout_alignParentRight="true">
+            <TextView
+                android:id="@+id/t1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="We will send you a "
+                android:textColor="#4c72e0"
+                android:fontFamily="sans-serif-condensed" />
+
+            <TextView
+                android:id="@+id/t2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="verification code"
+                android:layout_toEndOf="@id/t1"
+                android:fontFamily="@font/font"
+                android:textStyle="bold"
+                android:textColor="@color/Black" />
+
+            <TextView
+                android:layout_below="@id/t2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:text="on this mobile number"
+                android:textColor="#4c72e0"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
 
         <ImageView
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/continue_small"
+            android:src="@drawable/sign_in_background"
             android:layout_marginTop="550dp"
-            android:layout_marginStart="210dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
             android:onClick="sendVerificationCodeToPhoneNumber"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="559dp"
+            android:layout_marginRight="75dp"
+            android:text="Continue"
+            android:textSize="20dp"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="bold"
+            android:textColor="@color/White"/>
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -112,11 +155,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/verify_your_mobile_number"
-            android:layout_marginTop="300dp"
+            android:text="Verify Your Mobile Number"
+            android:fontFamily="sans-serif-smallcaps"
+            android:layout_marginTop="280dp"
+            android:textSize="18dp"
+            android:textColor="#0303C6"
             android:layout_centerHorizontal="true"/>
 
         <com.chaos.view.PinView
@@ -141,115 +187,58 @@
             app:itemWidth="34dp"
             app:lineColor="#00000000"
             app:lineWidth="0dp"
-            android:layout_marginTop="330dp"
+            android:layout_marginTop="310dp"
             android:layout_centerHorizontal="true"/>
-
+        
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="390dp"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            >
-            <EditText
-                android:id="@+id/vc1"
-                android:maxLength="1"
+            android:orientation="vertical"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="420dp">
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/verify_bar"
-                android:inputType="number"
-                android:layout_margin="8dp"
-                android:gravity="center"
-                android:cursorVisible="true"
-                android:focusable="true" />
-            <EditText
-                android:id="@+id/vc2"
-                android:maxLength="1"
+                android:text="An 6 digit code has been send to"
+                android:textColor="#4c72e0"
+                android:fontFamily="sans-serif-condensed" />
+
+            <TextView
+                android:id="@+id/mobileNumberTextView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/verify_bar"
-                android:inputType="number"
-                android:focusable="true"
-                android:layout_margin="8dp"
-                android:gravity="center"/>
-            <EditText
-                android:id="@+id/vc3"
-                android:maxLength="1"
+                android:fontFamily="sans-serif-condensed" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/verify_bar"
-                android:inputType="number"
-                android:focusable="true"
-                android:layout_margin="8dp"
-                android:gravity="center"/>
-            <EditText
-                android:id="@+id/vc4"
-                android:maxLength="1"
+                android:text="Don't receive the verification code?"
+                android:textColor="#4c72e0"
+                android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif-condensed" />
+
+            <TextView
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:background="@drawable/verify_bar"
-                android:layout_margin="8dp"
-                android:gravity="center"/>
-            <EditText
-                android:id="@+id/vc5"
-                android:maxLength="1"
+                android:text="Resend Code"
+                android:textColor="#2c30e7"
+                android:fontFamily="sans-serif-black"
+                android:onClick="resend"/>
+
+            <ImageView
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:background="@drawable/verify_bar"
-                android:layout_margin="8dp"
-                android:gravity="center"/>
-            <EditText
-                android:id="@+id/vc6"
-                android:maxLength="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:background="@drawable/verify_bar"
-                android:layout_margin="8dp"
-                android:gravity="center"/>
+                android:src="@drawable/verify"
+                android:layout_marginTop="50dp"
+                android:layout_gravity="right"
+                android:onClick="signUpCompletion"/>
+
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/an_6_digit_code_sent"
-            android:layout_marginTop="440dp"
-            android:layout_marginStart="130dp"/>
-        <TextView
-            android:id="@+id/mobileNumberTextView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:layout_marginTop="450dp"
-            android:layout_marginStart="130dp"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/dont_recieve_the_code"
-            android:layout_marginTop="490dp"
-            android:layout_marginStart="130dp"/>
-        <ImageView
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/resend_code"
-            android:layout_marginTop="505dp"
-            android:layout_marginStart="130dp"
-            android:onClick="resend"/>
-
-        <ImageView
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/verify"
-            android:layout_marginTop="550dp"
-            android:layout_marginStart="210dp"
-            android:onClick="signUpCompletion"/>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

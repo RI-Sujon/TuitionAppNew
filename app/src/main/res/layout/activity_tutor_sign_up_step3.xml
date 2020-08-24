@@ -11,207 +11,224 @@
         android:layout_height="match_parent"
         android:background="@drawable/registration1_background">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/registration_text"
-            android:layout_marginTop="120dp"
-            android:layout_marginStart="30dp"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/r4"
-            android:layout_marginTop="170dp"
-            android:layout_marginStart="45dp"/>
-        <ImageView
-            android:layout_width="335dp"
-            android:layout_height="475dp"
-            android:layout_marginTop="200dp"
-            android:src="@drawable/registration_white_board"
-            android:layout_centerHorizontal="true"/>
-
-        <ScrollView
-            android:layout_width="330dp"
-            android:layout_height="350dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="230dp"
-            android:isScrollContainer="false">
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="110dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="40dp"
+                android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal">
+                android:text="Registration"
+                android:textColor="@color/White"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/font"
+                android:layout_marginBottom="30dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/r4"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="28dp"
-                    android:textSize="11dp"
-                    android:text="Select Preferred Medium/Version"
-                    android:textColor="@color/RoyalBlue"
-                    android:layout_marginTop="20dp"/>
-                <Spinner
-                    android:id="@+id/mediumBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/spinner_border"
-                    android:layout_gravity="center_horizontal"
-                    android:entries="@array/medium_array"
-                    android:layout_marginBottom="20dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/registration_white_board"
+                android:layout_marginTop="5dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="28dp"
-                    android:textSize="11dp"
-                    android:text="Add Preferred Class"
-                    android:layout_marginTop="0dp"
-                    android:textColor="@color/RoyalBlue" />
-                <MultiAutoCompleteTextView
-                    android:id="@+id/classBox"
-                    android:layout_width="278dp"
-                    android:layout_height="65dp"
-                    android:hint="Preferred Class"
-                    android:textSize="14dp"
-                    android:gravity="start"
-                    android:padding="10dp"
-                    android:textColor="@color/White"
-                    android:paddingLeft="2dp"
-                    android:background="@drawable/multi_text_view_blue"
-                    android:layout_marginBottom="20dp"/>
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="85dp"
+                    android:isScrollContainer="false">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/registration_white_board"
+                        android:padding="30dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="28dp"
-                    android:textSize="11dp"
-                    android:text="Select Preferred Group"
-                    android:textColor="@color/RoyalBlue" />
-                <Spinner
-                    android:id="@+id/groupBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/spinner_border"
-                    android:layout_gravity="center_horizontal"
-                    android:entries="@array/group_array"
-                    android:layout_marginBottom="20dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_gravity="left"
+                            android:textSize="11dp"
+                            android:text="Select Preferred Medium/Version"
+                            android:textColor="@color/RoyalBlue"
+                            android:layout_marginTop="20dp"/>
+                        <Spinner
+                            android:id="@+id/mediumBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/spinner_border"
+                            android:layout_gravity="center_horizontal"
+                            android:entries="@array/medium_array"
+                            android:layout_marginBottom="20dp"/>
 
-                <TextView
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="11dp"
+                            android:layout_marginLeft="2dp"
+                            android:text="Add Preferred Class"
+                            android:layout_marginTop="0dp"
+                            android:textColor="@color/RoyalBlue" />
+                        <MultiAutoCompleteTextView
+                            android:id="@+id/classBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="65dp"
+                            android:hint="Preferred Class"
+                            android:textSize="14dp"
+                            android:gravity="start"
+                            android:padding="10dp"
+                            android:textColor="@color/White"
+                            android:paddingLeft="2dp"
+                            android:background="@drawable/multi_text_view_blue"
+                            android:layout_marginBottom="20dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="11dp"
+                            android:layout_marginLeft="2dp"
+                            android:text="Select Preferred Group"
+                            android:textColor="@color/RoyalBlue" />
+                        <Spinner
+                            android:id="@+id/groupBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/spinner_border"
+                            android:layout_gravity="center_horizontal"
+                            android:entries="@array/group_array"
+                            android:layout_marginBottom="20dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:layout_marginLeft="2dp"
+                            android:textSize="11dp"
+                            android:text="Add Preferred Subject"
+                            android:textColor="@color/RoyalBlue"/>
+                        <MultiAutoCompleteTextView
+                            android:id="@+id/subjectBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="65dp"
+                            android:textSize="14dp"
+                            android:hint="Preferred Subject"
+                            android:gravity="start"
+                            android:padding="10dp"
+                            android:textColor="@color/White"
+                            android:background="@drawable/multi_text_view_blue"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="20dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="11dp"
+                            android:layout_marginLeft="2dp"
+                            android:text="Select Preferred Area"
+                            android:layout_marginTop="0dp"
+                            android:textColor="@color/RoyalBlue"
+                            android:visibility="visible"/>
+                        <Spinner
+                            android:id="@+id/areaAddressBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/spinner_border"
+                            android:layout_gravity="center_horizontal"
+                            android:entries="@array/areaAddress_array"
+                            android:layout_marginBottom="20dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:layout_marginLeft="2dp"
+                            android:textSize="11dp"
+                            android:text="Add Preferred Days Per Week/Month"
+                            android:textColor="@color/RoyalBlue" />
+                        <MultiAutoCompleteTextView
+                            android:id="@+id/daysPerWeekOrMonthBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="65dp"
+                            android:textSize="14dp"
+                            android:textColor="@color/White"
+                            android:hint="Days Per Week/Month"
+                            android:padding="10dp"
+                            android:gravity="start"
+                            android:background="@drawable/multi_text_view_blue"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="20dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="11dp"
+                            android:layout_marginLeft="2dp"
+                            android:text="Select Minimum Salary"
+                            android:layout_marginTop="0dp"
+                            android:textColor="@color/RoyalBlue"
+                            android:visibility="visible"/>
+                        <Spinner
+                            android:id="@+id/minimumSalaryBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/spinner_border"
+                            android:layout_gravity="center_horizontal"
+                            android:entries="@array/salary_array"
+                            android:layout_marginBottom="20dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="11dp"
+                            android:layout_marginLeft="2dp"
+                            android:text="Add Your Experience Status"
+                            android:textColor="@color/RoyalBlue" />
+                        <EditText
+                            android:id="@+id/experienceStatusBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="65dp"
+                            android:textSize="14dp"
+                            android:hint="Experience Status"
+                            android:padding="10dp"
+                            android:gravity="start"
+                            android:background="@drawable/mult_edit_text_border"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="20dp"/>
+
+                    </LinearLayout>
+                </ScrollView>
+
+                <ImageView
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="28dp"
-                    android:textSize="11dp"
-                    android:text="Add Preferred Subject"
-                    android:textColor="@color/RoyalBlue"/>
-                <MultiAutoCompleteTextView
-                    android:id="@+id/subjectBox"
-                    android:layout_width="278dp"
-                    android:layout_height="65dp"
-                    android:textSize="14dp"
-                    android:hint="Preferred Subject"
-                    android:gravity="start"
-                    android:padding="10dp"
-                    android:textColor="@color/White"
-                    android:background="@drawable/multi_text_view_blue"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="20dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="28dp"
-                    android:textSize="11dp"
-                    android:text="Select Preferred Area"
-                    android:layout_marginTop="0dp"
-                    android:textColor="@color/RoyalBlue"
-                    android:visibility="visible"/>
-                <Spinner
-                    android:id="@+id/areaAddressBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/spinner_border"
-                    android:layout_gravity="center_horizontal"
-                    android:entries="@array/areaAddress_array"
-                    android:layout_marginBottom="20dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="28dp"
-                    android:textSize="11dp"
-                    android:text="Add Preferred Days Per Week/Month"
-                    android:textColor="@color/RoyalBlue" />
-                <MultiAutoCompleteTextView
-                    android:id="@+id/daysPerWeekOrMonthBox"
-                    android:layout_width="278dp"
-                    android:layout_height="65dp"
-                    android:textSize="14dp"
-                    android:textColor="@color/White"
-                    android:hint="Days Per Week/Month"
-                    android:padding="10dp"
-                    android:gravity="start"
-                    android:background="@drawable/multi_text_view_blue"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="20dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="28dp"
-                    android:textSize="11dp"
-                    android:text="Select Minimum Salary"
-                    android:layout_marginTop="0dp"
-                    android:textColor="@color/RoyalBlue"
-                    android:visibility="visible"/>
-                <Spinner
-                    android:id="@+id/minimumSalaryBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/spinner_border"
-                    android:layout_gravity="center_horizontal"
-                    android:entries="@array/salary_array"
-                    android:layout_marginBottom="20dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="28dp"
-                    android:textSize="11dp"
-                    android:text="Add Your Experience Status"
-                    android:textColor="@color/RoyalBlue" />
-                <EditText
-                    android:id="@+id/experienceStatusBox"
-                    android:layout_width="278dp"
-                    android:layout_height="65dp"
-                    android:textSize="14dp"
-                    android:hint="Experience Status"
-                    android:padding="10dp"
-                    android:gravity="start"
-                    android:background="@drawable/mult_edit_text_border"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="20dp"/>
-
-
-            </LinearLayout>
-        </ScrollView>
-
-        <ImageView
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="600dp"
-            android:layout_marginStart="215dp"
-            android:background="@drawable/next_button"
-            android:onClick="signUpCompletion"/>
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/next_button"
+                    android:onClick="signUpCompletion"/>
+            </RelativeLayout>
+        </LinearLayout>
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

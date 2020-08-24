@@ -10,7 +10,6 @@ import android.view.View;
 import com.example.tuitionapp_surji.guardian.GuardianModuleStartActivity;
 import com.example.tuitionapp_surji.candidate_tutor.TutorSignInActivity;
 import com.example.tuitionapp_surji.R;
-import com.example.tuitionapp_surji.tuition_post.TuitionPostViewSinglePageActivity;
 
 public class HomePageActivity extends AppCompatActivity {
 
@@ -44,7 +43,7 @@ public class HomePageActivity extends AppCompatActivity {
                 x2 = touchEvent.getX();
                 y2 = touchEvent.getY();
                 if(x1<x2){
-                Intent intent = new Intent(HomePageActivity.this, TuitionPostViewSinglePageActivity.class);
+                Intent intent = new Intent(HomePageActivity.this, TutorSignInActivity.class);
                 startActivity(intent);
                 finish();
             }else if(x1>x2){

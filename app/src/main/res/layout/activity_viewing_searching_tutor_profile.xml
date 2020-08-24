@@ -101,11 +101,17 @@
             android:orientation="horizontal"
             android:gravity="center">
 
-            <ImageView
-                android:id="@+id/tutor_list_button_image_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/tutor_search_result_button"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tutor_list_button"
+                android:layout_width="140dp"
+                android:layout_height="35dp"
+                android:text="TUTOR"
+                app:cornerRadius="30dp"
+                android:padding="0dp"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/White"
+                android:backgroundTint="#2c30e7" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tutorListViewButton"
                 android:layout_width="140dp"
@@ -116,12 +122,19 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:background="#00000000"
                 android:visibility="gone"/>
-            <ImageView
-                android:id="@+id/group_list_button_image_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/group_searching_result"
-                android:visibility="gone"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/group_list_button"
+                android:layout_width="140dp"
+                android:layout_height="35dp"
+                android:text="GROUP"
+                app:cornerRadius="30dp"
+                android:padding="0dp"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/White"
+                android:visibility="gone"
+                android:backgroundTint="#2c30e7" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/groupListViewButton"
                 android:layout_width="140dp"

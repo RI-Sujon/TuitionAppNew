@@ -166,21 +166,21 @@ public class TuitionPostViewActivity extends AppCompatActivity {
 
     public void goToBackPageActivity(View view){
         if(user.equals("tutor")){
-            //Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
-            //intent.putStringArrayListExtra("userInfo", userInfo) ;
-            //startActivity(intent);
+            Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+            intent.putStringArrayListExtra("userInfo", userInfo) ;
+            startActivity(intent);
             finish();
         }
         else if(user.equals("guardian")){
-            //Intent intent = new Intent(this, GuardianHomePageActivity.class);
-            //startActivity(intent);
+            Intent intent = new Intent(this, GuardianHomePageActivity.class);
+            startActivity(intent);
             finish();
         }
     }
 
     public void goToGuardianPostForTuitionActivity(View view) {
         Intent intent = new Intent(this, TuitionPostCreationActivity.class);
-        intent.putExtra("type","newPost") ;
+        intent.putExtra("type","newPost");
         startActivity(intent);
         finish();
     }
@@ -307,7 +307,7 @@ public class TuitionPostViewActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot dS1: dataSnapshot.getChildren()){
                     TuitionPostInfo tuitionPostInfo = dS1.getValue(TuitionPostInfo.class) ;
-                    if(!tuitionPostInfo.getTutorGenderPreference().equals(gender)){
+                    if(!tuitionPostInfo.getTutorGenderPreference().equals(gender) && tuitionPostInfo.getAvailability().equals("Available")){
                         helpArrayList.add(tuitionPostInfo);
                         helpArrayList2.add(dS1.getKey()) ;
                     }

@@ -164,13 +164,13 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 TuitionPostInfo tuitionPostInfo = dataSnapshot.getValue(TuitionPostInfo.class) ;
-                if((tuitionPostInfo.getStudentGroup().equals(group)||tuitionPostInfo.getStudentGroup().equals(""))){
+                if((tuitionPostInfo.getStudentGroup().equals(group)||tuitionPostInfo.getStudentGroup().equals("")) && tuitionPostInfo.getAvailability().equals("Available") ){
                     tuitionPostInfoArrayList1.add(tuitionPostInfo) ;
                     tuitionPostUidList1.add(dataSnapshot.getKey()) ;
                     count1++ ;
                 }
 
-                if(tuitionPostInfo.getStudentAreaAddress().equals(address) && (tuitionPostInfo.getStudentGroup().equals(group)||tuitionPostInfo.getStudentGroup().equals(""))){
+                if(tuitionPostInfo.getStudentAreaAddress().equals(address) && (tuitionPostInfo.getStudentGroup().equals(group)||tuitionPostInfo.getStudentGroup().equals("")) && tuitionPostInfo.getAvailability().equals("Available")){
                     tuitionPostInfoArrayList2.add(tuitionPostInfo) ;
                     tuitionPostUidList2.add(dataSnapshot.getKey()) ;
                     count2++ ;
@@ -239,13 +239,11 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
             for(int j=0 ; j<responseTuitionPostArrayList.size() ; j++){
                 if(tuitionPostUidList1.get(i).equals(responseTuitionPostArrayList.get(j))){
                     responseTuitionPostArray1[i] = 1 ;
-                    //break ;
                 }
 
                 if(i<tuitionPostUidList2.size()){
                     if(tuitionPostUidList2.get(i).equals(responseTuitionPostArrayList.get(j))){
                         responseTuitionPostArray2[i] = 1 ;
-                        //break ;
                     }
                 }
             }
@@ -262,7 +260,6 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         Intent intent = new Intent(this, MainMessageActivity.class);
         intent.putExtra("user","tutor") ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
     }
@@ -336,7 +333,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         intent.putExtra("user" , "tutor") ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
-        //finish();
+        finish();
     }
 
     public void signOut() {

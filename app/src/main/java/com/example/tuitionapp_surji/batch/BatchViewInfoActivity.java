@@ -41,6 +41,8 @@ public class BatchViewInfoActivity extends AppCompatActivity {
     private MaterialToolbar materialToolbar ;
     private Menu toolbarMenu ;
 
+    private String tutorEmailForGuardian, tutorUidForGuardian, contextForGuardian;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +64,11 @@ public class BatchViewInfoActivity extends AppCompatActivity {
         if(user.equals("tutor")){
             userInfo = intent.getStringArrayListExtra("userInfo") ;
             studentInfoButton.setVisibility(View.VISIBLE);
+        }
+        else if(user.equals("guardian")){
+            contextForGuardian = intent.getStringExtra("context") ;
+            tutorEmailForGuardian = intent.getStringExtra("userEmail") ;
+            tutorUidForGuardian = intent.getStringExtra("tutorUid") ;
         }
 
         myRefBatchInfo = FirebaseDatabase.getInstance().getReference("Batch").child(batchID) ;
@@ -125,11 +132,10 @@ public class BatchViewInfoActivity extends AppCompatActivity {
         scheduleEditText[22] = findViewById(R.id.T36) ;
         scheduleEditText[23] = findViewById(R.id.T37) ;
 
-
         toolbarMenu = materialToolbar.getMenu() ;
         toolbarMenu.findItem(R.id.create_batch).setVisible(false);
 
-        if(user.equals("guardian")){
+        if(user.equals("guardian")||user.equals("groupVisitor")){
             toolbarMenu.findItem(R.id.edit_info).setVisible(false);
         }
 
@@ -209,17 +215,23 @@ public class BatchViewInfoActivity extends AppCompatActivity {
         if(user.equals("tutor")){
             intent.putStringArrayListExtra("userInfo",userInfo) ;
         }
+        else if(user.equals("guardian")){
+            intent.putExtra("context", contextForGuardian) ;
+            intent.putExtra("userEmail" , tutorEmailForGuardian) ;
+            intent.putExtra("tutorUid",tutorUidForGuardian) ;
+        }
 
         intent.putExtra("user", user) ;
         intent.putExtra("groupID", groupID) ;
         intent.putExtra("viewType", "batchView") ;
         startActivity(intent);
+
         finish();
+
     }
     @Override
     public void onBackPressed(){
         goToBackPageActivity();
     }
-
 }
 

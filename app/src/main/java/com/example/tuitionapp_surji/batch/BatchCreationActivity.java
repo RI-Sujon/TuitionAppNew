@@ -1,9 +1,12 @@
 package com.example.tuitionapp_surji.batch;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,8 +15,11 @@ import com.example.tuitionapp_surji.group.GroupHomePageActivity;
 import com.example.tuitionapp_surji.R;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -28,10 +34,14 @@ public class BatchCreationActivity extends AppCompatActivity {
     private String batchNameStr, paymentStr, noOfSeatAvailability, extraInfo ;
     private ArrayList<String> schedule ;
 
-    private String user, userEmail, groupID;
+    private String user, userEmail, groupID, type, batchID, groupName, groupAddress;
     private ArrayList<String> userInfo ;
+    private ArrayList<BatchScheduleInfo> batchScheduleInfoArrayList ;
+
+    private BatchInfo batchInfo ;
 
     private MaterialToolbar materialToolbar ;
+    private Menu toolbarMenu ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +51,7 @@ public class BatchCreationActivity extends AppCompatActivity {
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;
         groupID = intent.getStringExtra("groupID") ;
+        type = intent.getStringExtra("type") ;
 
         if(user.equals("tutor")){
             userInfo = intent.getStringArrayListExtra("userInfo") ;
@@ -53,6 +64,14 @@ public class BatchCreationActivity extends AppCompatActivity {
 
         createNewBatchButton = findViewById(R.id.createBatchButton) ;
 
+        if(type!=null){
+            batchID = intent.getStringExtra("batchID") ;
+            groupName = intent.getStringExtra("groupName") ;
+            groupAddress = intent.getStringExtra("groupAddress") ;
+            createNewBatchButton.setText("UPDATE BATCH");
+            myRefBatchInfo = myRefBatchInfo.child(batchID) ;
+            editBatchOperation(batchID);
+        }
     }
 
     @Override
@@ -98,11 +117,29 @@ public class BatchCreationActivity extends AppCompatActivity {
         materialToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToBackPageActivity();
+                if(type==null){
+                    goToBackPageActivity();
+                }else {
+                    goToBatchInfoActivity();
+                }
+            }
+        });
+
+        toolbarMenu = materialToolbar.getMenu() ;
+        toolbarMenu.findItem(R.id.edit_info).setVisible(false);
+
+        materialToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.create_batch:
+                        createBatchCompletion(null);
+                        break;
+                }
+                return true;
             }
         });
     }
-
 
     public void createBatchCompletion(View view){
         ArrayList<BatchScheduleInfo> batchScheduleInfoArrayList = new ArrayList<>();
@@ -160,20 +197,63 @@ public class BatchCreationActivity extends AppCompatActivity {
         }
 
         BatchInfo batchInfo = new BatchInfo(batchNameStr, noOfSeatAvailability, paymentStr, extraInfo, batchScheduleInfoArrayList , groupID) ;
-        myRefBatchInfo.push().setValue(batchInfo) ;
-        Intent intent = new Intent(this, GroupHomePageActivity.class);
 
-        if(user.equals("tutor")){
-            intent.putStringArrayListExtra("userInfo",userInfo) ;
+
+        if(type==null){
+            myRefBatchInfo.push().setValue(batchInfo) ;
+            goToBackPageActivity();
         }
-        intent.putExtra("user",user) ;
-        intent.putExtra("groupID" , groupID) ;
-        startActivity(intent);
-        finish();
+        else {
+            myRefBatchInfo.setValue(batchInfo) ;
+            goToBatchInfoActivity();
+        }
     }
 
+    public void editBatchOperation(String batchID){
+        //myRefBatchInfo = myRefBatchInfo.child(batchID) ;
+
+        myRefBatchInfo.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                batchInfo = dataSnapshot.getValue(BatchInfo.class) ;
+                myRefBatchInfo.removeEventListener(this);
+                editBatchOperationStep2(); ;
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+    }
+
+    public void editBatchOperationStep2(){
+        batchNameEditText.setText( batchInfo.getBatchName());
+        noOfAvailableSeatEditText.setText(batchInfo.getNumberOfAvailableSeat());
+        paymentEditText.setText(batchInfo.getPayment());
+        if(batchInfo.getExtraInfo()!=null){
+            extraInfoEditText.setText(batchInfo.getExtraInfo());
+        }
+
+        batchScheduleInfoArrayList = batchInfo.getBatchScheduleInfoList() ;
+
+        int i=0 ;
+        if(!batchScheduleInfoArrayList.isEmpty()){
+            for(BatchScheduleInfo batchScheduleInfo : batchScheduleInfoArrayList){
+                scheduleEditText[i].setText(batchScheduleInfo.getTime());
+                scheduleEditText[i+1].setText(batchScheduleInfo.getSaturdaySubject());
+                scheduleEditText[i+2].setText(batchScheduleInfo.getSundaySubject());
+                scheduleEditText[i+3].setText(batchScheduleInfo.getMondaySubject());
+                scheduleEditText[i+4].setText(batchScheduleInfo.getTuesdaySubject());
+                scheduleEditText[i+5].setText(batchScheduleInfo.getWednesdaySubject());
+                scheduleEditText[i+6].setText(batchScheduleInfo.getThursdaySubject());
+                scheduleEditText[i+7].setText(batchScheduleInfo.getFridaySubject());
+                i = i + 8 ;
+            }
+        }
+    }
 
     public void goToBackPageActivity(){
+
         Intent intent = new Intent(this, GroupHomePageActivity.class);
         intent.putExtra("groupID",groupID) ;
         if(user.equals("tutor")){
@@ -184,8 +264,26 @@ public class BatchCreationActivity extends AppCompatActivity {
         finish();
     }
 
+    public void goToBatchInfoActivity(){
+        Intent intent = new Intent(this, BatchViewInfoActivity.class);
+        intent.putExtra("groupID",groupID) ;
+        intent.putExtra("groupName", groupName) ;
+        intent.putExtra("groupAddress", groupAddress) ;
+        intent.putExtra("batchID", batchID) ;
+        if(user.equals("tutor")){
+            intent.putStringArrayListExtra("userInfo",userInfo) ;
+        }
+        intent.putExtra("user", user) ;
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     public void onBackPressed(){
-        goToBackPageActivity();
+        if(type==null){
+            goToBackPageActivity();
+        }else {
+            goToBatchInfoActivity();
+        }
     }
 }

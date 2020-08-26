@@ -11,220 +11,238 @@
         android:layout_height="match_parent"
         android:background="@drawable/registration1_background">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/registration_text"
-            android:layout_marginTop="120dp"
-            android:layout_marginStart="30dp"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/r1"
-            android:layout_marginTop="170dp"
-            android:layout_marginStart="45dp"/>
-        <ImageView
-            android:layout_width="335dp"
-            android:layout_height="475dp"
-            android:layout_marginTop="200dp"
-            android:src="@drawable/registration_white_board"
-            android:layout_centerHorizontal="true"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="110dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="40dp"
+                android:orientation="vertical">
 
-            <ScrollView
-                android:layout_width="330dp"
-                android:layout_height="350dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="230dp"
-                android:isScrollContainer="false">
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="20dp">
+                    android:text="Registration"
+                    android:textColor="@color/White"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/font"
+                    android:layout_marginBottom="30dp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/r1"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"/>
 
-                    <TextView
-                        android:id="@+id/userNameTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_marginLeft="28dp"
-                        android:textSize="11dp"
-                        android:text="Enter Your Name"
-                        android:layout_marginTop="0dp"
-                        android:textColor="@color/RoyalBlue"
-                        android:visibility="gone"/>
-                    <EditText
-                        android:id="@+id/userName"
-                        android:layout_width="278dp"
-                        android:layout_height="45dp"
-                        android:background="@drawable/pass_edit_text"
-                        android:textSize="16dp"
-                        android:inputType="text"
-                        android:paddingLeft="2dp"
-                        android:hint="Your Name"
-                        android:layout_marginBottom="20dp"
-                        android:visibility="gone"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/registration_white_board"
+                    android:layout_marginTop="5dp">
 
-                    <TextView
-                        android:id="@+id/mobileNumberTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_marginLeft="28dp"
-                        android:textSize="11dp"
-                        android:text="Enter Mobile Number"
-                        android:layout_marginTop="0dp"
-                        android:textColor="@color/RoyalBlue"
-                        android:visibility="gone"/>
-                    <EditText
-                        android:id="@+id/mobileNumber"
-                        android:layout_width="278dp"
-                        android:layout_height="45dp"
-                        android:background="@drawable/pass_edit_text"
-                        android:textSize="16dp"
-                        android:inputType="number"
-                        android:paddingLeft="2dp"
-                        android:hint="Mobile Number"
-                        android:layout_marginBottom="20dp"
-                        android:visibility="gone"/>
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="85dp"
+                        android:isScrollContainer="false">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/registration_white_board"
+                        android:padding="30dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_marginLeft="28dp"
-                        android:textSize="11dp"
-                        android:text="Select Gender"
-                        android:textColor="@color/RoyalBlue"
-                        android:layout_marginTop="0dp"/>
-                    <Spinner
-                        android:id="@+id/gender"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/spinner_border"
-                        android:layout_gravity="center_horizontal"
-                        android:entries="@array/gender_array"
-                        android:layout_marginBottom="20dp" />
+                        <TextView
+                            android:layout_marginLeft="2dp"
+                            android:id="@+id/userNameTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="11dp"
+                            android:text="Enter Your Name"
+                            android:layout_marginTop="20dp"
+                            android:textColor="@color/RoyalBlue"
+                            android:visibility="gone"/>
+                        <EditText
+                            android:id="@+id/userName"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:background="@drawable/pass_edit_text"
+                            android:textSize="16dp"
+                            android:inputType="text"
+                            android:paddingLeft="2dp"
+                            android:hint="Your Name"
+                            android:layout_marginBottom="20dp"
+                            android:visibility="gone"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_marginLeft="28dp"
-                        android:textSize="11dp"
-                        android:text="Select Current Position"
-                        android:textColor="@color/RoyalBlue"
-                        android:layout_marginTop="0dp"/>
-                    <Spinner
-                        android:id="@+id/currentPosition"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/spinner_border"
-                        android:layout_gravity="center_horizontal"
-                        android:entries="@array/currentPosition_array"
-                        android:layout_marginBottom="20dp"/>
+                        <TextView
+                            android:layout_marginLeft="2dp"
+                            android:id="@+id/mobileNumberTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="11dp"
+                            android:text="Enter Mobile Number"
+                            android:layout_marginTop="0dp"
+                            android:textColor="@color/RoyalBlue"
+                            android:visibility="gone"/>
+                        <EditText
+                            android:id="@+id/mobileNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:background="@drawable/pass_edit_text"
+                            android:textSize="16dp"
+                            android:inputType="number"
+                            android:paddingLeft="2dp"
+                            android:hint="Mobile Number"
+                            android:layout_marginBottom="20dp"
+                            android:visibility="gone"/>
 
+                        <TextView
+                            android:layout_marginLeft="2dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="11dp"
+                            android:text="Select Gender"
+                            android:textColor="@color/RoyalBlue"
+                            android:layout_marginTop="0dp"/>
+                        <Spinner
+                            android:id="@+id/gender"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/spinner_border"
+                            android:layout_gravity="center_horizontal"
+                            android:entries="@array/gender_array"
+                            android:layout_marginBottom="20dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_marginLeft="28dp"
-                        android:textSize="11dp"
-                        android:text="Select Institutes Name"
-                        android:textColor="@color/RoyalBlue" />
-                    <Spinner
-                        android:id="@+id/edu_instituteName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/spinner_border"
-                        android:layout_gravity="center_horizontal"
-                        android:entries="@array/Edu_InstituteName_array"
-                        android:layout_marginBottom="20dp"/>
-
-
-                    <EditText
-                        android:id="@+id/instituteNameEditText"
-                        android:layout_width="278dp"
-                        android:layout_height="45dp"
-                        android:background="@drawable/pass_edit_text"
-                        android:textSize="16dp"
-                        android:paddingLeft="2dp"
-                        android:hint="Enter Institute Name"
-                        android:layout_marginBottom="20dp"
-                        android:visibility="gone"/>
-
-                    <TextView
-                        android:id="@+id/departmentTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_marginLeft="28dp"
-                        android:textSize="11dp"
-                        android:text="Select Subject/Department"
-                        android:textColor="@color/RoyalBlue"/>
-                    <Spinner
-                        android:id="@+id/departmentSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/spinner_border"
-                        android:layout_gravity="center_horizontal"
-                        android:entries="@array/Edu_tutorSubject_array"
-                        android:layout_marginBottom="20dp"/>
-
-                    <TextView
-                        android:id="@+id/attachedHallTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_marginLeft="28dp"
-                        android:textSize="11dp"
-                        android:text="Enter Your Attached Hall Name"
-                        android:textColor="@color/RoyalBlue" />
-                    <EditText
-                        android:id="@+id/attachedHallSpinner"
-                        android:layout_width="278dp"
-                        android:layout_height="45dp"
-                        android:hint="Attached Hall"
-                        android:background="@drawable/pass_edit_text"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="20dp"
-                        android:maxLines="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_marginLeft="28dp"
-                        android:textSize="11dp"
-                        android:text="Enter Your Full Address"
-                        android:textColor="@color/RoyalBlue" />
-                    <EditText
-                        android:id="@+id/fullAddress"
-                        android:layout_width="278dp"
-                        android:layout_height="65dp"
-                        android:hint="Full Address"
-                        android:textSize="14dp"
-                        android:paddingLeft="2dp"
-                        android:padding="10dp"
-                        android:gravity="start"
-                        android:background="@drawable/mult_edit_text_border"
-                        android:layout_marginBottom="20dp" />
-
-                </LinearLayout>
-            </ScrollView>
-
-        <ImageView
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="600dp"
-            android:layout_marginStart="215dp"
-            android:background="@drawable/next_button"
-            android:onClick="signUpCompletion"/>
+                        <TextView
+                            android:layout_marginLeft="2dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="11dp"
+                            android:text="Select Current Position"
+                            android:textColor="@color/RoyalBlue"
+                            android:layout_marginTop="0dp"/>
+                        <Spinner
+                            android:id="@+id/currentPosition"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/spinner_border"
+                            android:layout_gravity="center_horizontal"
+                            android:entries="@array/currentPosition_array"
+                            android:layout_marginBottom="20dp"/>
 
 
+                        <TextView
+                            android:layout_marginLeft="2dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="11dp"
+                            android:text="Select Institutes Name"
+                            android:textColor="@color/RoyalBlue" />
+                        <Spinner
+                            android:id="@+id/edu_instituteName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/spinner_border"
+                            android:layout_gravity="center_horizontal"
+                            android:entries="@array/Edu_InstituteName_array"
+                            android:layout_marginBottom="20dp"/>
+
+
+                        <EditText
+                            android:id="@+id/instituteNameEditText"
+                            android:layout_width="278dp"
+                            android:layout_height="45dp"
+                            android:background="@drawable/pass_edit_text"
+                            android:textSize="16dp"
+                            android:paddingLeft="2dp"
+                            android:hint="Enter Institute Name"
+                            android:layout_marginBottom="20dp"
+                            android:visibility="gone"/>
+
+                        <TextView
+                            android:layout_marginLeft="2dp"
+                            android:id="@+id/departmentTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="11dp"
+                            android:text="Select Subject/Department"
+                            android:textColor="@color/RoyalBlue"/>
+                        <Spinner
+                            android:id="@+id/departmentSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/spinner_border"
+                            android:layout_gravity="center_horizontal"
+                            android:entries="@array/Edu_tutorSubject_array"
+                            android:layout_marginBottom="20dp"/>
+
+                        <TextView
+                            android:layout_marginLeft="2dp"
+                            android:id="@+id/attachedHallTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="11dp"
+                            android:text="Enter Your Attached Hall Name"
+                            android:textColor="@color/RoyalBlue" />
+                        <EditText
+                            android:id="@+id/attachedHallSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:hint="Attached Hall"
+                            android:background="@drawable/pass_edit_text"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="20dp"
+                            android:maxLines="1"/>
+
+                        <TextView
+                            android:layout_marginLeft="2dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="11dp"
+                            android:text="Enter Your Full Address"
+                            android:textColor="@color/RoyalBlue" />
+                        <EditText
+                            android:id="@+id/fullAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="65dp"
+                            android:hint="Full Address"
+                            android:textSize="14dp"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="start"
+                            android:padding="10dp"
+                            android:background="@drawable/mult_edit_text_border"
+                            android:layout_marginBottom="20dp" />
+
+                    </LinearLayout>
+                </ScrollView>
+
+                <ImageView
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/next_button"
+                    android:onClick="signUpCompletion"/>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

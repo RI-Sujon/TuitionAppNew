@@ -36,7 +36,6 @@ public class GuardianModuleStartActivity extends AppCompatActivity {
 
     private EditText phoneNumberBox ;
     private TextView phoneNumberTextView ;
-    private EditText [] vc = new EditText[6];
     private RelativeLayout mobileNumberLayout, verificationCodeLayout ;
 
     private FirebaseAuth mAuth;
@@ -101,12 +100,6 @@ public class GuardianModuleStartActivity extends AppCompatActivity {
         phoneNumberBox = findViewById(R.id.guardianMobileNumber) ;
         phoneNumberTextView = findViewById(R.id.mobileNumberTextView2) ;
         pinView = findViewById(R.id.firstPinView) ;
-        vc[0] = findViewById(R.id.vc1) ;
-        vc[1] = findViewById(R.id.vc2) ;
-        vc[2] = findViewById(R.id.vc3) ;
-        vc[3] = findViewById(R.id.vc4) ;
-        vc[4] = findViewById(R.id.vc5) ;
-        vc[5] = findViewById(R.id.vc6) ;
         mobileNumberLayout = findViewById(R.id.mobileNumberLayout) ;
         verificationCodeLayout = findViewById(R.id.verificationCodeLayout) ;
 

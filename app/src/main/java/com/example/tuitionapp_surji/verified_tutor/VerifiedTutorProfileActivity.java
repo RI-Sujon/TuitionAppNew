@@ -53,7 +53,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     private ApproveAndBlockInfo approveAndBlockInfo ;
     private MessageBoxInfo messageBoxInfo;
 
-    private String user, userEmail, groupID, tutorUid, contextType, tutorEmail;
+    private String user, userEmail, groupID, tutorUid, contextType, tutorEmail , context2, tutorUid2;
     private ArrayList<ReportInfo> reportInfoArrayList ;
     private ArrayList<String> userInfo ;
 
@@ -91,7 +91,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;
         tutorUid = intent.getStringExtra("tutorUid");
-        contextType =  intent.getStringExtra("context");
+
         tutorEmail =  intent.getStringExtra("tutorEmail");
 
         userProfilePicImageView = findViewById(R.id.profilePicImageView) ;
@@ -123,7 +123,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         }
         else if(user.equals("groupVisitor")){
             groupID = intent.getStringExtra("groupID") ;
-            userEmail = intent.getStringExtra("userEmail") ;
+            //userEmail = intent.getStringExtra("userEmail") ;
             myRefCandidateTutorInfo = myRefCandidateTutorInfo.child(tutorUid) ;
             myRefVerifiedTutorInfo = myRefVerifiedTutorInfo.child(tutorUid) ;
         }
@@ -187,12 +187,19 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         }
         else if(user.equals("guardian")){
             userEmail = intent.getStringExtra("userEmail") ;
-            System.out.println("=========????>>" + tutorUid);
+            context2 = intent.getStringExtra("context2") ;
+            contextType =  intent.getStringExtra("context");
+            if(context2!=null){
+                tutorUid2 = intent.getStringExtra("tutorUid2") ;
+                groupID = intent.getStringExtra("groupID") ;
+            }else {
+                messageRequestButton = findViewById(R.id.messageRequestButton) ;
+                messageRequestButton.setVisibility(View.VISIBLE);
+            }
 
             myRefCandidateTutorInfo = myRefCandidateTutorInfo.child(tutorUid) ;
             myRefVerifiedTutorInfo = myRefVerifiedTutorInfo.child(tutorUid) ;
-            messageRequestButton = findViewById(R.id.messageRequestButton) ;
-            messageRequestButton.setVisibility(View.VISIBLE);
+
         }
 
         myRefCandidateTutorInfo.addValueEventListener(new ValueEventListener() {
@@ -313,7 +320,11 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             }
         });
 
-        if(user.equals("groupVisitor") || user.equals("groupAdmin")){
+        if(user.equals("groupVisitor") || user.equals("groupAdmin") ){
+            excellenceButton.setVisibility(View.GONE);
+            experienceButton.setVisibility(View.GONE);
+        }
+        else if(user.equals("guardian") && context2!=null){
             excellenceButton.setVisibility(View.GONE);
             experienceButton.setVisibility(View.GONE);
         }
@@ -331,11 +342,17 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                 Intent intent = new Intent(VerifiedTutorProfileActivity.this, VerifiedTutorSetProfilePicture.class);
 
                 intent.putExtra("intentFlag","profile") ;
+                intent.putExtra("user", user) ;
+                intent.putExtra("profilePicUri",candidateTutorInfo.getProfilePictureUri()) ;
 
                 if(user.equals("tutor")){
                     intent.putStringArrayListExtra("userInfo", userInfo) ;
+                    startActivity(intent);
+                    finish();
+                }else {
+                    startActivity(intent);
                 }
-                else if(user.equals("GroupAdmin")){
+                /*else if(user.equals("GroupAdmin")){
                     intent.putExtra("tutorUid", tutorUid) ;
                     intent.putExtra("groupID", groupID) ;
                     intent.putStringArrayListExtra("userInfo", userInfo) ;
@@ -352,12 +369,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                 else {
                     intent.putExtra("tutorUid", tutorUid) ;
                     intent.putExtra("userEmail", userEmail) ;
-                }
-
-                intent.putExtra("user", user) ;
-                intent.putExtra("profilePicUri",candidateTutorInfo.getProfilePictureUri()) ;
-                startActivity(intent);
-                finish();
+                }*/
             }
         });
     }
@@ -1215,9 +1227,21 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             finish();
         }
         else if(user.equals("guardian")){
-            Intent intent;
+            Intent intent ;
+            if(context2!=null){
+                intent = new Intent(this, GroupHomePageActivity.class) ;
+                intent.putExtra("user",user) ;
+                intent.putExtra("groupID", groupID) ;
+                intent.putExtra("viewType", "tutorView") ;
 
-            if(contextType!=null){
+                intent.putExtra("userEmail", userEmail) ;
+                intent.putExtra("tutorUid", tutorUid2) ;
+                intent.putExtra("context",contextType) ;
+
+                startActivity(intent) ;
+                finish() ;
+            }
+            else if(contextType!=null){
                 if(contextType.equals("messenger")){
                     intent = new Intent(VerifiedTutorProfileActivity.this, MessageRequestActivity.class);
                     intent.putExtra("userId", tutorUid);
@@ -1258,20 +1282,23 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             intent.putExtra("user","tutor") ;
             intent.putStringArrayListExtra("userInfo",userInfo) ;
             intent.putExtra("groupID", groupID) ;
+            intent.putExtra("viewType", "tutorView") ;
             startActivity(intent) ;
             finish() ;
         }
         else if(user.equals("groupVisitor")){
             Intent intent = new Intent(this, GroupHomePageActivity.class) ;
-            intent.putExtra("user","guardian") ;
+            intent.putExtra("user","groupVisitor") ;
             intent.putExtra("groupID", groupID) ;
+            intent.putExtra("viewType", "tutorView") ;
             startActivity(intent) ;
             finish() ;
         }
         else if(user.equals("referFriend")){
-            Intent intent = new Intent(this, NotificationViewActivity.class) ;
-            intent.putStringArrayListExtra("userInfo", userInfo) ;
-            startActivity(intent) ;
+            //Intent intent = new Intent(this, NotificationViewActivity.class) ;
+            //intent.putStringArrayListExtra("userInfo", userInfo) ;
+            //intent.putExtra("user", "tutor") ;
+            //startActivity(intent) ;
             finish() ;
         }
 

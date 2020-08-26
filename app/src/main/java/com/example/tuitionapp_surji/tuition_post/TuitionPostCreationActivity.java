@@ -61,7 +61,7 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         myRefTuitionPost = FirebaseDatabase.getInstance().getReference("TuitionPost") ;
-        myRefGuardianInfo = FirebaseDatabase.getInstance().getReference("GuardianInfo").child(firebaseUser.getUid()) ;
+        myRefGuardianInfo = FirebaseDatabase.getInstance().getReference("Guardian").child(firebaseUser.getUid()) ;
 
         Intent intent = getIntent() ;
         type = intent.getStringExtra("type") ;

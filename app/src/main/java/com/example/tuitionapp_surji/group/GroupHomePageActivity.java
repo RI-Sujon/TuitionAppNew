@@ -20,13 +20,13 @@ import com.example.tuitionapp_surji.batch.BatchViewInfoActivity;
 import com.example.tuitionapp_surji.batch.CustomAdapterForSelectAndViewBatch;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.guardian.CustomAdapterForTutorListView;
+import com.example.tuitionapp_surji.guardian.GuardianHomePageActivity;
 import com.example.tuitionapp_surji.guardian.ViewingSearchingTutorProfileActivity;
 import com.example.tuitionapp_surji.message_box.MainMessageActivity;
 import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
 import com.example.tuitionapp_surji.notice_board.NoticeBoardViewAndCreateActivity;
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.verified_tutor.ReportInfo;
-import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -46,7 +46,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
     private DatabaseReference myRefGroup, myRefMessageBox, myRefReport, myRefBatch, myRefAddTutor, myRefCandidateTutor ;
     private FirebaseUser firebaseUser ;
     private MessageBoxInfo messageBoxInfo;
-    private String user, userEmail, groupID , tutorUid, batchID , groupName, groupAddress, context;
+    private String user, tutorEmail, groupID , tutorUid2, batchID , groupName, groupAddress, context, viewType;
     private ArrayList<String>userInfo ;
 
     private TextView groupNameTextView, fullAddressTextView ;
@@ -89,6 +89,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
         userInfo = intent.getStringArrayListExtra("userInfo") ;
         user = intent.getStringExtra("user") ;
         groupID = intent.getStringExtra("groupID") ;
+        viewType = intent.getStringExtra("viewType") ;
 
         myRefGroup = FirebaseDatabase.getInstance().getReference("Group").child(groupID) ;
         myRefBatch = FirebaseDatabase.getInstance().getReference("Batch");
@@ -114,8 +115,9 @@ public class GroupHomePageActivity extends AppCompatActivity {
             messageFloatingButton.setVisibility(View.GONE);
 
             context = intent.getStringExtra("context") ;
-
-            tutorUid = intent.getStringExtra("tutorUid");
+            tutorUid2 = intent.getStringExtra("tutorUid");
+            tutorEmail = intent.getStringExtra("userEmail");
+            myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
             messageRequestButton = findViewById(R.id.sendMessageRequestButton) ;
             messageRequestButton.setVisibility(View.VISIBLE);
             //reportButton = findViewById(R.id.reportButton) ;
@@ -123,12 +125,14 @@ public class GroupHomePageActivity extends AppCompatActivity {
             //reportButton.setVisibility(View.VISIBLE);
         }
         else if(user.equals("admin")){
-
             messageFloatingButton = findViewById(R.id.messageBoxFloatingButtonS) ;
             messageFloatingButton.setVisibility(View.GONE);
 
             //blockButton = findViewById(R.id.blockGroupButton) ;
             //blockButton.setVisibility(View.VISIBLE);
+        }
+        else if(user.equals("groupVisitor")){
+
         }
 
     }
@@ -183,6 +187,15 @@ public class GroupHomePageActivity extends AppCompatActivity {
                 goToNoticeBoardManagement();
             }
         });
+
+        if(viewType!=null){
+            if(viewType.equals("batchView")){
+                goToBatchManagement();
+            }
+            else if(viewType.equals("tutorView")){
+                goToGroupTutorManagement();
+            }
+        }
     }
 
     public void groupHomePage(){
@@ -194,15 +207,26 @@ public class GroupHomePageActivity extends AppCompatActivity {
         if(!groupInfo.getGroupImageUri().equals("")){
             Picasso.get().load(groupInfo.getGroupImageUri()).into(groupProfileImage);
         }
+
+        groupProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToGroupProfile(null);
+            }
+        });
     }
 
     public void goToGroupProfile(View view){
         Intent intent = new Intent(this, GroupProfileActivity.class) ;
         intent.putExtra("groupName", groupInfo.getGroupName());
-        intent.putExtra("location", groupInfo.getFullAddress() + ", " + groupInfo.getAddress());
+        intent.putExtra("groupAddress", groupInfo.getAddress());
+        intent.putExtra("groupFullAddress", groupInfo.getFullAddress());
         intent.putExtra("classRange", groupInfo.getClassRange());
         intent.putExtra("extraInfo", groupInfo.getExtraInfo());
         intent.putExtra("groupImage", groupInfo.getGroupImageUri());
+        intent.putExtra("groupID", groupID) ;
+        intent.putExtra("user", user) ;
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
 
     }
@@ -262,7 +286,6 @@ public class GroupHomePageActivity extends AppCompatActivity {
 
         }
 
-
         batchListLayout.setVisibility(View.VISIBLE);
         groupDashboardLayout.setVisibility(View.GONE);
 
@@ -280,11 +303,18 @@ public class GroupHomePageActivity extends AppCompatActivity {
             intent.putStringArrayListExtra("userInfo",userInfo) ;
         }
 
+        intent.putExtra("user", user) ;
+
         intent.putExtra("batchID",batchID) ;
         intent.putExtra("user" , user) ;
         intent.putExtra("groupID" , groupID) ;
         intent.putExtra("groupName" , groupName) ;
         intent.putExtra("groupAddress", groupAddress) ;
+        if(user.equals("guardian")){
+            intent.putExtra("context", context) ;
+            intent.putExtra("userEmail" , tutorEmail) ;
+            intent.putExtra("tutorUid",tutorUid2) ;
+        }
         startActivity(intent);
         finish();
     }
@@ -296,9 +326,10 @@ public class GroupHomePageActivity extends AppCompatActivity {
             addTutorOptionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(GroupHomePageActivity.this, GroupTutorViewActivity.class) ;
+                    Intent intent = new Intent(GroupHomePageActivity.this, GroupTutorAddActivity.class) ;
                     intent.putExtra("user",user) ;
                     intent.putExtra("groupID" , groupID) ;
+                    intent.putExtra("groupName", groupName) ;
                     intent.putStringArrayListExtra("userInfo",userInfo) ;
 
                     startActivity(intent);
@@ -388,8 +419,18 @@ public class GroupHomePageActivity extends AppCompatActivity {
         if(user.equals("tutor")){
             intent.putExtra("user","groupAdmin") ;
             intent.putStringArrayListExtra("userInfo",userInfo) ;
+            finish();
         }
-        else intent.putExtra("user","groupVisitor") ;
+        else if(user.equals("guardian")){
+            intent.putExtra("user", user) ;
+            intent.putExtra("context2", "group") ;
+            intent.putExtra("context", context) ;
+            intent.putExtra("userEmail" , tutorEmail) ;
+            intent.putExtra("tutorUid2",tutorUid2) ;
+        }
+        else {
+            intent.putExtra("user", user);
+        }
 
         intent.putExtra("tutorUid",tutorUid) ;
 
@@ -406,10 +447,6 @@ public class GroupHomePageActivity extends AppCompatActivity {
     }
 
     public void sendMessageRequestByGuardianFromGroup(View view){
-        Intent intent = getIntent() ;
-        tutorUid = intent.getStringExtra("tutorUid");
-        userEmail = intent.getStringExtra("userEmail");
-        myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
 
         messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),groupInfo.getGroupAdminEmail(),groupInfo.getGroupAdminUid(), true ,false) ;
 
@@ -420,18 +457,15 @@ public class GroupHomePageActivity extends AppCompatActivity {
                 for(DataSnapshot snapshot:dataSnapshot.getChildren())
                 {
                     MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
-                    if(messageBoxInfo1.getGuardianUid().equals(firebaseUser.getUid())
-                            && messageBoxInfo1.getTutorUid().equals(groupInfo.getGroupAdminUid())){
+                    if(messageBoxInfo1.getGuardianUid().equals(firebaseUser.getUid()) && messageBoxInfo1.getTutorUid().equals(groupInfo.getGroupAdminUid())){
                         flag=1;
                     }
-
                 }
 
                 if(flag == 0){
                     myRefMessageBox.push().setValue(messageBoxInfo) ;
                     messageRequestButton.setEnabled(false);
                     messageRequestButton.setBackgroundColor(Color.GRAY);
-
                 }
             }
 
@@ -444,7 +478,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
 
     public void reportIDByGuardian(View view){
         myRefReport = FirebaseDatabase.getInstance().getReference("Report") ;
-        ReportInfo reportInfo = new ReportInfo(firebaseUser.getPhoneNumber(),userEmail, "this is a fake account") ;
+        ReportInfo reportInfo = new ReportInfo(firebaseUser.getPhoneNumber(),tutorEmail, "this is a fake account") ;
         myRefReport.push().setValue(reportInfo) ;
 
         reportButton.setEnabled(false);
@@ -470,7 +504,9 @@ public class GroupHomePageActivity extends AppCompatActivity {
             intent.putStringArrayListExtra("userInfo",userInfo) ;
         }
         startActivity(intent);
-        finish();
+        if(user.equals("tutor")) {
+            finish();
+        }
     }
 
     public void goToBackPageActivity(View view){
@@ -482,12 +518,23 @@ public class GroupHomePageActivity extends AppCompatActivity {
                 finish();
             }
             else if(user.equals("guardian")||user.equals("admin")){
-                Intent intent = new Intent(this, ViewingSearchingTutorProfileActivity.class);
-                intent.putExtra("user", user);
-                startActivity(intent);
-                finish();
+                Intent intent ;
+                if(context==null){
+                    intent = new Intent(this, ViewingSearchingTutorProfileActivity.class);
+                    intent.putExtra("user", user);
+                    startActivity(intent);
+                    finish();
+                }
+                else if(context.equals("homepage")){
+                    //intent = new Intent(this, GuardianHomePageActivity.class);
+                    //intent.putExtra("user", user);
+                    //startActivity(intent);
+                    finish();
+                }
+
+
             }
-            else if(user.equals("guardianHomePage")){
+            else if(user.equals("groupVisitor")){
                 finish();
             }
         }

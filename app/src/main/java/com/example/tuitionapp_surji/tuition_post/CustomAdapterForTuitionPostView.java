@@ -307,6 +307,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
                             Intent intent = new Intent(parent.getContext(), TuitionPostViewActivity.class) ;
                             intent.putExtra("user","guardian") ;
                             parent.getContext().startActivity(intent);
+                            ((TuitionPostViewActivity)context).finish();
                         }
 
                         @Override
@@ -324,6 +325,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
                     intent.putExtra("type","editPost") ;
                     intent.putExtra("tuitionPostID" , tuitionPostInfoUid.get(position)) ;
                     parent.getContext().startActivity(intent) ;
+                    ((TuitionPostViewActivity)context).finish();
                 }
             });
 

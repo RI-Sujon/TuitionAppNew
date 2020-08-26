@@ -1,17 +1,17 @@
 package com.example.tuitionapp_surji.batch;
 
 public class StudentInfo {
-    private String serialNo, studentName, studentAddress, studentMobileNumber ;
+    private String serialNo, column1, column2, column3 ;
 
     public StudentInfo(){
 
     }
 
-    public StudentInfo(String serialNo, String studentName, String studentAddress, String studentMobileNumber) {
+    public StudentInfo(String serialNo, String column1, String column2, String column3) {
         this.serialNo = serialNo;
-        this.studentName = studentName;
-        this.studentAddress = studentAddress;
-        this.studentMobileNumber = studentMobileNumber;
+        this.column1 = column1;
+        this.column2 = column2;
+        this.column3 = column3;
     }
 
     public String getSerialNo() {
@@ -22,27 +22,27 @@ public class StudentInfo {
         this.serialNo = serialNo;
     }
 
-    public String getStudentName() {
-        return studentName;
+    public String getColumn1() {
+        return column1;
     }
 
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
+    public void setColumn1(String column1) {
+        this.column1 = column1;
     }
 
-    public String getStudentAddress() {
-        return studentAddress;
+    public String getColumn2() {
+        return column2;
     }
 
-    public void setStudentAddress(String studentAddress) {
-        this.studentAddress = studentAddress;
+    public void setColumn2(String column2) {
+        this.column2 = column2;
     }
 
-    public String getStudentMobileNumber() {
-        return studentMobileNumber;
+    public String getColumn3() {
+        return column3;
     }
 
-    public void setStudentMobileNumber(String studentMobileNumber) {
-        this.studentMobileNumber = studentMobileNumber;
+    public void setColumn3(String column3) {
+        this.column3 = column3;
     }
 }

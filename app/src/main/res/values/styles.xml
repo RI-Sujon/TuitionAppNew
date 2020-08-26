@@ -7,7 +7,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/Blue</item>
         <item name="colorPrimaryDark">@color/MediumBlue</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/Navy</item>
     </style>
 
     <style name="MenuStyle" parent="Theme.AppCompat.Light">

@@ -284,16 +284,12 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
     }
 
     private void backToTutorProfile(){
-        Intent intent = new Intent(this, VerifiedTutorProfileActivity.class);
-        intent.putExtra("user", user) ;
-        intent.putStringArrayListExtra("userInfo", userInfo) ;
-        intent.putExtra("tutorUid", tutorUid) ;
-        intent.putExtra("groupID", groupID) ;
-        intent.putExtra("tutorEmail", tutorEmail) ;
-        if(user.equals("guardian")){
-            intent.putExtra("context", contextType) ;
+        if(user.equals("tutor")){
+            Intent intent = new Intent(this, VerifiedTutorProfileActivity.class);
+            intent.putExtra("user", user) ;
+            intent.putStringArrayListExtra("userInfo", userInfo) ;
         }
-        startActivity(intent);
+
         finish();
     }
 

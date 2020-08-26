@@ -11,8 +11,15 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/more"
+        android:id="@+id/editTable"
         android:title="Edit Table"
+        android:iconTint="@color/White"
+        android:contentDescription="content_description_more"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/more"
+        android:title="More"
         android:iconTint="@color/White"
         android:contentDescription="content_description_more"
         app:showAsAction="never" />

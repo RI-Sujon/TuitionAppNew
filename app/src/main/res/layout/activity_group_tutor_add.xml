@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="10dp"
     android:background="@color/Lavender"
-    tools:context=".group.GroupTutorViewActivity">
+    tools:context=".group.GroupTutorAddActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -65,13 +65,11 @@
                 android:text="Add Tutor"
                 android:onClick="addTutorOperation"/>
 
-            <EditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:hint="Tutor Email"
-                android:visibility="gone"/>
+                android:visibility="invisible"/>
 
         </LinearLayout>
     </RelativeLayout>

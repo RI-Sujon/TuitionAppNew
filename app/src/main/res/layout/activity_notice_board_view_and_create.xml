@@ -118,9 +118,11 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:paddingTop="10dp"
+                android:text="Select a PDF File"
+                android:gravity="center"
                 android:paddingBottom="10dp"
                 android:textColor="@color/Black"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"/>
 

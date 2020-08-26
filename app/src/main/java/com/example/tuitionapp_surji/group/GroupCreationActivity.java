@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tuitionapp_surji.R;
@@ -22,8 +23,12 @@ import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -49,7 +54,12 @@ public class GroupCreationActivity extends AppCompatActivity {
     private String filePathUriString="" ;
     private Bitmap bitmapImage ;
 
-    private String groupName, areaAddress, fullAddress, classRange, extraInfo, groupImage ;
+    private GroupInfo groupInfo ;
+
+    private String groupName, areaAddress, fullAddress, classRange, extraInfo, groupImage, type ;
+
+    private TextInputLayout imageLayout ;
+    private TextView headline ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +69,7 @@ public class GroupCreationActivity extends AppCompatActivity {
         Intent intent = getIntent() ;
         userInfo = intent.getStringArrayListExtra("userInfo") ;
         user = intent.getStringExtra("user") ;
+        type = intent.getStringExtra("type") ;
 
         myRefGroup = FirebaseDatabase.getInstance().getReference("Group") ;
 
@@ -69,6 +80,8 @@ public class GroupCreationActivity extends AppCompatActivity {
         classRangeEditText = findViewById(R.id.class_range) ;
         extraInfoEditText = findViewById(R.id.more_about_group) ;
         groupImageEditText = findViewById(R.id.image) ;
+        imageLayout = findViewById(R.id.imageLayout) ;
+        headline = findViewById(R.id.headline) ;
 
         List areaAddress = new ArrayList(Arrays.asList(getResources().getStringArray(R.array.areaAddress_array))) ;
         areaAddress.remove(0) ;
@@ -82,6 +95,37 @@ public class GroupCreationActivity extends AppCompatActivity {
                 selectImage() ;
             }
         });
+
+        if(type!=null){
+            groupImageEditText.setVisibility(View.GONE);
+            imageLayout.setVisibility(View.GONE);
+            headline.setText("EDIT GROUP INFO");
+            createGroupButton.setText("Update");
+            groupID = intent.getStringExtra("groupID") ;
+
+            myRefGroup = myRefGroup.child(groupID) ;
+
+            myRefGroup.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    groupInfo = dataSnapshot.getValue(GroupInfo.class) ;
+                    editGroupOperationStep1();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    public void editGroupOperationStep1(){
+        groupNameEditText.setText(groupInfo.getGroupName());
+        fullAddressEditText.setText(groupInfo.getFullAddress());
+        addressSpinner.setText(groupInfo.getAddress());
+        classRangeEditText.setText(groupInfo.getClassRange());
+        extraInfoEditText.setText(groupInfo.getExtraInfo());
     }
 
     public void selectImage() {
@@ -162,7 +206,11 @@ public class GroupCreationActivity extends AppCompatActivity {
         fullAddress = fullAddressEditText.getText().toString().trim() ;
         classRange = classRangeEditText.getText().toString().trim() ;
         extraInfo = extraInfoEditText.getText().toString().trim() ;
-        groupImage = groupImageEditText.getText().toString().trim() ;
+
+        if(type==null){
+            groupImage = groupImageEditText.getText().toString().trim() ;
+        }
+        else filePathUriString = groupInfo.getGroupImageUri() ;
 
         if(groupName.equals("")){
             groupNameEditText.setError("");
@@ -190,10 +238,15 @@ public class GroupCreationActivity extends AppCompatActivity {
 
     public void finishingGroupCreation(){
         GroupInfo groupInfo = new GroupInfo(groupName,areaAddress,fullAddress,classRange,extraInfo,filePathUriString,userInfo.get(2),userInfo.get(3)) ;
-        myRefGroup = myRefGroup.push() ;
-        groupID = myRefGroup.getKey() ;
-        myRefGroup.setValue(groupInfo) ;
-        Toast.makeText(getApplicationContext(), "Group Successfully Created", Toast.LENGTH_SHORT).show();
+        if(type==null) {
+            myRefGroup = myRefGroup.push();
+            groupID = myRefGroup.getKey();
+            myRefGroup.setValue(groupInfo);
+            Toast.makeText(getApplicationContext(), "Group Successfully Created", Toast.LENGTH_SHORT).show();
+        }else {
+            myRefGroup.setValue(groupInfo);
+            Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
+        }
         goToGroupHomePage();
     }
 
@@ -207,10 +260,13 @@ public class GroupCreationActivity extends AppCompatActivity {
     }
 
     public void goToBackPageActivity(View view){
-        Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
-        intent.putStringArrayListExtra("userInfo",userInfo) ;
-        startActivity(intent);
-        finish();
+        if(type==null) {
+            Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+            intent.putStringArrayListExtra("userInfo", userInfo);
+            startActivity(intent);
+            finish();
+        }
+        else goToGroupHomePage();
     }
 
     @Override

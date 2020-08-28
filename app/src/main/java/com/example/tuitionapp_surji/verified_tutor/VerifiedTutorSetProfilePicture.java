@@ -2,20 +2,31 @@ package com.example.tuitionapp_surji.verified_tutor;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.starting.MainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
@@ -33,6 +44,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -42,8 +54,9 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
 
     private RelativeLayout viewAndChangeProfilePicLayout, registrationProfilePicLayout ;
 
-    private Uri filePath;
-    private final int PICK_IMAGE_REQUEST = 122;
+    private Uri filePathUri;
+    private int PICK_IMAGE_REQUEST = 122;
+    private int TAKE_PICTURE = 100 ;
     private StorageReference storageReference;
     private DatabaseReference myRefCandidateTutor ;
     private FirebaseUser firebaseUser ;
@@ -118,7 +131,7 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
             changeProfilePicButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectImage(null);
+                    showDialog(null);
                 }
             });
 
@@ -156,21 +169,50 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
         }
     }
 
-    public void selectImage(View view) {
+    public void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Image from here..."), PICK_IMAGE_REQUEST);
     }
 
+    public void takePhoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivityForResult(intent, TAKE_PICTURE);
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == TAKE_PICTURE && resultCode == RESULT_OK){
+            Bundle bundle = data.getExtras() ;
+
+                try {
+                    bitmapImage = (Bitmap)bundle.get("data") ;
+                    filePathUri = Uri.parse("TAKE_PHOTO") ;
+
+                    if(intentFlag.equals("registration")){
+                        profilePictureImageView2.setImageBitmap(bitmapImage);
+                    }
+                    else {
+                        uploadImage(null);
+                    }
+
+                } catch (Exception e) {
+                    Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
+                    System.out.println("exception:" + e);
+                }
+
+        }
+
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filePath = data.getData();
+            filePathUri = data.getData();
             try {
-                bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), filePathUri);
                 if(intentFlag.equals("registration")){
                     profilePictureImageView2.setImageBitmap(bitmapImage);
                 }
@@ -187,7 +229,7 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
 
         final StorageReference imageRef = storageReference.child("profilePicture/" + tutorEmail);
 
-        if (filePath != null) {
+        if (filePathUri != null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
@@ -232,7 +274,7 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
                 System.out.println("Exception: " + e);
             }
         }
-        else selectImage(null);
+        else selectImage();
     }
 
     public void finishingRegistration(View view){
@@ -288,6 +330,7 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
             Intent intent = new Intent(this, VerifiedTutorProfileActivity.class);
             intent.putExtra("user", user) ;
             intent.putStringArrayListExtra("userInfo", userInfo) ;
+            startActivity(intent);
         }
 
         finish();
@@ -298,5 +341,32 @@ public class VerifiedTutorSetProfilePicture extends AppCompatActivity {
         if(intentFlag.equals("profile")){
             backToTutorProfile();
         }
+    }
+
+    public void showDialog(View view) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_adapter_for_dialog_box);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        LinearLayout takePhotoButton = dialog.findViewById(R.id.take_photo);
+        takePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                takePhoto();
+            }
+        });
+
+        LinearLayout choosePhotoButton = dialog.findViewById(R.id.choose_photo);
+        choosePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                selectImage();
+            }
+        });
+
+        dialog.show();
     }
 }

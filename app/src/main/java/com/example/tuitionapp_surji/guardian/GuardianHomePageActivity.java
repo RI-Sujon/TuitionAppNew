@@ -275,11 +275,10 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
     }
 
     private void status(String status){
-         reference = FirebaseDatabase.getInstance().getReference("Guardian").child(user);
+            reference = FirebaseDatabase.getInstance().getReference("Guardian").child(user);
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("status", status);
             reference.updateChildren(hashMap);
-
     }
 
     @Override

@@ -67,7 +67,7 @@ public class UsersFragment extends Fragment
 
     private void readUsers() {
         final FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("MessageBox");
+         DatabaseReference reference= FirebaseDatabase.getInstance().getReference("MessageBox");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override

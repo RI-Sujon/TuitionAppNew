@@ -6,11 +6,14 @@ public class DemoVideoInfo {
     private  String emailPrimaryKey;
 
 
-    public DemoVideoInfo(String videoName,String videoUri,String emailPrimaryKey){
+    public DemoVideoInfo() {
+    }
+
+    public DemoVideoInfo(String videoName, String videoUri, String emailPrimaryKey){
         if (videoName.equals("")){
             this.videoName = " not available";
         }
-        this.videoName = videoName;
+       this.videoName = videoName;
         this.videoUri = videoUri;
         this.emailPrimaryKey = emailPrimaryKey;
     }

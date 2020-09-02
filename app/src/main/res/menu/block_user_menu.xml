@@ -5,6 +5,13 @@
     <item
         android:id="@+id/block_in_messenger"
         android:title="Block"
-        app:showAsAction="never"/>
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/unblock_in_messenger"
+        android:title="Unblock"
+        app:showAsAction="never"
+        android:visible="true"/>
 
 </menu>

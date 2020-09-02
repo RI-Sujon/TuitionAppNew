@@ -1,7 +1,9 @@
 package com.example.tuitionapp_surji.demo_video;
 
 
+import android.app.DownloadManager;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,8 +12,10 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -20,21 +24,31 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.guardian.GuardianHomePageActivity;
+import com.example.tuitionapp_surji.message_box.MainMessageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
+import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.protobuf.StringValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 
 public class DemoVideoMainActivity extends AppCompatActivity {
@@ -46,21 +60,25 @@ public class DemoVideoMainActivity extends AppCompatActivity {
     private static final int PICK_VIDEO_REQUEST = 1;
 
 
-    private Button choosebtn;
-    private Button uploadbtn, download_btn;
-    private   ProgressBar progressBar;
+    private ImageView choose_btn, video_view_btn, guardian_video_view_btn;
+    private ImageView upload_btn, download_btn,delete_btn,guardian_download_btn;
+    private ProgressBar progressBar;
     private VideoView videoView;
-    private EditText videoname;
+    private EditText video_name;
     private Uri videoUri;
     private MediaController mediaController;
     private StorageReference mStorageRef;
-    private DatabaseReference mDataBaseRef, videoReference;
+    private DatabaseReference mDataBaseRef, videoReference, videos, downloadVideos;
     private StorageReference storageReference;
     private Bitmap bitmapVideo;
-    private String videoUriString, videoName ;
+    private String videoUriString, videoUriForView, videoName, user ;
     private FirebaseUser firebaseUser;
-    Bitmap bitmap;
-    StorageMetadata metadata;
+    private Bitmap bitmap;
+    private StorageMetadata metadata;
+    private String tutorEmail, userEmail;
+    private String name, tutorUid;
+    private TextView t1,t2,t3,t4,t5;
+
 
 
 
@@ -71,14 +89,29 @@ public class DemoVideoMainActivity extends AppCompatActivity {
 
         Intent intent = getIntent() ;
         userInfo = intent.getStringArrayListExtra("userInfo") ;
+        user = intent.getStringExtra("user");
+        tutorUid = intent.getStringExtra("tutorUid");
+        tutorEmail = intent.getStringExtra("tutorEmail");
+        userEmail = intent.getStringExtra("userEmail");
         emailPrimaryKey = FirebaseAuth.getInstance().getCurrentUser().getEmail() ;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        choosebtn = findViewById(R.id.choose_btn);
-        uploadbtn = findViewById(R.id.upload_btn);
+
+        choose_btn = findViewById(R.id.choose_btn);
+        upload_btn = findViewById(R.id.upload_btn);
+        delete_btn = findViewById(R.id.delete_video);
+        download_btn = findViewById(R.id.download_video);
+        video_view_btn = findViewById(R.id.video_view_btn);
+        guardian_video_view_btn = findViewById(R.id.guardian_video_view_btn);
+        guardian_download_btn = findViewById(R.id.guardian_download_video_btn);
+
         videoView = findViewById(R.id.Video_view);
         progressBar = findViewById(R.id.progress_bar);
-        videoname = findViewById(R.id.video_name);
-        download_btn = findViewById(R.id.download_video);
+       // videoname = findViewById(R.id.video_name);
+        t1=findViewById(R.id.t1);
+        t2=findViewById(R.id.t2);
+        t3=findViewById(R.id.t3);
+        t4=findViewById(R.id.t4);
+        t5=findViewById(R.id.t5);
 
 
         mediaController = new MediaController(this);
@@ -86,22 +119,25 @@ public class DemoVideoMainActivity extends AppCompatActivity {
         videoReference = FirebaseDatabase.getInstance().getReference("Videos");//.child(firebaseUser.getUid()) ;
         mStorageRef = FirebaseStorage.getInstance().getReference("videos");
         mDataBaseRef = FirebaseDatabase.getInstance().getReference("videos");
+        videos = FirebaseDatabase.getInstance().getReference("Videos");
+        downloadVideos = FirebaseDatabase.getInstance().getReference("Videos");
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        videoName = videoname.getText().toString();
+
+        //videoName = videoname.getText().toString();
         videoView.setMediaController(mediaController);
         mediaController.setAnchorView(videoView);
         videoView.start();
 
 
-        choosebtn.setOnClickListener(new View.OnClickListener() {
+        choose_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ChooseVideo();
             }
         });
 
-        uploadbtn.setOnClickListener(new View.OnClickListener() {
+        upload_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.out.println("Video nameeeeeeeeeeeeeeeeeeeeee = "+videoName);
@@ -111,6 +147,24 @@ public class DemoVideoMainActivity extends AppCompatActivity {
                // progressBar.setVisibility(View.VISIBLE);
             }
         });
+
+
+        if(user.equals("guardian")){
+            choose_btn.setVisibility(View.INVISIBLE);
+            upload_btn.setVisibility(View.INVISIBLE);
+            download_btn.setVisibility(View.INVISIBLE);
+            video_view_btn.setVisibility(View.INVISIBLE);
+            delete_btn.setVisibility(View.INVISIBLE);
+
+            guardian_download_btn.setVisibility(View.VISIBLE);
+            guardian_video_view_btn.setVisibility(View.VISIBLE);
+
+            t1.setVisibility(View.INVISIBLE);
+            t2.setVisibility(View.INVISIBLE);
+            t3.setVisibility(View.INVISIBLE);
+            t4.setVisibility(View.INVISIBLE);
+            t5.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -183,56 +237,101 @@ public class DemoVideoMainActivity extends AppCompatActivity {
 
     private void uploadFinish(){
 
-        if (videoUri != null) {
-            final StorageReference videoRef = storageReference.child("demoVideo/" + videoname.getText().toString()+"1.mp4");
 
-            try {
-                UploadTask uploadTask = videoRef.putFile(videoUri,metadata);
-                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Video Uploaded!!", Toast.LENGTH_SHORT).show();
-                        videoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                videoUriString = uri.toString();
-                                updateCandidateTutorDatabase();
-                            }
-                        });
+        videos.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int flag =0;
+                for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                    DemoVideoInfo demoVideoInfo = snapshot.getValue(DemoVideoInfo.class);
+
+                    if(demoVideoInfo.getEmailPrimaryKey().equals(firebaseUser.getEmail())){
+                        flag =1;
+                        break;
                     }
-                })
-                        .addOnFailureListener(new OnFailureListener() {
+                }
+
+
+                if (videoUri != null && flag ==0) {
+
+                    int a ,b;
+                    Random randomGenerator = new Random();
+                    a=randomGenerator.nextInt(100);
+                    b=randomGenerator.nextInt(100);
+
+                    int c=a+5;
+                    int d= c*2 + a+ b;
+                    name = String.valueOf(d);
+                    final StorageReference videoRef = storageReference.child("demoVideo/" + name +".mp4");
+
+                    try {
+                        UploadTask uploadTask = videoRef.putFile(videoUri,metadata);
+                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
-                            public void onFailure(@NonNull Exception e) {
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 progressBar.setVisibility(View.GONE);
-                                Toast.makeText(getApplicationContext(), "Video Upload failed!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Video Uploaded!!", Toast.LENGTH_SHORT).show();
+                                videoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        videoUriString = uri.toString();
+                                        updateCandidateTutorDatabase(name);
+                                    }
+                                });
                             }
                         })
-                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(getApplicationContext(), "Video Upload failed!!", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
 
-                            @Override
-                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                                double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                                //progressBar.text("Uploaded " + (int) progress + "%");
-                                progressBar.setVisibility(View.VISIBLE);
-                                progressBar.setProgress((int) progress);
-                            }
-                        });
+                                    @Override
+                                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot)
+                                    {
+                                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                                        //progressBar.incrementProgressBy(100);
+                                        //int value = progressBar.getProgress();
+                                        progressBar.setProgress((int) progress);
+                                        progressBar.setVisibility(View.VISIBLE);
+                                    }
+                                });
 
-            } catch (Exception e) {
-                System.out.println("Exception: " + e);
+                    } catch (Exception e) {
+                        System.out.println("Exception: " + e);
+                    }
+                }
+
+                else if(videoUri==null){
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(DemoVideoMainActivity.this, "The video uri is null", Toast.LENGTH_SHORT).show();
+                }
+
+                else if(flag>0){
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(DemoVideoMainActivity.this, "You can upload only one videos.\nYou can delete the previous one and upload another.", Toast.LENGTH_LONG).show();
+                }
+
+
             }
-        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
-    public void updateCandidateTutorDatabase() {
+    public void updateCandidateTutorDatabase(String name) {
 
-        DemoVideoInfo demoVideoInfo = new DemoVideoInfo(videoName,videoUriString,emailPrimaryKey);
+      //  DemoVideoInfo demoVideoInfo = new DemoVideoInfo(videoName,videoUriString,emailPrimaryKey);
         DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
         HashMap<String,String> hashMap = new HashMap<>();
-        hashMap.put("name",videoname.getText().toString());
+        hashMap.put("videoName",name);
         hashMap.put("videoUri",videoUriString);
         hashMap.put("emailPrimaryKey",emailPrimaryKey);
         //videoReference.push().setValue(demoVideoInfo);
@@ -241,21 +340,164 @@ public class DemoVideoMainActivity extends AppCompatActivity {
 
 
     public void goToHomePageActivity(View view) {
+        Intent intent;
+        if(user.equals("guardian")){
+             intent = new Intent(this, VerifiedTutorProfileActivity.class);
+            intent.putExtra("user", "guardian") ;
+            intent.putExtra("tutorUid", tutorUid);
+            intent.putExtra("tutorEmail", tutorEmail) ;
+            intent.putExtra("context", "guardian_view") ;
+        }
 
-        Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class) ;
-        intent.putExtra("user" , "tutor") ;
-        intent.putStringArrayListExtra("userInfo", userInfo) ;
+        else{
+            intent = new Intent(this, VerifiedTutorHomePageActivity.class) ;
+            intent.putExtra("user" , "tutor") ;
+            intent.putStringArrayListExtra("userInfo", userInfo) ;
+        }
+
         startActivity(intent);
         finish();
+
+
     }
 
     public void viewTheDownloadedVideo(View view) {
+
         videoView.setMediaController(mediaController);
         mediaController.setAnchorView(videoView);
 
-        Uri uri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/tuitionapp-d7ee7.appspot.com/o/demoVideo%2F1.mp4?alt=media&token=3dae9f0f-73ff-452c-a93c-a00bf00d6cb2");
-        videoView.setVideoURI(uri);
-        videoView.start();
+        if(!(user.equals("guardian"))){
+            tutorEmail = firebaseUser.getEmail();
+        }
+
+        else if(tutorEmail==null){
+            tutorEmail= userEmail;
+        }
+
+
+       // System.out.println("Tutor Email = "+ tutorEmail);
+
+        downloadVideos.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int counter=0;
+                for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                    DemoVideoInfo demoVideoInfo = snapshot.getValue(DemoVideoInfo.class);
+
+                    assert demoVideoInfo != null;
+                    if(demoVideoInfo.getEmailPrimaryKey().equals(tutorEmail)){
+                        videoUriForView=demoVideoInfo.getVideoUri();
+                        //downloading(DemoVideoMainActivity.this, demoVideoInfo.getVideoUri());
+                        counter++;
+                        break;
+                    }
+                }
+
+                if(counter==0)
+                    Toast.makeText(DemoVideoMainActivity.this, "There is no uploaded demo video.", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        if(videoUriForView!=null){
+            Uri uri = Uri.parse(videoUriForView);
+            videoView.setVideoURI(uri);
+            videoView.start();
+        }
+
+    }
+
+    public void downloadTheVideo(View view){
+
+        if(!(user.equals("guardian"))){
+            tutorEmail = firebaseUser.getEmail();
+        }
+
+        else if(tutorEmail==null){
+            tutorEmail= userEmail;
+        }
+
+
+        System.out.println("Tutor Email = "+ tutorEmail);
+
+        downloadVideos.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                int counter=0;
+                for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                    DemoVideoInfo demoVideoInfo = snapshot.getValue(DemoVideoInfo.class);
+
+                    assert demoVideoInfo != null;
+                    if(demoVideoInfo.getEmailPrimaryKey().equals(tutorEmail)){
+                        downloading(DemoVideoMainActivity.this, demoVideoInfo.getVideoUri());
+                        counter++;
+                        break;
+                    }
+                }
+
+                if(counter==0)
+                    Toast.makeText(DemoVideoMainActivity.this, "There is no uploaded demo video.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
+    private void downloading(Context context, String imageUri) {
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(imageUri) ;
+
+        int a ,b;
+        Random randomGenerator = new Random();
+        a=randomGenerator.nextInt(1000000);
+        b=randomGenerator.nextInt(1000000);
+
+        int c=a+b+5;
+        int d= c*2;
+
+        DownloadManager.Request request = new DownloadManager.Request(uri) ;
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) ;
+        request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS, String.valueOf(d)+".mp4") ;
+
+        downloadManager.enqueue(request) ;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+       if(user.equals("guardian")){
+            Intent intent = new Intent(this, VerifiedTutorProfileActivity.class);
+           intent.putExtra("user", "guardian");
+           intent.putExtra("tutorUid", tutorUid);
+           intent.putExtra("tutorEmail", tutorEmail);
+           intent.putExtra("context", "guardian_view");
+           startActivity(intent);
+           finish();
+        }
+
+        else /*if(user.equals("tutor"))*/{
+
+            Intent intent1 = getIntent() ;
+            userInfo = intent1.getStringArrayListExtra("userInfo") ;
+            Intent intent = new Intent(DemoVideoMainActivity.this, VerifiedTutorHomePageActivity.class);//.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putStringArrayListExtra("userInfo", userInfo) ;
+           intent.putExtra("user" , "tutor") ;
+           startActivity(intent);
+            finish();
+        }
     }
 }
 

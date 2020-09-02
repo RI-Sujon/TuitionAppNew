@@ -159,7 +159,7 @@ public class MainMessageActivity extends AppCompatActivity {
 
                 }
             });
-//            username.setText("Guardian");
+            //username.setText("Guardian");
         }
 
         else{

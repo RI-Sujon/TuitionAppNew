@@ -80,9 +80,11 @@ public class ViewingSearchingTutorProfileActivity extends AppCompatActivity {
         myRefGroup = FirebaseDatabase.getInstance().getReference("Group") ;
         myRefApproveAndBlock = FirebaseDatabase.getInstance().getReference("ApproveAndBlock") ;
 
-        tutorListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        tutorListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
                 String tutorUid = tutorUidInfoArrayList.get(position) ;
                 String tutorEmail = candidateTutorInfoArrayList.get(position).getEmailPK() ;
                 goToSelectedVerifiedTutorProfile(tutorEmail,tutorUid) ;

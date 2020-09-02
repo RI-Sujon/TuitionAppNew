@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/no_request"
         android:layout_gravity="center"
-        android:text="There is no message request yet."
+        android:text="No message requests yet."
         android:textColor="@color/Black"
         android:textSize="20sp"
         android:layout_width="wrap_content"

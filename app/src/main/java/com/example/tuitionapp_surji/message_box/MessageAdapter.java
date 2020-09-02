@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
@@ -28,16 +29,22 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     private Context mContext;
     private List<Chat> mChat;
-    private String imageUri,gender=" ";
+    private String imageUri,gender=" ",checkUser;
+    private ArrayList<String> userInfo;
+    private String guardianMobileNumber, tutorEmail,userId;
+    private FirebaseUser fuser;
 
-    FirebaseUser fuser;
 
-
-    public MessageAdapter(Context mContext, List<Chat> mChat, String imageUri, String gender){//, String imageurl) {
+    public MessageAdapter(Context mContext, List<Chat> mChat, String imageUri, String gender, String checkUser, ArrayList<String> userInfo, String userId, String guardianMobileNumber, String tutorEmail){//, String imageurl) {
         this.mContext = mContext;
         this.mChat = mChat;
         this.imageUri = imageUri;
         this.gender = gender;
+        this.userInfo = userInfo;
+        this.checkUser = checkUser;
+        this.guardianMobileNumber = guardianMobileNumber;
+        this.tutorEmail = tutorEmail;
+        this.userId =userId;
     }
 
     @NonNull
@@ -110,6 +117,22 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                         //Toast.makeText(mContext, "Image will be shown", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(mContext,ImageLargeViewActivity.class);
                         intent.putExtra("imageUri",chat.getMessage());
+
+                        if(checkUser.equals("guardian")){
+                            intent.putExtra("userId", userId);
+                            intent.putExtra("tutorEmail",tutorEmail);
+                            intent.putExtra("user", checkUser);
+                        }
+
+                        else if(checkUser.equals("tutor")){
+                            intent.putExtra("userId", userId);
+                            intent.putExtra("mobileNumber", guardianMobileNumber);
+                            intent.putStringArrayListExtra("userInfo", userInfo) ;
+                            intent.putExtra("user", checkUser);
+
+                        }
+                        /*intent.putExtra("user",checkUser);
+                        intent.putStringArrayListExtra("userInfo", userInfo) ;*/
                         mContext.startActivity(intent);
                     }
                 });

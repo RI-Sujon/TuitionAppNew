@@ -38,6 +38,10 @@ public class MessageRequestsFragment extends Fragment {
     TextView no_request;
 
 
+    public MessageRequestsFragment(){
+
+    }
+
     public MessageRequestsFragment(String checkUser, String tutorName, ArrayList<String> userInfo) {
         this.checkUser=checkUser;
         this.tutorName=tutorName;

@@ -3,16 +3,20 @@ package com.example.tuitionapp_surji.candidate_tutor;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +53,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
 
     private Uri filePath;
     private int PICK_IMAGE_REQUEST = 120;
+    private int TAKE_PICTURE = 121 ;
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private FirebaseUser firebaseUser ;
@@ -121,25 +126,49 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
 
     }
 
-    public void selectImage(View view) {
+    public void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Image from here..."), PICK_IMAGE_REQUEST);
     }
 
+    public void takePhoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivityForResult(intent, TAKE_PICTURE);
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == TAKE_PICTURE && resultCode == RESULT_OK){
+            Bundle bundle = data.getExtras() ;
+
+            try {
+                bitmapImage = (Bitmap)bundle.get("data") ;
+                filePath = Uri.parse("TAKE_PHOTO") ;
+
+                imageView.setImageBitmap(bitmapImage);
+
+                uploadButton.setVisibility(View.VISIBLE);
+            } catch (Exception e) {
+                Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
+                System.out.println("exception:" + e);
+            }
+        }
+        else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
             filePathView.setText(filePath.toString());
             filePathView.setVisibility(View.VISIBLE);
-            uploadButton.setVisibility(View.VISIBLE);
             try {
                 bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imageView.setImageBitmap(bitmapImage);
+
+                uploadButton.setVisibility(View.VISIBLE);
             }catch (IOException e) {
                 e.printStackTrace();
             }
@@ -290,5 +319,32 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    public void showDialog(View view) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_adapter_for_dialog_box);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        LinearLayout takePhotoButton = dialog.findViewById(R.id.take_photo);
+        takePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                takePhoto();
+            }
+        });
+
+        LinearLayout choosePhotoButton = dialog.findViewById(R.id.choose_photo);
+        choosePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                selectImage();
+            }
+        });
+
+        dialog.show();
     }
 }

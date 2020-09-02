@@ -42,43 +42,6 @@
           ]
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1014348522088:android:be502c8f813e894bced1dd",
-        "android_client_info": {
-          "package_name": "com.example.tuitionapp_surjimama"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1014348522088-db0ittorq6ed2363kb2ipmpdesho40pa.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.tuitionapp_surjimama",
-            "certificate_hash": "1ca714898b9082ccef0f0e5b5e1589d46c25f963"
-          }
-        },
-        {
-          "client_id": "1014348522088-ub8ovl70es4dk0im1hejetd2tponfj0q.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDm6EmxXLrPe5peTovJD9nIS6OiK5q8JgY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1014348522088-ub8ovl70es4dk0im1hejetd2tponfj0q.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
     }
   ],
   "configuration_version": "1"

@@ -23,6 +23,7 @@ import android.widget.ViewFlipper;
 import com.example.tuitionapp_surji.admin.ApproveAndBlockInfo;
 import com.example.tuitionapp_surji.admin.AdminTutorProfileViewActivity;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
+import com.example.tuitionapp_surji.demo_video.DemoVideoMainActivity;
 import com.example.tuitionapp_surji.group.GroupHomePageActivity;
 import com.example.tuitionapp_surji.guardian.ViewingSearchingTutorProfileActivity;
 import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
@@ -55,7 +56,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     private String user, userEmail, groupID, tutorUid, contextType, tutorEmail , context2, tutorUid2;
     private ArrayList<ReportInfo> reportInfoArrayList ;
-    private ArrayList<String> userInfo ;
+    private ArrayList<String> userInfo , tutorInfo;
 
     private EditText phoneNumber,email,gender,areaAddress,currentPosition,instituteName,subject ;
     private EditText medium,preferredClass,preferredGroup,preferredSubject,daysPerWeekOrMonth,preferredLocation,minimumSalary ;
@@ -68,6 +69,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     private ImageButton messageRequestButton ;
     private ListView reportListView ;
     private LinearLayout layoutForAdmin ;
+    private ImageView demo_video_button;
 
     private ViewFlipper viewFlipper ;
     private ImageButton aboutButton, excellenceButton, experienceButton ;
@@ -195,6 +197,8 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             }else {
                 messageRequestButton = findViewById(R.id.messageRequestButton) ;
                 messageRequestButton.setVisibility(View.VISIBLE);
+                demo_video_button = findViewById(R.id.demo_video_button);
+                demo_video_button.setVisibility(View.VISIBLE);
             }
 
             myRefCandidateTutorInfo = myRefCandidateTutorInfo.child(tutorUid) ;
@@ -333,6 +337,17 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             availability.setVisibility(View.VISIBLE);
             changeAvailabilityButton.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void goToTutorDemoVideo(View view) {
+
+        Intent intent = new Intent(this, DemoVideoMainActivity.class);
+        intent.putExtra("userEmail", userEmail) ;
+        intent.putExtra("tutorEmail", tutorEmail) ;
+        intent.putExtra("tutorUid",tutorUid);
+        intent.putExtra("user", "guardian") ;
+        startActivity(intent);
+        finish();
     }
 
     public void viewAndChangeProfilePicture(){
@@ -1168,7 +1183,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     public void sendMessageRequestByGuardian(View view){
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
-        messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail, tutorUid, true ,false) ;
+        messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail, tutorUid, true ,false,false,false) ;
 
         myRefMessageBox.addValueEventListener(new ValueEventListener() {
             @Override
@@ -1338,4 +1353,6 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
         popup.show();
     }
+
+
 }

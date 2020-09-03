@@ -11,16 +11,21 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.guardian.GuardianHomePageActivity;
+import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class ImageLargeViewActivity extends AppCompatActivity {
 
-    String imageUri;
-    ImageView imageView;
+    private String imageUri, checkUser, guardianMobileNumber, tutorEmail;
+    private ImageView imageView;
+    private ArrayList<String> userInfo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,11 @@ public class ImageLargeViewActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         imageUri = intent.getStringExtra("imageUri");
+        checkUser = intent.getStringExtra("user");
+        userInfo = intent.getStringArrayListExtra("userInfo") ;
+        guardianMobileNumber = intent.getStringExtra("mobileNumber");
+        tutorEmail = intent.getStringExtra("tutorEmail");
+
 
         imageView = findViewById(R.id.image_larger_view);
 
@@ -58,5 +68,29 @@ public class ImageLargeViewActivity extends AppCompatActivity {
         request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS, String.valueOf(d)+".jpg") ;
 
         downloadManager.enqueue(request) ;
+    }
+
+    public void goBackToMessageActivity(View view) {
+
+        final String  userId = getIntent().getStringExtra("userId");
+
+        Intent intent = new Intent(ImageLargeViewActivity.this, MessageActivity.class);
+
+
+        if(checkUser.equals("guardian")){
+            intent.putExtra("userId", userId);
+            intent.putExtra("tutorEmail",tutorEmail);
+            intent.putExtra("user", checkUser);
+        }
+
+        else if(checkUser.equals("tutor")){
+            intent.putExtra("userId", userId);
+            intent.putExtra("mobileNumber",guardianMobileNumber);
+            intent.putStringArrayListExtra("userInfo", userInfo) ;
+            intent.putExtra("user", checkUser);
+        }
+
+        startActivity(intent);
+        finish();
     }
 }

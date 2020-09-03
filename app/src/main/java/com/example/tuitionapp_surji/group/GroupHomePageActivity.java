@@ -448,7 +448,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
 
     public void sendMessageRequestByGuardianFromGroup(View view){
 
-        messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),groupInfo.getGroupAdminEmail(),groupInfo.getGroupAdminUid(), true ,false) ;
+        messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),groupInfo.getGroupAdminEmail(),groupInfo.getGroupAdminUid(), true ,false,false,false) ;
 
         myRefMessageBox.addValueEventListener(new ValueEventListener() {
             @Override

@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
+import com.example.tuitionapp_surji.guardian.GuardianHomePageActivity;
 import com.example.tuitionapp_surji.guardian.GuardianInfo;
+import com.example.tuitionapp_surji.guardian.GuardianInformationViewActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -183,10 +185,12 @@ public class MessageRequestActivity extends AppCompatActivity {
         }
 
         else{
-             intent = new Intent(this, VerifiedTutorHomePageActivity.class);
-            intent.putStringArrayListExtra("userInfo", userInfo) ;
-            startActivity(intent);
-            finish();
+             intent = new Intent(this, GuardianInformationViewActivity.class);
+             intent.putStringArrayListExtra("tutorInfo", userInfo) ;
+             intent.putExtra("user","tutor");
+             intent.putExtra("guardianUid",userId);
+             startActivity(intent);
+             finish();
         }
 
     }

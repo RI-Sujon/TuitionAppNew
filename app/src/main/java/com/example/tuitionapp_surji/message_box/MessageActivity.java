@@ -1,6 +1,7 @@
 package com.example.tuitionapp_surji.message_box;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -192,7 +193,6 @@ public class MessageActivity extends AppCompatActivity
                                     profile_image.setImageResource(R.drawable.female_pic);
                             }
 
-
                             break;
                         }
 
@@ -296,40 +296,103 @@ public class MessageActivity extends AppCompatActivity
     }
 
 
-    private void sendMessage(String sender, String receiver, String message)
+    private void sendMessage(final String sender, final String receiver, final String message)
     {
+        DatabaseReference  messageBoxReference = FirebaseDatabase.getInstance().getReference("MessageBox");
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-
-        message_time = simpleDateFormat.format(noteCalendar.getTime());
-
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
-        Date d = new Date();
-        String messageDay = sdf.format(d);
-
-        String messageDate = simpleDateFormat2.format(noteCalendar.getTime());
-
-        //System.out.println("Current week day : "+dayOfTheWeek);
-
-
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("sender", sender);
-        hashMap.put("receiver", receiver);
-        hashMap.put("message", message);
-        hashMap.put("message_time",message_time);
-        hashMap.put("message_type","text");
-        hashMap.put("isSeen","no");
-        hashMap.put("messageDay",messageDay);
-        hashMap.put("messageDate",messageDate);
-
-        reference.child("Chats").push().setValue(hashMap);
-
+       /* reference.child("Chats").push().setValue(hashMap);
         SendNotification sendNotification = new SendNotification(receiver,"Message","You have a new message");
-        sendNotification.sendNotificationOperation();
+        sendNotification.sendNotificationOperation();*/
+
+        messageBoxReference.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+                message_time = simpleDateFormat.format(noteCalendar.getTime());
+
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+                Date d = new Date();
+                String messageDay = sdf.format(d);
+
+                String messageDate = simpleDateFormat2.format(noteCalendar.getTime());
+
+                //System.out.println("Current week day : "+dayOfTheWeek);
+
+
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("sender", sender);
+                hashMap.put("receiver", receiver);
+                hashMap.put("message", message);
+                hashMap.put("message_time",message_time);
+                hashMap.put("message_type","text");
+                hashMap.put("isSeen","no");
+                hashMap.put("messageDay",messageDay);
+                hashMap.put("messageDate",messageDate);
+
+                for(DataSnapshot snapshot:dataSnapshot.getChildren())
+                {
+                    MessageBoxInfo messageBoxInfo = snapshot.getValue(MessageBoxInfo.class);
+                    if(checkUser.equals("guardian"))
+                    {
+                        if(messageBoxInfo.getTutorUid().equals(receiver) && messageBoxInfo.getGuardianUid().equals(sender))
+                        {
+                            if(!messageBoxInfo.isBlockFromGuardianSide() && !messageBoxInfo.isBlockFromTutorSide())
+                            {
+                                reference.child("Chats").push().setValue(hashMap);
+                                SendNotification sendNotification = new SendNotification(receiver,"Message","You have a new message");
+                                sendNotification.sendNotificationOperation();
+
+                            }
+
+                            else if(messageBoxInfo.isBlockFromGuardianSide() || messageBoxInfo.isBlockFromTutorSide()){
+                                Toast.makeText(MessageActivity.this, "You can't send messages.", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(MessageActivity.this, "You can't send messages.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                    }
+
+                    else if(checkUser.equals("tutor"))
+                    {
+                        if(messageBoxInfo.getTutorUid().equals(sender) && messageBoxInfo.getGuardianUid().equals(receiver))
+                        {
+
+                            if(!messageBoxInfo.isBlockFromGuardianSide() && !messageBoxInfo.isBlockFromTutorSide())
+                            {
+                                reference.child("Chats").push().setValue(hashMap);
+                                SendNotification sendNotification = new SendNotification(receiver,"Message","You have a new message");
+                                sendNotification.sendNotificationOperation();
+                            }
+
+                            else if(messageBoxInfo.isBlockFromGuardianSide() || messageBoxInfo.isBlockFromTutorSide()){
+                                Toast.makeText(MessageActivity.this, "You can't send messages.", Toast.LENGTH_SHORT).show();
+                            }
+                            else if(messageBoxInfo.isBlockFromGuardianSide() && messageBoxInfo.isBlockFromTutorSide()) {
+                                Toast.makeText(MessageActivity.this, "You can't send messages.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
 
-    private void readMessages(final String myId, final String userId, final String imageUri, final String gender){//, final String imageurl){
+    private void readMessages(final String myId, final String userId, final String imageUri, final String gender)
+    {//, final String imageurl){
         mChat = new ArrayList<>();
 
         reference = FirebaseDatabase.getInstance().getReference("Chats");
@@ -345,7 +408,7 @@ public class MessageActivity extends AppCompatActivity
                         mChat.add(chat);
                     }
 
-                    messageAdapter = new MessageAdapter(MessageActivity.this,mChat,imageUri,gender);//,imageurl);
+                    messageAdapter = new MessageAdapter(MessageActivity.this,mChat,imageUri,gender,checkUser,userInfo,userId,guardianMobileNumber,tutorEmail);//,imageurl);
                     recyclerView.setAdapter(messageAdapter);
                 }
             }
@@ -510,74 +573,128 @@ public class MessageActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.block_user_menu,menu);
+        /*MenuItem menuItem = menu.findItem(R.id.block_in_messenger);
+        if(menuItem.getTitle().equals("Block")){
+           menuItem.setTitle("Unblock");
+
+       }*/
         return true;
     }
 
+    /*@Override
+    public void invalidateOptionsMenu() {
+        super.invalidateOptionsMenu();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem menuItem = menu.findItem(R.id.block_in_messenger);
+        if(menuItem.getTitle().equals("Block")){
+            menuItem.setTitle("Unblock");
+
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }*/
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        final String  userId = intent.getStringExtra("userId");
+        MenuItem blockMenuItem = ((Toolbar)findViewById(R.id.toolbar)).getMenu().findItem(R.id.block_in_messenger);
+        MenuItem unblockMenuItem = ((Toolbar)findViewById(R.id.toolbar)).getMenu().findItem(R.id.unblock_in_messenger);
+
+        switch (item.getItemId())
+        {
             case R.id.block_in_messenger:
+                blockTheUser(true);
+                Intent intent = new Intent(MessageActivity.this,MessageActivity.class);
 
+                /*blockMenuItem.setVisible(false);
+                unblockMenuItem.setVisible(true);*/
 
-                blockTheUser();
-                Intent intent = new Intent(MessageActivity.this,MainMessageActivity.class);
                 if(checkUser.equals("guardian")){
-                    intent.putExtra("user","guardian");
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("tutorEmail",tutorEmail);
+                    intent.putExtra("user", checkUser);
                 }
 
-                else {
-                    intent.putExtra("user","tutor");
+                else if(checkUser.equals("tutor")){
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("mobileNumber",guardianMobileNumber);
                     intent.putStringArrayListExtra("userInfo", userInfo) ;
+                    intent.putExtra("user", checkUser);
                 }
                 startActivity(intent);
                 finish();
+                break;
 
 
-                return true;
+            case R.id.unblock_in_messenger:
+                blockTheUser(false);
+                Intent intent01 = new Intent(MessageActivity.this,MessageActivity.class);
+                if(checkUser.equals("guardian")){
+                    intent01.putExtra("userId", userId);
+                    intent01.putExtra("tutorEmail",tutorEmail);
+                    intent01.putExtra("user", checkUser);
+                }
+
+                else if(checkUser.equals("tutor")){
+                    intent01.putExtra("userId", userId);
+                    intent01.putExtra("mobileNumber",guardianMobileNumber);
+                    intent01.putStringArrayListExtra("userInfo", userInfo) ;
+                    intent01.putExtra("user", checkUser);
+                }
+                startActivity(intent01);
+                finish();
+                break;
+
+
+                //return true;
         }
 
         return false;
     }
 
-    private void blockTheUser() {
+    private void blockTheUser(final boolean data)
+    {
         final String  userId = intent.getStringExtra("userId");
 
         messageBlock = FirebaseDatabase.getInstance().getReference("MessageBox");
-         final String currentUser= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String currentUser= FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
-
-        messageBlock.addValueEventListener(new ValueEventListener() {
+        messageBlock.addValueEventListener(new ValueEventListener()
+        {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for(DataSnapshot dS1: dataSnapshot.getChildren()){
                     MessageBoxInfo messageBoxInfo = dS1.getValue(MessageBoxInfo.class);
-
-                   // System.out.println("User          ========================  "+checkUser);
-
-                  /*  System.out.println(messageBoxInfo.getGuardianUid());
-                    System.out.println("currentUser == "+currentUser);
-                    System.out.println(messageBoxInfo.getTutorUid());
-                    System.out.println("userId == "+userId);*/
-
-                    if(checkUser.equals("guardian")){
-                        System.out.println("Key ====================== "+dS1.getKey());
+                    if(checkUser.equals("guardian"))
+                    {
                         if(messageBoxInfo.getGuardianUid().equals(currentUser) && messageBoxInfo.getTutorUid().equals(userId)){
-                            messageBlock.child(dS1.getKey()).removeValue();
-                            break;
+
+                                HashMap<String,Object> hashMap = new HashMap<>();
+                                hashMap.put("blockFromGuardianSide",data);
+                                messageBlock.child(dS1.getKey()).updateChildren(hashMap);
+                                break;
+
                         }
                     }
 
-                    else if(checkUser.equals("tutor")){
-                        System.out.println("Key ====================== "+dS1.getKey());
-                        if(messageBoxInfo.getGuardianUid().equals(userId) && messageBoxInfo.getTutorUid().equals(currentUser)){
-                            messageBlock.child(dS1.getKey()).removeValue();
+                    else if(checkUser.equals("tutor"))
+                    {
+                        if (messageBoxInfo.getGuardianUid().equals(userId) && messageBoxInfo.getTutorUid().equals(currentUser)) {
+                            HashMap<String,Object> hashMap = new HashMap<>();
+                            hashMap.put("blockFromTutorSide",data);
+                            messageBlock.child(dS1.getKey()).updateChildren(hashMap);
                             break;
                         }
                     }
-
                 }
+
+                messageBlock.removeEventListener(this);
+
             }
 
             @Override
@@ -585,6 +702,5 @@ public class MessageActivity extends AppCompatActivity
 
             }
         });
-
     }
 }

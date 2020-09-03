@@ -13,7 +13,7 @@ tools:context=".demo_video.DemoVideoMainActivity">
         android:background="@color/colorAccent"
         android:layout_height="50dp">
         <ImageButton
-            android:layout_marginStart="25dp"
+            android:layout_marginStart="15dp"
             android:background="@color/colorAccent"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
@@ -28,7 +28,7 @@ tools:context=".demo_video.DemoVideoMainActivity">
             android:layout_height="wrap_content"
             android:text="Demo Video"
             android:textStyle="italic"
-            android:layout_marginLeft="115dp"
+            android:layout_marginLeft="80dp"
             android:layout_gravity="center"
             android:textSize="25sp"
             android:textColor="@color/Black"
@@ -36,59 +36,158 @@ tools:context=".demo_video.DemoVideoMainActivity">
 
     </LinearLayout>
 
+
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <VideoView
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
             android:layout_height="300dp"
             android:id="@+id/Video_view"
             android:layout_margin="10dp"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorAccent"
-            android:text="choose video"
-            android:id="@+id/choose_btn"/>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:hint="Set the video name"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:id="@+id/video_name"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorAccent"
-            android:text="Upload video"
-            android:layout_marginTop="5dp"
-            android:id="@+id/upload_btn"/>
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_marginTop="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/image_download"
+            android:id="@+id/guardian_download_video_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:visibility="invisible"
+            android:onClick="downloadTheVideo"
+            />
 
         <ProgressBar
+            android:layout_marginLeft="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/progress_bar"
             android:visibility="invisible"/>
 
-        <Button
-            android:id="@+id/download_video"
-            android:backgroundTint="@color/colorAccent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Download"
+        <ImageView
+            android:layout_marginLeft="170dp"
+            android:src="@drawable/video_view"
+            android:id="@+id/guardian_video_view_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:onClick="viewTheDownloadedVideo"
+            android:visibility="invisible"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+
+
+
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/select_video"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/choose_btn"/>
+
+
+        <ImageView
+            android:id="@+id/upload_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/upload_video"
+             />
+
+
+        <ImageView
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/image_download"
+            android:id="@+id/download_video"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="downloadTheVideo"
             />
 
 
+        <ImageView
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/trash"
+            android:id="@+id/delete_video"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            />
+
+
+        <ImageView
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/video_view"
+            android:id="@+id/video_view_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="viewTheDownloadedVideo"
+            />
+
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/t1"
+            android:layout_marginLeft="15dp"
+            android:text="choose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/t2"
+            android:layout_marginLeft="20dp"
+            android:text="upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/t3"
+            android:layout_marginLeft="20dp"
+            android:text="download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/t4"
+
+            android:layout_marginLeft="20dp"
+            android:text="remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/t5"
+            android:layout_marginLeft="27dp"
+            android:text="view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
 
 
 </LinearLayout>

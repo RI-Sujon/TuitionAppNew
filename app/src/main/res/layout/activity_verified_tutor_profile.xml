@@ -94,6 +94,17 @@
             android:layout_alignParentRight="true"
             android:onClick="approveAndBlockOperation"/>
 
+        <ImageView
+            android:id="@+id/demo_video_button"
+            android:layout_marginLeft="120dp"
+            android:src="@drawable/video_play"
+            android:layout_below="@+id/profilePicImageView"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:visibility="visible"
+            android:onClick="goToTutorDemoVideo"
+            tools:ignore="OnClick" />
+
         <ImageButton
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground"

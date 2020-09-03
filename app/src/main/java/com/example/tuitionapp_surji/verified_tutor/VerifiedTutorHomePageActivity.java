@@ -45,6 +45,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
@@ -71,9 +73,13 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
     private NavigationView navigationView ;
     private RecyclerView recyclerView, recyclerView2 ;
 
-    private TextView nameTextView, emailTextView ;
+    private TextView nameTextView, emailTextView, notificationCounterTextView, messageCounterTextView ;
     private ImageView profilePic ;
     private View view ;
+
+    private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
+    private long counterNotification, oldCounterNotification, messageCounter, messageOldCounter ;
+    private String counterNotificationFlag, counterMessageFlag ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +139,6 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         }
         else gender = "Only Female" ;
 
-
         myRefVerifiedTutor.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -146,6 +151,40 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        }) ;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        notificationCounterTextView = findViewById(R.id.notificationCounter) ;
+        messageCounterTextView = findViewById(R.id.messageCounter) ;
+
+        databaseFireStore.collection("System").document("Counter")
+                .collection("NotificationCounter").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult() ;
+
+                counterNotification = (long) document.get("counter") ;
+                oldCounterNotification = (long) document.get("oldCounter") ;
+                messageCounter = (long) document.get("messageCounter") ;
+                messageOldCounter = (long) document.get("messageOldCounter") ;
+
+                long n = counterNotification - oldCounterNotification ;
+                long m = messageCounter - messageOldCounter ;
+
+                if(n!=0) {
+                    counterNotificationFlag = "new" ;
+                    notificationCounterTextView.setText(String.valueOf(n));
+                }
+
+                if(m!=0){
+                    counterMessageFlag = "new" ;
+                    messageCounterTextView.setText(String.valueOf(m));
+                }
             }
         }) ;
     }
@@ -226,7 +265,6 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         responseTuitionPostArray1 = new int[tuitionPostInfoArrayList1.size()] ;
         responseTuitionPostArray2 = new int[tuitionPostInfoArrayList2.size()] ;
 
-
         for (int i=0; i<responseTuitionPostArray1.length ; i++){
             responseTuitionPostArray1[i] = 0 ;
         }
@@ -249,15 +287,18 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
             }
         }
 
-
         RecyclerAdapterForTutorHomePage adapter = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList1, userInfo, tuitionPostUidList1, responseTuitionPostArray1,1) ;
         RecyclerAdapterForTutorHomePage adapter2 = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList2, userInfo, tuitionPostUidList2, responseTuitionPostArray2,2) ;
         recyclerView.setAdapter(adapter2);
         recyclerView2.setAdapter(adapter);
     }
 
-    public  void goToMessageBox(View view){
+    public void goToMessageBox(View view){
+        messageCounterTextView.setText("");
         Intent intent = new Intent(this, MainMessageActivity.class);
+        if(counterMessageFlag!=null){
+            intent.putExtra("messageFlag",counterMessageFlag) ;
+        }
         intent.putExtra("user","tutor") ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
@@ -266,7 +307,11 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
 
 
     public void goToVerifiedTutorNotificationActivity(View view){
+        notificationCounterTextView.setText("");
         Intent intent = new Intent(this, NotificationViewActivity.class) ;
+        if(counterNotificationFlag!=null){
+            intent.putExtra("notificationFlag", counterNotificationFlag) ;
+        }
         intent.putExtra("user", "tutor") ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
@@ -274,7 +319,6 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
     }
 
     public void goToVerifiedTutorGroupActivity(View view){
-
         myRefGroup.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

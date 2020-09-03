@@ -1,5 +1,6 @@
 package com.example.tuitionapp_surji.notification_pack;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,7 +11,11 @@ import android.widget.ListView;
 
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.group.GroupHomePageActivity;
+import com.example.tuitionapp_surji.guardian.GuardianHomePageActivity;
+import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -34,8 +41,11 @@ public class NotificationViewActivity extends AppCompatActivity {
     private ListView listView ;
 
     private ArrayList<String>userInfo ;
-    private String user ;
+    private String user, notificationFlag ;
     private MaterialToolbar materialToolbar ;
+
+    private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
+    private long counterNotification ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +54,7 @@ public class NotificationViewActivity extends AppCompatActivity {
 
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;
+        notificationFlag = intent.getStringExtra("notificationFlag") ;
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         if(user.equals("tutor")) {
@@ -117,8 +128,23 @@ public class NotificationViewActivity extends AppCompatActivity {
                 backToHomePage();
             }
         });
-    }
 
+        if(notificationFlag!=null){
+            databaseFireStore.collection("System").document("Counter")
+                    .collection("NotificationCounter").document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document = task.getResult() ;
+
+                    counterNotification = (long) document.get("counter") ;
+
+                    databaseFireStore.collection("System").document("Counter")
+                            .collection("NotificationCounter").document(firebaseUser.getUid())
+                            .update("oldCounter",counterNotification) ;
+                }
+            }) ;
+        }
+    }
 
     public void createNotificationList(){
         CustomAdapterForNotificationView adapter = new CustomAdapterForNotificationView(this, notificationInfoArrayList2, userInfo, notificationInfoUidList2, user);
@@ -153,9 +179,18 @@ public class NotificationViewActivity extends AppCompatActivity {
     }
 
     public void backToHomePage(){
-        //Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
-        //intent.putStringArrayListExtra("userInfo", userInfo) ;
-        //startActivity(intent);
+        /*Intent intent ;
+        if(notificationFlag!=null){
+            if(user.equals("tutor")){
+                intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+                intent.putStringArrayListExtra("userInfo", userInfo) ;
+            }else {
+                intent = new Intent(this, GuardianHomePageActivity.class) ;
+            }
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) ;
+
+            startActivity(intent);
+        }*/
         finish();
     }
 

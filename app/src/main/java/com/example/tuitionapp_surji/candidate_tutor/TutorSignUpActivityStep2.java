@@ -26,8 +26,10 @@ import com.example.tuitionapp_surji.notification_pack.SendNotification;
 import com.example.tuitionapp_surji.notification_pack.NotificationInfo;
 import com.example.tuitionapp_surji.verified_tutor.TutorSignUpActivityStep3;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorInfo;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +37,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -43,6 +47,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TutorSignUpActivityStep2 extends AppCompatActivity {
 
@@ -70,6 +76,9 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     private String reference1Uid, reference2Uid ;
 
     private CandidateTutorInfo candidateTutorInfo ;
+
+    private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
+    private long counterNotification ;
 
     private Bitmap bitmapImage ;
 
@@ -225,6 +234,21 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
 
                     SendNotification sendNotification = new SendNotification(reference1Uid, "New Friend", "A friend wants to join TutorApp.Do You know him?") ;
                     sendNotification.sendNotificationOperation();
+
+                    databaseFireStore.collection("System").document("Counter")
+                            .collection("NotificationCounter").document(reference1Uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot document = task.getResult() ;
+
+                            counterNotification = (long) document.get("counter") ;
+                            counterNotification = counterNotification + 1 ;
+
+                            databaseFireStore.collection("System").document("Counter")
+                                    .collection("NotificationCounter").document(reference1Uid)
+                                    .update("counter",counterNotification) ;
+                        }
+                    }) ;
                 }
                 if (flag2 == 1) {
                     ReferInfo referInfo2 = new ReferInfo(reference2str);
@@ -236,11 +260,36 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
 
                     SendNotification sendNotification = new SendNotification(reference2Uid, "New Friend", "A friend wants to join TutorApp.Do You know him?") ;
                     sendNotification.sendNotificationOperation();
+
+                    databaseFireStore.collection("System").document("Counter")
+                            .collection("NotificationCounter").document(reference2Uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot document = task.getResult() ;
+
+                            counterNotification = (long) document.get("counter") ;
+                            counterNotification = counterNotification + 1 ;
+
+                            databaseFireStore.collection("System").document("Counter")
+                                    .collection("NotificationCounter").document(reference2Uid)
+                                    .update("counter",counterNotification) ;
+                        }
+                    }) ;
                 }
 
                 //uploadFinish();
                 ApproveAndBlockInfo approveAndBlockInfo = new ApproveAndBlockInfo("waiting");
                 myRefApprove.setValue(approveAndBlockInfo);
+
+
+                Map<String,Object> map = new HashMap<>() ;
+                map.put("counter",0) ;
+                map.put("oldCounter",0) ;
+                map.put("messageCounter", 0) ;
+                map.put("messageOldCounter", 0) ;
+                databaseFireStore.collection("System").document("Counter")
+                        .collection("NotificationCounter").document(firebaseUser.getUid())
+                        .set(map) ;
 
                 goToTutorSignUpActivityStep3();
 
@@ -251,6 +300,15 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
             //uploadFinish();
             ApproveAndBlockInfo approveAndBlockInfo = new ApproveAndBlockInfo("waiting");
             myRefApprove.setValue(approveAndBlockInfo);
+
+            Map<String,Object> map = new HashMap<>() ;
+            map.put("counter",0) ;
+            map.put("oldCounter",0) ;
+            map.put("messageCounter", 0) ;
+            map.put("messageOldCounter", 0) ;
+            databaseFireStore.collection("System").document("Counter")
+                    .collection("NotificationCounter").document(firebaseUser.getUid())
+                    .set(map) ;
 
             goToTutorSignUpActivityStep3();
         }

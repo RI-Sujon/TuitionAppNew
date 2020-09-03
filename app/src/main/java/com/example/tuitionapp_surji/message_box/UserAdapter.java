@@ -37,8 +37,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private ArrayList<String> userInfo ;
     private ArrayList<CandidateTutorInfo> imageUriStrings;
 
-
-
     public UserAdapter(Context mContext, List<MessageBoxUser> mUsers, String checkUser, boolean isChat, ArrayList<String> userInfo) {
         this.mContext = mContext;
         this.mUsers = mUsers;
@@ -62,11 +60,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         DatabaseReference candidateTutorReference = FirebaseDatabase.getInstance().getReference("CandidateTutor");
         DatabaseReference guardianReference = FirebaseDatabase.getInstance().getReference("Guardian");
 
-
         if(checkUser.equals("guardian")){
             final String[] tutorName = new String[1];
-
-
 
             candidateTutorReference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -94,34 +89,24 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                                     holder.profile_image.setImageResource(R.drawable.female_pic);
                             }
 
-
-
                             if(isChat){
                                 if(candidateTutorInfo.getStatus().equals("online")){
                                     holder.img_on.setVisibility(View.VISIBLE);
                                     holder.img_off.setVisibility(View.GONE);
                                 }
-
                                 else
                                 {
                                     holder.img_on.setVisibility(View.GONE);
                                     holder.img_off.setVisibility(View.VISIBLE);
                                 }
                             }
-
                             else {
                                 holder.img_on.setVisibility(View.GONE);
                                 holder.img_off.setVisibility(View.GONE);
                             }
-
-
-
                             break;
                         }
-
-
                     }
-
                 }
 
                 @Override

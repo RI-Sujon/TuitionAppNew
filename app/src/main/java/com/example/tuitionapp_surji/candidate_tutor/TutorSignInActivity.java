@@ -1,11 +1,15 @@
 package com.example.tuitionapp_surji.candidate_tutor;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -22,6 +26,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
@@ -324,6 +329,32 @@ public class TutorSignInActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         goToBackPageActivity(null);
+    }
+
+    public void showDialogForForgotPassword(View view){
+        final EditText resetMail = new EditText(this) ;
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this) ;
+        dialog.setTitle("Forgot Password") ;
+        dialog.setMessage("Enter Your Email Address to Received Reset Link.") ;
+        dialog.setView(resetMail) ;
+
+        dialog.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, int which) {
+                String email = resetMail.getText().toString() ;
+                if(!email.equals("")){
+                    mAuth.sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getApplicationContext(), "A Link has been sent to this email.", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    });
+                }
+            }
+        }) ;
+
+        dialog.show() ;
     }
 }
 

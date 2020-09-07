@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="stat"
+    tools:openDrawer="start"
     android:id="@+id/drawer_layout"
     tools:context=".verified_tutor.VerifiedTutorHomePageActivity">
 
@@ -138,7 +138,6 @@
                             android:orientation="vertical"
                             android:layout_margin="4dp">
 
-
                             <RelativeLayout
                                 android:layout_width="75dp"
                                 android:layout_height="75dp">
@@ -155,12 +154,11 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="0dp"
-                                    android:textStyle="bold"
                                     android:layout_alignParentRight="true"
                                     android:text="1"
-                                    android:textSize="20dp"
-                                    android:layout_marginRight="5dp"
-                                    android:textColor="#FFAB00"
+                                    android:textSize="18dp"
+                                    android:layout_marginRight="10dp"
+                                    android:textColor="#D50000"
                                     android:fontFamily="@font/secular_one"/>
                             </RelativeLayout>
 

@@ -6,776 +6,805 @@
     android:layout_height="match_parent"
     tools:context=".verified_tutor.VerifiedTutorProfileActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@drawable/border3"
-            android:layout_marginTop="0dp" />
-        <ImageView
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/back_from_profile"
-            android:paddingTop="15dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="15dp"
-            android:layout_marginLeft="3dp"
-            android:onClick="goToBackPageActivity"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/search_icon"
-            android:padding="15dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="50dp"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/option"
-            android:layout_alignParentRight="true"
-            android:onClick="onPopupButtonClick"/>
-
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profilePicImageView"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:padding="10dp"
-            android:layout_marginTop="85dp"
-            android:layout_marginLeft="20dp"
-            app:civ_border_width="4dp"
-            android:src="@drawable/male_pic"
-            app:civ_fill_color="@color/White"
-            app:civ_border_color="@color/White"/>
-
-        <TextView
-            android:id="@+id/userName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="21dp"
-            android:textColor="@color/White"
-            android:layout_toRightOf="@+id/profilePicImageView"
-            android:layout_marginTop="112dp"/>
-
-        <TextView
-            android:id="@+id/status1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="158dp"
-            android:layout_toEndOf="@+id/profilePicImageView" />
-
-        <TextView
-            android:id="@+id/status2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAllCaps="true"
-            android:layout_marginTop="177dp"
-            android:textStyle="bold"
-            android:textColor="@color/Black"
-            android:layout_toEndOf="@+id/profilePicImageView"/>
-
-        <Button
-            android:id="@+id/approve_block_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginTop="210dp"
-            android:background="#023A02"
-            android:textColor="@color/White"
-            android:layout_marginRight="15dp"
-            android:layout_alignParentRight="true"
-            android:onClick="approveAndBlockOperation"/>
-
-        <ImageView
-            android:id="@+id/demo_video_button"
-            android:layout_marginLeft="120dp"
-            android:src="@drawable/video_play"
-            android:layout_below="@+id/profilePicImageView"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
-            android:visibility="visible"
-            android:onClick="goToTutorDemoVideo"
-            tools:ignore="OnClick" />
-
-        <ImageButton
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:id="@+id/messageRequestButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="220dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/send_message3"
-            android:background="#00000000"
-            android:visibility="gone"
-            android:onClick="sendMessageRequestByGuardian"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="290dp"
-            android:layout_centerHorizontal="true"
-            android:isScrollContainer="false">
-            <LinearLayout
+            android:layout_height="wrap_content">
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="150dp"
+                android:background="@drawable/border3"
+                android:layout_marginTop="0dp" />
+            <ImageView
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/back_from_profile"
+                android:paddingTop="15dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="15dp"
+                android:layout_marginLeft="3dp"
+                android:onClick="goToBackPageActivity"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/search_icon"
+                android:padding="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="50dp"/>
 
-                <RelativeLayout
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/option"
+                android:layout_alignParentRight="true"
+                android:onClick="onPopupButtonClick"/>
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profilePicImageView"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:padding="10dp"
+                android:layout_marginTop="85dp"
+                android:layout_marginLeft="20dp"
+                app:civ_border_width="4dp"
+                android:src="@drawable/male_pic"
+                app:civ_fill_color="@color/White"
+                app:civ_border_color="@color/White"/>
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="21dp"
+                android:textColor="@color/White"
+                android:layout_toRightOf="@+id/profilePicImageView"
+                android:layout_marginTop="112dp"/>
+
+            <TextView
+                android:id="@+id/status1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="158dp"
+                android:layout_toEndOf="@+id/profilePicImageView" />
+
+            <TextView
+                android:id="@+id/status2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="true"
+                android:layout_marginTop="177dp"
+                android:textStyle="bold"
+                android:textColor="@color/Black"
+                android:layout_toEndOf="@+id/profilePicImageView"/>
+
+            <Button
+                android:id="@+id/approve_block_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="220dp"
+                android:background="#023A02"
+                android:textColor="@color/White"
+                android:layout_marginRight="15dp"
+                android:layout_alignParentRight="true"
+                android:onClick="approveAndBlockOperation"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/demo_video_button"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:minWidth="140dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:text="Demo Video"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textStyle="bold"
+                android:maxLines="1"
+                app:strokeColor="@color/Purple"
+                android:textColor="@color/Purple"
+                android:backgroundTint="#FBBEFB"
+                app:strokeWidth="2dp"
+                app:cornerRadius="30dp"
+                android:visibility="gone"
+                android:onClick="goToTutorDemoVideo"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/messageRequestButton"
+                android:minHeight="140dp"
+                android:maxLines="1"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:text="Send Massage"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="15dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textStyle="bold"
+                app:strokeColor="@color/Green"
+                android:textColor="@color/Green"
+                android:backgroundTint="#C5FDC5"
+                app:strokeWidth="2dp"
+                app:cornerRadius="30dp"
+                android:visibility="gone"
+                android:onClick="sendMessageRequestByGuardian"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:isScrollContainer="false">
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_centerHorizontal="true">
-                        <ImageButton
-                            android:id="@+id/about_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/about_blue"
-                            android:background="#00000000"
-                            android:layout_margin="5dp"/>
-                        <ImageButton
-                            android:id="@+id/excellence_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/exc_gray"
-                            android:background="#00000000"
-                            android:layout_margin="5dp"/>
-                        <ImageButton
-                            android:id="@+id/experience_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/exp_gray"
-                            android:background="#00000000"
-                            android:layout_margin="5dp"/>
-                    </LinearLayout>
+                    android:orientation="vertical">
 
-                    <ViewFlipper
-                        android:id="@+id/view_flipper"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
-                        android:layout_centerHorizontal="true">
-
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
                         <LinearLayout
-                            android:id="@+id/about_layout"
-                            android:layout_width="350dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <LinearLayout
-                                android:id="@+id/gender_row"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingRight="0dp"
-                                android:background="@drawable/border2">
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="120dp"
-                                    android:text="GENDER"
-                                    android:textStyle="bold"
-                                    android:textSize="12dp"
-                                    android:textColor="#010139" />
-
-                                <EditText
-                                    android:id="@+id/gender"
-                                    android:layout_width="195dp"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="13dp"
-                                    android:textColor="#000000"
-                                    android:background="#00000000"
-                                    android:enabled="false"/>
-                                <ImageButton
-                                    android:id="@+id/privacy_gender"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent"
-                                    android:background="#00000000"
-                                    android:paddingRight="5dp"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/mobile_number_row"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingRight="0dp"
-                                android:background="@drawable/border2">
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="120dp"
-                                    android:text="MOBILE NUMBER"
-                                    android:textStyle="bold"
-                                    android:textSize="12dp"
-                                    android:textColor="#010139" />
-
-                                <EditText
-                                    android:id="@+id/mobile_number"
-                                    android:layout_width="195dp"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="13dp"
-                                    android:textColor="#000000"
-                                    android:background="#00000000"
-                                    android:enabled="false"/>
-                                <ImageButton
-                                    android:id="@+id/privacy_mobile_number"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent"
-                                    android:background="#00000000"
-                                    android:paddingRight="5dp"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/email_row"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingRight="0dp"
-                                android:background="@drawable/border2">
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="120dp"
-                                    android:text="EMAIL"
-                                    android:textStyle="bold"
-                                    android:textSize="12dp"
-                                    android:textColor="#010139" />
-
-                                <EditText
-                                    android:id="@+id/email"
-                                    android:layout_width="195dp"
-                                    android:layout_height="wrap_content"
-                                    android:enabled="false"
-                                    android:textSize="13dp"
-                                    android:textColor="#000000"
-                                    android:background="#00000000"/>
-                                <ImageButton
-                                    android:id="@+id/privacy_email"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent"
-                                    android:background="#00000000"
-                                    android:paddingRight="5dp"/>
-
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/address_row"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingRight="0dp"
-                                android:background="@drawable/border2">
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="120dp"
-                                    android:text="ADDRESS"
-                                    android:textStyle="bold"
-                                    android:textSize="12dp"
-                                    android:textColor="#010139" />
-
-                                <EditText
-                                    android:id="@+id/address"
-                                    android:layout_width="195dp"
-                                    android:layout_height="wrap_content"
-                                    android:enabled="false"
-                                    android:textSize="13dp"
-                                    android:textColor="#000000"
-                                    android:background="#00000000"/>
-                                <ImageButton
-                                    android:id="@+id/privacy_address"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent"
-                                    android:paddingRight="5dp"
-                                    android:background="#00000000"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/current_position_row"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingRight="0dp"
-                                android:background="@drawable/border2">
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="120dp"
-                                    android:text="CURRENT POSITION"
-                                    android:textStyle="bold"
-                                    android:textSize="12dp"
-                                    android:textColor="#010139" />
-
-                                <EditText
-                                    android:id="@+id/current_position"
-                                    android:layout_width="195dp"
-                                    android:layout_height="wrap_content"
-                                    android:enabled="false"
-                                    android:textSize="13dp"
-                                    android:textColor="#000000"
-                                    android:background="#00000000"/>
-                                <ImageButton
-                                    android:id="@+id/privacy_current_position"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent"
-                                    android:background="#00000000"
-                                    android:paddingRight="5dp"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/institute_name_row"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingRight="0dp"
-                                android:background="@drawable/border2">
-                                <TextView
-                                    android:id="@+id/institute_name_edit_text"
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="120dp"
-                                    android:text="UNIVERSITY"
-                                    android:textStyle="bold"
-                                    android:textSize="12dp"
-                                    android:textColor="#010139" />
-
-                                <EditText
-                                    android:id="@+id/institute_name"
-                                    android:layout_width="195dp"
-                                    android:layout_height="wrap_content"
-                                    android:enabled="false"
-                                    android:textSize="13dp"
-                                    android:textColor="#000000"
-                                    android:background="#00000000"/>
-                                <ImageButton
-                                    android:id="@+id/privacy_institute"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent"
-                                    android:layout_gravity="right"
-                                    android:background="#00000000"
-                                    android:paddingRight="5dp"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/subject_department_row"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingRight="0dp"
-                                android:background="@drawable/border2">
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="120dp"
-                                    android:text="SUBJECT/DEPARTMENT"
-                                    android:textStyle="bold"
-                                    android:textSize="11dp"
-                                    android:textColor="#010139" />
-
-                                <EditText
-                                    android:id="@+id/subject_department"
-                                    android:layout_width="195dp"
-                                    android:layout_height="wrap_content"
-                                    android:enabled="false"
-                                    android:textSize="13dp"
-                                    android:textColor="#000000"
-                                    android:background="#00000000"/>
-                                <ImageButton
-                                    android:id="@+id/privacy_subject"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent"
-                                    android:paddingRight="5dp"
-                                    android:background="#00000000"/>
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/excellence_layout"
-                            android:layout_width="350dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <LinearLayout
-                                android:id="@+id/medium_row"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingRight="0dp"
-                                android:background="@drawable/border2">
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="120dp"
-                                    android:text="Preferred Medium"
-                                    android:textStyle="bold"
-                                    android:textSize="12dp"
-                                    android:textColor="#010139" />
-
-
-                                <RelativeLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-                                    <EditText
-                                        android:id="@+id/medium"
-                                        android:layout_width="200dp"
-                                        android:layout_height="wrap_content"
-                                        android:enabled="false"
-                                        android:textSize="13dp"
-                                        android:textColor="#000000"
-                                        android:background="#00000000"/>
-                                    <Spinner
-                                        android:id="@+id/medium_invisible"
-                                        android:layout_width="200dp"
-                                        android:layout_height="wrap_content"
-                                        android:entries="@array/medium_array"
-                                        android:visibility="gone"/>
-                                </RelativeLayout>
-
-                                <ImageButton
-                                    android:id="@+id/privacy_medium"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent"
-                                    android:paddingRight="5dp"
-                                    android:background="#00000000"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/class_row"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingRight="0dp"
-                                android:background="@drawable/border2">
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="120dp"
-                                    android:text="Preferred Class"
-                                    android:textStyle="bold"
-                                    android:textSize="12dp"
-                                    android:textColor="#010139" />
-
-                                <EditText
-                                    android:id="@+id/preferred_class"
-                                    android:layout_width="200dp"
-                                    android:layout_height="wrap_content"
-                                    android:enabled="false"
-                                    android:textSize="13dp"
-                                    android:textColor="#000000"
-                                    android:background="#00000000"/>
-                                <ImageButton
-                                    android:id="@+id/privacy_class"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent"
-                                    android:paddingRight="5dp"
-                                    android:background="#00000000"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/group_row"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingRight="0dp"
-                                android:background="@drawable/border2">
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="120dp"
-                                    android:text="Preferred Group"
-                                    android:textStyle="bold"
-                                    android:textSize="12dp"
-                                    android:textColor="#010139" />
-
-                                <RelativeLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                    <EditText
-                                        android:id="@+id/preferred_group"
-                                        android:layout_width="200dp"
-                                        android:layout_height="wrap_content"
-                                        android:enabled="false"
-                                        android:textSize="13dp"
-                                        android:textColor="#000000"
-                                        android:background="#00000000"/>
-
-                                    <Spinner
-                                        android:id="@+id/preferred_group_invisible"
-                                        android:layout_width="200dp"
-                                        android:layout_height="wrap_content"
-                                        android:entries="@array/group_array"
-                                        android:visibility="invisible"/>
-                                </RelativeLayout>
-
-                                <ImageButton
-                                    android:id="@+id/privacy_group"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent"
-                                    android:paddingRight="5dp"
-                                    android:background="#00000000"/>
-
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/subject_list_row"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingRight="0dp"
-                                android:background="@drawable/border2">
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="120dp"
-                                    android:text="Preferred Subject"
-                                    android:textStyle="bold"
-                                    android:textSize="12dp"
-                                    android:textColor="#010139" />
-
-                                <EditText
-                                    android:id="@+id/preferred_subject"
-                                    android:layout_width="200dp"
-                                    android:layout_height="wrap_content"
-                                    android:enabled="false"
-                                    android:textSize="13dp"
-                                    android:textColor="#000000"
-                                    android:background="#00000000"/>
-                                <ImageButton
-                                    android:id="@+id/privacy_subject_list"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent"
-                                    android:paddingRight="5dp"
-                                    android:background="#00000000"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/preferred_area_row"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingRight="0dp"
-                                android:background="@drawable/border2">
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="120dp"
-                                    android:text="Preferred Location"
-                                    android:textStyle="bold"
-                                    android:textSize="12dp"
-                                    android:textColor="#010139" />
-
-                                <EditText
-                                    android:id="@+id/preferred_location"
-                                    android:layout_width="200dp"
-                                    android:layout_height="wrap_content"
-                                    android:enabled="false"
-                                    android:textSize="13dp"
-                                    android:textColor="#000000"
-                                    android:background="#00000000"/>
-                                <ImageButton
-                                    android:id="@+id/privacy_area"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent"
-                                    android:paddingRight="5dp"
-                                    android:background="#00000000"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/days_per_week_row"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingRight="0dp"
-                                android:background="@drawable/border2">
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="120dp"
-                                    android:text="Preferred Days Per Week/Month"
-                                    android:textStyle="bold"
-                                    android:textSize="12dp"
-                                    android:textColor="#010139" />
-
-                                <EditText
-                                    android:id="@+id/preferred_days_per_week"
-                                    android:layout_width="200dp"
-                                    android:layout_height="wrap_content"
-                                    android:enabled="false"
-                                    android:textSize="13dp"
-                                    android:textColor="#000000"
-                                    android:background="#00000000"/>
-                                <ImageButton
-                                    android:id="@+id/privacy_days_per_week"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent"
-                                    android:paddingRight="5dp"
-                                    android:background="#00000000"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/minimum_salary_row"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingLeft="10dp"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:paddingRight="0dp"
-                                android:background="@drawable/border2">
-                                <TextView
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="120dp"
-                                    android:text="Preferred Minimum Salary"
-                                    android:textStyle="bold"
-                                    android:textSize="12dp"
-                                    android:textColor="#010139" />
-
-                                <EditText
-                                    android:id="@+id/preferred_minimum_salary"
-                                    android:layout_width="200dp"
-                                    android:layout_height="wrap_content"
-                                    android:enabled="false"
-                                    android:textSize="13dp"
-                                    android:textColor="#000000"
-                                    android:background="#00000000"/>
-                                <ImageButton
-                                    android:id="@+id/privacy_salary"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent"
-                                    android:paddingRight="5dp"
-                                    android:background="#00000000"/>
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/experience_layout"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                            <EditText
-                                android:id="@+id/experience"
-                                android:layout_marginTop="30dp"
-                                android:paddingStart="20dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_centerHorizontal="true">
+                            <ImageButton
+                                android:id="@+id/about_button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Experience"
-                                android:textColor="@color/Black"
+                                android:src="@drawable/about_blue"
                                 android:background="#00000000"
-                                android:enabled="false"/>
+                                android:layout_margin="5dp"/>
+                            <ImageButton
+                                android:id="@+id/excellence_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/exc_gray"
+                                android:background="#00000000"
+                                android:layout_margin="5dp"/>
+                            <ImageButton
+                                android:id="@+id/experience_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/exp_gray"
+                                android:background="#00000000"
+                                android:layout_margin="5dp"/>
                         </LinearLayout>
-                    </ViewFlipper>
-                    <Button
-                        android:id="@+id/save_profile_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="350dp"
-                        android:text="save"
-                        android:onClick="saveProfile"
-                        android:visibility="gone"/>
-                </RelativeLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="20dp">
-                    <TextView
-                        android:id="@+id/availability"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="You are Available."
-                        android:textStyle="bold"
-                        android:textColor="@color/Green"
-                        android:visibility="gone"/>
+                        <ViewFlipper
+                            android:id="@+id/view_flipper"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="50dp"
+                            android:layout_centerHorizontal="true">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/change_availability_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:text=" Click to set \'Not Available\'"
-                        android:textAllCaps="false"
-                        android:textSize="13dp"
-                        android:visibility="gone"/>
-                </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/about_layout"
+                                android:layout_width="350dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:id="@+id/gender_row"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingRight="0dp"
+                                    android:background="@drawable/border2">
+                                    <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="120dp"
+                                        android:text="GENDER"
+                                        android:textStyle="bold"
+                                        android:textSize="12dp"
+                                        android:textColor="#010139" />
 
-                <LinearLayout
-                    android:id="@+id/layoutForAdmin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_margin="10dp"
-                    android:visibility="gone">
+                                    <EditText
+                                        android:id="@+id/gender"
+                                        android:layout_width="195dp"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="13dp"
+                                        android:textColor="#000000"
+                                        android:background="#00000000"
+                                        android:enabled="false"/>
+                                    <ImageButton
+                                        android:id="@+id/privacy_gender"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:background="#00000000"
+                                        android:paddingRight="5dp"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/mobile_number_row"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingRight="0dp"
+                                    android:background="@drawable/border2">
+                                    <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="120dp"
+                                        android:text="MOBILE NUMBER"
+                                        android:textStyle="bold"
+                                        android:textSize="12dp"
+                                        android:textColor="#010139" />
 
-                    <TextView
-                        android:text="Institute ID Card :"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        android:layout_marginTop="15dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/Red" />
-                    <ImageView
-                        android:id="@+id/idCardImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp" />
-                    <TextView
-                        android:text="Report :"
-                        android:textStyle="bold"
-                        android:textSize="20dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/Red"
-                        android:visibility="visible"/>
+                                    <EditText
+                                        android:id="@+id/mobile_number"
+                                        android:layout_width="195dp"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="13dp"
+                                        android:textColor="#000000"
+                                        android:background="#00000000"
+                                        android:enabled="false"/>
+                                    <ImageButton
+                                        android:id="@+id/privacy_mobile_number"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:background="#00000000"
+                                        android:paddingRight="5dp"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/email_row"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingRight="0dp"
+                                    android:background="@drawable/border2">
+                                    <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="120dp"
+                                        android:text="EMAIL"
+                                        android:textStyle="bold"
+                                        android:textSize="12dp"
+                                        android:textColor="#010139" />
+
+                                    <EditText
+                                        android:id="@+id/email"
+                                        android:layout_width="195dp"
+                                        android:layout_height="wrap_content"
+                                        android:enabled="false"
+                                        android:textSize="13dp"
+                                        android:textColor="#000000"
+                                        android:background="#00000000"/>
+                                    <ImageButton
+                                        android:id="@+id/privacy_email"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:background="#00000000"
+                                        android:paddingRight="5dp"/>
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/address_row"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingRight="0dp"
+                                    android:background="@drawable/border2">
+                                    <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="120dp"
+                                        android:text="ADDRESS"
+                                        android:textStyle="bold"
+                                        android:textSize="12dp"
+                                        android:textColor="#010139" />
+
+                                    <EditText
+                                        android:id="@+id/address"
+                                        android:layout_width="195dp"
+                                        android:layout_height="wrap_content"
+                                        android:enabled="false"
+                                        android:textSize="13dp"
+                                        android:textColor="#000000"
+                                        android:background="#00000000"/>
+                                    <ImageButton
+                                        android:id="@+id/privacy_address"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:paddingRight="5dp"
+                                        android:background="#00000000"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/current_position_row"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingRight="0dp"
+                                    android:background="@drawable/border2">
+                                    <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="120dp"
+                                        android:text="CURRENT POSITION"
+                                        android:textStyle="bold"
+                                        android:textSize="12dp"
+                                        android:textColor="#010139" />
+
+                                    <EditText
+                                        android:id="@+id/current_position"
+                                        android:layout_width="195dp"
+                                        android:layout_height="wrap_content"
+                                        android:enabled="false"
+                                        android:textSize="13dp"
+                                        android:textColor="#000000"
+                                        android:background="#00000000"/>
+                                    <ImageButton
+                                        android:id="@+id/privacy_current_position"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:background="#00000000"
+                                        android:paddingRight="5dp"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/institute_name_row"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingRight="0dp"
+                                    android:background="@drawable/border2">
+                                    <TextView
+                                        android:id="@+id/institute_name_edit_text"
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="120dp"
+                                        android:text="UNIVERSITY"
+                                        android:textStyle="bold"
+                                        android:textSize="12dp"
+                                        android:textColor="#010139" />
+
+                                    <EditText
+                                        android:id="@+id/institute_name"
+                                        android:layout_width="195dp"
+                                        android:layout_height="wrap_content"
+                                        android:enabled="false"
+                                        android:textSize="13dp"
+                                        android:textColor="#000000"
+                                        android:background="#00000000"/>
+                                    <ImageButton
+                                        android:id="@+id/privacy_institute"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:layout_gravity="right"
+                                        android:background="#00000000"
+                                        android:paddingRight="5dp"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/subject_department_row"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingRight="0dp"
+                                    android:background="@drawable/border2">
+                                    <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="120dp"
+                                        android:text="SUBJECT/DEPARTMENT"
+                                        android:textStyle="bold"
+                                        android:textSize="11dp"
+                                        android:textColor="#010139" />
+
+                                    <EditText
+                                        android:id="@+id/subject_department"
+                                        android:layout_width="195dp"
+                                        android:layout_height="wrap_content"
+                                        android:enabled="false"
+                                        android:textSize="13dp"
+                                        android:textColor="#000000"
+                                        android:background="#00000000"/>
+                                    <ImageButton
+                                        android:id="@+id/privacy_subject"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:paddingRight="5dp"
+                                        android:background="#00000000"/>
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/excellence_layout"
+                                android:layout_width="350dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:id="@+id/medium_row"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingRight="0dp"
+                                    android:background="@drawable/border2">
+                                    <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="120dp"
+                                        android:text="Preferred Medium"
+                                        android:textStyle="bold"
+                                        android:textSize="12dp"
+                                        android:textColor="#010139" />
+
+
+                                    <RelativeLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
+                                        <EditText
+                                            android:id="@+id/medium"
+                                            android:layout_width="200dp"
+                                            android:layout_height="wrap_content"
+                                            android:enabled="false"
+                                            android:textSize="13dp"
+                                            android:textColor="#000000"
+                                            android:background="#00000000"/>
+                                        <Spinner
+                                            android:id="@+id/medium_invisible"
+                                            android:layout_width="200dp"
+                                            android:layout_height="wrap_content"
+                                            android:entries="@array/medium_array"
+                                            android:visibility="gone"/>
+                                    </RelativeLayout>
+
+                                    <ImageButton
+                                        android:id="@+id/privacy_medium"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:paddingRight="5dp"
+                                        android:background="#00000000"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/class_row"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingRight="0dp"
+                                    android:background="@drawable/border2">
+                                    <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="120dp"
+                                        android:text="Preferred Class"
+                                        android:textStyle="bold"
+                                        android:textSize="12dp"
+                                        android:textColor="#010139" />
+
+                                    <EditText
+                                        android:id="@+id/preferred_class"
+                                        android:layout_width="200dp"
+                                        android:layout_height="wrap_content"
+                                        android:enabled="false"
+                                        android:textSize="13dp"
+                                        android:textColor="#000000"
+                                        android:background="#00000000"/>
+                                    <ImageButton
+                                        android:id="@+id/privacy_class"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:paddingRight="5dp"
+                                        android:background="#00000000"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/group_row"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingRight="0dp"
+                                    android:background="@drawable/border2">
+                                    <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="120dp"
+                                        android:text="Preferred Group"
+                                        android:textStyle="bold"
+                                        android:textSize="12dp"
+                                        android:textColor="#010139" />
+
+                                    <RelativeLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
+
+                                        <EditText
+                                            android:id="@+id/preferred_group"
+                                            android:layout_width="200dp"
+                                            android:layout_height="wrap_content"
+                                            android:enabled="false"
+                                            android:textSize="13dp"
+                                            android:textColor="#000000"
+                                            android:background="#00000000"/>
+
+                                        <Spinner
+                                            android:id="@+id/preferred_group_invisible"
+                                            android:layout_width="200dp"
+                                            android:layout_height="wrap_content"
+                                            android:entries="@array/group_array"
+                                            android:visibility="invisible"/>
+                                    </RelativeLayout>
+
+                                    <ImageButton
+                                        android:id="@+id/privacy_group"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:paddingRight="5dp"
+                                        android:background="#00000000"/>
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/subject_list_row"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingRight="0dp"
+                                    android:background="@drawable/border2">
+                                    <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="120dp"
+                                        android:text="Preferred Subject"
+                                        android:textStyle="bold"
+                                        android:textSize="12dp"
+                                        android:textColor="#010139" />
+
+                                    <EditText
+                                        android:id="@+id/preferred_subject"
+                                        android:layout_width="200dp"
+                                        android:layout_height="wrap_content"
+                                        android:enabled="false"
+                                        android:textSize="13dp"
+                                        android:textColor="#000000"
+                                        android:background="#00000000"/>
+                                    <ImageButton
+                                        android:id="@+id/privacy_subject_list"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:paddingRight="5dp"
+                                        android:background="#00000000"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/preferred_area_row"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingRight="0dp"
+                                    android:background="@drawable/border2">
+                                    <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="120dp"
+                                        android:text="Preferred Location"
+                                        android:textStyle="bold"
+                                        android:textSize="12dp"
+                                        android:textColor="#010139" />
+
+                                    <EditText
+                                        android:id="@+id/preferred_location"
+                                        android:layout_width="200dp"
+                                        android:layout_height="wrap_content"
+                                        android:enabled="false"
+                                        android:textSize="13dp"
+                                        android:textColor="#000000"
+                                        android:background="#00000000"/>
+                                    <ImageButton
+                                        android:id="@+id/privacy_area"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:paddingRight="5dp"
+                                        android:background="#00000000"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/days_per_week_row"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingRight="0dp"
+                                    android:background="@drawable/border2">
+                                    <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="120dp"
+                                        android:text="Preferred Days Per Week/Month"
+                                        android:textStyle="bold"
+                                        android:textSize="12dp"
+                                        android:textColor="#010139" />
+
+                                    <EditText
+                                        android:id="@+id/preferred_days_per_week"
+                                        android:layout_width="200dp"
+                                        android:layout_height="wrap_content"
+                                        android:enabled="false"
+                                        android:textSize="13dp"
+                                        android:textColor="#000000"
+                                        android:background="#00000000"/>
+                                    <ImageButton
+                                        android:id="@+id/privacy_days_per_week"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:paddingRight="5dp"
+                                        android:background="#00000000"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/minimum_salary_row"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:paddingRight="0dp"
+                                    android:background="@drawable/border2">
+                                    <TextView
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="120dp"
+                                        android:text="Preferred Minimum Salary"
+                                        android:textStyle="bold"
+                                        android:textSize="12dp"
+                                        android:textColor="#010139" />
+
+                                    <EditText
+                                        android:id="@+id/preferred_minimum_salary"
+                                        android:layout_width="200dp"
+                                        android:layout_height="wrap_content"
+                                        android:enabled="false"
+                                        android:textSize="13dp"
+                                        android:textColor="#000000"
+                                        android:background="#00000000"/>
+                                    <ImageButton
+                                        android:id="@+id/privacy_salary"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:paddingRight="5dp"
+                                        android:background="#00000000"/>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/experience_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                <EditText
+                                    android:id="@+id/experience"
+                                    android:layout_marginTop="30dp"
+                                    android:paddingStart="20dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Experience"
+                                    android:textColor="@color/Black"
+                                    android:background="#00000000"
+                                    android:enabled="false"/>
+                            </LinearLayout>
+                        </ViewFlipper>
+                        <Button
+                            android:id="@+id/save_profile_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="350dp"
+                            android:text="save"
+                            android:onClick="saveProfile"
+                            android:visibility="gone"/>
+                    </RelativeLayout>
+
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        android:background="@color/AliceBlue"
-                        android:visibility="visible">
-                        <ListView
-                            android:id="@+id/reportList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="20dp">
+                        <TextView
+                            android:id="@+id/availability"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="You are Available."
+                            android:textStyle="bold"
+                            android:textColor="@color/Green"
+                            android:visibility="gone"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/change_availability_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:text=" Click to set \'Not Available\'"
+                            android:textAllCaps="false"
+                            android:textSize="13dp"
+                            android:visibility="gone"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutForAdmin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_margin="10dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:text="Institute ID Card :"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="15dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/Beige"/>
+                            android:textColor="@color/Red" />
+                        <ImageView
+                            android:id="@+id/idCardImageView"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp" />
+                        <TextView
+                            android:text="Report :"
+                            android:textStyle="bold"
+                            android:textSize="20dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/Red"
+                            android:visibility="visible"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"
+                            android:background="@color/AliceBlue"
+                            android:visibility="visible">
+                            <ListView
+                                android:id="@+id/reportList"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/Beige"/>
+                        </LinearLayout>
+
                     </LinearLayout>
 
                 </LinearLayout>
+            </ScrollView>
+        </RelativeLayout>
 
-            </LinearLayout>
-        </ScrollView>
-    </RelativeLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

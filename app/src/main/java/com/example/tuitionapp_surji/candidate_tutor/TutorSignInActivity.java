@@ -20,6 +20,15 @@ import com.example.tuitionapp_surji.starting.HomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.TutorSignUpActivityStep3;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorInfo;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -31,6 +40,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -43,13 +53,14 @@ import com.google.firebase.database.ValueEventListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TutorSignInActivity extends AppCompatActivity {
 
     private GoogleSignInClient mGoogleSignInClient ;
     private static final int RC_SIGN_IN = 9003 ;
     private  FirebaseAuth mAuth ;
-    private ProgressBar progressBar ;
+    private CallbackManager mCallbackManager ;
 
     private TextInputEditText emailEditText, passwordEditText ;
     private String emailString, passwordString ;
@@ -66,14 +77,18 @@ public class TutorSignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_sign_in);
 
+        Intent intent = getIntent() ;
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder().requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         mAuth = FirebaseAuth.getInstance() ;
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if(currentUser!=null) {
-
             authFlag = 1 ;
             isApprovedChecking(currentUser);
         }
@@ -81,6 +96,14 @@ public class TutorSignInActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.email_edit_text) ;
         passwordEditText = findViewById(R.id.password_edit_text) ;
 
+        if(intent.getStringExtra("intentFlag")!=null){
+            if(intent.getStringExtra("intentFlag").equals("googleSignIn")){
+                goToSignInWithGoogle(null);
+            }
+            else if(intent.getStringExtra("intentFlag").equals("facebookSignIn")){
+                goToSignInWithFacebook(null);
+            }
+        }
     }
 
     public void goToTutorSignUpActivity(View view) {
@@ -134,6 +157,9 @@ public class TutorSignInActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"something wrong google sign in, try again" ,Toast.LENGTH_SHORT).show() ;
             }
         }
+        else{
+            mCallbackManager.onActivityResult(requestCode,resultCode,data) ;
+        }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -146,17 +172,49 @@ public class TutorSignInActivity extends AppCompatActivity {
                     authType = "google" ;
                     isApprovedChecking(user);
                 } else {
-                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                 }
             }
+        });
+    }
+
+    public void goToSignInWithFacebook(View view){
+        mCallbackManager = CallbackManager.Factory.create() ;
+
+        LoginManager.getInstance().logInWithReadPermissions(TutorSignInActivity.this, Arrays.asList("email", "public_profile"));
+
+        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+            @Override
+            public void onCancel() {
+            }
+            @Override
+            public void onError(FacebookException error) {
+            }
+        });
+    }
+
+    private void handleFacebookAccessToken(AccessToken token) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            authType = "facebook" ;
+                            isApprovedChecking(user);
+                        } else {
+                            Toast.makeText(TutorSignInActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 });
     }
 
-
-
     public void isApprovedChecking(@NotNull final FirebaseUser user){
-
         if(user.getEmail().equals("tuitionapsspl02@gmail.com")){
             goToAdminPanel() ;
             return;
@@ -180,8 +238,6 @@ public class TutorSignInActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if(dataSnapshot.exists()){
-                                        VerifiedTutorInfo verifiedTutorInfo = dataSnapshot.getValue(VerifiedTutorInfo.class);
-
                                         myRefCandidateTutorInfo.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

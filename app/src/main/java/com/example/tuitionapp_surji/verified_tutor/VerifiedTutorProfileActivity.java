@@ -39,6 +39,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Request;
 
 import java.util.ArrayList;
 
@@ -56,7 +57,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     private String user, userEmail, groupID, tutorUid, contextType, tutorEmail , context2, tutorUid2;
     private ArrayList<ReportInfo> reportInfoArrayList ;
-    private ArrayList<String> userInfo , tutorInfo;
+    private ArrayList<String> userInfo ;
 
     private EditText phoneNumber,email,gender,areaAddress,currentPosition,instituteName,subject ;
     private EditText medium,preferredClass,preferredGroup,preferredSubject,daysPerWeekOrMonth,preferredLocation,minimumSalary ;
@@ -66,10 +67,9 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     private ImageView idCardImageView ;
     private TextView userNameTextView, status1, status2;
     private Button approvedAndBlockButton;
-    private ImageButton messageRequestButton ;
+    private Button messageRequestButton, demoVideoButton ;
     private ListView reportListView ;
     private LinearLayout layoutForAdmin ;
-    private ImageView demo_video_button;
 
     private ViewFlipper viewFlipper ;
     private ImageButton aboutButton, excellenceButton, experienceButton ;
@@ -197,8 +197,8 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             }else {
                 messageRequestButton = findViewById(R.id.messageRequestButton) ;
                 messageRequestButton.setVisibility(View.VISIBLE);
-                demo_video_button = findViewById(R.id.demo_video_button);
-                demo_video_button.setVisibility(View.VISIBLE);
+                demoVideoButton = findViewById(R.id.demo_video_button);
+                demoVideoButton.setVisibility(View.VISIBLE);
             }
 
             myRefCandidateTutorInfo = myRefCandidateTutorInfo.child(tutorUid) ;
@@ -230,7 +230,6 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                     myRefVerifiedTutorInfo.removeEventListener(this);
 
                     viewAndChangeProfilePicture();
-
                 }
             }
 
@@ -367,31 +366,17 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                 }else {
                     startActivity(intent);
                 }
-                /*else if(user.equals("GroupAdmin")){
-                    intent.putExtra("tutorUid", tutorUid) ;
-                    intent.putExtra("groupID", groupID) ;
-                    intent.putStringArrayListExtra("userInfo", userInfo) ;
-                }
-                else if(user.equals("GroupVisitor")){
-                    intent.putExtra("tutorUid", tutorUid) ;
-                    intent.putExtra("groupID", groupID) ;
-                }
-                else if(user.equals("guardian")) {
-                    intent.putExtra("tutorUid", tutorUid) ;
-                    intent.putExtra("userEmail", userEmail) ;
-                    intent.putExtra("context", contextType) ;
-                }
-                else {
-                    intent.putExtra("tutorUid", tutorUid) ;
-                    intent.putExtra("userEmail", userEmail) ;
-                }*/
+
             }
         });
     }
 
     public void addCandidateTutorInfoToProfile(){
         if(candidateTutorInfo.getProfilePictureUri()==null) {
-            if (candidateTutorInfo.getGender().equals("FEMALE")) {
+            if(firebaseUser.getPhotoUrl()!=null){
+                Picasso.get().load(firebaseUser.getPhotoUrl()).into(userProfilePicImageView);
+            }
+            else if (candidateTutorInfo.getGender().equals("FEMALE")) {
                 userProfilePicImageView.setImageResource(R.drawable.female_pic);
             } else {
                 userProfilePicImageView.setImageResource(R.drawable.male_pic);
@@ -1185,6 +1170,9 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
         messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail, tutorUid, true ,false,false,false) ;
 
+        messageRequestButton.setBackgroundColor(Color.GREEN);
+        messageRequestButton.setText("REQUEST SENT");
+
         myRefMessageBox.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1196,15 +1184,17 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                             && messageBoxInfo1.getTutorUid().equals(tutorUid)){
                         flag=1;
                     }
-
                 }
 
                 if(flag == 0){
                     myRefMessageBox.push().setValue(messageBoxInfo) ;
                     messageRequestButton.setEnabled(false);
-                    messageRequestButton.setBackgroundColor(Color.GRAY);
+                    messageRequestButton.setBackgroundColor(Color.GREEN);
+                    messageRequestButton.setText("REQUEST SENT");
+                }else {
+                    messageRequestButton.setBackgroundColor(Color.GREEN);
+                    messageRequestButton.setText("ALREADY SENT");
                 }
-
             }
 
             @Override
@@ -1310,10 +1300,6 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             finish() ;
         }
         else if(user.equals("referFriend")){
-            //Intent intent = new Intent(this, NotificationViewActivity.class) ;
-            //intent.putStringArrayListExtra("userInfo", userInfo) ;
-            //intent.putExtra("user", "tutor") ;
-            //startActivity(intent) ;
             finish() ;
         }
 
@@ -1341,9 +1327,6 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
                 if(!item.getTitle().equals("Edit Profile")&&!item.getTitle().equals("Report")){
                     reportIDByGuardian(item.getTitle().toString());
-                    Toast.makeText(VerifiedTutorProfileActivity.this,
-                            "Clicked popup menu item " + item.getTitle(),
-                            Toast.LENGTH_SHORT).show() ;
                 }
 
                 popup.dismiss() ;
@@ -1353,6 +1336,4 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
         popup.show();
     }
-
-
 }

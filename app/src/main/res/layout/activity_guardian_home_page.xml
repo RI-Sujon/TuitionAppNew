@@ -311,16 +311,14 @@
                 android:id="@+id/messageCounter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textStyle="bold"
+                android:layout_marginTop="8dp"
                 android:layout_alignParentRight="true"
                 android:text="10"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:layout_marginRight="18dp"
-                android:textColor="#DD2C00"
+                android:textColor="#FF6D00"
                 android:fontFamily="@font/secular_one"/>
         </RelativeLayout>
-
 
     </RelativeLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

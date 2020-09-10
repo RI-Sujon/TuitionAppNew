@@ -29,7 +29,7 @@ class AsyncUpdateCalendar extends CalendarAsyncTask {
   private final String calendarId;
   private final Calendar entry;
 
-  AsyncUpdateCalendar(CalendarSampleActivity calendarSample, String calendarId, Calendar entry) {
+  AsyncUpdateCalendar(CalendarCreateActivity calendarSample, String calendarId, Calendar entry) {
     super(calendarSample);
     this.calendarId = calendarId;
     this.entry = entry;

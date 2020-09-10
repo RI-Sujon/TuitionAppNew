@@ -51,7 +51,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public final class CalendarSampleActivity extends Activity  {
+public final class CalendarCreateActivity extends Activity  {
 
     /**
      * Logging level for HTTP requests/responses.
@@ -136,7 +136,7 @@ public final class CalendarSampleActivity extends Activity  {
         // enable logging
         Logger.getLogger("com.google.api.client").setLevel(LOGGING_LEVEL);
 
-        setContentView(R.layout.activity_calendar_sample);
+        setContentView(R.layout.activity_calendar_create);
         //listView = findViewById(R.id.list);
         //registerForContextMenu(listView);
 
@@ -298,7 +298,7 @@ public final class CalendarSampleActivity extends Activity  {
                             .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int which) {
-                                    new AsyncDeleteCalendar(CalendarSampleActivity.this, calendarInfo).execute();
+                                    new AsyncDeleteCalendar(CalendarCreateActivity.this, calendarInfo).execute();
                                 }
                             })
                             .setNegativeButton(R.string.no, null)
@@ -364,7 +364,7 @@ public final class CalendarSampleActivity extends Activity  {
         runOnUiThread(new Runnable() {
             public void run() {
                 GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-                Dialog dialog = googleApiAvailability.getErrorDialog(CalendarSampleActivity.this,
+                Dialog dialog = googleApiAvailability.getErrorDialog(CalendarCreateActivity.this,
                         connectionStatusCode,  REQUEST_GOOGLE_PLAY_SERVICES);
                 dialog.show();
             }
@@ -398,7 +398,7 @@ public final class CalendarSampleActivity extends Activity  {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            System.out.println("========================  "+ startTimePicker.getHour());
+           // System.out.println("========================  "+ startTimePicker.getHour());
         }
 
 
@@ -465,7 +465,7 @@ public final class CalendarSampleActivity extends Activity  {
 
         LocalDate date = LocalDate.of(
                 datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth()+3);
-        System.out.println("Week day =========================== "+date.format(dayOfWeekFormatter));
+       // System.out.println("Week day =========================== "+date.format(dayOfWeekFormatter));
 
         String weekDay = date.format(dayOfWeekFormatter);
 
@@ -504,6 +504,14 @@ public final class CalendarSampleActivity extends Activity  {
 
     public void goToHomePageActivity(View view) {
 
+        Intent intent = new Intent(this, CalendarHomeActivity.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
         Intent intent = new Intent(this, CalendarHomeActivity.class);
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);

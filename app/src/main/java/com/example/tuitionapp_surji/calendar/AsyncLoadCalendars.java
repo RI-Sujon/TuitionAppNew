@@ -25,7 +25,7 @@ import java.io.IOException;
  */
 class AsyncLoadCalendars extends CalendarAsyncTask {
 
-  AsyncLoadCalendars(CalendarSampleActivity calendarSample) {
+  AsyncLoadCalendars(CalendarCreateActivity calendarSample) {
     super(calendarSample);
   }
 
@@ -35,7 +35,7 @@ class AsyncLoadCalendars extends CalendarAsyncTask {
     model.reset(feed.getItems());
   }
 
-  static void run(CalendarSampleActivity calendarSample) {
+  static void run(CalendarCreateActivity calendarSample) {
     new AsyncLoadCalendars(calendarSample).execute();
   }
 }

@@ -112,6 +112,14 @@ public class CalendarViewEventActivity extends AppCompatActivity
                 {
                     startActivity(meetingIntent);
                 }
+
+                else{
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(
+                            "https://play.google.com/store/apps/details?id=com.google.android.apps.meetings"));
+                    intent.setPackage("com.android.vending");
+                    startActivity(intent);
+                }
             }
         });
 
@@ -124,7 +132,16 @@ public class CalendarViewEventActivity extends AppCompatActivity
         finish();
     }
 
-  /*  public void goToMeet(View view) {
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, CalendarHomeActivity.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
+        startActivity(intent);
+        finish();
+    }
+
+
+    /*  public void goToMeet(View view) {
         Uri conference = Uri.parse(eventInfoList.get(4));
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, conference);
 

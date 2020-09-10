@@ -103,8 +103,16 @@ public class CalendarHomeActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
+        intent.putStringArrayListExtra("userInfo", userInfo) ;
+        startActivity(intent);
+        finish();
+    }
+
     public void addCalendarEvent(View view) {
-        Intent intent = new Intent(this, CalendarSampleActivity.class);
+        Intent intent = new Intent(this, CalendarCreateActivity.class);
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();

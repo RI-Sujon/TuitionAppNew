@@ -10,12 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="45dip"
         android:orientation="horizontal"
-        android:background="@color/colorAccent">
+        android:background="#2A59E6">
 
         <ImageButton
             android:id="@+id/imageView1"
             android:layout_width="50dp"
-            android:background="@color/colorAccent"
+            android:background="#2A59E6"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginRight="35dp"
@@ -24,12 +24,12 @@
             android:onClick="goToHomePageActivity"/>
 
         <TextView
-            android:background="@color/colorAccent"
+            android:background="#2A59E6"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Event"
-            android:textColor="@color/Black"
+            android:textColor="@color/White"
             android:textSize="20sp"
             android:textAlignment="center"
             android:textAppearance="?android:attr/textAppearanceMediumInverse"

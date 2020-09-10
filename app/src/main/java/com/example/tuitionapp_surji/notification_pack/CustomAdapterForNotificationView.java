@@ -149,6 +149,7 @@ public class CustomAdapterForNotificationView extends BaseAdapter {
                                             intent.putStringArrayListExtra("userInfo", userInfo) ;
                                             intent.putExtra("user", user) ;
                                             parent.getContext().startActivity(intent);
+                                            ((NotificationViewActivity)context).finish();
 
                                             break;
                                         }
@@ -186,7 +187,7 @@ public class CustomAdapterForNotificationView extends BaseAdapter {
                                             intent.putStringArrayListExtra("userInfo", userInfo) ;
                                             intent.putExtra("user", user) ;
                                             parent.getContext().startActivity(intent);
-                                            //((NotificationViewActivity)context).finish();
+                                            ((NotificationViewActivity)context).finish();
 
                                             break;
                                         }

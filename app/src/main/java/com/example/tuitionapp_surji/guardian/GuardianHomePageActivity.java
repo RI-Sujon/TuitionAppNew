@@ -25,6 +25,8 @@ import com.example.tuitionapp_surji.notification_pack.TokenInfo;
 import com.example.tuitionapp_surji.starting.HomePageActivity;
 import com.example.tuitionapp_surji.tuition_post.TuitionPostViewActivity;
 import com.example.tuitionapp_surji.notification_pack.NotificationViewActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,6 +35,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
@@ -42,6 +46,7 @@ import java.util.HashMap;
 public class GuardianHomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth mAuth;
+    private FirebaseUser firebaseUser ;
     private DatabaseReference myRefVerifiedTutor, myRefCandidateTutor, myRefApproveAndBlock, myRefGroupInfo ;
 
     private DrawerLayout drawerLayout ;
@@ -62,9 +67,12 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
     private DatabaseReference myRefGuardian ;
     private DatabaseReference reference;
 
-    private TextView guardianMobileNo, guardianName ;
+    private TextView guardianMobileNo, guardianName, notificationCounterTextView, messageCounterTextView ;
     private ImageView profilePic ;
-    private String user;
+
+    private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
+    private long counterNotification, oldCounterNotification, messageCounter, messageOldCounter ;
+    private String notificationCounterFlag, messageCounterFlag ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +85,8 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
 
 
         mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser().getUid();
-        myRefGuardian = FirebaseDatabase.getInstance().getReference("Guardian").child(mAuth.getCurrentUser().getUid()) ;
+        firebaseUser = mAuth.getCurrentUser() ;
+        myRefGuardian = FirebaseDatabase.getInstance().getReference("Guardian").child(firebaseUser.getUid()) ;
 
         drawerLayout = findViewById(R.id.drawer_layout) ;
         navigationView = findViewById(R.id.navigation_view) ;
@@ -148,6 +156,9 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         myRefVerifiedTutor = FirebaseDatabase.getInstance().getReference("VerifiedTutor") ;
         myRefGroupInfo = FirebaseDatabase.getInstance().getReference("Group") ;
 
+        notificationCounterTextView = findViewById(R.id.notificationCounter) ;
+        messageCounterTextView = findViewById(R.id.messageCounter) ;
+
         myRefApproveAndBlock.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -213,6 +224,31 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
 
             }
         }) ;
+
+        databaseFireStore.collection("System").document("Counter")
+                .collection("NotificationCounter").document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult() ;
+
+                counterNotification = (long) document.get("counter") ;
+                oldCounterNotification = (long) document.get("oldCounter") ;
+                messageCounter = (long) document.get("messageCounter") ;
+                messageOldCounter = (long) document.get("messageOldCounter") ;
+
+                long n = counterNotification - oldCounterNotification ;
+                long m = messageCounter - messageOldCounter ;
+                if(n!=0) {
+                    notificationCounterFlag = "new" ;
+                    notificationCounterTextView.setText(String.valueOf(n));
+                }
+
+                if (m!=0){
+                    messageCounterFlag="new" ;
+                    messageCounterTextView.setText(String.valueOf(m));
+                }
+            }
+        }) ;
     }
 
     private void recyclerViewOperation() {
@@ -240,7 +276,11 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
     }
 
     public void goToMessageBox(View view){
+        messageCounterTextView.setText("");
         Intent intent = new Intent(this, MainMessageActivity.class);
+        if(messageCounterFlag!=null){
+            intent.putExtra("messageFlag",messageCounterFlag) ;
+        }
         intent.putExtra("user","guardian") ;
         startActivity(intent);
         finish();
@@ -254,7 +294,11 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
     }
 
     public void goToVerifiedTutorNotificationActivity(View view){
+        notificationCounterTextView.setText("");
         Intent intent = new Intent(this, NotificationViewActivity.class) ;
+        if(notificationCounterFlag!=null){
+            intent.putExtra("notificationFlag", notificationCounterFlag) ;
+        }
         intent.putExtra("user", "guardian") ;
         startActivity(intent);
         //finish();
@@ -275,7 +319,7 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
     }
 
     private void status(String status){
-            reference = FirebaseDatabase.getInstance().getReference("Guardian").child(user);
+         reference = FirebaseDatabase.getInstance().getReference("Guardian").child(firebaseUser.getUid());
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("status", status);
             reference.updateChildren(hashMap);

@@ -21,6 +21,10 @@
 
     <string name="app_name">TuitionApp</string>
 
+    <string name="facebook_app_id">1613946158787747</string>
+    <string name="fb_login_protocol_scheme">fb1613946158787747</string>
+
+
     <string-array name="areaAddress_array">
         <item><b>AREA</b></item>
         <item>Dhaka</item>

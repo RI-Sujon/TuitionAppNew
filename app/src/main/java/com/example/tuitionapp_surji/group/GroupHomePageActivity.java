@@ -53,7 +53,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
     private ImageView groupProfileImage ;
 
     private MaterialButton messageRequestButton, reportButton , blockButton;
-    private ImageView messageFloatingButton ;
+    private RelativeLayout messageFloatingButton ;
 
     private LinearLayout groupDashboardLayout ;
 
@@ -111,7 +111,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
         }) ;
 
         if(user.equals("guardian")||user.equals("guardianHomePage")){
-            messageFloatingButton = findViewById(R.id.messageBoxFloatingButtonS) ;
+            messageFloatingButton = findViewById(R.id.messageBoxFloatingButton) ;
             messageFloatingButton.setVisibility(View.GONE);
 
             context = intent.getStringExtra("context") ;
@@ -125,7 +125,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
             //reportButton.setVisibility(View.VISIBLE);
         }
         else if(user.equals("admin")){
-            messageFloatingButton = findViewById(R.id.messageBoxFloatingButtonS) ;
+            messageFloatingButton = findViewById(R.id.messageBoxFloatingButton) ;
             messageFloatingButton.setVisibility(View.GONE);
 
             //blockButton = findViewById(R.id.blockGroupButton) ;

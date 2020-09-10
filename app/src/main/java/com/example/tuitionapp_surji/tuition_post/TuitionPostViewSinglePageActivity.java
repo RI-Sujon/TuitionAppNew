@@ -1,11 +1,14 @@
 package com.example.tuitionapp_surji.tuition_post;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,12 +16,24 @@ import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
 import com.example.tuitionapp_surji.notification_pack.SendNotification;
 import com.example.tuitionapp_surji.notification_pack.NotificationInfo;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 
 public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
 
@@ -29,13 +44,19 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
     private ArrayList<String> tutorInfo ;
     private String guardianUid, user ;
 
-    private MaterialButton responseButton ;
+    private MaterialButton responseButton, undoButton ;
+    private Button alreadyResponseButton ;
 
     private ImageView postImage ;
 
     private DatabaseReference myRefResponsePost, myRefNotification ;
 
     private MaterialToolbar materialToolbar ;
+
+    private int reloadTuitionPostViewFlag = 0 ;
+
+    private long counterNotification, oldCounterNotification ;
+    private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +82,8 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
 
         postImage = findViewById(R.id.postPic) ;
         responseButton = findViewById(R.id.responseButton) ;
+        alreadyResponseButton = findViewById(R.id.alreadyResponseButton) ;
+        undoButton = findViewById(R.id.undo_button) ;
 
         user = intent.getStringExtra("user") ;
 
@@ -69,22 +92,16 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
             guardianUid = intent.getStringExtra("guardianUid") ;
             tuitionPostUid = intent.getStringExtra("tuitionPostUid") ;
             response = intent.getStringExtra("response") ;
-            if(response==null){
-
+            if(response.equals("0")){
+                responseButton.setVisibility(View.VISIBLE);
             }
             else if(response.equals("1")){
-                responseButton.setBackgroundColor(Color.GRAY);
-                responseButton.setText("ALREADY RESPONSE");
-                responseButton.setEnabled(false);
-                responseButton.setFocusable(false);
+                alreadyResponseButton.setVisibility(View.VISIBLE);
+                undoButton.setVisibility(View.VISIBLE);
             }
-        }
-        else {
-            responseButton.setVisibility(View.GONE);
         }
 
         contactNo = intent.getStringExtra("contactNo") ;
-
 
         postTitleTV.setText(intent.getStringExtra("postTitle"));
         genderPreferableTV.setText(intent.getStringExtra("tutorGenderPreferable"));
@@ -151,7 +168,7 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
 
         if(user.equals("tutor")) {
             myRefResponsePost = FirebaseDatabase.getInstance().getReference("ResponsePost").child(tutorInfo.get(3));
-            myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Guardian");
+            myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Guardian").child(guardianUid) ;
         }
 
         materialToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -164,25 +181,110 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
         responseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                myRefNotification = myRefNotification.child(guardianUid) ;
                 NotificationInfo notificationInfo = new NotificationInfo("response" , tutorInfo.get(0), tutorInfo.get(2), tutorInfo.get(3), tuitionPostUid) ;
                 myRefNotification.push().setValue(notificationInfo) ;
 
                 ResponsePost responsePost = new ResponsePost(tuitionPostUid) ;
                 myRefResponsePost.push().setValue(responsePost) ;
 
-                responseButton.setBackgroundColor(Color.DKGRAY) ;
+                responseButton.setVisibility(View.GONE);
+                alreadyResponseButton.setVisibility(View.VISIBLE);
+                undoButton.setVisibility(View.VISIBLE);
 
                 SendNotification sendNotification = new SendNotification(guardianUid, "Response Post", "A tutor response to your post") ;
                 sendNotification.sendNotificationOperation();
+
+                databaseFireStore.collection("System").document("Counter")
+                        .collection("NotificationCounter").document(guardianUid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot document = task.getResult() ;
+
+                        counterNotification = (long) document.get("counter") ;
+                        counterNotification = counterNotification + 1 ;
+
+                        databaseFireStore.collection("System").document("Counter")
+                                .collection("NotificationCounter").document(guardianUid)
+                                .update("counter",counterNotification) ;
+                    }
+                }) ;
+
+                reloadTuitionPostViewFlag = 1 ;
             }
         });
     }
 
+    public void undoResponseOperation(View view){
+        final Query notificationQuery = myRefNotification.orderByChild("message4").equalTo(tuitionPostUid) ;
+        final Query responseQuery = myRefResponsePost.orderByChild("postUid").equalTo(tuitionPostUid) ;
 
+        responseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dS1: snapshot.getChildren()){
+                    dS1.getRef().removeValue() ;
+                }
+                responseQuery.removeEventListener(this);
+
+                notificationQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot dS2: snapshot.getChildren()){
+                            dS2.getRef().removeValue() ;
+                        }
+
+                        notificationQuery.removeEventListener(this);
+
+                        alreadyResponseButton.setVisibility(View.GONE);
+                        undoButton.setVisibility(View.GONE);
+                        responseButton.setVisibility(View.VISIBLE);
+
+                        reloadTuitionPostViewFlag = -1 ;
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        databaseFireStore.collection("System").document("Counter")
+                .collection("NotificationCounter").document(guardianUid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult() ;
+
+                counterNotification = (long) document.get("counter") ;
+                oldCounterNotification = (long) document.get("oldCounter") ;
+                if(counterNotification > oldCounterNotification){
+                    counterNotification = counterNotification - 1 ;
+
+                    databaseFireStore.collection("System").document("Counter")
+                            .collection("NotificationCounter").document(guardianUid)
+                            .update("counter",counterNotification) ;
+                }
+            }
+        }) ;
+
+
+    }
 
     public void goToBackPage(){
+        if(reloadTuitionPostViewFlag != 0){
+            Intent intent = new Intent(this, TuitionPostViewActivity.class) ;
+            intent.putStringArrayListExtra("userInfo", tutorInfo) ;
+            intent.putExtra("user", "tutor") ;
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) ;
+            startActivity(intent);
+        }
+
         finish();
     }
 

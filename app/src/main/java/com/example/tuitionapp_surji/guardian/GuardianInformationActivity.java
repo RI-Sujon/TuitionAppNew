@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -30,6 +31,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GuardianInformationActivity extends AppCompatActivity {
 
@@ -47,8 +50,10 @@ public class GuardianInformationActivity extends AppCompatActivity {
 
     private MaterialToolbar materialToolbar ;
 
-
     private String nameString, addressString, mobileNumberString, profilePicUriString, type, profilePicUriString2 ;
+
+    private FirebaseUser firebaseUser ;
+    private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +61,11 @@ public class GuardianInformationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_guardian_information);
         progressDialog = new ProgressDialog(this) ;
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser() ;
-        myRefGuardian = FirebaseDatabase.getInstance().getReference().child("Guardian").child(user.getUid()) ;
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        myRefGuardian = FirebaseDatabase.getInstance().getReference().child("Guardian").child(firebaseUser.getUid()) ;
         storageReference = FirebaseStorage.getInstance().getReference() ;
 
-        mobileNumberString = user.getPhoneNumber() ;
+        mobileNumberString = firebaseUser.getPhoneNumber() ;
 
         name = findViewById(R.id.guardianName) ;
         address = findViewById(R.id.guardianAddress) ;
@@ -90,7 +95,14 @@ public class GuardianInformationActivity extends AppCompatActivity {
             }
         }
         else {
-
+            Map<String,Object> map = new HashMap<>() ;
+            map.put("counter",0) ;
+            map.put("oldCounter",0) ;
+            map.put("messageCounter", 0) ;
+            map.put("messageOldCounter", 0) ;
+            databaseFireStore.collection("System").document("Counter")
+                    .collection("NotificationCounter").document(firebaseUser.getUid())
+                    .set(map) ;
         }
     }
 
@@ -202,6 +214,7 @@ public class GuardianInformationActivity extends AppCompatActivity {
         }
         else{
             Intent intent = new Intent(this, GuardianInformationViewActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) ;
             intent.putExtra("user", "guardian") ;
             startActivity(intent);
         }

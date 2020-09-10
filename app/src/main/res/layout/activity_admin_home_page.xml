@@ -15,7 +15,7 @@ tools:context=".admin.AdminHomePageActivity">
     android:id="@+id/navigation_view"
     android:layout_gravity="start"
     android:background="@color/LavenderBlush"
-    app:headerLayout="@layout/activity_verified_tutor_home_page_drawer"
+    app:headerLayout="@layout/home_page_drawer"
     app:menu="@menu/verified_tutor_home_page_drawer" />
 
 <RelativeLayout

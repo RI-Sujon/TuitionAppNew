@@ -16,6 +16,8 @@ import com.example.tuitionapp_surji.admin.ApproveAndBlockInfo;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.notification_pack.NotificationInfo;
 import com.example.tuitionapp_surji.notification_pack.SendNotification;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -39,7 +43,11 @@ public class GroupTutorAddActivity extends AppCompatActivity {
 
     private ProgressBar progressBar ;
 
-    private int tostFlag = -1 ;
+    private int toastFlag = -1 ;
+
+    private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
+    private long counterNotification ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +70,7 @@ public class GroupTutorAddActivity extends AppCompatActivity {
     }
 
     public void addTutorOperation(View view){
-        tostFlag = -1 ;
+        toastFlag = -1 ;
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -75,7 +83,7 @@ public class GroupTutorAddActivity extends AppCompatActivity {
                 for(final DataSnapshot dS1: dataSnapshot.getChildren()){
                     CandidateTutorInfo candidateTutorInfo = dS1.getValue(CandidateTutorInfo.class) ;
                     if(candidateTutorInfo.getEmailPK().equals(tutorEmail)){
-                        tostFlag = 1 ;
+                        toastFlag = 1 ;
                         myRefApproveAndBlock = myRefApproveAndBlock.child(dS1.getKey());
                         myRefApproveAndBlock.addValueEventListener(new ValueEventListener() {
                             @Override
@@ -111,7 +119,7 @@ public class GroupTutorAddActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                if(tostFlag==-1){
+                if(toastFlag==-1){
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Does not match with any tutor's email", Toast.LENGTH_SHORT).show();
                 }
@@ -124,13 +132,28 @@ public class GroupTutorAddActivity extends AppCompatActivity {
         });
     }
 
-    public void sendNotification(String tutorUid){
+    public void sendNotification(final String tutorUid){
         myRefNotification = myRefNotification.child(tutorUid).child(groupID) ;
         NotificationInfo notificationInfo = new NotificationInfo("groupTutor", groupName,"", groupID) ;
         myRefNotification.setValue(notificationInfo) ;
 
         SendNotification sendNotification = new SendNotification(tutorUid, "Group Tutor", "You have been added to " + groupName) ;
         sendNotification.sendNotificationOperation();
+
+        databaseFireStore.collection("System").document("Counter")
+                .collection("NotificationCounter").document(tutorUid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult() ;
+
+                counterNotification = (long) document.get("counter") ;
+                counterNotification = counterNotification + 1 ;
+
+                databaseFireStore.collection("System").document("Counter")
+                        .collection("NotificationCounter").document(tutorUid)
+                        .update("counter",counterNotification) ;
+            }
+        }) ;
 
         goToBackPageActivity(null);
     }

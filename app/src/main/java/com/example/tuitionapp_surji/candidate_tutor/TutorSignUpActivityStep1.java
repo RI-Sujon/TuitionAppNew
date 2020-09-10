@@ -29,7 +29,7 @@ public class TutorSignUpActivityStep1 extends AppCompatActivity {
 
     private String userName="" , email="", mobileNumber="", gender="", areaAddress="", currentPosition="", edu_instituteName="", edu_tutorSubject="", attachedHall="" ;
 
-    private CandidateTutorInfo candidateTutorInfo,info;
+    private CandidateTutorInfo candidateTutorInfo;
 
     private String type ;
 
@@ -45,9 +45,17 @@ public class TutorSignUpActivityStep1 extends AppCompatActivity {
         mobileNumberEditText = findViewById(R.id.mobileNumber);
         mobileNumberTextView = findViewById(R.id.mobileNumberTextView) ;
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        myRefCandidateTutor = FirebaseDatabase.getInstance().getReference().child("CandidateTutor").child(firebaseUser.getUid()) ;
+
         if(type.equals("google")||type.equals("signIn")){
             userNameEditText.setVisibility(View.VISIBLE);
             userNameTextView.setVisibility(View.VISIBLE);
+            mobileNumberEditText.setVisibility(View.VISIBLE);
+            mobileNumberTextView.setVisibility(View.VISIBLE);
+        }
+        else if(type.equals("facebook")){
+            userName = firebaseUser.getDisplayName() ;
             mobileNumberEditText.setVisibility(View.VISIBLE);
             mobileNumberTextView.setVisibility(View.VISIBLE);
         }
@@ -55,9 +63,6 @@ public class TutorSignUpActivityStep1 extends AppCompatActivity {
             userName = intent.getStringExtra("tutorName") ;
             mobileNumber = intent.getStringExtra("tutorMobileNumber") ;
         }
-
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-        myRefCandidateTutor = FirebaseDatabase.getInstance().getReference().child("CandidateTutor").child(firebaseUser.getUid()) ;
     }
 
     @Override
@@ -74,8 +79,6 @@ public class TutorSignUpActivityStep1 extends AppCompatActivity {
         edu_instituteNameEditText = findViewById(R.id.instituteNameEditText) ;
         edu_tutorSubjectTextView = findViewById(R.id.departmentTextView) ;
         attachedHallTextView = findViewById(R.id.attachedHallTextView) ;
-
-        // progressBar = findViewById(R.id.progressBar);
 
         selectCurrentPosition() ;
         selectInstituteName() ;
@@ -137,7 +140,6 @@ public class TutorSignUpActivityStep1 extends AppCompatActivity {
 
         if(type.equals("google")||type.equals("signIn")){
             userName = userNameEditText.getText().toString() ;
-            email = firebaseUser.getEmail() ;
             mobileNumber = mobileNumberEditText.getText().toString() ;
 
             if(userName.equals("")){
@@ -148,17 +150,20 @@ public class TutorSignUpActivityStep1 extends AppCompatActivity {
                 mobileNumberEditText.setError("");
                 return;
             }
+        }
+        else if(type.equals("facebook")){
+            mobileNumber = mobileNumberEditText.getText().toString() ;
 
-            candidateTutorInfo = new CandidateTutorInfo(userName, email, mobileNumber, gender, areaAddress, currentPosition, edu_instituteName, edu_tutorSubject, attachedHall);
-            myRefCandidateTutor.setValue(candidateTutorInfo) ;
-            goToTutorSignUpActivityStep2();
+            if(mobileNumber.equals("")){
+                mobileNumberEditText.setError("");
+                return;
+            }
         }
-        else if(type.equals("signUp")){
-            email = firebaseUser.getEmail() ;
-            candidateTutorInfo = new CandidateTutorInfo(userName, email, mobileNumber, gender, areaAddress, currentPosition, edu_instituteName, edu_tutorSubject, attachedHall);
-            myRefCandidateTutor.setValue(candidateTutorInfo) ;
-            goToTutorSignUpActivityStep2();
-        }
+
+        email = firebaseUser.getEmail() ;
+        candidateTutorInfo = new CandidateTutorInfo(userName, email, mobileNumber, gender, areaAddress, currentPosition, edu_instituteName, edu_tutorSubject, attachedHall);
+        myRefCandidateTutor.setValue(candidateTutorInfo) ;
+        goToTutorSignUpActivityStep2();
     }
 
     public void goToTutorSignUpActivityStep2(){

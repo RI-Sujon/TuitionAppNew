@@ -48,10 +48,6 @@ public class TutorSignUpActivity extends AppCompatActivity {
     }
 
     public void signUpCompletion(View view){
-
-        //progressBar = findViewById(R.id.progressBar) ;
-        //progressBar.setVisibility(View.VISIBLE);
-
         nameString = nameEditText.getText().toString().trim() ;
         phoneNumberString = phoneNumberEditText.getText().toString().trim() ;
         emailString = emailEditText.getText().toString().trim() ;
@@ -96,17 +92,13 @@ public class TutorSignUpActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
-                                    Toast.makeText(getApplicationContext(), "Verification Sujon Done.", Toast.LENGTH_SHORT).show();
                                     waitForClickVerificationLink(mAuth.getCurrentUser());
-                                }
-                                else {
-                                    Toast.makeText(getApplicationContext(), "wrong in send message.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }) ;
                     }
                     else {
-                        Toast.makeText(getApplicationContext(), "wrong in ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "something wrong", Toast.LENGTH_SHORT).show();
                     }
                 }
             }) ;
@@ -120,10 +112,6 @@ public class TutorSignUpActivity extends AppCompatActivity {
         signUpLayout.setVisibility(View.GONE);
         verificationLayout.setVisibility(View.VISIBLE);
         emailTextView2.setText(user.getEmail());
-        //while(!user.isEmailVerified()){
-          //  mAuth.getCurrentUser().reload();
-        //}
-        //goToTutorSignUpActivityStep1();
     }
 
     public void verificationCompletion(View view){
@@ -133,13 +121,6 @@ public class TutorSignUpActivity extends AppCompatActivity {
             goToTutorSignUpActivityStep1();
         }
 
-    }
-
-    public void createCandidateTutorDatabase(){
-        DatabaseReference myRefDatabase = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(mAuth.getCurrentUser().getUid()) ;
-        CandidateTutorInfo candidateTutorInfo = new CandidateTutorInfo(nameString,emailString,phoneNumberString) ;
-        myRefDatabase.setValue(candidateTutorInfo) ;
-        goToTutorSignUpActivityStep1();
     }
 
     public void goToTutorSignUpActivityStep1(){
@@ -155,5 +136,25 @@ public class TutorSignUpActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TutorSignInActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void goToSignInWithFacebook(View view){
+        Intent intent = new Intent(this, TutorSignInActivity.class);
+        intent.putExtra("intentFlag", "facebookSignIn") ;
+        startActivity(intent);
+        finish();
+    }
+
+    public void goToSignInWithGoogle(View view){
+        Intent intent = new Intent(this, TutorSignInActivity.class);
+        intent.putExtra("intentFlag", "googleSignIn") ;
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        goToBackPageActivity(null);
     }
 }

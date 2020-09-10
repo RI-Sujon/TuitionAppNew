@@ -21,11 +21,15 @@ import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.notification_pack.SendNotification;
 import com.example.tuitionapp_surji.notification_pack.NotificationInfo;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -40,13 +44,14 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
     private ArrayList<String> tuitionPostInfoUid ;
     private int [] responsePostArray ;
     private String userFlag ;
-    private MessageBoxInfo messageBoxInfo;
     private Calendar calendar = Calendar.getInstance();
     private SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("E, dd MMM yyyy") ;
     private String today ;
     private String yesterday ;
 
     private DatabaseReference myRefNotification, myRefTuitionPost, myRefResponsePost, myRefNotification2 ;
+    private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
+    private long counterNotification ;
 
     public CustomAdapterForTuitionPostView(Context context, ArrayList<TuitionPostInfo> tuitionPostInfo, ArrayList<String> tutorInfo, ArrayList<String> tuitionPostInfoUid, String userFlag, int [] responsePostArray) {
         this.context = context;
@@ -64,10 +69,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
         today = simpleDateFormat2.format(calendar.getTime());
         calendar.add(Calendar.DATE,-1);
         yesterday = simpleDateFormat2.format(calendar.getTime());
-
     }
-
-
 
     public void setListData(ArrayList<TuitionPostInfo> data){
         tuitionPostInfo = data ;
@@ -124,7 +126,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
 
             convertView.setTag(holder);
         }
-        else{
+        else {
             holder = (ViewHolder) convertView.getTag() ;
         }
 
@@ -166,7 +168,6 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
 
                 }
             } else {
-
                 if(responsePostArray[position]==0){
                     holder.responseButtonLayout.setVisibility(View.VISIBLE);
                     holder.responseButtonPressedLayout.setVisibility(View.GONE);
@@ -269,12 +270,32 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
                     ResponsePost responsePost = new ResponsePost(tuitionPostInfoUid.get(position)) ;
                     myRefResponsePost.push().setValue(responsePost) ;
 
-
                     holder.responseButton.setBackgroundColor(Color.GRAY);
                     holder.responseButtonLayout.setEnabled(false);
 
                     SendNotification sendNotification = new SendNotification(tuitionPostInfo.get(position).getGuardianUidFK(), "Response Post", "A tutor response to your post") ;
                     sendNotification.sendNotificationOperation();
+
+                    databaseFireStore.collection("System").document("Counter")
+                            .collection("NotificationCounter").document(tuitionPostInfo.get(position).getGuardianUidFK()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot document = task.getResult() ;
+
+                            counterNotification = (long) document.get("counter") ;
+                            counterNotification = counterNotification + 1 ;
+
+                            databaseFireStore.collection("System").document("Counter")
+                                    .collection("NotificationCounter").document(tuitionPostInfo.get(position).getGuardianUidFK())
+                                    .update("counter",counterNotification) ;
+                        }
+                    }) ;
+
+                    Intent intent = new Intent(parent.getContext(), TuitionPostViewActivity.class) ;
+                    intent.putExtra("user","tutor") ;
+                    intent.putStringArrayListExtra("userInfo", tutorInfo) ;
+                    parent.getContext().startActivity(intent);
+                    ((TuitionPostViewActivity)context).finish();
                 }
             });
 

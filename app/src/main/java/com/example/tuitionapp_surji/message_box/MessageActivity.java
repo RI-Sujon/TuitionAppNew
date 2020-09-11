@@ -37,6 +37,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -58,13 +59,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MessageActivity extends AppCompatActivity
 {
 
-    CircleImageView profile_image;
+    private CircleImageView profile_image;
     private Uri filePath;
     private Bitmap bitmapImage ;
-    TextView username;
+    private TextView username;
     private int PICK_IMAGE_REQUEST = 120;
-    FirebaseUser fuser;
-    DatabaseReference reference,candidateTutorReference, guardianReference;
+    private FirebaseUser fuser;
+    private DatabaseReference reference,candidateTutorReference, guardianReference;
     @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a");
     private SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("E, dd MMM yyyy") ;
@@ -73,22 +74,24 @@ public class MessageActivity extends AppCompatActivity
     private String imageUriString ;
 
 
-    ImageButton btn_send, img_send;
-    EditText text_send;
+    private ImageButton btn_send, img_send;
+    private EditText text_send;
 
-    MessageAdapter messageAdapter;
-    List<Chat> mChat;
+    private MessageAdapter messageAdapter;
+    private List<Chat> mChat;
 
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
-    Intent intent;
+    private Intent intent;
     private  String checkUser,guardianMobileNumber,tutorEmail;
     private String imageUri,gender,message_time;
-    ArrayList<String> userInfo ;
+    private ArrayList<String> userInfo ;
+    private long counterMessage ;
+    private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
 
-    ValueEventListener seenListener;
+    private ValueEventListener seenListener;
 
-    DatabaseReference messageBlock;
+    private DatabaseReference messageBlock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -264,6 +267,24 @@ public class MessageActivity extends AppCompatActivity
         seenMessage(userId);
     }
 
+
+
+
+    /*
+                databaseFireStore.collection("System").document("Counter")
+                        .collection("NotificationCounter").document(guardianUid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot document = task.getResult() ;
+
+                        counterMessage = (long) document.get("messageCounter") ;
+                        counterMessage = counterMessage + 1 ;
+
+                        databaseFireStore.collection("System").document("Counter")
+                                .collection("NotificationCounter").document(guardianUid)
+                                .update("messageCounter",counterMessage) ;
+                    }
+                }) ;*/
 
     private void seenMessage(final String userId)
     {

@@ -161,8 +161,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
-                android:hint="add attendees email address using coma &quot;,&quot;"
+                app:met_textColorHint="@color/Black"
+                android:hint="Add guests email with space or new line"
                 app:met_floatingLabel="normal" />
+                <!--coma &quot;,&quot;"-->
 
 
             <Button

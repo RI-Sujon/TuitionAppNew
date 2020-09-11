@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="star"
+    tools:openDrawer="start"
     android:id="@+id/drawer_layout"
     tools:context=".guardian.GuardianHomePageActivity">
 
@@ -313,7 +313,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_alignParentRight="true"
-                android:text="10"
                 android:textSize="18dp"
                 android:layout_marginRight="18dp"
                 android:textColor="#FF6D00"

@@ -159,18 +159,3 @@ public class CalendarViewEventActivity extends AppCompatActivity
 }
 
 
- /*  eventInfoList.add(eventTitle_txt);
-        eventInfoList.add(date_txt);
-        eventInfoList.add(startTime_txt);
-        eventInfoList.add(endTime_txt);
-        eventInfoList.add(meetingId);
-        eventInfoList.add(attendees_txt);
-        eventInfoList.add(location_txt);
-        eventInfoList.add(description_txt);*/
-
-   /*   title.setText(eventInfoList.get(0));
-        dateTime.setText(eventInfoList.get(1)+" , "+eventInfoList.get(2)+"-"+ eventInfoList.get(3));
-        attendee.setText(eventInfoList.get(5));
-        location.setText(eventInfoList.get(6));
-        description.setText(eventInfoList.get(7));
-        reminder.setText("10 minutes before");*/

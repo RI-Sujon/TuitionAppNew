@@ -393,7 +393,7 @@ public final class CalendarCreateActivity extends Activity  {
         calendarEventAsyncTask.execute();
 
 
-      //  new CalendarEventAsyncTask(this,client,eventTitle_txt, location_txt, description_txt, date_txt, startTime_txt,
+        //  new CalendarEventAsyncTask(this,client,eventTitle_txt, location_txt, description_txt, date_txt, startTime_txt,
                // endTime_txt, attendees_txt,getWeek()).execute();
 
 
@@ -401,16 +401,13 @@ public final class CalendarCreateActivity extends Activity  {
            // System.out.println("========================  "+ startTimePicker.getHour());
         }
 
-
         //Thread.sleep(10000);
 
-
-
-/*
-     Intent intent = new Intent(this, CalendarHomeActivity.class);
-     intent.putStringArrayListExtra("userInfo", userInfo) ;
-     startActivity(intent);
-     finish();*/
+        /*
+         Intent intent = new Intent(this, CalendarHomeActivity.class);
+         intent.putStringArrayListExtra("userInfo", userInfo) ;
+         startActivity(intent);
+         finish();*/
     }
 
 

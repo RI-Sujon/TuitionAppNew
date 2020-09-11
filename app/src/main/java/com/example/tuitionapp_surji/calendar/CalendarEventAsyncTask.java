@@ -74,47 +74,47 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
     protected String doInBackground(Void... voids)
     {
 
-        strings = attendee.split(",");
+       /* strings = attendee.split(",");
 
         for(String s:strings){
             if(s!=null){
                 allAttendees.add(s);
             }
+        }*/
+
+        String finalAttendeeList = new String();
+
+        allAttendees = stringParser(attendee);
+        for(int i=0;i<allAttendees.size();i++){
+
+            if(i==allAttendees.size()-1){
+                finalAttendeeList += allAttendees.get(i);
+            }
+            else
+                finalAttendeeList += allAttendees.get(i)+"\n";
         }
 
-        Event event = new Event()
-                .setSummary(title)
-                .setLocation(location)
-                .setDescription(description);
-
+        Event event = new Event().setSummary(title).setLocation(location).setDescription(description);
 
         DateTime startDateTime = new DateTime( date +"T"+startTime+"+06:00" );//"2020-05-05T11:00:00+06:00");
-        EventDateTime start = new EventDateTime()
-                .setDateTime(startDateTime)
-                .setTimeZone("Asia/Dhaka");
+        EventDateTime start = new EventDateTime().setDateTime(startDateTime).setTimeZone("Asia/Dhaka");
         event.setStart(start);
 
         DateTime endDateTime = new DateTime(date +"T"+endTime+"+06:00");//"2020-05-05T12:00:00+06:00");
-        EventDateTime end = new EventDateTime()
-                .setDateTime(endDateTime)
-                .setTimeZone("Asia/Dhaka");
+        EventDateTime end = new EventDateTime().setDateTime(endDateTime).setTimeZone("Asia/Dhaka");
         event.setEnd(end);
 
         String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=1"};
         event.setRecurrence(Arrays.asList(recurrence));
 
-      /*  s1 = "rahimsumon29@gmail.com";
+        /*  s1 = "rahimsumon29@gmail.com";
         s2 = "nadimahmed1028@gmail.com";
 
         EventAttendee[] attendees = new EventAttendee[] {
                 new EventAttendee().setEmail(s1),
                 new EventAttendee().setEmail(s2),
         };*/
-
-
-
         EventAttendee attendees[];
-
         attendees = new EventAttendee[allAttendees.size()];
 
         for(int i=0; i<allAttendees.size(); i++){
@@ -123,13 +123,10 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
         }
         event.setAttendees(Arrays.asList(attendees));
 
-
-
         EventReminder[] reminderOverrides = new EventReminder[] {
                 new EventReminder().setMethod("email").setMinutes(24 * 60),
                 new EventReminder().setMethod("popup").setMinutes(10),
         };
-
 
         Event.Reminders reminders = new Event.Reminders()
                 .setUseDefault(false)
@@ -154,21 +151,9 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
             e.printStackTrace();
         }
 
-
-
         String meetingId = event.getHangoutLink();
-        System.out.println("What is meeting ID? = "+meetingId);
-
-        //System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-
         parent.setMeetingId(meetingId);
-
-
         String eventId = event.getId();
-        //System.out.println("EVENTIDDDDDDDDDDDDDDDDDDDDDDDDDD = "+eventId);
-
-
-
 
         Settings settings = null;
         try {
@@ -177,18 +162,15 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
             e.printStackTrace();
         }
 
-
         for (Setting setting : settings.getItems()) {
             System.out.println(setting.getId() + ": " + setting.getValue());
         }
 
-
         System.out.printf("Event created: %s\n", event.getHtmlLink());
         System.out.printf("Hangout Link %s\n", event.getHangoutLink());
 
-
         if(meetingId!=null)
-            updateDataOnFireBase(meetingId,eventId,title,location,description,date,startTime,endTime,attendee,weekDay);
+            updateDataOnFireBase(meetingId,eventId,title,location,description,date,startTime,endTime,finalAttendeeList,weekDay);
 
         return calendarId;
 
@@ -237,7 +219,55 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
 
     }
 
-    private String timeParser(String eventTime) {
+
+    private ArrayList<String> stringParser(String attendee)
+    {
+        String attendeeWithoutPreSpace = new String();
+        int flag = 0;
+
+        for (int i = 0; i < attendee.length(); i++)
+        {
+            if (!(Character.isWhitespace(attendee.charAt(i)))) {
+                flag = i;
+                break;
+            }
+        }
+
+        for (int i = flag; i < attendee.length(); i++) {
+            attendeeWithoutPreSpace += attendee.charAt(i);
+        }
+
+        System.out.println("New String = " + attendeeWithoutPreSpace);
+
+        ArrayList<String> allAttendees = new ArrayList<>(50);
+
+        String[] stringArray = new String[10];
+
+        stringArray = attendeeWithoutPreSpace.split("\\s+");
+
+        for (int i = 0; i < stringArray.length; i++) {
+            System.out.println("Email " + (i + 1) + " = " + stringArray[i]);
+        }
+
+
+        for (String s : stringArray) {
+            if (s != null && s != "   ") {
+                allAttendees.add(s);
+            }
+        }
+
+        System.out.println("Attendee size = " + allAttendees.size());
+
+        for (String s : allAttendees) {
+            System.out.println(s);
+            System.out.println(s.length());
+        }
+
+        return allAttendees;
+    }
+
+    private String timeParser(String eventTime)
+    {
         String[] time = eventTime.split(":");
         int hr,min;
         String time_period="AM";

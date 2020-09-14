@@ -115,44 +115,61 @@
 
 
 
-            <DatePicker
+            <!--<DatePicker
                 android:backgroundTint="@color/Black"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/datePicker"
-                />
+                />-->
+
+            <TextView
+                android:id="@+id/set_date"
+                android:layout_gravity="left"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="set event date"
+                android:textColor="@color/Black"
+                android:layout_marginBottom="20dp"
+                android:onClick="showPopUpDate"/>
+
 
 
             <TextView
+                android:id="@+id/set_starting_time"
+                android:layout_gravity="left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="@color/Black"
-                android:text="Starting Time"/>
+                android:layout_marginBottom="20dp"
+                android:hint="set starting time"
+                android:onClick="showPopUpTime01"/>
 
-            <TimePicker
+            <!--<TimePicker
                 android:id="@+id/startTimePicker"
                 android:layout_marginTop="20dp"
                 android:layout_width="267dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"/>-->
 
             <TextView
-                android:layout_marginTop="10dp"
-                android:textSize="20sp"
+                android:id="@+id/set_ending_time"
+                android:layout_gravity="left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
+                android:textSize="18sp"
                 android:textColor="@color/Black"
-                android:text="Ending Time"/>
+                android:layout_marginBottom="20dp"
+                android:hint="set ending time"
+                android:onClick="showPopUpTime02"/>
 
-            <TimePicker
+         <!--   <TimePicker
                 android:id="@+id/endTimePicker"
                 android:layout_marginTop="20dp"
                 android:layout_width="267dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"/>-->
 
 
             <com.rengwuxian.materialedittext.MaterialEditText
@@ -161,8 +178,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
-                app:met_textColorHint="@color/Black"
-                android:hint="Add guests email with space or new line"
+                android:hint="add guests email with space or new line"
                 app:met_floatingLabel="normal" />
                 <!--coma &quot;,&quot;"-->
 

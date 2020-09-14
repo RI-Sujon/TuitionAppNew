@@ -45,7 +45,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginBottom="10dp"
         android:id="@+id/recycler_view"
-        android:background="@drawable/message_background02"
+        android:background="#e6e6e6"
         android:layout_below="@+id/bar_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -96,3 +96,5 @@
 </RelativeLayout>
 
 <!--#e6e6e6-->
+
+<!--"@drawable/message_background02"-->

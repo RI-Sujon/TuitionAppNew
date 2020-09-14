@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.annotation.RequiresApi;
@@ -38,6 +39,8 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Calendar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 
@@ -51,7 +54,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public final class CalendarCreateActivity extends Activity  {
+public final class CalendarEventCreateActivity extends Activity  {
 
     /**
      * Logging level for HTTP requests/responses.
@@ -90,11 +93,11 @@ public final class CalendarCreateActivity extends Activity  {
 
     final JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
 
-    GoogleAccountCredential credential;
+    private GoogleAccountCredential credential;
 
     CalendarModel model = new CalendarModel();
 
-    ArrayAdapter<CalendarInfo> adapter;
+    private ArrayAdapter<CalendarInfo> adapter;
 
     com.google.api.services.calendar.Calendar client;
 
@@ -109,23 +112,27 @@ public final class CalendarCreateActivity extends Activity  {
 
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
-    com.google.api.services.calendar.Calendar service;
+    private com.google.api.services.calendar.Calendar service;
 
-    String meetingId;
+    private String meetingId;
 
-    ArrayList<String> eventInfoList = new ArrayList<>();
+    private ArrayList<String> eventInfoList = new ArrayList<>();
 
     private ArrayList<String> userInfo ;
+    private FirebaseUser firebaseUser;
 
 
 
-    MaterialEditText eventTitle, location, description, date, startTime, endTime, attendees;
-    Button submitButton;
+    private MaterialEditText eventTitle, location, description, date, startTime, endTime, attendees;
+    private Button submitButton;
 
-    String eventTitle_txt, location_txt, description_txt, date_txt, startTime_txt, endTime_txt, attendees_txt;
-    DatePicker datePicker;
-    TimePicker startTimePicker;
-    TimePicker endTimePicker;
+    private String eventTitle_txt, location_txt, description_txt, date_txt, startTime_txt, endTime_txt, attendees_txt;
+    private DatePicker date_picker;
+    private TextView save_btn,cancel_btn,set_date,set_starting_time,set_ending_time,time_save_btn, time_cancel_btn;
+    private TimePicker startTimePicker;
+    private TimePicker endTimePicker;
+    private Dialog mDialog,mTimeDialog;
+    private String dateString, startTimeString,endTimeString;
 
 
 
@@ -140,15 +147,17 @@ public final class CalendarCreateActivity extends Activity  {
         //listView = findViewById(R.id.list);
         //registerForContextMenu(listView);
 
-
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDialog= new Dialog(this);
+        mTimeDialog= new Dialog(this);
         Intent intent = getIntent() ;
         userInfo = intent.getStringArrayListExtra("userInfo") ;
 
 
-        credential =
-                GoogleAccountCredential.usingOAuth2(this, Collections.singleton(CalendarScopes.CALENDAR));
+        credential = GoogleAccountCredential.usingOAuth2(this, Collections.singleton(CalendarScopes.CALENDAR));
         SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
-        credential.setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
+        //credential.setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
+        credential.setSelectedAccountName(firebaseUser.getEmail());
 
         client = new com.google.api.services.calendar.Calendar.Builder(
                 transport, jsonFactory, credential).setApplicationName("Google-CalendarAndroidSample")
@@ -158,15 +167,17 @@ public final class CalendarCreateActivity extends Activity  {
         eventTitle = findViewById(R.id.eventTitle);
         location = findViewById(R.id.location);
         description = findViewById(R.id.description);
-        datePicker = findViewById(R.id.datePicker);
-        startTimePicker = findViewById(R.id.startTimePicker);
-        endTimePicker = findViewById(R.id.endTimePicker);
+        //datePicker = findViewById(R.id.datePicker);
+        //startTimePicker = findViewById(R.id.startTimePicker);
+        //endTimePicker = findViewById(R.id.endTimePicker);
         attendees = findViewById(R.id.attendees);
-
-
-
+        set_date = findViewById(R.id.set_date);
+        set_starting_time = findViewById(R.id.set_starting_time);
+        set_ending_time = findViewById(R.id.set_ending_time);
 
     }
+
+
 
   /*  void refreshView()
     {
@@ -298,7 +309,7 @@ public final class CalendarCreateActivity extends Activity  {
                             .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int which) {
-                                    new AsyncDeleteCalendar(CalendarCreateActivity.this, calendarInfo).execute();
+                                    new AsyncDeleteCalendar(CalendarEventCreateActivity.this, calendarInfo).execute();
                                 }
                             })
                             .setNegativeButton(R.string.no, null)
@@ -364,7 +375,7 @@ public final class CalendarCreateActivity extends Activity  {
         runOnUiThread(new Runnable() {
             public void run() {
                 GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-                Dialog dialog = googleApiAvailability.getErrorDialog(CalendarCreateActivity.this,
+                Dialog dialog = googleApiAvailability.getErrorDialog(CalendarEventCreateActivity.this,
                         connectionStatusCode,  REQUEST_GOOGLE_PLAY_SERVICES);
                 dialog.show();
             }
@@ -375,39 +386,37 @@ public final class CalendarCreateActivity extends Activity  {
 
 
 
+
+
     @SuppressLint("NewApi")
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void createEvent(View view) throws InterruptedException {
+
+        mDialog.setContentView(R.layout.custom_pop_up_date_picker);
+        date_picker = mDialog.findViewById(R.id.date_picker);
+        mTimeDialog.setContentView(R.layout.custom_pop_up_time_picker);
+
+
+
         eventTitle_txt =eventTitle.getText().toString() ;
         location_txt = location.getText().toString();
         description_txt = description.getText().toString();
-        date_txt = getDate();
-        startTime_txt = getTime(startTimePicker);
-        endTime_txt = getTime(endTimePicker);
+        date_txt = dateString;
+        startTime_txt = startTimeString;
+        endTime_txt = endTimeString;
         attendees_txt = attendees.getText().toString();
 
 
 
-        CalendarEventAsyncTask calendarEventAsyncTask=   new CalendarEventAsyncTask(this,client,eventTitle_txt, location_txt, description_txt, date_txt, startTime_txt,
-                endTime_txt, attendees_txt,getWeek(),userInfo);
-        calendarEventAsyncTask.execute();
-
-
-        //  new CalendarEventAsyncTask(this,client,eventTitle_txt, location_txt, description_txt, date_txt, startTime_txt,
-               // endTime_txt, attendees_txt,getWeek()).execute();
+        CalendarEventCreateAsyncTask calendarEventCreateAsyncTask =   new CalendarEventCreateAsyncTask(this,client,eventTitle_txt, location_txt, description_txt, date_txt, startTime_txt,
+                endTime_txt, attendees_txt,getWeek(date_picker),userInfo);
+        calendarEventCreateAsyncTask.execute();
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
            // System.out.println("========================  "+ startTimePicker.getHour());
         }
 
-        //Thread.sleep(10000);
-
-        /*
-         Intent intent = new Intent(this, CalendarHomeActivity.class);
-         intent.putStringArrayListExtra("userInfo", userInfo) ;
-         startActivity(intent);
-         finish();*/
     }
 
 
@@ -416,9 +425,100 @@ public final class CalendarCreateActivity extends Activity  {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void showPopUpDate(View v){
+        mDialog.setContentView(R.layout.custom_pop_up_date_picker);
+        date_picker = mDialog.findViewById(R.id.date_picker);
+        save_btn = mDialog.findViewById(R.id.save_btn);
+        cancel_btn = mDialog.findViewById(R.id.cancel_btn);
+
+        dateString = getDate(date_picker);
+        mDialog.show();
+
+        save_btn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                dateString = getDate(date_picker);
+                mDialog.dismiss();
+                set_date.setText(dateParser(dateString,getWeek(date_picker)));
+
+            }
+        });
+
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public String getDate()
+    public void showPopUpTime01(View v){
+        mTimeDialog.setContentView(R.layout.custom_pop_up_time_picker);
+        startTimePicker = mTimeDialog.findViewById(R.id.time_picker);
+        time_save_btn= mTimeDialog.findViewById(R.id.time_save_btn);
+        time_cancel_btn = mTimeDialog.findViewById(R.id.time_cancel_btn);
+
+        startTimeString = getTime(startTimePicker);
+        mTimeDialog.show();
+
+        time_save_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTimeString = getTime(startTimePicker);
+                mTimeDialog.dismiss();
+                set_starting_time.setText(timeParser(startTimeString));
+            }
+        });
+
+        time_cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTimeDialog.dismiss();
+
+            }
+        });
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void showPopUpTime02(View v){
+        mTimeDialog.setContentView(R.layout.custom_pop_up_time_picker);
+        endTimePicker = mTimeDialog.findViewById(R.id.time_picker);
+        time_save_btn= mTimeDialog.findViewById(R.id.time_save_btn);
+        time_cancel_btn = mTimeDialog.findViewById(R.id.time_cancel_btn);
+
+
+        endTimeString = getTime(endTimePicker);
+        mTimeDialog.show();
+
+        time_save_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                endTimeString = getTime(endTimePicker);
+                mTimeDialog.dismiss();
+                set_ending_time.setText(timeParser(endTimeString));
+            }
+        });
+
+        time_cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTimeDialog.dismiss();
+
+            }
+        });
+
+
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public String getDate(DatePicker datePicker)
     {
 
 
@@ -442,35 +542,79 @@ public final class CalendarCreateActivity extends Activity  {
         else
             stringBuilder.append(datePicker.getDayOfMonth());
 
-
-
-
-
-
-
         return stringBuilder.toString();
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public String getWeek()
+    private String timeParser(String eventTime)
     {
+        String[] time = eventTime.split(":");
+        int hr,min;
+        String time_period="AM";
 
-        DateTimeFormatter dayOfWeekFormatter
-                = DateTimeFormatter.ofPattern("EEE", Locale.ENGLISH);
+        hr= Integer.parseInt(time[0]);
+        min= Integer.parseInt(time[1]);
+        if(hr>12){
+            hr=hr-12;
+            time_period = "PM";
+        }
+        else if(hr==12)
+            time_period="PM";
 
+        else if(hr==0){
+            hr=12;
+        }
 
-        LocalDate date = LocalDate.of(
-                datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth()+3);
-       // System.out.println("Week day =========================== "+date.format(dayOfWeekFormatter));
+        System.out.println(hr+":"+time[1]+ " "+time_period);
 
-        String weekDay = date.format(dayOfWeekFormatter);
+        String parsingTime, stringHour;
+        stringHour = String.valueOf(hr);
+        if(stringHour.length()==1){
+            parsingTime = "0"+hr+":"+time[1]+ " "+time_period;
+        }
 
+        else{
+            parsingTime = hr+":"+time[1]+ " "+time_period;
+        }
 
-
-        return weekDay;
+        return parsingTime ;
     }
 
+
+    private String dateParser(String date, String weekDay) {
+
+        String[] dates = date.split("-");
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        ArrayList<String> week_month = new ArrayList<>(2);
+        stringArrayList.add(dates[0]);
+        stringArrayList.add(dates[1]);
+        stringArrayList.add(dates[2]);
+
+        for (int i=0; i<stringArrayList.size();i++){
+            System.out.println(stringArrayList.get(i));
+        }
+
+        String[] months = {"January" ,"February","March","April","May","June","July","August",
+                "September","October","November","December"
+        };
+
+        week_month.add(months[Integer.parseInt(stringArrayList.get(1))-1]);
+        System.out.println(week_month.get(0));
+        String dateFormat = weekDay +", "+week_month.get(0)+" "+ stringArrayList.get(2)+", "+stringArrayList.get(0);
+
+        return dateFormat;
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getWeek(DatePicker datePicker)
+    {
+        DateTimeFormatter dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEE", Locale.ENGLISH);
+        LocalDate date = LocalDate.of(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth()+3);
+       // System.out.println("Week day =========================== "+date.format(dayOfWeekFormatter));
+        String weekDay = date.format(dayOfWeekFormatter);
+        return weekDay;
+    }
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)

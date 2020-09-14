@@ -127,12 +127,13 @@
                 android:layout_margin="30dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginTop="250dp"
-                android:backgroundTint="#2A59E6"
+                android:backgroundTint="#1E49E5"
                 android:padding="10dp"
-                android:text="EDIT"
+                android:textAllCaps="false"
+                android:text="Save"
                 android:textColor="@color/White"
-                android:textSize="18dp"
-                android:textStyle="bold" />
+                android:textSize="18sp"
+                />
         </LinearLayout>
 
     </LinearLayout>

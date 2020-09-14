@@ -112,7 +112,7 @@ public class CalendarHomeActivity extends AppCompatActivity {
     }
 
     public void addCalendarEvent(View view) {
-        Intent intent = new Intent(this, CalendarCreateActivity.class);
+        Intent intent = new Intent(this, CalendarEventCreateActivity.class);
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();

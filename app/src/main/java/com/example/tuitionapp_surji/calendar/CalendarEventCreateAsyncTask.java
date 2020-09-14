@@ -2,12 +2,12 @@ package com.example.tuitionapp_surji.calendar;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.ConferenceData;
-import com.google.api.services.calendar.model.ConferenceSolution;
 import com.google.api.services.calendar.model.ConferenceSolutionKey;
 import com.google.api.services.calendar.model.CreateConferenceRequest;
 import com.google.api.services.calendar.model.Event;
@@ -27,33 +27,32 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 
-public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
+public class CalendarEventCreateAsyncTask extends AsyncTask<Void, Void, String>
 {
 
-    String title;
-    String location;
-    String description;
-    String date;
-    String startTime;
-    String endTime;
-    String attendee;
-    String weekDay;
-    ArrayList<String> allAttendees = new ArrayList<>(50);
-    String[] strings;
+    private  String title;
+    private String location;
+    private String description;
+    private String date;
+    private String startTime;
+    private String endTime;
+    private String attendee;
+    private String weekDay;
+    private ArrayList<String> allAttendees = new ArrayList<>(50);
+    private String[] strings;
 
-    com.google.api.services.calendar.Calendar service;
+    private com.google.api.services.calendar.Calendar service;
 
-    public Calendar.Events.Insert abc;
 
-    String s1,s2;
+    private String s1,s2;
 
-    CalendarCreateActivity parent;
+    private CalendarEventCreateActivity parent;
     private ArrayList<String> userInfo ;
 
 
 
-    public CalendarEventAsyncTask(CalendarCreateActivity parent, Calendar service, String title, String location, String description, String date, String startTime,
-                                  String endTime, String attendee, String weekDay, ArrayList<String> userInfo) {
+    public CalendarEventCreateAsyncTask(CalendarEventCreateActivity parent, Calendar service, String title, String location, String description, String date, String startTime,
+                                        String endTime, String attendee, String weekDay, ArrayList<String> userInfo) {
 
         this.parent = parent;
         this.service = service;
@@ -172,9 +171,19 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
         if(meetingId!=null)
             updateDataOnFireBase(meetingId,eventId,title,location,description,date,startTime,endTime,finalAttendeeList,weekDay);
 
+        else {
+            parent.runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(parent, "There is an error, try again.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+
         return calendarId;
 
     }
+
 
     @Override
     protected void onPostExecute(String s) {
@@ -218,6 +227,7 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
 
 
     }
+
 
 
     private ArrayList<String> stringParser(String attendee)
@@ -287,7 +297,17 @@ public class CalendarEventAsyncTask extends AsyncTask<Void, Void, String>
 
         System.out.println(hr+":"+time[1]+ " "+time_period);
 
-        return hr+":"+time[1]+ " "+time_period;
+        String parsingTime, stringHour;
+        stringHour = String.valueOf(hr);
+        if(stringHour.length()==1){
+            parsingTime = "0"+hr+":"+time[1]+ " "+time_period;
+        }
+
+        else{
+            parsingTime = hr+":"+time[1]+ " "+time_period;
+        }
+
+        return parsingTime ;
     }
 
     private String dateParser(String date, String weekDay) {

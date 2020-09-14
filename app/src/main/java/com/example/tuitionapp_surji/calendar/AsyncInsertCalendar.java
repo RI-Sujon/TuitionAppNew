@@ -27,7 +27,7 @@ class AsyncInsertCalendar extends CalendarAsyncTask {
 
   private final Calendar entry;
 
-  AsyncInsertCalendar(CalendarCreateActivity calendarSample, Calendar entry) {
+  AsyncInsertCalendar(CalendarEventCreateActivity calendarSample, Calendar entry) {
     super(calendarSample);
     this.entry = entry;
   }

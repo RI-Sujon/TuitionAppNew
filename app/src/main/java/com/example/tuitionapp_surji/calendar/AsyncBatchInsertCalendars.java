@@ -33,7 +33,7 @@ class AsyncBatchInsertCalendars extends com.example.tuitionapp_surji.calendar.Ca
 
   private final List<Calendar> calendars;
 
-  AsyncBatchInsertCalendars(CalendarCreateActivity calendarSample, List<Calendar> calendars) {
+  AsyncBatchInsertCalendars(CalendarEventCreateActivity calendarSample, List<Calendar> calendars) {
     super(calendarSample);
     this.calendars = calendars;
   }
@@ -51,7 +51,7 @@ class AsyncBatchInsertCalendars extends com.example.tuitionapp_surji.calendar.Ca
 
             @Override
             public void onFailure(GoogleJsonError err, HttpHeaders headers) throws IOException {
-              com.example.tuitionapp_surji.calendar.Utils.logAndShowError(activity, CalendarCreateActivity.TAG, err.getMessage());
+              com.example.tuitionapp_surji.calendar.Utils.logAndShowError(activity, CalendarEventCreateActivity.TAG, err.getMessage());
             }
           });
     }

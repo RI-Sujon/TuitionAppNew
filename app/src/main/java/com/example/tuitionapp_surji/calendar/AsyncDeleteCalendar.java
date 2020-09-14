@@ -27,7 +27,7 @@ class AsyncDeleteCalendar extends CalendarAsyncTask {
 
   private final String calendarId;
 
-  AsyncDeleteCalendar(CalendarCreateActivity calendarSample, CalendarInfo calendarInfo) {
+  AsyncDeleteCalendar(CalendarEventCreateActivity calendarSample, CalendarInfo calendarInfo) {
     super(calendarSample);
     calendarId = calendarInfo.id;
   }

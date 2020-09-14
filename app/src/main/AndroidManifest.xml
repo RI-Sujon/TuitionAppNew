@@ -26,7 +26,7 @@
         <activity android:name=".demo_video.DemoVideoMainActivity" />
         <activity android:name=".calendar.CalendarViewEventActivity" />
         <activity android:name=".calendar.CalendarHomeActivity" />
-        <activity android:name=".calendar.CalendarCreateActivity" />
+        <activity android:name=".calendar.CalendarEventCreateActivity" />
         <activity android:name=".note.Note_Home" />
         <activity android:name=".batch.BatchStudentInfoTableActivity" />
         <activity android:name=".notice_board.NoticeBoardViewAndCreateActivity" />

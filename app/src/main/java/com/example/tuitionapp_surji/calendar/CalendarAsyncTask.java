@@ -30,12 +30,12 @@ import java.io.IOException;
 abstract class CalendarAsyncTask extends AsyncTask<Void, Void, Boolean>
 {
 
-  final CalendarCreateActivity activity;
+  final CalendarEventCreateActivity activity;
   final CalendarModel model;
   final com.google.api.services.calendar.Calendar client;
   //private final View progressBar;
 
-  CalendarAsyncTask(CalendarCreateActivity activity) {
+  CalendarAsyncTask(CalendarEventCreateActivity activity) {
     this.activity = activity;
     model = activity.model;
     client = activity.client;
@@ -60,9 +60,9 @@ abstract class CalendarAsyncTask extends AsyncTask<Void, Void, Boolean>
           availabilityException.getConnectionStatusCode());
     } catch (UserRecoverableAuthIOException userRecoverableException) {
       activity.startActivityForResult(
-          userRecoverableException.getIntent(), CalendarCreateActivity.REQUEST_AUTHORIZATION);
+          userRecoverableException.getIntent(), CalendarEventCreateActivity.REQUEST_AUTHORIZATION);
     } catch (IOException e) {
-      Utils.logAndShow(activity, CalendarCreateActivity.TAG, e);
+      Utils.logAndShow(activity, CalendarEventCreateActivity.TAG, e);
     }
     return false;
   }

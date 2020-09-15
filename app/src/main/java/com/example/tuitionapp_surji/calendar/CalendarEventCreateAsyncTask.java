@@ -40,7 +40,7 @@ public class CalendarEventCreateAsyncTask extends AsyncTask<Void, Void, String>
     private String weekDay;
     private ArrayList<String> allAttendees = new ArrayList<>(50);
     private String[] strings;
-
+    private int flag=1;
     private com.google.api.services.calendar.Calendar service;
 
 
@@ -73,14 +73,7 @@ public class CalendarEventCreateAsyncTask extends AsyncTask<Void, Void, String>
     protected String doInBackground(Void... voids)
     {
 
-       /* strings = attendee.split(",");
-
-        for(String s:strings){
-            if(s!=null){
-                allAttendees.add(s);
-            }
-        }*/
-
+        Event event = new Event().setSummary(title).setLocation(location).setDescription(description);
         String finalAttendeeList = new String();
 
         allAttendees = stringParser(attendee);
@@ -93,7 +86,6 @@ public class CalendarEventCreateAsyncTask extends AsyncTask<Void, Void, String>
                 finalAttendeeList += allAttendees.get(i)+"\n";
         }
 
-        Event event = new Event().setSummary(title).setLocation(location).setDescription(description);
 
         DateTime startDateTime = new DateTime( date +"T"+startTime+"+06:00" );//"2020-05-05T11:00:00+06:00");
         EventDateTime start = new EventDateTime().setDateTime(startDateTime).setTimeZone("Asia/Dhaka");
@@ -103,24 +95,23 @@ public class CalendarEventCreateAsyncTask extends AsyncTask<Void, Void, String>
         EventDateTime end = new EventDateTime().setDateTime(endDateTime).setTimeZone("Asia/Dhaka");
         event.setEnd(end);
 
+
         String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=1"};
         event.setRecurrence(Arrays.asList(recurrence));
 
-        /*  s1 = "rahimsumon29@gmail.com";
-        s2 = "nadimahmed1028@gmail.com";
 
-        EventAttendee[] attendees = new EventAttendee[] {
-                new EventAttendee().setEmail(s1),
-                new EventAttendee().setEmail(s2),
-        };*/
         EventAttendee attendees[];
         attendees = new EventAttendee[allAttendees.size()];
 
-        for(int i=0; i<allAttendees.size(); i++){
-           System.out.println(allAttendees.get(i));
-            attendees[i] = new EventAttendee().setEmail(allAttendees.get(i));
+        if(attendee.length()!=0){
+            for(int i=0; i<allAttendees.size(); i++){
+                System.out.println(allAttendees.get(i));
+                attendees[i] = new EventAttendee().setEmail(allAttendees.get(i));
+            }
+
+            event.setAttendees(Arrays.asList(attendees));
         }
-        event.setAttendees(Arrays.asList(attendees));
+
 
         EventReminder[] reminderOverrides = new EventReminder[] {
                 new EventReminder().setMethod("email").setMinutes(24 * 60),
@@ -409,3 +400,11 @@ public class CalendarEventCreateAsyncTask extends AsyncTask<Void, Void, String>
 
                     System.out.printf("Event created: %s\n", event.getHtmlLink());
 */
+
+ /*  s1 = "rahimsumon29@gmail.com";
+        s2 = "nadimahmed1028@gmail.com";
+
+        EventAttendee[] attendees = new EventAttendee[] {
+                new EventAttendee().setEmail(s1),
+                new EventAttendee().setEmail(s2),
+        };*/

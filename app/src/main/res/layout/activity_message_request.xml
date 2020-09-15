@@ -47,7 +47,7 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:tooltipText="ABC"
         android:id="@+id/requester_profile_id"
-        android:src="@drawable/male_pic"
+        android:src="@drawable/user_profile_view"
         app:civ_circle_background_color="@color/Black"
         android:layout_marginTop="80dp"
         android:layout_marginLeft="30dp"

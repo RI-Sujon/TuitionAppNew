@@ -89,7 +89,14 @@ public class CalendarViewEventActivity extends AppCompatActivity
         //textView.setText(String.valueOf(eventInfoList));
         title.setText(calendarEventInfo.getEventTitle());
         dateTime.setText(calendarEventInfo.getDate()+"  .  "+calendarEventInfo.getStartTime()+" - "+ calendarEventInfo.getEndTime());
-        attendee.setText(calendarEventInfo.getAttendee());
+
+        System.out.println("Attendee =========== "+calendarEventInfo.getAttendee());
+        if(calendarEventInfo.getAttendee().length()==0){
+            attendee.setText("There is no guest.");
+        }
+        else
+            attendee.setText(calendarEventInfo.getAttendee());
+
         location.setText(calendarEventInfo.getLocation());
         description.setText(calendarEventInfo.getDescription());
         reminder.setText("10 minutes before");

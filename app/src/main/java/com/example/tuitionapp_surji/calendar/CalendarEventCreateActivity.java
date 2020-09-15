@@ -23,9 +23,11 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -123,16 +125,17 @@ public final class CalendarEventCreateActivity extends Activity  {
 
 
 
-    private MaterialEditText eventTitle, location, description, date, startTime, endTime, attendees;
+    private EditText eventTitle, location, description, date, startTime, endTime, attendees;
     private Button submitButton;
 
     private String eventTitle_txt, location_txt, description_txt, date_txt, startTime_txt, endTime_txt, attendees_txt;
     private DatePicker date_picker;
-    private TextView save_btn,cancel_btn,set_date,set_starting_time,set_ending_time,time_save_btn, time_cancel_btn;
+    private TextView save_btn,cancel_btn,set_starting_time,set_ending_time,time_save_btn, time_cancel_btn;
+    private TextView set_date;
     private TimePicker startTimePicker;
     private TimePicker endTimePicker;
     private Dialog mDialog,mTimeDialog;
-    private String dateString, startTimeString,endTimeString;
+    private String dateString=null, startTimeString=null,endTimeString=null;
 
 
 
@@ -406,15 +409,38 @@ public final class CalendarEventCreateActivity extends Activity  {
         endTime_txt = endTimeString;
         attendees_txt = attendees.getText().toString();
 
+        if(eventTitle_txt.length()==0){
+            Toast.makeText(this, "Add event title.", Toast.LENGTH_SHORT).show();
+        }
 
+        else if(location_txt.length()==0){
+            Toast.makeText(this, "Add event location.", Toast.LENGTH_SHORT).show();
+        }
 
-        CalendarEventCreateAsyncTask calendarEventCreateAsyncTask =   new CalendarEventCreateAsyncTask(this,client,eventTitle_txt, location_txt, description_txt, date_txt, startTime_txt,
-                endTime_txt, attendees_txt,getWeek(date_picker),userInfo);
-        calendarEventCreateAsyncTask.execute();
+        else if(description_txt.length()==0){
+            Toast.makeText(this, "Add event description.", Toast.LENGTH_SHORT).show();
+        }
 
+        else if(date_txt==null){
+            Toast.makeText(this, "Set event date.", Toast.LENGTH_SHORT).show();
+        }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-           // System.out.println("========================  "+ startTimePicker.getHour());
+        else if(startTime_txt==null){
+            Toast.makeText(this, "Set event starting time.", Toast.LENGTH_SHORT).show();
+        }
+
+        else if(endTime_txt==null){
+            Toast.makeText(this, "Set event ending time.", Toast.LENGTH_SHORT).show();
+        }
+
+       /* else if(attendees_txt.length()==0){
+            Toast.makeText(this, "Add at least one guest email.", Toast.LENGTH_SHORT).show();
+        }*/
+
+        else{
+            CalendarEventCreateAsyncTask calendarEventCreateAsyncTask =   new CalendarEventCreateAsyncTask(this,client,eventTitle_txt, location_txt, description_txt, date_txt, startTime_txt,
+                    endTime_txt, attendees_txt,getWeek(date_picker),userInfo);
+            calendarEventCreateAsyncTask.execute();
         }
 
     }

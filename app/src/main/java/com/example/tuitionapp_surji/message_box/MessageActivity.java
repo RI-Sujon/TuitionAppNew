@@ -28,8 +28,10 @@ import com.example.tuitionapp_surji.note.NoteInfo;
 import com.example.tuitionapp_surji.notification_pack.NotificationInfo;
 import com.example.tuitionapp_surji.notification_pack.NotificationSender;
 import com.example.tuitionapp_surji.notification_pack.SendNotification;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +39,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -367,6 +370,22 @@ public class MessageActivity extends AppCompatActivity
                                 SendNotification sendNotification = new SendNotification(receiver,"Message","You have a new message");
                                 sendNotification.sendNotificationOperation();
 
+
+                                databaseFireStore.collection("System").document("Counter")
+                                        .collection("NotificationCounter").document(receiver).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        DocumentSnapshot document = task.getResult() ;
+
+                                        counterMessage = (long) document.get("messageCounter") ;
+                                        counterMessage = counterMessage + 1 ;
+
+                                        databaseFireStore.collection("System").document("Counter")
+                                                .collection("NotificationCounter").document(receiver)
+                                                .update("messageCounter",counterMessage) ;
+                                    }
+                                }) ;
+
                             }
 
                             else if(messageBoxInfo.isBlockFromGuardianSide() || messageBoxInfo.isBlockFromTutorSide()){
@@ -389,6 +408,22 @@ public class MessageActivity extends AppCompatActivity
                                 reference.child("Chats").push().setValue(hashMap);
                                 SendNotification sendNotification = new SendNotification(receiver,"Message","You have a new message");
                                 sendNotification.sendNotificationOperation();
+
+                                databaseFireStore.collection("System").document("Counter")
+                                        .collection("NotificationCounter").document(receiver).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        DocumentSnapshot document = task.getResult() ;
+
+                                        counterMessage = (long) document.get("messageCounter") ;
+                                        counterMessage = counterMessage + 1 ;
+
+                                        databaseFireStore.collection("System").document("Counter")
+                                                .collection("NotificationCounter").document(receiver)
+                                                .update("messageCounter",counterMessage) ;
+                                    }
+                                }) ;
+
                             }
 
                             else if(messageBoxInfo.isBlockFromGuardianSide() || messageBoxInfo.isBlockFromTutorSide()){

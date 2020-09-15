@@ -19,6 +19,8 @@ import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.guardian.GuardianHomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +56,8 @@ public class MainMessageActivity extends AppCompatActivity {
 
     ImageView chats_btn,request_btn;
     TextView txt1,txt2;
+    private long counterMessage ;
+    private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +93,22 @@ public class MainMessageActivity extends AppCompatActivity {
 
         if(checkUser.equals("guardian"))
         {
-           // System.out.println("Guardian ID ======================================"+firebaseUser.getUid());
+
+            databaseFireStore.collection("System").document("Counter")
+                    .collection("NotificationCounter").document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document = task.getResult() ;
+
+                    counterMessage = (long) document.get("messageCounter") ;
+                    counterMessage = 0;
+
+                    databaseFireStore.collection("System").document("Counter")
+                            .collection("NotificationCounter").document(firebaseUser.getUid())
+                            .update("messageCounter",counterMessage) ;
+                }
+            }) ;
+
             reference.addValueEventListener(new ValueEventListener()
             {
                 @Override
@@ -163,6 +184,22 @@ public class MainMessageActivity extends AppCompatActivity {
         }
 
         else{
+
+            databaseFireStore.collection("System").document("Counter")
+                    .collection("NotificationCounter").document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document = task.getResult() ;
+
+                    counterMessage = (long) document.get("messageCounter") ;
+                    counterMessage = 0;
+
+                    databaseFireStore.collection("System").document("Counter")
+                            .collection("NotificationCounter").document(firebaseUser.getUid())
+                            .update("messageCounter",counterMessage) ;
+                }
+            }) ;
+
             reference.addValueEventListener(new ValueEventListener()
             {
                 @Override

@@ -2,6 +2,8 @@ package com.example.tuitionapp_surji.message_box;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -289,9 +291,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private void lastMessageCondition(String LastMessage, String message_time, TextView last_msg,  String message_type,String userId, Chat chat) {
 
-
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if(LastMessage!=null){
+
+            if(firebaseUser.getUid().equals(chat.getReceiver())){
+                if(chat.getIsSeen().equals("no")){
+                    last_msg.setTextColor(Color.parseColor("#000000"));
+                    last_msg.setTypeface(null,Typeface.BOLD);
+                }
+            }
+
 
             if(LastMessage.equals("default")){
                 last_msg.setText("No message");

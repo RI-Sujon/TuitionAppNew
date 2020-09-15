@@ -18,14 +18,14 @@
             android:background="#2A59E6"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginRight="35dp"
+            android:layout_marginRight="30dp"
             android:contentDescription="@string/icon_desc"
             android:src="@drawable/ic_arrow_back_black_24dp"
             android:onClick="goToHomePageActivity"/>
 
         <TextView
             android:background="#2A59E6"
-            android:layout_width="220dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Event"
@@ -35,31 +35,8 @@
             android:textAppearance="?android:attr/textAppearanceMediumInverse"
             tools:ignore="RtlCompat" />
 
-        <!--<View style="@style/TitleBarSpring" />-->
 
-      <!--  <ProgressBar
-            android:id="@+id/title_refresh_progress"
-            style="@style/TitleBarProgressIndicator"
-            android:visibility="gone" />
-
-        <ImageView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            style="@style/TitleBarSeparator"
-            android:contentDescription="@string/title_separator_desc" />-->
-
-     <!--   <ImageButton
-            style="@style/TitleBarAction"
-            android:contentDescription="@string/description_add"
-            android:keepScreenOn="true"
-            android:onClick="onAddClick"
-            android:src="@drawable/ic_title_add" />-->
     </LinearLayout>
-
-    <!--  <ListView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="400dp" />-->
 
 
     <ScrollView
@@ -73,125 +50,241 @@
 
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:gravity="center"
-            android:padding="5dp"
-            android:orientation="vertical">
-
-
-            <com.rengwuxian.materialedittext.MaterialEditText
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/eventTitle"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="10dp"
-                app:met_floatingLabel="normal"
-                android:hint="title"
-                />
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:orientation="vertical">
 
-            <com.rengwuxian.materialedittext.MaterialEditText
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:id="@+id/location"
-                android:layout_marginTop="10dp"
-                app:met_floatingLabel="normal"
-                android:hint="location"
-                />
+                android:layout_height="wrap_content">
 
-            <com.rengwuxian.materialedittext.MaterialEditText
+
+                <EditText
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/eventTitle"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="Add title"
+                    android:background="@android:color/transparent"
+                    />
+            </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000000"
+                    android:layout_marginBottom="15dp"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/description"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                app:met_floatingLabel="normal"
-                android:hint="description"
-                />
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/location"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:id="@+id/location"
+                    android:layout_marginTop="10dp"
+                    android:hint="Add location"
+                    android:background="@android:color/transparent"
+                    />
+
+            </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000000"
+                    android:layout_marginBottom="15dp"/>
 
 
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <!--<DatePicker
-                android:backgroundTint="@color/Black"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/description2"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"/>
+
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/description"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:hint="Add description"
+                    android:background="@android:color/transparent"
+
+                    />
+
+            </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000000"
+                    android:layout_marginBottom="15dp"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/datePicker"
-                />-->
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/set_date"
-                android:layout_gravity="left"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="set event date"
-                android:textColor="@color/Black"
-                android:layout_marginBottom="20dp"
-                android:onClick="showPopUpDate"/>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/calendar_date"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"/>
 
+                <TextView
+                    android:id="@+id/set_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:hint="Set event date"
+                    android:onClick="showPopUpDate"
+                    android:textColor="@color/Black"
+                    android:textSize="18sp"
+                    />
 
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/set_starting_time"
-                android:layout_gravity="left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/Black"
-                android:layout_marginBottom="20dp"
-                android:hint="set starting time"
-                android:onClick="showPopUpTime01"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000000"
+                    android:layout_marginBottom="15dp"/>
 
-            <!--<TimePicker
-                android:id="@+id/startTimePicker"
-                android:layout_marginTop="20dp"
-                android:layout_width="267dp"
-                android:layout_height="wrap_content"/>-->
-
-            <TextView
-                android:id="@+id/set_ending_time"
-                android:layout_gravity="left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/Black"
-                android:layout_marginBottom="20dp"
-                android:hint="set ending time"
-                android:onClick="showPopUpTime02"/>
-
-         <!--   <TimePicker
-                android:id="@+id/endTimePicker"
-                android:layout_marginTop="20dp"
-                android:layout_width="267dp"
-                android:layout_height="wrap_content"/>-->
-
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/attendees"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:hint="add guests email with space or new line"
-                app:met_floatingLabel="normal" />
-                <!--coma &quot;,&quot;"-->
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/clock"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"/>
+
+                <TextView
+                    android:id="@+id/set_starting_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/Black"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:hint="Set starting time"
+                    android:onClick="showPopUpTime01"/>
+
+            </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000000"
+                    android:layout_marginBottom="15dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/clock"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"/>
+
+                <TextView
+                    android:id="@+id/set_ending_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/Black"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:hint="Set ending time"
+                    android:onClick="showPopUpTime02"/>
+
+            </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000000"
+                    android:layout_marginBottom="15dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/attendee2"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"/>
+
+                <EditText
+                    android:id="@+id/attendees"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="Add guests email with space or new line"
+                    android:background="@android:color/transparent"
+                    />
+
+            </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000000"
+                    android:layout_marginBottom="15dp"/>
 
 
-            <Button
-                android:id="@+id/btn_register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:backgroundTint="@color/colorAccent"
-                android:onClick="createEvent"
-                android:text="Submit"
-                android:textColor="#fff" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <Button
+                        android:id="@+id/btn_register"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:backgroundTint="#3A55FF"
+                        android:onClick="createEvent"
+                        android:textAllCaps="false"
+                        android:text="Save"
+                        android:textColor="#fff" />
+
+
+                </LinearLayout>
+
 
 
             </LinearLayout>

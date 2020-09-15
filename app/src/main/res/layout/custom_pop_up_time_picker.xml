@@ -27,13 +27,13 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="150dp"
             android:text="Cancel"
             android:layout_gravity="left"
             android:id="@+id/time_cancel_btn"
             android:layout_width="wrap_content"
             android:textSize="20sp"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/MidnightBlue"
             android:layout_height="wrap_content"/>
 
         <TextView
@@ -41,7 +41,7 @@
             android:id="@+id/time_save_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/MidnightBlue"
             android:text="OK"
             android:textSize="20sp" />
 

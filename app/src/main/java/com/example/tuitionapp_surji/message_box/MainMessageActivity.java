@@ -56,7 +56,7 @@ public class MainMessageActivity extends AppCompatActivity {
 
     ImageView chats_btn,request_btn;
     TextView txt1,txt2;
-    private long counterMessage ;
+    private long counterMessage, oldCounterMessage ;
     private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
 
     @Override
@@ -184,7 +184,6 @@ public class MainMessageActivity extends AppCompatActivity {
         }
 
         else{
-
             databaseFireStore.collection("System").document("Counter")
                     .collection("NotificationCounter").document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -192,11 +191,11 @@ public class MainMessageActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult() ;
 
                     counterMessage = (long) document.get("messageCounter") ;
-                    counterMessage = 0;
+                    oldCounterMessage = counterMessage;
 
                     databaseFireStore.collection("System").document("Counter")
                             .collection("NotificationCounter").document(firebaseUser.getUid())
-                            .update("messageCounter",counterMessage) ;
+                            .update("messageOldCounter",oldCounterMessage) ;
                 }
             }) ;
 

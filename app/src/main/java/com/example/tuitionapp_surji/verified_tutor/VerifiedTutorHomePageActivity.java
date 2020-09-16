@@ -305,7 +305,6 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         finish();
     }
 
-
     public void goToVerifiedTutorNotificationActivity(View view){
         notificationCounterTextView.setText("");
         Intent intent = new Intent(this, NotificationViewActivity.class) ;

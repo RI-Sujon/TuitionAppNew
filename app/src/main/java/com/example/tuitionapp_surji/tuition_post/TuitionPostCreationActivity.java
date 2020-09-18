@@ -1,6 +1,7 @@
 package com.example.tuitionapp_surji.tuition_post;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,11 +16,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.admin.ApproveAndBlockInfo;
 import com.example.tuitionapp_surji.guardian.GuardianInfo;
+import com.example.tuitionapp_surji.notification_pack.SendNotification;
+import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorInfo;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,8 +47,8 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
     private Spinner mediumBox, classBox, groupBox, tutorGenderPreferenceBox, daysPerWeekOrMonthBox , areaAddressBox ,salaryBox, salaryBox2 ;
     private String postTitle="", studentInstitute="", studentClass="", studentGroup="", studentMedium="", studentSubjectList="",
             tutorGenderPreference="", daysPerWeekOrMonth="", studentAreaAddress="", studentFullAddress="", studentContactNo="", salary="",salary2="", extra="" ;
-    private  TuitionPostInfo tuitionPostInfo ;
-    private DatabaseReference myRefTuitionPost, myRefGuardianInfo ;
+    private TuitionPostInfo tuitionPostInfo ;
+    private DatabaseReference myRefTuitionPost, myRefGuardianInfo, myRefVerifiedTutorInfo, myRefApproveInfo, myRefApproveInfo2 ;
     private FirebaseUser firebaseUser ;
     private TextView createPostLayoutHeading ;
 
@@ -62,6 +67,8 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         myRefTuitionPost = FirebaseDatabase.getInstance().getReference("TuitionPost") ;
         myRefGuardianInfo = FirebaseDatabase.getInstance().getReference("Guardian").child(firebaseUser.getUid()) ;
+        myRefVerifiedTutorInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor") ;
+        myRefApproveInfo = FirebaseDatabase.getInstance().getReference("ApproveAndBlock") ;
 
         Intent intent = getIntent() ;
         type = intent.getStringExtra("type") ;
@@ -79,25 +86,7 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
             }
         }) ;
 
-        if(type.equals("editPost")) {
-            typeFlag = -1;
-            postID = intent.getStringExtra("tuitionPostID");
-            myRefTuitionPost = myRefTuitionPost.child(postID);
 
-            myRefTuitionPost.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    tuitionPostInfo = dataSnapshot.getValue(TuitionPostInfo.class);
-                    editPostOperation();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-        else typeFlag = 1 ;
 
         postTitleBox = findViewById(R.id.postTitle) ;
         studentInstituteBox = findViewById(R.id.studentInstitute) ;
@@ -151,10 +140,29 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
         selectDaysPerWeekOrMonth() ;
         selectAreaAddress() ;
         selectSalary() ;
+
+        if(type.equals("editPost")) {
+            typeFlag = -1;
+            postID = intent.getStringExtra("tuitionPostID");
+            myRefTuitionPost = myRefTuitionPost.child(postID);
+
+            myRefTuitionPost.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    tuitionPostInfo = dataSnapshot.getValue(TuitionPostInfo.class);
+                    editPostOperation();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        else typeFlag = 1 ;
     }
 
     public void createPostOperation(View view) {
-
         postTitle = postTitleBox.getText().toString().trim() ;
         studentClass = classBox.getSelectedItem().toString();
         studentMedium = mediumBox.getSelectedItem().toString();
@@ -182,7 +190,7 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
         }
 
         if(studentMedium.equals("MEDIUM")){
-            studentMedium = "Bangla" ;
+            studentMedium = "Bangla Medium" ;
         }
 
         if(studentSubjectList.equals("")){
@@ -222,7 +230,6 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
         }
         else myRefTuitionPost.push().setValue(guardianPostInfo) ;
 
-
         databaseFireStore.collection("TuitionPost").add(guardianPostInfo).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
@@ -234,6 +241,7 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
         }) ;
 
         Toast.makeText(getApplicationContext(),"successfully post",Toast.LENGTH_SHORT).show();
+        notifyAreaTutor(studentGroup) ;
         goToGuardianTuitionPostViewActivity();
     }
 
@@ -258,7 +266,6 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
             classBox.setAdapter(classAdapter);
             mediumBox.setSelection(1);
             for(int i=0 ; i<banglaMediumClassList.size() ; i++){
-                System.out.println(banglaMediumClassList.get(i) + "/   /" + tuitionPostInfo.getStudentClass());
                 if(banglaMediumClassList.get(i).equals(tuitionPostInfo.getStudentClass())){
                     classBox.setSelection(i);
                     break;
@@ -295,9 +302,7 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
             }
         }
         for(int i=0 ; i<daysPerWeekList.size() ; i++){
-            System.out.println(daysPerWeekList.get(i) + "/   /" + tuitionPostInfo.getDaysPerWeekOrMonth());
             if(daysPerWeekList.get(i).equals(tuitionPostInfo.getDaysPerWeekOrMonth())){
-                System.out.println(daysPerWeekList.get(i) + "/  sujon /" + tuitionPostInfo.getDaysPerWeekOrMonth());
                 daysPerWeekOrMonthBox.setSelection(i);
                 break;
             }
@@ -341,6 +346,59 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
         }
 
         typeFlag = 1 ;
+    }
+
+    public void notifyAreaTutor(final String studentGroup){
+        myRefVerifiedTutorInfo.orderByChild("preferredAreas").equalTo(studentAreaAddress).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(final DataSnapshot dS1: snapshot.getChildren())
+                {
+                    VerifiedTutorInfo verifiedTutorInfo = dS1.getValue(VerifiedTutorInfo.class) ;
+                    if(studentGroup=="None"){
+                        myRefApproveInfo2 = myRefApproveInfo.child(dS1.getKey()) ;
+                        myRefApproveInfo2.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ApproveAndBlockInfo approveAndBlockInfo =  snapshot.getValue(ApproveAndBlockInfo.class) ;
+                                if(approveAndBlockInfo.getStatus().equals("running")) {
+                                    SendNotification sendNotification = new SendNotification(snapshot.getKey(), "Tuition Post", "A guardian is searching a tutor in your area.") ;
+                                    sendNotification.sendNotificationOperation();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        }) ;
+                    }
+                    else if(studentGroup.equals(verifiedTutorInfo.getPreferredGroup())){
+                        myRefApproveInfo2 = myRefApproveInfo.child(dS1.getKey()) ;
+                        myRefApproveInfo2.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ApproveAndBlockInfo approveAndBlockInfo =  snapshot.getValue(ApproveAndBlockInfo.class) ;
+                                if(approveAndBlockInfo.getStatus().equals("running")) {
+                                    SendNotification sendNotification = new SendNotification(snapshot.getKey(), "Tuition Post", "A guardian is searching a tutor in your area.") ;
+                                    sendNotification.sendNotificationOperation();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        }) ;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void goToGuardianTuitionPostViewActivity(){
@@ -437,7 +495,6 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
                             }
                             subjectAdapter = new ArrayAdapter(TuitionPostCreationActivity.this,android.R.layout.simple_dropdown_item_1line,artsSubjectList);
                         }
-
 
                         subjectBox.setAdapter(subjectAdapter);
                         subjectBox.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());

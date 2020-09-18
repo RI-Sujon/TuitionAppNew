@@ -134,7 +134,7 @@
         <item>Science</item>
         <item>Commerce</item>
         <item>Arts</item>
-        <item>Other</item>
+        <item>None</item>
     </string-array>
 
     <string-array name="primarySubject_array">

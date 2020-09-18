@@ -31,17 +31,12 @@ public class GuardianInformationViewActivity extends AppCompatActivity {
 
     private TextView nameTextView, addressTextView ;
     private CircularImageView profilePic ;
-    private ImageView sendMessageButton ;
-
     private String user, guardianUid ;
     private ArrayList<String> tutorInfo ;
     private GuardianInfo guardianInfo ;
-
     private DatabaseReference myRefMessageBox, myRefGuardianInfo ;
-
     private MaterialToolbar materialToolbar ;
-
-    private Button editButton ;
+    private MaterialButton editButton, sendMessageButton ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +56,6 @@ public class GuardianInformationViewActivity extends AppCompatActivity {
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
 
         materialToolbar = findViewById(R.id.topAppBar) ;
-
         materialToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +95,7 @@ public class GuardianInformationViewActivity extends AppCompatActivity {
         if(guardianInfo.getProfilePicUri()!=null){
             if(!guardianInfo.getProfilePicUri().equals("1")){
                 Picasso.get().load(guardianInfo.getProfilePicUri()).into(profilePic);
-                profilePic.setBorderColor(Color.MAGENTA);
+                profilePic.setBorderColor(Color.rgb(65,105,225));
             }
         }
     }

@@ -286,7 +286,6 @@ public class TuitionPostViewActivity extends AppCompatActivity {
                 for(int i=helpArrayList.size()-1 ; i>=0 ; i--){
                     filteredTuitionPost.get(0).add(helpArrayList.get(i)) ;
                     tuitionPostUidList.add(helpArrayList2.get(i));
-                    System.out.println(helpArrayList.get(i).getPostTitle() + "  key:" + helpArrayList2.get(i));
                 }
                 helpArrayList.clear();
                 viewTuitionPost();

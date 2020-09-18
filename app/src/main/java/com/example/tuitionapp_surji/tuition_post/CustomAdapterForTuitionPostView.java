@@ -103,6 +103,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
             holder.responseButtonPressedLayout = convertView.findViewById(R.id.responseButtonPressedLayout) ;
 
             holder.guardianPic = convertView.findViewById(R.id.guardianPic) ;
+            holder.guardianDefaultPic = convertView.findViewById(R.id.guardianDefaultPic) ;
             holder.postImage = convertView.findViewById(R.id.image_view) ;
             holder.postTitle = convertView.findViewById(R.id.postTitle) ;
             holder.postTime = convertView.findViewById(R.id.postTime) ;
@@ -180,8 +181,16 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
 
             if(tuitionPostInfo.get(position).getGuardianProfilePicUri()!=null){
                 if(!tuitionPostInfo.get(position).getGuardianProfilePicUri().equals("")){
+                    holder.guardianPic.setVisibility(View.VISIBLE);
+                    holder.guardianDefaultPic.setVisibility(View.GONE);
                     Picasso.get().load(tuitionPostInfo.get(position).getGuardianProfilePicUri()).into(holder.guardianPic);
+                }else{
+                    holder.guardianPic.setVisibility(View.GONE);
+                    holder.guardianDefaultPic.setVisibility(View.VISIBLE);
                 }
+            }else{
+                holder.guardianPic.setVisibility(View.GONE);
+                holder.guardianDefaultPic.setVisibility(View.VISIBLE);
             }
 
             holder.postTitle.setText(tuitionPostInfo.get(position).getPostTitle());
@@ -402,7 +411,7 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
 
     class ViewHolder{
         LinearLayout cardLayout ;
-        ImageView guardianPic ;
+        ImageView guardianPic, guardianDefaultPic ;
         ImageView postImage ;
         LinearLayout layout ;
         TextView postTime ;

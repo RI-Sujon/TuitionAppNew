@@ -92,6 +92,9 @@ public class MyService extends FirebaseMessagingService {
         else if(title.equals("Message")){
             notificationID = 4 ;
         }
+        else if(title.equals("TuitionPost")){
+            notificationID = 5 ;
+        }
 
         Map<String,Object> counter = new HashMap<>() ;
         counter.put(user.getUid(), 1) ;
@@ -149,6 +152,9 @@ public class MyService extends FirebaseMessagingService {
         }
         else if(title.equals("Message")){
             notificationID = 4 ;
+        }
+        else if(title.equals("TuitionPost")){
+            notificationID = 5 ;
         }
 
         notificationManager.notify(notificationID,notificationBuilder.build());

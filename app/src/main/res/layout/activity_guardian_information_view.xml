@@ -34,7 +34,7 @@
             android:layout_height="100dp"
             android:src="@drawable/group_icon"
             android:layout_gravity="center"
-            app:civ_circle_color="@color/Blue"/>
+            app:civ_circle_color="@color/SeaGreen"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,8 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
-                android:text="JAHANARA IMAM"
-                android:textColor="@color/Blue"
+                android:textColor="@color/Crimson"
                 android:background="#00000000"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -94,40 +93,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
-                android:text="aaaaaaaaaawwwwwwwwww"
                 android:textColor="@color/DarkBlue"
                 android:background="#00000000" />
         </LinearLayout>
 
-
-        <ImageView
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:id="@+id/sendMessageRequestButton"
+        <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/send_message"
-            android:layout_marginTop="30dp"
-            android:onClick="sendMessageToGuardianOperation"
+            android:layout_height="50dp"
+            android:id="@+id/sendMessageRequestButton"
+            android:minHeight="140dp"
+            android:maxLines="1"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:text="Send Massage"
+            android:layout_alignParentRight="true"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textStyle="bold"
+            app:strokeColor="@color/Green"
+            android:textColor="@color/Green"
+            android:backgroundTint="#C5FDC5"
+            app:strokeWidth="2dp"
+            app:cornerRadius="30dp"
             android:visibility="gone"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:onClick="sendMessageToGuardianOperation"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/editButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Edit Info"
-            android:onClick="editGuardianProfileInfo"
-            android:layout_marginTop="30dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:textSize="18dp"
+            android:layout_height="50dp"
+            android:minWidth="140dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:text="Edit Text"
+            android:layout_alignParentRight="true"
+            android:fontFamily="sans-serif-condensed-medium"
             android:textStyle="bold"
+            android:maxLines="1"
+            app:strokeColor="#FFAB00"
+            android:textColor="#FF6D00"
+            android:backgroundTint="#F6EDBB"
+            app:strokeWidth="2dp"
+            app:cornerRadius="30dp"
             android:layout_gravity="center"
+            android:layout_marginTop="30dp"
             android:visibility="gone"
-            android:backgroundTint="@color/Green"/>
+            android:onClick="editGuardianProfileInfo"/>
 
     </LinearLayout>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

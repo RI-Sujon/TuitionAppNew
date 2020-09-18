@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:minWidth="350dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_height="wrap_content"
+    android:minHeight="350dp"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:gravity="center"
+    android:background="#E1EFFB"
+    android:theme="@style/CardView"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/name"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/Navy"
+        android:fontFamily="@font/autour_one"
+        android:layout_gravity="center"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/image_view"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:padding="10dp"
+        android:src="@drawable/male_pic" />
+
+    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+        android:id="@+id/rating_bar"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:padding="20dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialRatingBar.RatingBar"/>
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Submit"
+        android:focusable="true"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="15dp" />
+</LinearLayout>

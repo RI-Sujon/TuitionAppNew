@@ -1,13 +1,18 @@
 package com.example.tuitionapp_surji.verified_tutor;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -15,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +36,9 @@ import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.message_box.MessageRequestActivity;
 import com.example.tuitionapp_surji.notification_pack.NotificationViewActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,10 +47,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 import static android.graphics.Color.RED;
 
@@ -81,6 +97,9 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     private TextView availability ;
     private MaterialButton changeAvailabilityButton ;
 
+    private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
+    private double rating = 0 ;
+
     private int mobileNumberFlag = 0, addressFlag = 0, emailFlag = 0, subjectFlag = 0;
     private int mediumFlag = 0, classFlag = 0, groupFlag = 0, subjectListFlag = 0, areaFlag = 0, daysPerWeekFlag = 0, salaryFlag = 0 ;
 
@@ -93,7 +112,6 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;
         tutorUid = intent.getStringExtra("tutorUid");
-
         tutorEmail =  intent.getStringExtra("tutorEmail");
 
         userProfilePicImageView = findViewById(R.id.profilePicImageView) ;
@@ -336,6 +354,16 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             availability.setVisibility(View.VISIBLE);
             changeAvailabilityButton.setVisibility(View.VISIBLE);
         }
+        databaseFireStore.collection("Rating").document(tutorUid)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult() ;
+                if(document.get(firebaseUser.getUid())!=null){
+                    rating = (double) document.get(firebaseUser.getUid()) ;
+                }
+            }
+        }) ;
     }
 
     public void goToTutorDemoVideo(View view) {
@@ -1335,5 +1363,42 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         });
 
         popup.show();
+    }
+
+    public void ratingBarOperation(View view){
+        if(user.equals("guardian")){
+            final Dialog dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.custom_adapter_for_dialog_box_tutor_rating);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+            final RatingBar ratingBar = (RatingBar) dialog.findViewById(R.id.rating_bar);
+            TextView name = (TextView) dialog.findViewById(R.id.name);
+            ImageView imageView = (ImageView) dialog.findViewById(R.id.image_view);
+            Button submitButton = (Button) dialog.findViewById(R.id.submit) ;
+
+            if(rating!=0){
+                ratingBar.setRating((float) rating);
+            }
+
+            name.setText(candidateTutorInfo.getUserName());
+            if(candidateTutorInfo.getProfilePictureUri()!=null){
+                Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(imageView);
+            }
+
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    Map<String,Object> map = new HashMap<>() ;
+                    map.put(firebaseUser.getUid(), ratingBar.getRating()) ;
+
+                    databaseFireStore.collection("Rating").document(tutorUid).set(map, SetOptions.merge()) ;
+                    rating = ratingBar.getRating() ;
+                }
+            });
+
+            dialog.show();
+        }
     }
 }

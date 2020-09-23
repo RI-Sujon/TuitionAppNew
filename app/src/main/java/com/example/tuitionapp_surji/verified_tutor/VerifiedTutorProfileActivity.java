@@ -32,6 +32,8 @@ import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.demo_video.DemoVideoMainActivity;
 import com.example.tuitionapp_surji.group.GroupHomePageActivity;
 import com.example.tuitionapp_surji.guardian.ViewingSearchingTutorProfileActivity;
+import com.example.tuitionapp_surji.message_box.MainMessageActivity;
+import com.example.tuitionapp_surji.message_box.MessageActivity;
 import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.message_box.MessageRequestActivity;
@@ -1196,7 +1198,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     public void sendMessageRequestByGuardian(View view){
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
-        messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail, tutorUid, true ,false,false,false) ;
+        messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail, tutorUid, true ,false,false,false,false) ;
 
         messageRequestButton.setBackgroundColor(Color.GREEN);
         messageRequestButton.setText("REQUEST SENT");
@@ -1276,10 +1278,8 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             }
             else if(contextType!=null){
                 if(contextType.equals("messenger")){
-                    intent = new Intent(VerifiedTutorProfileActivity.this, MessageRequestActivity.class);
-                    intent.putExtra("userId", tutorUid);
-                    intent.putExtra("tutorEmail",tutorEmail);
-                    intent.putExtra("user",user) ;
+                    intent = new Intent(this, MainMessageActivity.class);
+                    intent.putExtra("user", user);
                     startActivity(intent) ;
                     finish() ;
                 }

@@ -33,13 +33,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MessageRequestActivity extends AppCompatActivity {
 
     private  String checkUser,guardianMobileNumber,tutorEmail;
-    ArrayList<String> userInfo ;
-    String  userId;
-
-    FirebaseUser fuser;
-    CircleImageView circleImageView, messageRequesterProfileImage;
-    TextView acceptButton, declineButton,messageRequesterName ;
-
+    private ArrayList<String> userInfo ;
+    private String  userId;
+    private FirebaseUser fuser;
+    private CircleImageView circleImageView, messageRequesterProfileImage;
+    private TextView acceptButton, declineButton,messageRequesterName ;
     private DatabaseReference candidateTutorReference, guardianReference;
 
 
@@ -180,8 +178,6 @@ public class MessageRequestActivity extends AppCompatActivity {
             intent.putExtra("userEmail", tutorEmail) ;
             intent.putExtra("context","messenger");
 
-            startActivity(intent);
-            finish();
         }
 
         else{
@@ -189,9 +185,9 @@ public class MessageRequestActivity extends AppCompatActivity {
              intent.putStringArrayListExtra("tutorInfo", userInfo) ;
              intent.putExtra("user","tutor");
              intent.putExtra("guardianUid",userId);
-             startActivity(intent);
-             finish();
         }
+        startActivity(intent);
+        finish();
 
     }
 

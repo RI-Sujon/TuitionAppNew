@@ -2,12 +2,14 @@ package com.example.tuitionapp_surji.demo_video;
 
 
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -28,10 +30,16 @@ import com.example.tuitionapp_surji.guardian.GuardianHomePageActivity;
 import com.example.tuitionapp_surji.message_box.MainMessageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
+import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler;
+import com.github.hiteshsondhi88.libffmpeg.FFmpeg;
+import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler;
+import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException;
+import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -68,7 +76,7 @@ public class DemoVideoMainActivity extends AppCompatActivity {
     private Uri videoUri;
     private MediaController mediaController;
     private StorageReference mStorageRef;
-    private DatabaseReference mDataBaseRef, videoReference, videos, downloadVideos;
+    private DatabaseReference videoReference, videos, downloadVideos;
     private StorageReference storageReference;
     private Bitmap bitmapVideo;
     private String videoUriString, videoUriForView, videoName, user ;
@@ -117,8 +125,6 @@ public class DemoVideoMainActivity extends AppCompatActivity {
         mediaController = new MediaController(this);
 
         videoReference = FirebaseDatabase.getInstance().getReference("Videos");//.child(firebaseUser.getUid()) ;
-        mStorageRef = FirebaseStorage.getInstance().getReference("videos");
-        mDataBaseRef = FirebaseDatabase.getInstance().getReference("videos");
         videos = FirebaseDatabase.getInstance().getReference("Videos");
         downloadVideos = FirebaseDatabase.getInstance().getReference("Videos");
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -167,7 +173,6 @@ public class DemoVideoMainActivity extends AppCompatActivity {
         }
     }
 
-
     private  void ChooseVideo(){
         //System.out.println("Video nameeee33333333333333333333333333333333333333333333333333333333333333333333333333333eeeeeeeeeeeeeeeeee = "+videoName);
         Intent intent = new Intent();
@@ -176,7 +181,8 @@ public class DemoVideoMainActivity extends AppCompatActivity {
         startActivityForResult(intent, PICK_VIDEO_REQUEST);
     }
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_VIDEO_REQUEST && resultCode == RESULT_OK
@@ -192,52 +198,17 @@ public class DemoVideoMainActivity extends AppCompatActivity {
 
         }}
 
-    private String getFileExtension(Uri videoUri) {
+    private String getFileExtension(Uri videoUri)
+    {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(videoUri));
     }
 
-    /*private void UploadVideo() {
 
-        progressBar.setVisibility(View.VISIBLE);
-        if (videoUri != null){
-            StorageReference reference = mStorageRef.child(System.currentTimeMillis() +
-                    "." +getFileExtension(videoUri));
-
-            reference.putFile(videoUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressBar.setVisibility(View.INVISIBLE);
-                            Toast.makeText(getApplicationContext(),"Upload successful",Toast.LENGTH_SHORT).show();
-                            DemoVideoInfo member = new DemoVideoInfo(videoname.getText().toString().trim(),
-                                    taskSnapshot.getUploadSessionUri().toString(), emailPrimaryKey);
-                            String UploadId = mDataBaseRef.push().getKey();
-                            mDataBaseRef.child(UploadId).setValue(member);
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-
-        }else {
-            Toast.makeText(getApplicationContext(),"No file selected",Toast.LENGTH_SHORT).show();
-        }
-
-
-    }
-*/
-
-    private void uploadFinish(){
-
-
+    private void uploadFinish()
+    {
+       // compressTheVideo();
         videos.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -314,17 +285,13 @@ public class DemoVideoMainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(DemoVideoMainActivity.this, "You can upload only one videos.\nYou can delete the previous one and upload another.", Toast.LENGTH_LONG).show();
                 }
-
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
-
 
     public void updateCandidateTutorDatabase(String name) {
 
@@ -339,27 +306,67 @@ public class DemoVideoMainActivity extends AppCompatActivity {
     }
 
 
-    public void goToHomePageActivity(View view) {
-        Intent intent;
-        if(user.equals("guardian")){
-             intent = new Intent(this, VerifiedTutorProfileActivity.class);
-            intent.putExtra("user", "guardian") ;
-            intent.putExtra("tutorUid", tutorUid);
-            intent.putExtra("tutorEmail", tutorEmail) ;
-            intent.putExtra("context", "guardian_view") ;
-        }
+    public void deleteTheDemoVideo(View view)
+    {
 
-        else{
-            intent = new Intent(this, VerifiedTutorHomePageActivity.class) ;
-            intent.putExtra("user" , "tutor") ;
-            intent.putStringArrayListExtra("userInfo", userInfo) ;
-        }
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Videos");
+        databaseReference.addValueEventListener(new ValueEventListener()
+        {
+            String videoURI , childKey;
 
-        startActivity(intent);
-        finish();
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot:snapshot.getChildren())
+                {
+                    DemoVideoInfo demoVideoInfo = dataSnapshot.getValue(DemoVideoInfo.class);
+                    if(demoVideoInfo.getEmailPrimaryKey().equals(firebaseUser.getEmail())){
+                        videoURI =demoVideoInfo.getVideoUri();
+                        childKey=dataSnapshot.getKey();
+                        break;
+                    }
+                }
+
+                System.out.println("URI =============== "+ videoURI);
+                System.out.println("KEY =========="+ childKey);
+
+
+                StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(videoURI);
+                storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>()
+                {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // File deleted successfully
+                        Toast.makeText(DemoVideoMainActivity.this, "File deleted successfully", Toast.LENGTH_SHORT).show();
+                        updateDatabaseToRemoveVideoChild(childKey);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Uh-oh, an error occurred!
+                        Toast.makeText(DemoVideoMainActivity.this, "Uh-oh, an error occurred!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                databaseReference.removeEventListener(this);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
 
     }
+
+    private void updateDatabaseToRemoveVideoChild(String childKey) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Videos");
+        databaseReference.child(childKey).removeValue();
+
+    }
+
 
     public void viewTheDownloadedVideo(View view) {
 
@@ -403,8 +410,6 @@ public class DemoVideoMainActivity extends AppCompatActivity {
 
             }
         });
-
-
 
         if(videoUriForView!=null){
             Uri uri = Uri.parse(videoUriForView);
@@ -475,6 +480,29 @@ public class DemoVideoMainActivity extends AppCompatActivity {
         downloadManager.enqueue(request) ;
     }
 
+
+    public void goToHomePageActivity(View view) {
+        Intent intent;
+        if(user.equals("guardian")){
+            intent = new Intent(this, VerifiedTutorProfileActivity.class);
+            intent.putExtra("user", "guardian") ;
+            intent.putExtra("tutorUid", tutorUid);
+            intent.putExtra("tutorEmail", tutorEmail) ;
+            intent.putExtra("context", "guardian_view") ;
+        }
+
+        else{
+            intent = new Intent(this, VerifiedTutorHomePageActivity.class) ;
+            intent.putExtra("user" , "tutor") ;
+            intent.putStringArrayListExtra("userInfo", userInfo) ;
+        }
+
+        startActivity(intent);
+        finish();
+
+
+    }
+
     @Override
     public void onBackPressed() {
 
@@ -499,6 +527,128 @@ public class DemoVideoMainActivity extends AppCompatActivity {
             finish();
         }
     }
+
+
 }
 
 //if request.auth != null;
+
+
+ /* private void compressTheVideo()
+    {
+        String inputVideoPath = getPath(videoUri);
+        Log.d("doFileUpload ", inputVideoPath);
+        FFmpeg ffmpeg = FFmpeg.getInstance(this);
+
+        try
+        {
+            //Load the binary
+            ffmpeg.loadBinary(new LoadBinaryResponseHandler()
+            {
+                @Override
+                public void onStart() {
+                }
+
+                @Override
+                public void onFailure() {
+                }
+
+                @Override
+                public void onSuccess() {
+                }
+
+                @Override
+                public void onFinish() {
+
+                }
+            });
+        }
+
+        catch (FFmpegNotSupportedException e) {
+            // Handle if FFmpeg is not supported by device
+        }
+
+        try
+        {
+            // to execute "ffmpeg -version" command you just need to pass "-version"
+            outputPath = getAppDir() + "/"+String.valueOf(count) +"video_compress.mp4";
+            String[] commandArray = new String[]{};
+            commandArray = new String[]{"-y", "-i", inputVideoPath, "-s", "720x480", "-r", "25",
+                    "-vcodec", "mpeg4", "-b:v", "300k", "-b:a", "48000", "-ac", "2", "-ar", "22050", outputPath};
+
+            final ProgressDialog dialog = new ProgressDialog(VideoActivity.this);
+            ffmpeg.execute(commandArray, new ExecuteBinaryResponseHandler()
+            {
+                @Override
+                public void onStart() {
+                    Log.e("FFmpeg", "onStart");
+                    dialog.setMessage("Compressing... please wait");
+                    dialog.show();
+                }
+                @Override
+                public void onProgress(String message) {
+                    Log.e("FFmpeg onProgress? ", message);
+                }
+                @Override
+                public void onFailure(String message) {
+                    Log.e("FFmpeg onFailure? ", message);
+                }
+                @Override
+                public void onSuccess(String message) {
+                    Log.e("FFmpeg onSuccess? ", message);
+
+                }
+                @Override
+                public void onFinish()
+                {
+                    Log.e("FFmpeg", "onFinish");
+                    if (dialog.isShowing())
+                        dialog.dismiss();
+                    playVideoOnVideoView(Uri.parse(outputPath));
+                    isCompressed = true;
+                    count = count + 1;
+                }
+            });
+        } catch (FFmpegCommandAlreadyRunningException e) {
+            e.printStackTrace();
+            // Handle if FFmpeg is already running
+        }
+    }
+*/
+
+ /*private void UploadVideo() {
+
+        progressBar.setVisibility(View.VISIBLE);
+        if (videoUri != null){
+            StorageReference reference = mStorageRef.child(System.currentTimeMillis() +
+                    "." +getFileExtension(videoUri));
+
+            reference.putFile(videoUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            Toast.makeText(getApplicationContext(),"Upload successful",Toast.LENGTH_SHORT).show();
+                            DemoVideoInfo member = new DemoVideoInfo(videoname.getText().toString().trim(),
+                                    taskSnapshot.getUploadSessionUri().toString(), emailPrimaryKey);
+                            String UploadId = mDataBaseRef.push().getKey();
+                            mDataBaseRef.child(UploadId).setValue(member);
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
+        }else {
+            Toast.makeText(getApplicationContext(),"No file selected",Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+*/

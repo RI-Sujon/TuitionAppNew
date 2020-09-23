@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
+import com.example.tuitionapp_surji.tuition_post.TuitionPostInfo;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,6 +25,10 @@ public class CustomAdapterForTutorListView extends BaseAdapter {
         this.context = context ;
         this.candidateTutorInfoArrayList = candidateTutorInfoArrayList ;
         this.viewFlag = viewFlag ;
+    }
+
+    public void setListData(ArrayList<CandidateTutorInfo> data){
+        candidateTutorInfoArrayList = data ;
     }
 
     @Override

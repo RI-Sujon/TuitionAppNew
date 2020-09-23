@@ -75,6 +75,10 @@ public class AdminTutorProfileViewActivity extends AppCompatActivity {
         myRefCandidateTutorInfo = FirebaseDatabase.getInstance().getReference("CandidateTutor") ;
         myRefApproveAndBlockInfo = FirebaseDatabase.getInstance().getReference("ApproveAndBlock") ;
 
+        candidateTutorInfoList = new ArrayList<>() ;
+        approveInfoList = new ArrayList<>() ;
+        tutorUidList = new ArrayList<>();
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -82,15 +86,6 @@ public class AdminTutorProfileViewActivity extends AppCompatActivity {
                 goToSelectedCandidateTutorProfile(tutorUid) ;
             }
         });
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        candidateTutorInfoList = new ArrayList<>() ;
-        approveInfoList = new ArrayList<>() ;
-        tutorUidList = new ArrayList<>();
 
         myRefApproveAndBlockInfo.addValueEventListener(new ValueEventListener() {
 
@@ -133,6 +128,7 @@ public class AdminTutorProfileViewActivity extends AppCompatActivity {
                 // Failed to read value
             }
         });
+
     }
 
     public void setListView(){

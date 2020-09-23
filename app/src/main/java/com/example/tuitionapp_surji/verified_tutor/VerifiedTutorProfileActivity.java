@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -29,6 +30,7 @@ import android.widget.ViewFlipper;
 import com.example.tuitionapp_surji.admin.ApproveAndBlockInfo;
 import com.example.tuitionapp_surji.admin.AdminTutorProfileViewActivity;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
+import com.example.tuitionapp_surji.candidate_tutor.ReferInfo;
 import com.example.tuitionapp_surji.demo_video.DemoVideoMainActivity;
 import com.example.tuitionapp_surji.group.GroupHomePageActivity;
 import com.example.tuitionapp_surji.guardian.ViewingSearchingTutorProfileActivity;
@@ -63,7 +65,7 @@ import static android.graphics.Color.RED;
 
 public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
-    private DatabaseReference myRefCandidateTutorInfo, myRefVerifiedTutorInfo, myRefMessageBox, myRefReport, myRefApproveAndBlockInfo ;
+    private DatabaseReference myRefCandidateTutorInfo, myRefVerifiedTutorInfo, myRefMessageBox, myRefReport, myRefApproveAndBlockInfo, myRefRefer ;
     private FirebaseUser firebaseUser ;
 
     private CandidateTutorInfo candidateTutorInfo;
@@ -84,7 +86,6 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     private TextView userNameTextView, status1, status2;
     private Button approvedAndBlockButton;
     private Button messageRequestButton, demoVideoButton ;
-    private ListView reportListView ;
     private LinearLayout layoutForAdmin ;
 
     private ViewFlipper viewFlipper ;
@@ -99,6 +100,10 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
     private double rating = 0 ;
+    private Menu menu ;
+    private CustomAdapterForReportTutor adapter ;
+
+    private TextView refer1, refer1Result, refer2, refer2Result ;
 
     private int mobileNumberFlag = 0, addressFlag = 0, emailFlag = 0, subjectFlag = 0;
     private int mediumFlag = 0, classFlag = 0, groupFlag = 0, subjectListFlag = 0, areaFlag = 0, daysPerWeekFlag = 0, salaryFlag = 0 ;
@@ -119,13 +124,10 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         userNameTextView = findViewById(R.id.userName) ;
         status1 = findViewById(R.id.status1) ;
         status2 = findViewById(R.id.status2) ;
-        reportListView = findViewById(R.id.reportList) ;
         layoutForAdmin = findViewById(R.id.layoutForAdmin) ;
-
 
         myRefCandidateTutorInfo= FirebaseDatabase.getInstance().getReference("CandidateTutor");
         myRefVerifiedTutorInfo = FirebaseDatabase.getInstance().getReference("VerifiedTutor");
-        myRefReport = FirebaseDatabase.getInstance().getReference("Report");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if(user.equals("tutor")){
@@ -143,7 +145,6 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         }
         else if(user.equals("groupVisitor")){
             groupID = intent.getStringExtra("groupID") ;
-            //userEmail = intent.getStringExtra("userEmail") ;
             myRefCandidateTutorInfo = myRefCandidateTutorInfo.child(tutorUid) ;
             myRefVerifiedTutorInfo = myRefVerifiedTutorInfo.child(tutorUid) ;
         }
@@ -153,27 +154,57 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             myRefVerifiedTutorInfo = myRefVerifiedTutorInfo.child(tutorUid) ;
         }
         else if(user.equals("admin") || user.equals("admin2") || user.equals("admin3")){
+            myRefReport = FirebaseDatabase.getInstance().getReference("Report").child(tutorUid);
+            myRefRefer = FirebaseDatabase.getInstance().getReference("Refer").child(tutorUid);
             myRefCandidateTutorInfo = myRefCandidateTutorInfo.child(tutorUid) ;
             myRefVerifiedTutorInfo = myRefVerifiedTutorInfo.child(tutorUid) ;
             userEmail = intent.getStringExtra("userEmail") ;
             reportInfoArrayList = new ArrayList<>() ;
             layoutForAdmin.setVisibility(View.VISIBLE);
 
+            refer1 = findViewById(R.id.reference1) ;
+            refer1Result = findViewById(R.id.reference1A) ;
+            refer2 = findViewById(R.id.reference2) ;
+            refer2Result = findViewById(R.id.reference2A) ;
+
             myRefReport.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for(DataSnapshot dS1:dataSnapshot.getChildren()){
                         ReportInfo reportInfo = dS1.getValue(ReportInfo.class) ;
-                        if(reportInfo.getTutorUid().equals(tutorUid)){
-                            reportInfoArrayList.add(reportInfo) ;
-                        }
+                        reportInfoArrayList.add(reportInfo) ;
                     }
-                    goToReportTutorListView() ;
+                    adapter = new CustomAdapterForReportTutor(VerifiedTutorProfileActivity.this,reportInfoArrayList) ;
                     myRefReport.removeEventListener(this);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            }) ;
+
+            myRefRefer.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int i = 0 ;
+                    for (DataSnapshot dS1: snapshot.getChildren()){
+                        ReferInfo referInfo = dS1.getValue(ReferInfo.class) ;
+                        if(i==0){
+                            refer1.setText(referInfo.getVerifiedTutorEmail());
+                            refer1Result.setText(referInfo.getReferApprove());
+                            i=1 ;
+                        }
+                        else if(i==1){
+                            refer2.setText(referInfo.getVerifiedTutorEmail());
+                            refer2Result.setText(referInfo.getReferApprove());
+                            i=-1 ;
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
                 }
             }) ;
 
@@ -206,6 +237,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             }) ;
         }
         else if(user.equals("guardian")){
+            myRefReport = FirebaseDatabase.getInstance().getReference("Report").child(tutorUid);
             userEmail = intent.getStringExtra("userEmail") ;
             context2 = intent.getStringExtra("context2") ;
             contextType =  intent.getStringExtra("context");
@@ -217,11 +249,21 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                 messageRequestButton.setVisibility(View.VISIBLE);
                 demoVideoButton = findViewById(R.id.demo_video_button);
                 demoVideoButton.setVisibility(View.VISIBLE);
+
+                databaseFireStore.collection("Rating").document(tutorUid)
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot document = task.getResult() ;
+                        if(document.get(firebaseUser.getUid())!=null){
+                            rating = (double) document.get(firebaseUser.getUid()) ;
+                        }
+                    }
+                }) ;
             }
 
             myRefCandidateTutorInfo = myRefCandidateTutorInfo.child(tutorUid) ;
             myRefVerifiedTutorInfo = myRefVerifiedTutorInfo.child(tutorUid) ;
-
         }
 
         myRefCandidateTutorInfo.addValueEventListener(new ValueEventListener() {
@@ -354,16 +396,6 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             availability.setVisibility(View.VISIBLE);
             changeAvailabilityButton.setVisibility(View.VISIBLE);
         }
-        databaseFireStore.collection("Rating").document(tutorUid)
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot document = task.getResult() ;
-                if(document.get(firebaseUser.getUid())!=null){
-                    rating = (double) document.get(firebaseUser.getUid()) ;
-                }
-            }
-        }) ;
     }
 
     public void goToTutorDemoVideo(View view) {
@@ -479,12 +511,12 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         currentPosition.setText(candidateTutorInfo.getCurrentPosition());
         instituteName.setText( candidateTutorInfo.getEdu_instituteName());
 
-        if(user.equals("admin")){
+        if(user.equals("admin")||user.equals("admin2")||user.equals("admin3")){
             Picasso.get().load(candidateTutorInfo.getIdCardImageUri()).into(idCardImageView) ;
         }
 
-        final boolean av = candidateTutorInfo.isTutorAvailable();
-        if(av){
+        final boolean available = candidateTutorInfo.isTutorAvailable();
+        if(available){
             availability.setText("You Are Available. ");
             availability.setTextColor(Color.rgb(35,168,41));
             changeAvailabilityButton.setText("Click to set \"Not Available\"");
@@ -498,7 +530,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         changeAvailabilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(av){
+                if(available){
                     candidateTutorInfo.setTutorAvailable(false);
                     myRefCandidateTutorInfo.setValue(candidateTutorInfo) ;
                     Intent intent = new Intent(VerifiedTutorProfileActivity.this, VerifiedTutorProfileActivity.class);
@@ -521,8 +553,6 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     }
 
     public void addVerifiedTutorInfoToProfile(){
-
-
         String mediumText = verifiedTutorInfo.getPreferredMediumOrVersion() ;
         if(mediumText.charAt(0)=='-' && (user.equals("tutor")||user.equals("admin"))){
             mediumText = mediumText.substring(1,mediumText.length()) ;
@@ -649,23 +679,21 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         experienceEditText.setText(verifiedTutorInfo.getExperienceStatus());
     }
 
-    public void goToReportTutorListView(){
-        CustomAdapterForReportTutor adapter = new CustomAdapterForReportTutor(this,reportInfoArrayList) ;
-        reportListView.setAdapter(adapter);
-    }
-
     public void editProfile(){
         Button saveButton = findViewById(R.id.save_profile_button) ;
         saveButton.setVisibility(View.VISIBLE);
+
+        availability.setVisibility(View.GONE);
+        changeAvailabilityButton.setVisibility(View.GONE);
 
         phoneNumber.setEnabled(true);
         areaAddress.setEnabled(true);
         currentPosition.setEnabled(true);
 
-        if(medium.getText().toString().equals("Bangla")){
+        if(medium.getText().toString().equals("Bangla Medium")){
             mediumInvisible.setSelection(1);
         }
-        else if(medium.getText().toString().equals("English")){
+        else if(medium.getText().toString().equals("English Medium")){
             mediumInvisible.setSelection(2);
         }
         else if(medium.getText().toString().equals("Both")){
@@ -1219,7 +1247,8 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                     messageRequestButton.setEnabled(false);
                     messageRequestButton.setBackgroundColor(Color.GREEN);
                     messageRequestButton.setText("REQUEST SENT");
-                }else {
+                }
+                else {
                     messageRequestButton.setBackgroundColor(Color.GREEN);
                     messageRequestButton.setText("ALREADY SENT");
                 }
@@ -1230,11 +1259,10 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     public void reportIDByGuardian(String reportString){
-        ReportInfo reportInfo = new ReportInfo(firebaseUser.getPhoneNumber(), tutorUid, reportString) ;
+        ReportInfo reportInfo = new ReportInfo(firebaseUser.getPhoneNumber(), reportString) ;
         myRefReport.push().setValue(reportInfo) ;
     }
 
@@ -1330,8 +1358,6 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
         else if(user.equals("referFriend")){
             finish() ;
         }
-
-
     }
     @Override
     public void onBackPressed(){
@@ -1340,20 +1366,43 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     public void onPopupButtonClick(View view) {
         final PopupMenu popup = new PopupMenu(this, view) ;
-        if(user.equals("tutor")){
+        if(user.equals("tutor")||user.equals("admin")||user.equals("admin2")||user.equals("admin3")){
             popup.getMenuInflater().inflate(R.menu.profile_menu, popup.getMenu()) ;
         }
         else if(user.equals("guardian")){
             popup.getMenuInflater().inflate(R.menu.tutor_profile_popup_for_guardian, popup.getMenu()) ;
         }
+        else if(user.equals("groupAdmin")){
+            popup.getMenuInflater().inflate(R.menu.top_app_bar_group_homepage, popup.getMenu()) ;
+        }
+
+        menu = popup.getMenu() ;
+
+        if(user.equals("admin")||user.equals("admin2")||user.equals("admin3")){
+            menu.removeItem(R.id.edit);
+        }
+        else if(user.equals("tutor")){
+            menu.removeItem(R.id.reportList);
+        }
+        else if(user.equals("groupAdmin")){
+            menu.removeItem(R.id.leave);
+        }
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-                if(item.getTitle().equals("Edit Profile")){
+                if(item.getTitle().equals("Remove From Group")){
+                    removeTutorFromGroupByGroupAdmin() ;
+                }
+                else if(item.getTitle().equals("Edit Profile")){
                     editProfile() ;
                 }
-
-                if(!item.getTitle().equals("Edit Profile")&&!item.getTitle().equals("Report")){
+                else if(item.getTitle().equals("Rating")){
+                    ratingBarOperation(null);
+                }
+                else if(item.getTitle().equals("Report List")){
+                    reportListDialogBoxView();
+                }
+                else if(!item.getTitle().equals("Report")){
                     reportIDByGuardian(item.getTitle().toString());
                 }
 
@@ -1400,5 +1449,42 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
             dialog.show();
         }
+    }
+
+    public void reportListDialogBoxView(){
+        if(user.equals("admin")||user.equals("admin2")||user.equals("admin3")){
+            final Dialog dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.custom_adapter_for_dialog_box_report_list);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+            ListView listView2 = dialog.findViewById(R.id.reportList2);
+            listView2.setAdapter(adapter);
+
+            dialog.setCancelable(true);
+            dialog.show();
+        }
+    }
+
+    public void removeTutorFromGroupByGroupAdmin(){
+        FirebaseDatabase.getInstance().getReference("AddTutor").child(groupID).child(firebaseUser.getUid()).removeValue() ;
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Notification").child("Tutor").child(tutorUid) ;
+
+        databaseReference.orderByChild("message3").equalTo(groupID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dS1: snapshot.getChildren()){
+                    databaseReference.child(dS1.getKey()).removeValue() ;
+                    databaseReference.removeEventListener(this);
+                }
+
+                goToBackPageActivity(null);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

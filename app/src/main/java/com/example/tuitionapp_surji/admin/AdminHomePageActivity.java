@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.tuitionapp_surji.guardian.ViewingSearchingTutorProfileActivity;
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.notification_pack.NotificationViewActivity;
 import com.example.tuitionapp_surji.starting.HomePageActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -22,6 +23,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AdminHomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -30,7 +33,11 @@ public class AdminHomePageActivity extends AppCompatActivity implements Navigati
     private DrawerLayout drawerLayout ;
     private NavigationView navigationView ;
     private View view ;
-    private TextView nameTextView, emailTextView ;
+    private TextView nameTextView, emailTextView, notificationCounterTextView ;
+
+    private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
+    private long counterNotification, oldCounterNotification ;
+    private String notificationCounterFlag ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,7 @@ public class AdminHomePageActivity extends AppCompatActivity implements Navigati
 
         drawerLayout = findViewById(R.id.drawer_layout) ;
         navigationView = findViewById(R.id.navigation_view) ;
+        notificationCounterTextView = findViewById(R.id.notificationCounter) ;
 
         navigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.navigation_drawer_open,R.string.navigation_drawer_close) ;
@@ -58,6 +66,22 @@ public class AdminHomePageActivity extends AppCompatActivity implements Navigati
         nameTextView.setText("Admin");
         emailTextView.setText("tuitionapsspl02@gmail.com");
 
+        databaseFireStore.collection("System").document("Counter")
+                .collection("NotificationCounter").document("admin").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult() ;
+
+                counterNotification = (long) document.get("counter") ;
+                oldCounterNotification = (long) document.get("oldCounter") ;
+
+                long n = counterNotification - oldCounterNotification ;
+                if(n!=0) {
+                    notificationCounterFlag = "new" ;
+                    notificationCounterTextView.setText(String.valueOf(n));
+                }
+            }
+        }) ;
     }
 
     public void goToViewingAndSearchingTutorProfileActivity(View view) {
@@ -79,6 +103,16 @@ public class AdminHomePageActivity extends AppCompatActivity implements Navigati
         intent.putExtra("flag" , "blockTutor" ) ;
         startActivity(intent);
         finish();
+    }
+
+    public void goToAdminNotificationActivity(View view){
+        notificationCounterTextView.setText("");
+        Intent intent = new Intent(this, NotificationViewActivity.class) ;
+        if(notificationCounterFlag!=null){
+            intent.putExtra("notificationFlag", notificationCounterFlag) ;
+        }
+        intent.putExtra("user", "admin") ;
+        startActivity(intent);
     }
 
     public void signOut() {

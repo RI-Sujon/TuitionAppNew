@@ -11,7 +11,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/colorAccent">
-        <!--android:background="@drawable/border3">-->
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -41,7 +40,11 @@
                     android:id="@+id/search_bar"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
-                    android:paddingStart="45dp"
+                    android:paddingStart="40dp"
+                    android:maxLines="1"
+                    android:maxLength="30"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
                     android:background="@drawable/border_search_bar"
                     android:hint="Search"/>
 
@@ -52,7 +55,6 @@
                     android:layout_centerVertical="true"
                     android:src="@drawable/search_icon"/>
             </RelativeLayout>
-
 
             <RelativeLayout
                 android:id="@+id/option_button_layout"

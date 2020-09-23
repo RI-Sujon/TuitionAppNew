@@ -86,6 +86,7 @@ public class CustomAdapterForNotificationView extends BaseAdapter {
             holder = new ViewHolder() ;
             convertView = LayoutInflater.from(context).inflate(R.layout.custom_adapter_notification_list_view, null);
             holder.message = convertView.findViewById(R.id.message);
+            holder.message2 = convertView.findViewById(R.id.message2);
             holder.buttonYes = convertView.findViewById(R.id.yes_button);
             holder.buttonNo = convertView.findViewById(R.id.no_button);
             holder.time = convertView.findViewById(R.id.time) ;
@@ -203,26 +204,30 @@ public class CustomAdapterForNotificationView extends BaseAdapter {
 
                 }
                 else if (notificationInfoArrayList.get(position).getMessage4().equals("yes")){
-                    holder.message.setText("Your friend " + notificationInfoArrayList.get(position).getMessage1() + " (email: " + notificationInfoArrayList.get(position).getMessage2() + ") now in Tuition App.");
+                    holder.message.setText("Your friend \"" + notificationInfoArrayList.get(position).getMessage1() + "\" now in Tuition App.");
                 }
                 else if (notificationInfoArrayList.get(position).getMessage4().equals("no")){
-                    holder.message.setText("An Unknown Person. (Name: " + notificationInfoArrayList.get(position).getMessage1() + ", Email: " + notificationInfoArrayList.get(position).getMessage2() + ")");
+                    holder.message.setText("Request canceled of an unknown person.");
+                    holder.message2.setText("(Name: " + notificationInfoArrayList.get(position).getMessage1() + ", Email: " + notificationInfoArrayList.get(position).getMessage2() + ")");
                 }
             }
             else if(notificationInfoArrayList.get(position).getTypes().equals("groupTutor")){
                 holder.message.setText("You have been added to \"" + notificationInfoArrayList.get(position).getMessage1() + "\" group");
-
             }
         }
         else if(user.equals("guardian")){
             holder.message.setText(notificationInfoArrayList.get(position).getMessage1() + " response to your post ");
+            holder.message2.setText(notificationInfoArrayList.get(position).getMessage4()) ;
+        }
+        else if(user.equals("admin")){
+            holder.message.setText(notificationInfoArrayList.get(position).getMessage1() + "(EMAIL: " + notificationInfoArrayList.get(position).getMessage2() + ") wants to join.");
         }
 
         return convertView;
     }
 
     class ViewHolder {
-        TextView message, time;
+        TextView message, message2, time;
         Button buttonYes, buttonNo ;
     }
 }

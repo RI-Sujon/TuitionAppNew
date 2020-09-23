@@ -4,13 +4,22 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tuitionapp_surji.admin.AdminHomePageActivity;
@@ -35,9 +44,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -62,6 +73,7 @@ public class TutorSignInActivity extends AppCompatActivity {
     private  FirebaseAuth mAuth ;
     private CallbackManager mCallbackManager ;
 
+    private CheckBox checkBox ;
     private TextInputEditText emailEditText, passwordEditText ;
     private String emailString, passwordString ;
 
@@ -71,6 +83,10 @@ public class TutorSignInActivity extends AppCompatActivity {
 
     private int authFlag = 0 ;
     private String authType = "" ;
+
+    public static final String PREFS_NAME = "MyPrefsFile";
+    private static final String PREF_EMAIL = "email";
+    private static final String PREF_PASSWORD = "password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +111,7 @@ public class TutorSignInActivity extends AppCompatActivity {
 
         emailEditText = findViewById(R.id.email_edit_text) ;
         passwordEditText = findViewById(R.id.password_edit_text) ;
+        checkBox = findViewById(R.id.checkbox) ;
 
         if(intent.getStringExtra("intentFlag")!=null){
             if(intent.getStringExtra("intentFlag").equals("googleSignIn")){
@@ -103,6 +120,32 @@ public class TutorSignInActivity extends AppCompatActivity {
             else if(intent.getStringExtra("intentFlag").equals("facebookSignIn")){
                 goToSignInWithFacebook(null);
             }
+        }
+
+        rememberPasswordOperation("get",null,null);
+    }
+
+    public void rememberPasswordOperation(String type, String email, String password){
+        if(type.equals("get")){
+            SharedPreferences pref = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
+            String emailStr = pref.getString(PREF_EMAIL, null);
+            String passwordStr = pref.getString(PREF_PASSWORD, null);
+
+            if (emailStr == null || passwordStr == null) {
+                return;
+            }
+
+            checkBox.setChecked(true);
+
+            emailEditText.setText(emailStr);
+            passwordEditText.setText(passwordStr);
+        }
+        else if(type.equals("put")){
+            getSharedPreferences(PREFS_NAME,MODE_PRIVATE)
+                    .edit()
+                    .putString(PREF_EMAIL, email)
+                    .putString(PREF_PASSWORD, password)
+                    .commit();
         }
     }
 
@@ -116,6 +159,22 @@ public class TutorSignInActivity extends AppCompatActivity {
 
         emailString = emailEditText.getText().toString().trim() ;
         passwordString = passwordEditText.getText().toString().trim() ;
+
+        if(emailString.equals("")){
+            emailEditText.setError("");
+            return;
+        }
+
+        if(passwordString.equals("")){
+            passwordEditText.setError("");
+            return ;
+        }
+
+        if(checkBox.isChecked()){
+            rememberPasswordOperation("put",emailString, passwordString);
+        }else{
+            rememberPasswordOperation("put",null, null);
+        }
 
         if(!emailString.equals("") && !passwordString.equals("")) {
             mAuth.signInWithEmailAndPassword(emailString, passwordString).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -388,29 +447,50 @@ public class TutorSignInActivity extends AppCompatActivity {
     }
 
     public void showDialogForForgotPassword(View view){
-        final EditText resetMail = new EditText(this) ;
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this) ;
-        dialog.setTitle("Forgot Password") ;
-        dialog.setMessage("Enter Your Email Address to Received Reset Link.") ;
-        dialog.setView(resetMail) ;
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_adapter_for_dialog_box_forgot_password);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        dialog.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+        final EditText editText = dialog.findViewById(R.id.email_edit_text) ;
+        final TextInputLayout textInputLayout = dialog.findViewById(R.id.textInputLayout) ;
+        final Button submit = dialog.findViewById(R.id.submit) ;
+        final TextView textViewMessage = dialog.findViewById(R.id.message) ;
+        final ProgressBar progressBar = dialog.findViewById(R.id.progress_bar) ;
+
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final DialogInterface dialog, int which) {
-                String email = resetMail.getText().toString() ;
+            public void onClick(View v) {
+                String email = editText.getText().toString() ;
+                progressBar.setVisibility(View.VISIBLE);
+
                 if(!email.equals("")){
                     mAuth.sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+                            progressBar.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), "A Link has been sent to this email.", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
+                            textViewMessage.setText("A Reset Link has been sent to this email. Please Check Your Email.");
+                            textViewMessage.setTextSize(15);
+                            textViewMessage.setTextColor(Color.WHITE);
+                            submit.setVisibility(View.INVISIBLE);
+                            textInputLayout.setVisibility(View.GONE);
                         }
-                    });
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            Toast.makeText(getApplicationContext(), "Something Wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    }) ;
+                }
+                else{
+                    editText.setError("");
                 }
             }
-        }) ;
+        });
 
-        dialog.show() ;
+        dialog.show();
     }
 }
 

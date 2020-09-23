@@ -50,5 +50,15 @@
         </menu>
     </item>
 
+    <item
+        android:id="@+id/medium"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="MEDIUM">
+        <menu>
+            <item android:id="@+id/m1" android:title="Bangla Medium"/>
+            <item android:id="@+id/m2" android:title="English Medium"/>
+        </menu>
+    </item>
+
     <item android:id="@+id/clear" android:title="CLEAR ALL"/>
 </menu>

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class TuitionPostInfo {
+    private String numberOfStudent ;
     private String postTitle, studentInstitute, studentClass, studentGroup, studentMedium, studentSubjectList,
             tutorGenderPreference, daysPerWeekOrMonth, studentAreaAddress, studentFullAddress, studentContactNo,
             salary , extra, availability, guardianProfilePicUri,guardianUidFK;
@@ -16,7 +17,8 @@ public class TuitionPostInfo {
     public TuitionPostInfo() {
     }
 
-    public TuitionPostInfo(String postTitle, String studentInstitute, String studentClass, String studentGroup, String studentMedium, String studentSubjectList, String tutorGenderPreference, String daysPerWeekOrMonth, String studentAreaAddress, String studentFullAddress, String studentContactNo, String salary, String extra, String availability, String guardianProfilePicUri, String guardianUidFK) {
+    public TuitionPostInfo(String numberOfStudent, String postTitle, String studentInstitute, String studentClass, String studentGroup, String studentMedium, String studentSubjectList, String tutorGenderPreference, String daysPerWeekOrMonth, String studentAreaAddress, String studentFullAddress, String studentContactNo, String salary, String extra, String availability, String guardianProfilePicUri, String guardianUidFK) {
+        this.numberOfStudent = numberOfStudent;
         this.postTitle = postTitle;
         this.studentInstitute = studentInstitute;
         this.studentClass = studentClass;
@@ -35,6 +37,14 @@ public class TuitionPostInfo {
         this.guardianUidFK = guardianUidFK;
         postTime = simpleDateFormat.format(calendar.getTime());
         postDate = simpleDateFormat2.format(calendar.getTime());
+    }
+
+    public String getNumberOfStudent() {
+        return numberOfStudent;
+    }
+
+    public void setNumberOfStudent(String numberOfStudent) {
+        this.numberOfStudent = numberOfStudent;
     }
 
     public String getPostTitle() {

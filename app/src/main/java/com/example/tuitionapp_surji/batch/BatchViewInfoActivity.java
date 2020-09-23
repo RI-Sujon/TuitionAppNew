@@ -135,7 +135,7 @@ public class BatchViewInfoActivity extends AppCompatActivity {
         toolbarMenu = materialToolbar.getMenu() ;
         toolbarMenu.findItem(R.id.create_batch).setVisible(false);
 
-        if(user.equals("guardian")||user.equals("groupVisitor")){
+        if(user.equals("guardian")||user.equals("groupVisitor")||user.equals("admin")){
             toolbarMenu.findItem(R.id.edit_info).setVisible(false);
         }
 

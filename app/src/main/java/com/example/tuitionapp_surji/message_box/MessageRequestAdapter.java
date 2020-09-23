@@ -157,11 +157,8 @@ public class MessageRequestAdapter extends RecyclerView.Adapter<MessageRequestAd
 
                 }
                 context.startActivity(intent);
-
             }
         });
-
-
     }
 
 
@@ -171,7 +168,6 @@ public class MessageRequestAdapter extends RecyclerView.Adapter<MessageRequestAd
     }
 
     public class RequestViewHolder extends RecyclerView.ViewHolder {
-
         public TextView requester_username;
         public TextView request_msg;
         public ImageView requester_profile_image;

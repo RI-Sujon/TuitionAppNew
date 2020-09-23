@@ -153,10 +153,11 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <ScrollView
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:fillViewport="true"
                 android:layout_centerHorizontal="true"
                 android:isScrollContainer="false">
                 <LinearLayout
@@ -725,18 +726,23 @@
                                     android:enabled="false"/>
                             </LinearLayout>
                         </ViewFlipper>
-                        <Button
-                            android:id="@+id/save_profile_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="350dp"
-                            android:text="save"
-                            android:onClick="saveProfile"
-                            android:visibility="gone"/>
+
                     </RelativeLayout>
 
-                    <LinearLayout
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/save_profile_button"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="save"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="right"
+                        app:cornerRadius="5dp"
+                        android:backgroundTint="@color/Green"
+                        android:onClick="saveProfile"
+                        android:visibility="gone"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
@@ -760,14 +766,16 @@
                             android:textAllCaps="false"
                             android:textSize="13dp"
                             android:visibility="gone"/>
+
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/layoutForAdmin"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:layout_margin="10dp"
+                        android:gravity="center"
                         android:visibility="gone">
 
                         <TextView
@@ -775,38 +783,104 @@
                             android:textSize="20dp"
                             android:textStyle="bold"
                             android:layout_marginTop="15dp"
+                            android:layout_marginLeft="15dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/Red" />
+                            android:textColor="@color/Orange" />
                         <ImageView
                             android:id="@+id/idCardImageView"
                             android:layout_width="match_parent"
-                            android:layout_height="200dp" />
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="30dp"/>
+
                         <TextView
-                            android:text="Report :"
-                            android:textStyle="bold"
+                            android:text="REFERENCE :"
                             android:textSize="20dp"
+                            android:textStyle="bold"
                             android:layout_marginTop="15dp"
+                            android:layout_marginLeft="15dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/Red"
-                            android:visibility="visible"/>
+                            android:textColor="@color/Orange" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="300dp"
-                            android:background="@color/AliceBlue"
-                            android:visibility="visible">
-                            <ListView
-                                android:id="@+id/reportList"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:paddingRight="0dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/border2">
+                            <TextView
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="REFERENCE 1: "
+                                android:textStyle="bold"
+                                android:paddingRight="5dp"
+                                android:textSize="12dp"
+                                android:textColor="#010139" />
+
+                            <TextView
+                                android:id="@+id/reference1"
+                                android:layout_width="190dp"
+                                android:layout_height="wrap_content"
+                                android:textSize="14dp"
+                                android:textColor="@color/Crimson"
+                                android:background="#00000000"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/reference1A"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/Beige"/>
+                                android:gravity="center"
+                                android:textColor="@color/Blue"/>
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:paddingRight="0dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="15dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/border2">
+                            <TextView
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:text="REFERENCE 2: "
+                                android:paddingRight="5dp"
+                                android:textStyle="bold"
+                                android:textSize="12dp"
+                                android:textColor="#010139" />
+
+                            <TextView
+                                android:id="@+id/reference2"
+                                android:layout_width="190dp"
+                                android:layout_height="wrap_content"
+                                android:textSize="14dp"
+                                android:textColor="@color/Crimson"
+                                android:background="#00000000" />
+                            <TextView
+                                android:id="@+id/reference2A"
+                                android:layout_width="match_parent"
+                                android:gravity="center"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/Blue"/>
+                        </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
         </RelativeLayout>
 
     </LinearLayout>

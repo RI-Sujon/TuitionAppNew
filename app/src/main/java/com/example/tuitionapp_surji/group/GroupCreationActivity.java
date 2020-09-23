@@ -3,12 +3,16 @@ package com.example.tuitionapp_surji.group;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -46,7 +50,7 @@ public class GroupCreationActivity extends AppCompatActivity {
     private TextInputEditText groupNameEditText, fullAddressEditText, classRangeEditText, extraInfoEditText, groupImageEditText ;
     private AutoCompleteTextView addressSpinner ;
     private Button createGroupButton ;
-    private String user, groupID ;
+    private String user, groupID, tutorApprovalStatus ;
     private ArrayList<String> userInfo ;
 
     private int PICK_IMAGE_REQUEST=200 ;
@@ -70,7 +74,7 @@ public class GroupCreationActivity extends AppCompatActivity {
         userInfo = intent.getStringArrayListExtra("userInfo") ;
         user = intent.getStringExtra("user") ;
         type = intent.getStringExtra("type") ;
-
+        tutorApprovalStatus = intent.getStringExtra("tutorApprovalStatus") ;
         myRefGroup = FirebaseDatabase.getInstance().getReference("Group") ;
 
         createGroupButton = findViewById(R.id.createGroupButton) ;
@@ -96,6 +100,10 @@ public class GroupCreationActivity extends AppCompatActivity {
             }
         });
 
+        if(!tutorApprovalStatus.equals("running")){
+            takeActionForNonApprovalTutor() ;
+        }
+
         if(type!=null){
             groupImageEditText.setVisibility(View.GONE);
             imageLayout.setVisibility(View.GONE);
@@ -118,6 +126,33 @@ public class GroupCreationActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void takeActionForNonApprovalTutor(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this) ;
+        dialog.setMessage("Please Wait for Admin Approval.") ;
+        dialog.setCancelable(false) ;
+
+        dialog.setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        goToBackPageActivity(null);
+                    }
+                }) ;
+
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_BACK){
+                    dialog.dismiss();
+                    goToBackPageActivity(null);
+                }
+                return true;
+            }
+        }) ;
+
+        dialog.show();
+
     }
 
     public void editGroupOperationStep1(){
@@ -261,9 +296,6 @@ public class GroupCreationActivity extends AppCompatActivity {
 
     public void goToBackPageActivity(View view){
         if(type==null) {
-            Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
-            intent.putStringArrayListExtra("userInfo", userInfo);
-            startActivity(intent);
             finish();
         }
         else goToGroupHomePage();

@@ -56,7 +56,8 @@ public class RecyclerAdapterForGuardianHomePage1 extends RecyclerView.Adapter<Re
 
         if(candidateTutorInfoArrayList.get(position).getProfilePictureUri()!=null){
             if(!candidateTutorInfoArrayList.get(position).getProfilePictureUri().equals("")){
-                Picasso.get().load(candidateTutorInfoArrayList.get(position).getProfilePictureUri()).into(holder.profilePic) ;
+                Picasso.get().load(candidateTutorInfoArrayList.get(position).getProfilePictureUri())
+                        .resizeDimen(R.dimen.guardianHomePageTutorPicW,R.dimen.guardianHomePageTutorPicH).centerCrop().into(holder.profilePic) ;
             }
         }
         else{

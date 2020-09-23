@@ -58,6 +58,7 @@
                     android:textSize="12dp"
                     android:paddingRight="5dp"/>
                 <EditText
+                    android:id="@+id/numberOfStudent"
                     android:layout_width="43dp"
                     android:layout_height="30dp"
                     android:background="#9BB1E4"
@@ -113,6 +114,7 @@
                     android:layout_height="43.3dp"
                     android:background="@drawable/version"
                     android:layout_gravity="center"
+                    android:focusable="true"
                     android:paddingLeft="40dp"/>
 
 
@@ -268,6 +270,7 @@
                     android:paddingRight="5dp"
                     android:paddingTop="7dp"
                     android:paddingBottom="5dp"
+                    android:focusable="true"
                     android:hint="Details Address"
                     android:textSize="15dp"
                     android:maxLength="40"

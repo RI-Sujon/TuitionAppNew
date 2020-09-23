@@ -63,7 +63,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private FirebaseUser firebaseUser ;
-    private DatabaseReference myRefCandidateTutor, myRefRefer, myRefVerifiedTutor, myRefApprove, myRefNotification, myRefNotification2 ;
+    private DatabaseReference myRefCandidateTutor, myRefRefer, myRefVerifiedTutor, myRefApprove, myRefNotification, myRefNotification2, myRefNotification3 ;
 
     private String emailPrimaryKey ;
     private String imageUriString ;
@@ -102,6 +102,7 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
         myRefRefer = FirebaseDatabase.getInstance().getReference("Refer").child(firebaseUser.getUid()) ;
         myRefApprove = FirebaseDatabase.getInstance().getReference("ApproveAndBlock").child(firebaseUser.getUid()) ;
         myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Tutor") ;
+        myRefNotification3 = FirebaseDatabase.getInstance().getReference("Notification").child("Admin") ;
 
         emailPrimaryKey = firebaseUser.getEmail() ;
 
@@ -218,6 +219,8 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
             flag2 = -1;
         }
 
+        NotificationInfo notificationInfo = new NotificationInfo("refer",candidateTutorInfo.getUserName(),candidateTutorInfo.getEmailPK(),firebaseUser.getUid()) ;
+
         if (flag1 != -1 || flag2 != -1) {
             if (flag1 == 0) {
                 Toast.makeText(getApplicationContext(), "Reference1 Does not match with any valid tutor ID", Toast.LENGTH_SHORT).show();
@@ -225,12 +228,14 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Reference2 Does not match with any valid tutor ID", Toast.LENGTH_SHORT).show();
             } else {
                 if (flag1 == 1) {
-                    ReferInfo referInfo1 = new ReferInfo(reference1str);
+                    ReferInfo referInfo1 = new ReferInfo(reference1str, reference1Uid);
                     myRefRefer.push().setValue(referInfo1);
 
-                    myRefNotification2 = myRefNotification.child(reference1Uid).child(firebaseUser.getUid()) ;
-                    NotificationInfo notificationInfo = new NotificationInfo("refer",candidateTutorInfo.getUserName(),candidateTutorInfo.getEmailPK(),firebaseUser.getUid()) ;
-                    myRefNotification2.setValue(notificationInfo) ;
+                    myRefNotification2 = myRefNotification.child(reference1Uid) ;
+                    myRefNotification2.push().setValue(notificationInfo) ;
+
+                    notificationInfo.setTypes("newAccount"); ;
+                    myRefNotification3.push().setValue(notificationInfo) ;
 
                     SendNotification sendNotification = new SendNotification(reference1Uid, "New Friend", "A friend wants to join TutorApp.Do You know him?") ;
                     sendNotification.sendNotificationOperation();
@@ -249,14 +254,28 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                                     .update("counter",counterNotification) ;
                         }
                     }) ;
+
+                    databaseFireStore.collection("System").document("Counter")
+                            .collection("NotificationCounter").document("admin").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot document = task.getResult() ;
+
+                            counterNotification = (long) document.get("counter") ;
+                            counterNotification = counterNotification + 1 ;
+
+                            databaseFireStore.collection("System").document("Counter")
+                                    .collection("NotificationCounter").document(reference1Uid)
+                                    .update("counter",counterNotification) ;
+                        }
+                    }) ;
                 }
                 if (flag2 == 1) {
-                    ReferInfo referInfo2 = new ReferInfo(reference2str);
+                    ReferInfo referInfo2 = new ReferInfo(reference2str, reference2Uid);
                     myRefRefer.push().setValue(referInfo2);
 
-                    myRefNotification2 = myRefNotification.child(reference2Uid).child(firebaseUser.getUid()) ;
-                    NotificationInfo notificationInfo = new NotificationInfo("refer",candidateTutorInfo.getUserName(),candidateTutorInfo.getEmailPK(),firebaseUser.getUid()) ;
-                    myRefNotification2.setValue(notificationInfo) ;
+                    myRefNotification2 = myRefNotification.child(reference2Uid) ;
+                    myRefNotification2.push().setValue(notificationInfo) ;
 
                     SendNotification sendNotification = new SendNotification(reference2Uid, "New Friend", "A friend wants to join TutorApp.Do You know him?") ;
                     sendNotification.sendNotificationOperation();
@@ -277,10 +296,11 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                     }) ;
                 }
 
-                //uploadFinish();
                 ApproveAndBlockInfo approveAndBlockInfo = new ApproveAndBlockInfo("waiting");
                 myRefApprove.setValue(approveAndBlockInfo);
 
+                notificationInfo.setTypes("newAccount"); ;
+                myRefNotification3.push().setValue(notificationInfo) ;
 
                 Map<String,Object> map = new HashMap<>() ;
                 map.put("counter",0) ;
@@ -292,14 +312,14 @@ public class TutorSignUpActivityStep2 extends AppCompatActivity {
                         .set(map) ;
 
                 goToTutorSignUpActivityStep3();
-
             }
         }
         else {
-            //Toast.makeText(getApplicationContext(), "You need minimum 1 Reference", Toast.LENGTH_SHORT).show();
-            //uploadFinish();
             ApproveAndBlockInfo approveAndBlockInfo = new ApproveAndBlockInfo("waiting");
             myRefApprove.setValue(approveAndBlockInfo);
+
+            notificationInfo.setTypes("newAccount"); ;
+            myRefNotification3.push().setValue(notificationInfo) ;
 
             Map<String,Object> map = new HashMap<>() ;
             map.put("counter",0) ;

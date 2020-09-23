@@ -71,8 +71,10 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
         yesterday = simpleDateFormat2.format(calendar.getTime());
     }
 
-    public void setListData(ArrayList<TuitionPostInfo> data){
+    public void setListData(ArrayList<TuitionPostInfo> data, ArrayList<String> data2, int[] data3){
         tuitionPostInfo = data ;
+        tuitionPostInfoUid = data2 ;
+        responsePostArray = data3 ;
     }
 
     @Override
@@ -146,7 +148,6 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
         }
 
         else {
-
             holder.layout.setVisibility(View.VISIBLE);
             holder.layout2.setVisibility(View.GONE);
 
@@ -273,13 +274,15 @@ public class CustomAdapterForTuitionPostView extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     myRefNotification2 = myRefNotification.child(tuitionPostInfo.get(position).getGuardianUidFK()) ;
-                    NotificationInfo notificationInfo = new NotificationInfo("response" , tutorInfo.get(0), tutorInfo.get(2), tutorInfo.get(3), tuitionPostInfoUid.get(position)) ;
+
+                    String postInfo = "(TITLE: " + tuitionPostInfo.get(position).getPostTitle() + ", " + tuitionPostInfo.get(position).getStudentClass() + ", SUBJECT: " + tuitionPostInfo.get(position).getStudentSubjectList() + ")" ;
+                    NotificationInfo notificationInfo = new NotificationInfo("response" , tutorInfo.get(0), tutorInfo.get(2), tutorInfo.get(3), postInfo) ;
                     myRefNotification2.push().setValue(notificationInfo) ;
 
                     ResponsePost responsePost = new ResponsePost(tuitionPostInfoUid.get(position)) ;
                     myRefResponsePost.push().setValue(responsePost) ;
 
-                    holder.responseButton.setBackgroundColor(Color.GRAY);
+                    holder.responseButton.setBackgroundColor(Color.rgb(0,191,255));
                     holder.responseButtonLayout.setEnabled(false);
 
                     SendNotification sendNotification = new SendNotification(tuitionPostInfo.get(position).getGuardianUidFK(), "Response Post", "A tutor response to your post") ;

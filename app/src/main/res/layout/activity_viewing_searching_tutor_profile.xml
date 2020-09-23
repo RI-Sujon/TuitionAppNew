@@ -47,7 +47,12 @@
                         android:id="@+id/search_bar"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
-                        android:paddingStart="45dp"
+                        android:paddingStart="40dp"
+                        android:maxLines="1"
+                        android:windowSoftInputMode="stateVisible|adjustNothing"
+                        android:maxLength="30"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
                         android:background="@drawable/border_search_bar"
                         android:hint="Search"/>
 
@@ -71,33 +76,28 @@
                     android:padding="10dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_marginRight="10dp"
+                    android:onClick="onPopupFilterButtonClick"/>
 
             </RelativeLayout>
         </RelativeLayout>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="30dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="65dp"
-            android:background="@drawable/border_search_bar"/>
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="65dp"
         android:layout_marginBottom="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:orientation="vertical"
+        android:background="@drawable/border_search_bar"
         android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal"
             android:gravity="center">
 
@@ -146,6 +146,30 @@
                 android:background="#00000000"/>
 
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/filtered_option_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FILTER BY :"
+                android:textColor="@color/Black"
+                android:textSize="12dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/filter_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Black"
+                android:layout_marginLeft="10dp"
+                android:textSize="12dp" />
+        </LinearLayout>
         <ViewFlipper
             android:id="@+id/viewFlipper"
             android:layout_width="match_parent"
@@ -154,8 +178,7 @@
                 android:id="@+id/tutorListLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="0dp">
+                android:orientation="vertical">
 
                 <ListView
                     android:id="@+id/verifiedTutorList"
@@ -163,14 +186,14 @@
                     android:layout_height="wrap_content"
                     android:dividerHeight="5dp"
                     android:divider="#00000000"
-                    android:padding="20dp" />
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/groupListLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
                 android:orientation="vertical">
 
                 <ListView
@@ -178,7 +201,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:dividerHeight="1dp"
-                    android:padding="20dp" />
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp" />
             </LinearLayout>
         </ViewFlipper>
     </LinearLayout>

@@ -6,13 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tuitionapp_surji.batch.BatchCreationActivity;
 import com.example.tuitionapp_surji.batch.BatchInfo;
@@ -26,7 +30,10 @@ import com.example.tuitionapp_surji.message_box.MainMessageActivity;
 import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
 import com.example.tuitionapp_surji.notice_board.NoticeBoardViewAndCreateActivity;
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.notification_pack.NotificationViewActivity;
+import com.example.tuitionapp_surji.tuition_post.TuitionPostViewActivity;
 import com.example.tuitionapp_surji.verified_tutor.ReportInfo;
+import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -43,14 +50,15 @@ import java.util.ArrayList;
 
 public class GroupHomePageActivity extends AppCompatActivity {
 
-    private DatabaseReference myRefGroup, myRefMessageBox, myRefReport, myRefBatch, myRefAddTutor, myRefCandidateTutor ;
+    private DatabaseReference myRefGroup, myRefMessageBox, myRefReport, myRefBatch, myRefAddTutor, myRefCandidateTutor, myRefNotification ;
     private FirebaseUser firebaseUser ;
     private MessageBoxInfo messageBoxInfo;
-    private String user, tutorEmail, groupID , tutorUid2, batchID , groupName, groupAddress, context, viewType;
+    private String user, tutorEmail, groupID , tutorUid2, batchID , groupName, groupAddress, context, viewType, tutorApprovalStatus;
     private ArrayList<String>userInfo ;
 
     private TextView groupNameTextView, fullAddressTextView ;
-    private ImageView groupProfileImage ;
+    private ImageView groupProfileImage, leaveFromGroup ;
+    private String leaveFlag ;
 
     private MaterialButton messageRequestButton, reportButton , blockButton;
     private RelativeLayout messageFloatingButton ;
@@ -78,7 +86,6 @@ public class GroupHomePageActivity extends AppCompatActivity {
     private int backButtonFlag = 0, batchReUseFlag = 0, tutorReUseFlag = 0 ;
 
     private GroupInfo groupInfo ;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -91,11 +98,14 @@ public class GroupHomePageActivity extends AppCompatActivity {
         groupID = intent.getStringExtra("groupID") ;
         viewType = intent.getStringExtra("viewType") ;
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         myRefGroup = FirebaseDatabase.getInstance().getReference("Group").child(groupID) ;
         myRefBatch = FirebaseDatabase.getInstance().getReference("Batch");
-        myRefAddTutor = FirebaseDatabase.getInstance().getReference("AddTutor") ;
+        myRefAddTutor = FirebaseDatabase.getInstance().getReference("AddTutor").child(groupID) ;
         myRefCandidateTutor = FirebaseDatabase.getInstance().getReference("CandidateTutor") ;
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Tutor").child(firebaseUser.getUid()) ;
+
+        onStartActivity();
 
         myRefGroup.addValueEventListener(new ValueEventListener() {
             @Override
@@ -120,9 +130,8 @@ public class GroupHomePageActivity extends AppCompatActivity {
             myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
             messageRequestButton = findViewById(R.id.sendMessageRequestButton) ;
             messageRequestButton.setVisibility(View.VISIBLE);
-            //reportButton = findViewById(R.id.reportButton) ;
+
             messageRequestButton.setVisibility(View.VISIBLE);
-            //reportButton.setVisibility(View.VISIBLE);
         }
         else if(user.equals("admin")){
             messageFloatingButton = findViewById(R.id.messageBoxFloatingButton) ;
@@ -132,14 +141,12 @@ public class GroupHomePageActivity extends AppCompatActivity {
             //blockButton.setVisibility(View.VISIBLE);
         }
         else if(user.equals("groupVisitor")){
-
+            leaveFromGroup.setVisibility(View.VISIBLE);
         }
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void onStartActivity() {
 
         batchInfoArrayList = new ArrayList<>() ;
         batchIDArrayList = new ArrayList<>() ;
@@ -153,6 +160,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
         createNewBatchOptionButton = findViewById(R.id.createNewBatchButton) ;
 
         batchListLayout = findViewById(R.id.batch_list_layout) ;
+        leaveFromGroup = findViewById(R.id.leave) ;
 
         groupNameTextView = findViewById(R.id.groupNameTextView) ;
         fullAddressTextView = findViewById(R.id.fullAddressTextView) ;
@@ -161,7 +169,6 @@ public class GroupHomePageActivity extends AppCompatActivity {
         groupTutorListLayout = findViewById(R.id.group_tutor_list_layout) ;
         tutorListView = findViewById(R.id.groupTutorList) ;
         addTutorOptionButton = findViewById(R.id.addTutorButton) ;
-
 
         batchManagementCardView = findViewById(R.id.batch_management_card);
         tutorManagementCardView = findViewById(R.id.group_tutor_card);
@@ -233,7 +240,6 @@ public class GroupHomePageActivity extends AppCompatActivity {
 
     public void goToBatchManagement(){
         backButtonFlag = 1 ;
-
         if(batchReUseFlag==0){
             createNewBatchOptionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -242,7 +248,6 @@ public class GroupHomePageActivity extends AppCompatActivity {
                     intent.putExtra("user",user) ;
                     intent.putExtra("groupID" , groupID) ;
                     intent.putStringArrayListExtra("userInfo",userInfo) ;
-
                     startActivity(intent);
                     finish();
                 }
@@ -354,9 +359,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for(DataSnapshot dS1: dataSnapshot.getChildren()){
                         AddTutorInfo addTutorInfo = dS1.getValue(AddTutorInfo.class) ;
-                        if(addTutorInfo.getGroupID().equals(groupID)){
-                            addTutorInfoArrayList.add(addTutorInfo) ;
-                        }
+                        addTutorInfoArrayList.add(addTutorInfo) ;
                     }
                     myRefAddTutor.removeEventListener(this);
 
@@ -447,7 +450,6 @@ public class GroupHomePageActivity extends AppCompatActivity {
     }
 
     public void sendMessageRequestByGuardianFromGroup(View view){
-
         messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),groupInfo.getGroupAdminEmail(),groupInfo.getGroupAdminUid(), true ,false,false,false) ;
 
         myRefMessageBox.addValueEventListener(new ValueEventListener() {
@@ -456,16 +458,16 @@ public class GroupHomePageActivity extends AppCompatActivity {
                 int flag = 0;
                 for(DataSnapshot snapshot:dataSnapshot.getChildren())
                 {
-                    MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
+                    MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class) ;
                     if(messageBoxInfo1.getGuardianUid().equals(firebaseUser.getUid()) && messageBoxInfo1.getTutorUid().equals(groupInfo.getGroupAdminUid())){
-                        flag=1;
+                        flag=1 ;
                     }
                 }
 
                 if(flag == 0){
                     myRefMessageBox.push().setValue(messageBoxInfo) ;
-                    messageRequestButton.setEnabled(false);
-                    messageRequestButton.setBackgroundColor(Color.GRAY);
+                    messageRequestButton.setEnabled(false) ;
+                    messageRequestButton.setBackgroundColor(Color.GRAY) ;
                 }
             }
 
@@ -477,8 +479,8 @@ public class GroupHomePageActivity extends AppCompatActivity {
     }
 
     public void reportIDByGuardian(View view){
-        myRefReport = FirebaseDatabase.getInstance().getReference("Report") ;
-        ReportInfo reportInfo = new ReportInfo(firebaseUser.getPhoneNumber(),tutorEmail, "this is a fake account") ;
+        myRefReport = FirebaseDatabase.getInstance().getReference("Report").child(tutorUid2) ;
+        ReportInfo reportInfo = new ReportInfo(firebaseUser.getPhoneNumber(), "this is a fake account") ;
         myRefReport.push().setValue(reportInfo) ;
 
         reportButton.setEnabled(false);
@@ -512,9 +514,6 @@ public class GroupHomePageActivity extends AppCompatActivity {
     public void goToBackPageActivity(View view){
         if(backButtonFlag == 0){
             if(user.equals("tutor")){
-                //Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class);
-                //intent.putStringArrayListExtra("userInfo",userInfo) ;
-                //startActivity(intent);
                 finish();
             }
             else if(user.equals("guardian")||user.equals("admin")){
@@ -526,15 +525,16 @@ public class GroupHomePageActivity extends AppCompatActivity {
                     finish();
                 }
                 else if(context.equals("homepage")){
-                    //intent = new Intent(this, GuardianHomePageActivity.class);
-                    //intent.putExtra("user", user);
-                    //startActivity(intent);
                     finish();
                 }
-
-
             }
             else if(user.equals("groupVisitor")){
+                if(leaveFlag!=null){
+                    Intent intent = new Intent(this, VerifiedTutorHomePageActivity.class) ;
+                    intent.putStringArrayListExtra("userInfo", userInfo) ;
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
                 finish();
             }
         }
@@ -549,6 +549,47 @@ public class GroupHomePageActivity extends AppCompatActivity {
             backButtonFlag = 0 ;
         }
     }
+
+    public void onPopupMoreButtonClick(View view) {
+        final PopupMenu popup = new PopupMenu(this, view);
+        popup.getMenuInflater().inflate(R.menu.top_app_bar_group_homepage, popup.getMenu());
+        Menu menu = popup.getMenu() ;
+        menu.removeItem(R.id.remove);
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                if(item.getTitle().equals("Leave Group")){
+                    leaveGroupOperation();
+                }
+                popup.dismiss();
+                return true ;
+            }
+        });
+
+        popup.show();
+    }
+
+    public void leaveGroupOperation(){
+        myRefAddTutor.child(firebaseUser.getUid()).removeValue() ;
+        myRefNotification.orderByChild("message3").equalTo(groupID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dS1: snapshot.getChildren()){
+                    myRefNotification.child(dS1.getKey()).removeValue() ;
+                    myRefNotification.removeEventListener(this);
+                    leaveFlag = "true" ;
+                }
+
+                goToBackPageActivity(null);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 
     @Override
     public void onBackPressed(){

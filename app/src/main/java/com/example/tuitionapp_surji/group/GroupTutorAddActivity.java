@@ -62,7 +62,7 @@ public class GroupTutorAddActivity extends AppCompatActivity {
         tutorEmailEditText = findViewById(R.id.group_tutor_email) ;
         progressBar = findViewById(R.id.progress_bar) ;
 
-        myRefAddTutor = FirebaseDatabase.getInstance().getReference("AddTutor") ;
+        myRefAddTutor = FirebaseDatabase.getInstance().getReference("AddTutor").child(groupID) ;
         myRefCandidateTutor = FirebaseDatabase.getInstance().getReference("CandidateTutor") ;
         myRefApproveAndBlock = FirebaseDatabase.getInstance().getReference("ApproveAndBlock") ;
         myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Tutor") ;
@@ -72,9 +72,13 @@ public class GroupTutorAddActivity extends AppCompatActivity {
     public void addTutorOperation(View view){
         toastFlag = -1 ;
 
-        progressBar.setVisibility(View.VISIBLE);
-
         tutorEmail = tutorEmailEditText.getText().toString() ;
+
+        if(tutorEmail.equals("")){
+            tutorEmailEditText.setError("");
+            return;
+        }
+        progressBar.setVisibility(View.VISIBLE);
 
         myRefCandidateTutor.addValueEventListener(new ValueEventListener() {
             @Override
@@ -93,7 +97,7 @@ public class GroupTutorAddActivity extends AppCompatActivity {
                                     ApproveAndBlockInfo approveAndBlockInfo = dataSnapshot2.getValue(ApproveAndBlockInfo.class);
                                     if (approveAndBlockInfo.getStatus().equals("running")) {
                                         myRefAddTutor = myRefAddTutor.child(dS1.getKey()) ;
-                                        AddTutorInfo addTutorInfo = new AddTutorInfo(groupID, tutorEmail);
+                                        AddTutorInfo addTutorInfo = new AddTutorInfo(dS1.getKey(), tutorEmail);
                                         myRefAddTutor.setValue(addTutorInfo);
                                         progressBar.setVisibility(View.GONE);
                                         Toast.makeText(getApplicationContext(), "Tutor Added Successfully", Toast.LENGTH_SHORT).show();
@@ -133,9 +137,9 @@ public class GroupTutorAddActivity extends AppCompatActivity {
     }
 
     public void sendNotification(final String tutorUid){
-        myRefNotification = myRefNotification.child(tutorUid).child(groupID) ;
+        myRefNotification = myRefNotification.child(tutorUid) ;
         NotificationInfo notificationInfo = new NotificationInfo("groupTutor", groupName,"", groupID) ;
-        myRefNotification.setValue(notificationInfo) ;
+        myRefNotification.push().setValue(notificationInfo) ;
 
         SendNotification sendNotification = new SendNotification(tutorUid, "Group Tutor", "You have been added to " + groupName) ;
         sendNotification.sendNotificationOperation();

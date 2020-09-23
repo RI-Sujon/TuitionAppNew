@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.admin.AdminTutorProfileViewActivity;
 import com.example.tuitionapp_surji.group.GroupHomePageActivity;
 import com.example.tuitionapp_surji.guardian.GuardianHomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
@@ -61,8 +62,11 @@ public class NotificationViewActivity extends AppCompatActivity {
             userInfo = intent.getStringArrayListExtra("userInfo") ;
             myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Tutor").child(userInfo.get(3));
         }
-        else{
+        else if(user.equals("guardian")){
             myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Guardian").child(firebaseUser.getUid());
+        }
+        else if(user.equals("admin")){
+            myRefNotification = FirebaseDatabase.getInstance().getReference("Notification").child("Admin");
         }
 
         listView = findViewById(R.id.listView) ;
@@ -112,6 +116,8 @@ public class NotificationViewActivity extends AppCompatActivity {
                     else if(notificationInfoArrayList2.get(position).getTypes().equals("groupTutor")){
                         goToSelectedGroup(uid) ;
                     }
+                }else if(user.equals("admin")){
+                    goToAdminCandidateTutorProfileViewActivity();
                 }
             }
         });
@@ -164,33 +170,24 @@ public class NotificationViewActivity extends AppCompatActivity {
         }
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
-        //finish();
+    }
+
+    public void goToAdminCandidateTutorProfileViewActivity(){
+        Intent intent = new Intent(this, AdminTutorProfileViewActivity.class) ;
+        intent.putExtra("flag" , "approveTutor") ;
+        startActivity(intent);
+        finish();
     }
 
     public void goToSelectedGroup(String groupID){
         Intent intent = new Intent(this, GroupHomePageActivity.class);
         intent.putExtra("groupID", groupID) ;
-
         intent.putExtra("user", "groupVisitor");
-
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
-        //finish();
     }
 
     public void backToHomePage(){
-        /*Intent intent ;
-        if(notificationFlag!=null){
-            if(user.equals("tutor")){
-                intent = new Intent(this, VerifiedTutorHomePageActivity.class);
-                intent.putStringArrayListExtra("userInfo", userInfo) ;
-            }else {
-                intent = new Intent(this, GuardianHomePageActivity.class) ;
-            }
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) ;
-
-            startActivity(intent);
-        }*/
         finish();
     }
 

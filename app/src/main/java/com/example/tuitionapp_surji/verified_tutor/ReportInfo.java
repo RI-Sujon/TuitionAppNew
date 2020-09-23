@@ -2,13 +2,12 @@ package com.example.tuitionapp_surji.verified_tutor;
 
 public class ReportInfo {
 
-    private String guardianMobileNumber, tutorUid, message;
+    private String guardianMobileNumber, message;
 
     public ReportInfo(){}
 
-    public ReportInfo(String guardianMobileNumber, String tutorUid, String message) {
+    public ReportInfo(String guardianMobileNumber, String message) {
         this.guardianMobileNumber = guardianMobileNumber;
-        this.tutorUid = tutorUid;
         this.message = message;
     }
 
@@ -18,14 +17,6 @@ public class ReportInfo {
 
     public void setGuardianMobileNumber(String guardianMobileNumber) {
         this.guardianMobileNumber = guardianMobileNumber;
-    }
-
-    public String getTutorUid() {
-        return tutorUid;
-    }
-
-    public void setTutorUid(String tutorUid) {
-        this.tutorUid = tutorUid;
     }
 
     public String getMessage() {

@@ -39,13 +39,13 @@ import java.util.List;
 
 public class TuitionPostCreationActivity extends AppCompatActivity {
 
-    private EditText postTitleBox, studentInstituteBox, studentFullAreaAddressBox, studentContactNoBox, extraNotesBox;
+    private EditText numberOfStudentBox ,postTitleBox, studentInstituteBox, studentFullAreaAddressBox, studentContactNoBox, extraNotesBox;
     private MultiAutoCompleteTextView subjectBox ;
     private ArrayList<String> mediumList, banglaMediumClassList, englishMediumClassList, groupList, scienceSubjectList, commerceSubjectList,
             artsSubjectList, generalSubjectList, tutorGenderPreferenceList, areaAddressList, daysPerWeekList, salaryList ;
     private ArrayAdapter mediumAdapter, classAdapter, groupAdapter, subjectAdapter, daysPerWeekAdapter, salaryAdapter ;
     private Spinner mediumBox, classBox, groupBox, tutorGenderPreferenceBox, daysPerWeekOrMonthBox , areaAddressBox ,salaryBox, salaryBox2 ;
-    private String postTitle="", studentInstitute="", studentClass="", studentGroup="", studentMedium="", studentSubjectList="",
+    private String numberOfStudent="",postTitle="", studentInstitute="", studentClass="", studentGroup="", studentMedium="", studentSubjectList="",
             tutorGenderPreference="", daysPerWeekOrMonth="", studentAreaAddress="", studentFullAddress="", studentContactNo="", salary="",salary2="", extra="" ;
     private TuitionPostInfo tuitionPostInfo ;
     private DatabaseReference myRefTuitionPost, myRefGuardianInfo, myRefVerifiedTutorInfo, myRefApproveInfo, myRefApproveInfo2 ;
@@ -102,6 +102,7 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
         salaryBox = (Spinner) findViewById(R.id.salarySpinner);
         extraNotesBox = findViewById(R.id.extraNotes) ;
         salaryBox2 = findViewById(R.id.salarySpinner2) ;
+        numberOfStudentBox = findViewById(R.id.numberOfStudent) ;
 
         groupTextView = findViewById(R.id.group_text_view) ;
 
@@ -163,6 +164,7 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
     }
 
     public void createPostOperation(View view) {
+        numberOfStudent = numberOfStudentBox.getText().toString().trim() ;
         postTitle = postTitleBox.getText().toString().trim() ;
         studentClass = classBox.getSelectedItem().toString();
         studentMedium = mediumBox.getSelectedItem().toString();
@@ -182,6 +184,7 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
         if(studentClass.equals("CLASS")){
             TextView textView = (TextView) classBox.getSelectedView() ;
             textView.setError("");
+            Toast.makeText(this, "Please Select a Class.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -195,8 +198,10 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
 
         if(studentSubjectList.equals("")){
             subjectBox.setError("");
+            Toast.makeText(this, "Please Add Subject.", Toast.LENGTH_SHORT).show();
             return;
-        }else if(studentSubjectList.charAt(studentSubjectList.length()-1) == ',' || studentSubjectList.charAt(studentSubjectList.length()-1) == ' '){
+        }
+        else if(studentSubjectList.charAt(studentSubjectList.length()-1) == ',' || studentSubjectList.charAt(studentSubjectList.length()-1) == ' '){
             studentSubjectList = studentSubjectList.substring(0,studentSubjectList.length()-2) ;
 
             while(studentSubjectList.charAt(studentSubjectList.length()-1) == ',' || studentSubjectList.charAt(studentSubjectList.length()-1) == ' '){
@@ -211,6 +216,7 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
         if(studentAreaAddress.equals("AREA")){
             TextView textView = (TextView) areaAddressBox.getSelectedView() ;
             textView.setError("");
+            Toast.makeText(this, "Please Select An Area.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -222,7 +228,7 @@ public class TuitionPostCreationActivity extends AppCompatActivity {
         }
 
 
-        TuitionPostInfo guardianPostInfo = new TuitionPostInfo(postTitle, studentInstitute ,studentClass , studentGroup, studentMedium, studentSubjectList,
+        TuitionPostInfo guardianPostInfo = new TuitionPostInfo(numberOfStudent, postTitle, studentInstitute ,studentClass , studentGroup, studentMedium, studentSubjectList,
                 tutorGenderPreference, daysPerWeekOrMonth, studentAreaAddress, studentFullAddress, studentContactNo, salary, extra, "Available", guardianProfilePicUri,firebaseUser.getUid()) ;
 
         if(type.equals("editPost")){

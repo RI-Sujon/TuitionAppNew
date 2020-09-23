@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.tuitionapp_surji.admin.ApproveAndBlockInfo;
 import com.example.tuitionapp_surji.calendar.CalendarHomeActivity;
 import com.example.tuitionapp_surji.demo_video.DemoVideoMainActivity;
 import com.example.tuitionapp_surji.group.GroupCreationActivity;
@@ -57,8 +58,8 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
 
     private FirebaseAuth mAuth ;
     private GoogleSignInClient mGoogleSignInClient ;
-    private DatabaseReference myRefTuitionPost, myRefVerifiedTutor, myRefGroup, myRefResponsePost ;
-    private FirebaseUser user ;
+    private DatabaseReference myRefTuitionPost, myRefVerifiedTutor, myRefGroup, myRefResponsePost, myRefApproveAndBlock ;
+    private FirebaseUser firebaseUser ;
 
     private VerifiedTutorInfo verifiedTutorInfo ;
 
@@ -80,6 +81,8 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
     private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
     private long counterNotification, oldCounterNotification, messageCounter, messageOldCounter ;
     private String counterNotificationFlag, counterMessageFlag ;
+
+    private String approvalStatus ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,11 +126,12 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         mAuth = FirebaseAuth.getInstance() ;
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder().requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        user = mAuth.getCurrentUser() ;
-        myRefTuitionPost = FirebaseDatabase.getInstance().getReference("TuitionPost");
-        myRefVerifiedTutor = FirebaseDatabase.getInstance().getReference("VerifiedTutor").child(user.getUid());
-        myRefGroup = FirebaseDatabase.getInstance().getReference("Group");
-        myRefResponsePost = FirebaseDatabase.getInstance().getReference("ResponsePost");
+        firebaseUser = mAuth.getCurrentUser() ;
+        myRefTuitionPost = FirebaseDatabase.getInstance().getReference("TuitionPost") ;
+        myRefVerifiedTutor = FirebaseDatabase.getInstance().getReference("VerifiedTutor").child(firebaseUser.getUid()) ;
+        myRefGroup = FirebaseDatabase.getInstance().getReference("Group") ;
+        myRefResponsePost = FirebaseDatabase.getInstance().getReference("ResponsePost") ;
+        myRefApproveAndBlock = FirebaseDatabase.getInstance().getReference("ApproveAndBlock").child(firebaseUser.getUid()) ;
 
         String gender = userInfo.get(4) ;
 
@@ -139,13 +143,15 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         }
         else gender = "Only Female" ;
 
+        isTutorApproved();
+
         myRefVerifiedTutor.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 verifiedTutorInfo = dataSnapshot.getValue(VerifiedTutorInfo.class) ;
 
                 preparationForRecyclerView() ;
-                myRefVerifiedTutor.removeEventListener(this);
+                myRefVerifiedTutor.removeEventListener(this) ;
             }
 
             @Override
@@ -163,7 +169,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         messageCounterTextView = findViewById(R.id.messageCounter) ;
 
         databaseFireStore.collection("System").document("Counter")
-                .collection("NotificationCounter").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                .collection("NotificationCounter").document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot document = task.getResult() ;
@@ -189,8 +195,23 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         }) ;
     }
 
-    private void preparationForRecyclerView(){
+    private void isTutorApproved(){
+        myRefApproveAndBlock.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ApproveAndBlockInfo approveAndBlockInfo = snapshot.getValue(ApproveAndBlockInfo.class) ;
+                approvalStatus = approveAndBlockInfo.getStatus();
+                myRefApproveAndBlock.removeEventListener(this);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void preparationForRecyclerView(){
         final String address = verifiedTutorInfo.getPreferredAreas() ;
         final String group = verifiedTutorInfo.getPreferredGroup() ;
         final String className = verifiedTutorInfo.getPreferredClasses() ;
@@ -216,7 +237,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
                 }
 
                 if(count2>=3){
-                    myRefResponsePost = myRefResponsePost.child(user.getUid()) ;
+                    myRefResponsePost = myRefResponsePost.child(firebaseUser.getUid()) ;
 
                     myRefResponsePost.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -287,8 +308,8 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
             }
         }
 
-        RecyclerAdapterForTutorHomePage adapter = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList1, userInfo, tuitionPostUidList1, responseTuitionPostArray1,1) ;
-        RecyclerAdapterForTutorHomePage adapter2 = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList2, userInfo, tuitionPostUidList2, responseTuitionPostArray2,2) ;
+        RecyclerAdapterForTutorHomePage adapter = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList1, userInfo, tuitionPostUidList1, responseTuitionPostArray1,1, approvalStatus) ;
+        RecyclerAdapterForTutorHomePage adapter2 = new RecyclerAdapterForTutorHomePage(tuitionPostInfoArrayList2, userInfo, tuitionPostUidList2, responseTuitionPostArray2,2, approvalStatus) ;
         recyclerView.setAdapter(adapter2);
         recyclerView2.setAdapter(adapter);
     }
@@ -314,7 +335,6 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         intent.putExtra("user", "tutor") ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
-        //finish();
     }
 
     public void goToVerifiedTutorGroupActivity(View view){
@@ -331,8 +351,8 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
                         intent.putExtra("user" , "tutor") ;
                         intent.putStringArrayListExtra("userInfo", userInfo) ;
                         intent.putExtra("groupID", groupID) ;
+                        intent.putExtra("tutorApprovalStatus", approvalStatus) ;
                         startActivity(intent);
-                        //finish();
 
                         flag = 1 ;
                         break ;
@@ -342,8 +362,8 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
                     Intent intent = new Intent(VerifiedTutorHomePageActivity.this, GroupCreationActivity.class) ;
                     intent.putExtra("user" , "tutor") ;
                     intent.putStringArrayListExtra("userInfo", userInfo) ;
+                    intent.putExtra("tutorApprovalStatus", approvalStatus) ;
                     startActivity(intent);
-                    finish();
                 }
                 myRefGroup.removeEventListener(this);
             }
@@ -375,6 +395,7 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
         Intent intent = new Intent(this, TuitionPostViewActivity.class) ;
         intent.putExtra("user" , "tutor") ;
         intent.putStringArrayListExtra("userInfo", userInfo) ;
+        intent.putExtra("tutorApprovalStatus", approvalStatus) ;
         startActivity(intent);
         finish();
     }
@@ -395,11 +416,10 @@ public class VerifiedTutorHomePageActivity extends AppCompatActivity implements 
     }
 
     private void status(String status){
-            DatabaseReference  reference = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(user.getUid());
+            DatabaseReference  reference = FirebaseDatabase.getInstance().getReference("CandidateTutor").child(firebaseUser.getUid());
             HashMap<String,Object> hashMap = new HashMap<>();
             hashMap.put("status",status);
             reference.updateChildren(hashMap);
-
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.group.GroupInfo;
 import com.squareup.picasso.Picasso;
 
@@ -22,6 +23,10 @@ public class CustomAdapterForGroupListView extends BaseAdapter {
     public CustomAdapterForGroupListView(Context context, ArrayList<GroupInfo> groupInfoArrayList) {
         this.context = context;
         this.groupInfoArrayList = groupInfoArrayList;
+    }
+
+    public void setListData(ArrayList<GroupInfo> data){
+        groupInfoArrayList = data ;
     }
 
     @Override

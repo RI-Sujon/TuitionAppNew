@@ -3,11 +3,15 @@ package com.example.tuitionapp_surji.tuition_post;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -16,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.group.GroupCreationActivity;
 import com.example.tuitionapp_surji.guardian.GuardianHomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,13 +40,15 @@ public class TuitionPostViewActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser ;
     private DatabaseReference myRefTuitionPost, myRefResponsePost;
     private ArrayList<ArrayList<TuitionPostInfo>> filteredTuitionPost ;
+    private ArrayList<ArrayList<String>> filteredTuitionPostUid ;
     private CustomAdapterForTuitionPostView adapter ;
 
     private LinearLayout filterByLayout ;
     private TextView filterList ;
     private String filterListString ;
 
-    private ArrayList<String> tuitionPostUidList ;
+    private EditText searchBar ;
+
     private ArrayList<String> responseTuitionPostList ;
     private int [] responsePostArray ;
 
@@ -55,11 +62,10 @@ public class TuitionPostViewActivity extends AppCompatActivity {
     private TextView createNewPostButton ;
 
     private ArrayList<String> userInfo ;
-    private String user, tutorEmail = "", tutorUid = "", guardianProfilePicUri ;
+    private String user, tutorEmail = "", tutorUid = "", guardianProfilePicUri , tutorApprovalStatus;
 
-    private List<String> areaList, classList, groupList ;
-
-    private int areaFlag = 1, classFlag = 1, groupFlag = 1 ;
+    private List<String> areaList, classList, groupList, mediumList ;
+    private int areaFlag = 1, classFlag = 1, groupFlag = 1, mediumFlag = 1 ;
     private String reverseGender = "" ;
 
     @Override
@@ -67,16 +73,21 @@ public class TuitionPostViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tuition_post_view);
 
-        tuitionPostUidList = new ArrayList<>() ;
-        responseTuitionPostList = new ArrayList<>() ;
-
         listView = findViewById(R.id.tuitionPostList) ;
         filterByLayout = findViewById(R.id.filtered_option_layout) ;
         filterList = findViewById(R.id.filter_list) ;
-        filteredTuitionPost = new ArrayList<>(10) ;
+        searchBar = findViewById(R.id.search_bar) ;
 
-        for(int i=0 ; i<10 ; i++){
+        responseTuitionPostList = new ArrayList<>() ;
+
+        filteredTuitionPost = new ArrayList<>(5) ;
+        for(int i=0 ; i<5 ; i++){
             filteredTuitionPost.add(new ArrayList()) ;
+        }
+
+        filteredTuitionPostUid = new ArrayList<>(5) ;
+        for(int i=0 ; i<5 ; i++){
+            filteredTuitionPostUid.add(new ArrayList()) ;
         }
 
         Intent intent = getIntent() ;
@@ -86,6 +97,11 @@ public class TuitionPostViewActivity extends AppCompatActivity {
         myRefResponsePost = FirebaseDatabase.getInstance().getReference("ResponsePost") ;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        areaList = Arrays.asList(getResources().getStringArray(R.array.areaAddress_array)) ;
+        classList = Arrays.asList(getResources().getStringArray(R.array.preferredClass_array_bangla_medium)) ;
+        groupList = Arrays.asList(getResources().getStringArray(R.array.group_array)) ;
+        mediumList = Arrays.asList(getResources().getStringArray(R.array.medium_array)) ;
+
         if(user.equals("tutor")){
             filterButton = findViewById(R.id.filter_option) ;
             filterButton.setVisibility(View.VISIBLE);
@@ -93,6 +109,7 @@ public class TuitionPostViewActivity extends AppCompatActivity {
             userInfo = intent.getStringArrayListExtra("userInfo") ;
             tutorEmail = userInfo.get(2) ;
             tutorUid = userInfo.get(3) ;
+            tutorApprovalStatus = intent.getStringExtra("tutorApprovalStatus") ;
 
             if(userInfo.get(4).equals("MALE")){
                 reverseGender = "Only Female" ;
@@ -104,6 +121,10 @@ public class TuitionPostViewActivity extends AppCompatActivity {
             filterList.setText(filterListString);
 
             myRefResponsePost = myRefResponsePost.child(userInfo.get(3)) ;
+
+            if(!tutorApprovalStatus.equals("running")){
+                takeActionForNonApprovalTutor() ;
+            }
 
             myRefResponsePost.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -122,9 +143,6 @@ public class TuitionPostViewActivity extends AppCompatActivity {
 
                 }
             }) ;
-
-            //filterByArea(userInfo.get((5)));
-            //filterByGroup(userInfo.get((6)));
         }
 
         if(user.equals("guardian")){
@@ -133,35 +151,69 @@ public class TuitionPostViewActivity extends AppCompatActivity {
             createNewPostButton.setVisibility(View.VISIBLE);
             filterByGuardian(firebaseUser.getUid());
         }
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        areaList = Arrays.asList(getResources().getStringArray(R.array.areaAddress_array)) ;
-        classList = Arrays.asList(getResources().getStringArray(R.array.preferredClass_array_bangla_medium)) ;
-        groupList = Arrays.asList(getResources().getStringArray(R.array.group_array)) ;
+        searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(!searchBar.getText().toString().equals("")) {
+                    searchOperation(searchBar.getText().toString());
+                }
+                searchBar.setText("");
+                return false;
+            }
+        });
     }
 
     public void viewTuitionPost(){
-        responsePostArray = new int[tuitionPostUidList.size()] ;
+        isPostResponseGenerator(0);
+
+        adapter  = new CustomAdapterForTuitionPostView(this,filteredTuitionPost.get(0), userInfo, filteredTuitionPostUid.get(0), user, responsePostArray) ;
+        listView.setAdapter(adapter);
+    }
+
+    public void takeActionForNonApprovalTutor(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this) ;
+        dialog.setMessage("Please Wait for Admin Approval.") ;
+
+        dialog.setCancelable(false) ;
+
+        dialog.setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                goToBackPageActivity(null);
+            }
+        }) ;
+
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_BACK){
+                    dialog.dismiss();
+                    goToBackPageActivity(null);
+                }
+                return true;
+            }
+        }) ;
+
+        dialog.show();
+
+    }
+
+    public void isPostResponseGenerator(int index){
+        responsePostArray = new int[filteredTuitionPostUid.get(index).size()] ;
 
         for (int i=0 ; i<responsePostArray.length ; i++){
             responsePostArray[i] = 0 ;
         }
 
-        for(int i=0 ; i<tuitionPostUidList.size() ; i++){
+        for(int i=0 ; i<filteredTuitionPostUid.get(index).size() ; i++){
             for(int j=0 ; j<responseTuitionPostList.size() ; j++){
-                if(tuitionPostUidList.get(i).equals(responseTuitionPostList.get(j))){
+                if(filteredTuitionPostUid.get(index).get(i).equals(responseTuitionPostList.get(j))){
                     responsePostArray[i] = 1 ;
                     break ;
                 }
             }
         }
-
-        adapter  = new CustomAdapterForTuitionPostView(this,filteredTuitionPost.get(0), userInfo, tuitionPostUidList, user, responsePostArray) ;
-        listView.setAdapter(adapter);
     }
 
     public void goToBackPageActivity(View view){
@@ -193,7 +245,6 @@ public class TuitionPostViewActivity extends AppCompatActivity {
     public void onPopupFilterButtonClick(View view) {
         popup = new PopupMenu(this, view);
         popup.getMenuInflater().inflate(R.menu.filter_by_menu, popup.getMenu());
-
         menu = popup.getMenu() ;
 
         if(areaFlag == -1){
@@ -205,15 +256,16 @@ public class TuitionPostViewActivity extends AppCompatActivity {
         if(groupFlag == -1){
             menu.removeItem(R.id.group);
         }
+        if(mediumFlag == -1){
+            menu.removeItem(R.id.medium);
+        }
 
-        if(areaFlag==1 && classFlag==1 && groupFlag==1){
+        if(areaFlag==1 && classFlag==1 && groupFlag==1 && mediumFlag==1){
             menu.findItem(R.id.clear).setVisible(false);
         }
 
-
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-
                 if(item.getTitle().equals("CLEAR ALL")){
                     refreshActivity();
                 }
@@ -221,27 +273,28 @@ public class TuitionPostViewActivity extends AppCompatActivity {
                 for(int i=0 ; i<areaList.size() ; i++){
                     if(item.getTitle().equals(areaList.get(i))&&!item.getTitle().equals("AREA")){
                         filterByArea(areaList.get(i)) ;
-                        Toast.makeText(TuitionPostViewActivity.this,
-                                "Clicked popup menu item " + item.getTitle(),
-                                Toast.LENGTH_SHORT).show() ;
+                        Toast.makeText(TuitionPostViewActivity.this, "Clicked popup menu item " + item.getTitle(), Toast.LENGTH_SHORT).show() ;
                     }
                 }
 
                 for(int i=0 ; i<classList.size() ; i++){
                     if(item.getTitle().equals(classList.get(i))&&!item.getTitle().equals("CLASS")){
                         filterByClass(classList.get(i)) ;
-                        Toast.makeText(TuitionPostViewActivity.this,
-                                "Clicked popup menu item " + item.getTitle(),
-                                Toast.LENGTH_SHORT).show() ;
+                        Toast.makeText(TuitionPostViewActivity.this, "Clicked popup menu item " + item.getTitle(), Toast.LENGTH_SHORT).show() ;
                     }
                 }
 
                 for(int i=0 ; i<groupList.size() ; i++){
                     if(item.getTitle().equals(groupList.get(i))&&!item.getTitle().equals("GROUP")){
                         filterByGroup(groupList.get(i)) ;
-                        Toast.makeText(TuitionPostViewActivity.this,
-                                "Clicked popup menu item " + item.getTitle(),
-                                Toast.LENGTH_SHORT).show() ;
+                        Toast.makeText(TuitionPostViewActivity.this, "Clicked popup menu item " + item.getTitle(), Toast.LENGTH_SHORT).show() ;
+                    }
+                }
+
+                for(int i=0 ; i<mediumList.size() ; i++){
+                    if(item.getTitle().equals(mediumList.get(i))&&!item.getTitle().equals("MEDIUM")){
+                        filterByMedium(mediumList.get(i)) ;
+                        Toast.makeText(TuitionPostViewActivity.this, "Clicked popup menu item " + item.getTitle(), Toast.LENGTH_SHORT).show() ;
                     }
                 }
 
@@ -251,6 +304,59 @@ public class TuitionPostViewActivity extends AppCompatActivity {
         });
 
         popup.show();
+    }
+
+    public void searchOperation(String textString){
+        String [] textArray = textString.split(" ") ;
+
+        for(String text: textArray){
+            if(text.toUpperCase().contains("CLASS")||text.toUpperCase().contains("GROUP")||text.toUpperCase().contains("SUBJECT")||text.toUpperCase().contains("MEDIUM")){
+                continue;
+            }
+
+            if(text.toUpperCase().contains("BANGLA")) {
+
+            }else if(text.toUpperCase().contains("ENGLISH")){
+
+            }
+
+            if(text.toUpperCase().contains("SCIENCE")) {
+                filterByGroup("Science");
+                continue;
+            }
+            else if(text.toUpperCase().contains("COMMERCE")){
+                filterByGroup("Commerce");
+                continue;
+            }
+            else if(text.toUpperCase().contains("Arts")){
+                filterByGroup("Arts");
+                continue;
+            }
+
+            for(int i=10 ; i>=1 ;i--){
+                if(text.contains(String.valueOf(i))){
+                    filterByClass("CLASS "+ i);
+                    break;
+                }
+            }
+            if(text.contains("11")||text.toUpperCase().contains("INTER")){
+                filterByClass("INTER FIRST YEAR");
+                continue;
+            }
+            else if(text.contains("12")||text.toUpperCase().contains("INTER")){
+                filterByClass("INTER SECOND YEAR");
+                continue;
+            }
+            else if(text.toUpperCase().contains("HONS")||text.toUpperCase().contains("HONOURS")||text.toUpperCase().contains("VARSITY")||text.toUpperCase().contains("UNIVERSITY")){
+                //filterByClass("");
+            }
+
+            for(int i=0 ; i<areaList.size() ; i++){
+                if(text.toUpperCase().equals(areaList.get(i).toUpperCase())) {
+                    filterByArea(areaList.get(i));
+                }
+            }
+        }
     }
 
     public void refreshActivity(){
@@ -280,12 +386,11 @@ public class TuitionPostViewActivity extends AppCompatActivity {
                 myRefTuitionPost.removeEventListener(this);
                 TuitionPostInfo tuitionPostInfo = new TuitionPostInfo() ;
                 filteredTuitionPost.get(0).add(tuitionPostInfo) ;
-                tuitionPostUidList.add("") ;
+                filteredTuitionPostUid.get(0).add("") ;
 
-
-                for(int i=helpArrayList.size()-1 ; i>=0 ; i--){
+                for(int i=helpArrayList.size()-1 ; i >= 0 ; i--){
                     filteredTuitionPost.get(0).add(helpArrayList.get(i)) ;
-                    tuitionPostUidList.add(helpArrayList2.get(i));
+                    filteredTuitionPostUid.get(0).add(helpArrayList2.get(i));
                 }
                 helpArrayList.clear();
                 viewTuitionPost();
@@ -314,7 +419,7 @@ public class TuitionPostViewActivity extends AppCompatActivity {
 
                 for(int i=helpArrayList.size()-1 ; i>=0 ; i--){
                     filteredTuitionPost.get(0).add(helpArrayList.get(i)) ;
-                    tuitionPostUidList.add(helpArrayList2.get(i));
+                    filteredTuitionPostUid.get(0).add(helpArrayList2.get(i)) ;
                 }
                 helpArrayList.clear();
                 viewTuitionPost();
@@ -329,12 +434,16 @@ public class TuitionPostViewActivity extends AppCompatActivity {
     }
 
     public void filterByArea(String area){
-        for(TuitionPostInfo tuitionPostInfo : filteredTuitionPost.get(filterCount-1)){
-            if(tuitionPostInfo.getStudentAreaAddress().equals(area)){
-                filteredTuitionPost.get(filterCount).add(tuitionPostInfo) ;
+        for(int i=0 ; i<filteredTuitionPost.get(filterCount-1).size(); i++){
+            if(filteredTuitionPost.get(filterCount-1).get(i).getStudentAreaAddress().equals(area)){
+                filteredTuitionPost.get(filterCount).add(filteredTuitionPost.get(filterCount-1).get(i)) ;
+                filteredTuitionPostUid.get(filterCount).add(filteredTuitionPostUid.get(filterCount-1).get(i)) ;
             }
         }
-        adapter.setListData(filteredTuitionPost.get(filterCount));
+
+        isPostResponseGenerator(filterCount);
+
+        adapter.setListData(filteredTuitionPost.get(filterCount), filteredTuitionPostUid.get(filterCount), responsePostArray);
         adapter.notifyDataSetChanged();
         filterCount++ ;
 
@@ -342,16 +451,19 @@ public class TuitionPostViewActivity extends AppCompatActivity {
         filterList.setText(filterListString);
 
         areaFlag = -1 ;
-
     }
 
     public void filterByGroup(String group){
-        for(TuitionPostInfo tuitionPostInfo : filteredTuitionPost.get(filterCount-1)){
-            if(tuitionPostInfo.getStudentGroup().equals(group)){
-                filteredTuitionPost.get(filterCount).add(tuitionPostInfo) ;
+        for(int i=0 ; i<filteredTuitionPost.get(filterCount-1).size(); i++){
+            if(filteredTuitionPost.get(filterCount-1).get(i).getStudentGroup().equals(group)){
+                filteredTuitionPost.get(filterCount).add(filteredTuitionPost.get(filterCount-1).get(i)) ;
+                filteredTuitionPostUid.get(filterCount).add(filteredTuitionPostUid.get(filterCount-1).get(i)) ;
             }
         }
-        adapter.setListData(filteredTuitionPost.get(filterCount));
+
+        isPostResponseGenerator(filterCount);
+
+        adapter.setListData(filteredTuitionPost.get(filterCount), filteredTuitionPostUid.get(filterCount), responsePostArray);
         adapter.notifyDataSetChanged();
         filterCount++ ;
 
@@ -361,14 +473,37 @@ public class TuitionPostViewActivity extends AppCompatActivity {
         groupFlag = -1 ;
     }
 
-    public void filterByClass(String class_name){
-
-        for(TuitionPostInfo tuitionPostInfo : filteredTuitionPost.get(filterCount-1)){
-            if(tuitionPostInfo.getStudentClass().equals(class_name)){
-                filteredTuitionPost.get(filterCount).add(tuitionPostInfo) ;
+    public void filterByMedium(String medium){
+        for(int i=0 ; i<filteredTuitionPost.get(filterCount-1).size(); i++){
+            if(filteredTuitionPost.get(filterCount-1).get(i).getStudentMedium().equals(medium)){
+                filteredTuitionPost.get(filterCount).add(filteredTuitionPost.get(filterCount-1).get(i)) ;
+                filteredTuitionPostUid.get(filterCount).add(filteredTuitionPostUid.get(filterCount-1).get(i)) ;
             }
         }
-        adapter.setListData(filteredTuitionPost.get(filterCount));
+
+        isPostResponseGenerator(filterCount);
+
+        adapter.setListData(filteredTuitionPost.get(filterCount), filteredTuitionPostUid.get(filterCount), responsePostArray);
+        adapter.notifyDataSetChanged();
+        filterCount++ ;
+
+        filterListString = filterListString + ", " + "MEDIUM: " + medium ;
+        filterList.setText(filterListString);
+
+        mediumFlag = -1 ;
+    }
+
+    public void filterByClass(String class_name){
+        for(int i=0 ; i<filteredTuitionPost.get(filterCount-1).size(); i++){
+            if(filteredTuitionPost.get(filterCount-1).get(i).getStudentClass().equals(class_name)){
+                filteredTuitionPost.get(filterCount).add(filteredTuitionPost.get(filterCount-1).get(i)) ;
+                filteredTuitionPostUid.get(filterCount).add(filteredTuitionPostUid.get(filterCount-1).get(i)) ;
+            }
+        }
+
+        isPostResponseGenerator(filterCount);
+
+        adapter.setListData(filteredTuitionPost.get(filterCount), filteredTuitionPostUid.get(filterCount), responsePostArray);
         adapter.notifyDataSetChanged();
         filterCount++ ;
 

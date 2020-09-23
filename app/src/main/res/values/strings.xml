@@ -157,8 +157,8 @@
     <string-array name="commerceSubject_array">
         <item>Accounting</item>
         <item>Economy</item>
-        <item>Finance, Banking, and Insurance</item>
-        <item>Business Organization and Management</item>
+        <item>Finance_Banking_and_Insurance</item>
+        <item>Business_Organization_and_Management</item>
     </string-array>
 
     <string-array name="artsSubject_array">

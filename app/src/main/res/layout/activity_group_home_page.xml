@@ -39,6 +39,20 @@
                     android:src="@drawable/ic_arrow_back_black_24dp"
                     android:backgroundTint="@color/Black"/>
 
+                <ImageView
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:id="@+id/leave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onPopupMoreButtonClick"
+                    android:layout_alignParentRight="true"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_baseline_more_horiz_24"
+                    android:rotation="90"
+                    android:backgroundTint="@color/Black"
+                    android:visibility="gone"/>
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

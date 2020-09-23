@@ -24,15 +24,17 @@ public class RecyclerAdapterForTutorHomePage extends RecyclerView.Adapter<Recycl
     private ArrayList<String> tuitionPostInfoUid ;
     private int [] responsePostArray ;
     private int flag ;
+    private String approvalStatus ;
     private ViewGroup parent ;
 
 
-    public RecyclerAdapterForTutorHomePage(ArrayList<TuitionPostInfo> tuitionPostInfoArrayList, ArrayList<String> tutorInfo, ArrayList<String> tuitionPostInfoUid, int[] responsePostArray, int flag) {
+    public RecyclerAdapterForTutorHomePage(ArrayList<TuitionPostInfo> tuitionPostInfoArrayList, ArrayList<String> tutorInfo, ArrayList<String> tuitionPostInfoUid, int[] responsePostArray, int flag, String approvalStatus) {
         this.tuitionPostInfoArrayList = tuitionPostInfoArrayList;
         this.tutorInfo = tutorInfo;
         this.tuitionPostInfoUid = tuitionPostInfoUid;
         this.responsePostArray = responsePostArray;
         this.flag = flag;
+        this.approvalStatus = approvalStatus ;
     }
 
     @NonNull
@@ -95,34 +97,35 @@ public class RecyclerAdapterForTutorHomePage extends RecyclerView.Adapter<Recycl
             holder.postImage.setImageResource(R.drawable.logo_else_class);
         }
 
-        holder.cardLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(parent.getContext(), TuitionPostViewSinglePageActivity.class);
+        if(approvalStatus.equals("running")){
+            holder.cardLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(parent.getContext(), TuitionPostViewSinglePageActivity.class);
 
-                intent.putStringArrayListExtra("tutorInfo", tutorInfo) ;
-                intent.putExtra("guardianUid", tuitionPostInfoArrayList.get(position).getGuardianUidFK()) ;
-                intent.putExtra("user", "tutor") ;
-                intent.putExtra("response", String.valueOf(responsePostArray[position])) ;
-                intent.putExtra("tuitionPostUid", tuitionPostInfoUid.get(position)) ;
+                    intent.putStringArrayListExtra("tutorInfo", tutorInfo) ;
+                    intent.putExtra("guardianUid", tuitionPostInfoArrayList.get(position).getGuardianUidFK()) ;
+                    intent.putExtra("user", "tutor") ;
+                    intent.putExtra("response", String.valueOf(responsePostArray[position])) ;
+                    intent.putExtra("tuitionPostUid", tuitionPostInfoUid.get(position)) ;
 
-                intent.putExtra("postTitle", tuitionPostInfoArrayList.get(position).getPostTitle()) ;
-                intent.putExtra("medium", tuitionPostInfoArrayList.get(position).getStudentMedium()) ;
-                intent.putExtra("class_name", tuitionPostInfoArrayList.get(position).getStudentClass()) ;
-                intent.putExtra("group", tuitionPostInfoArrayList.get(position).getStudentGroup()) ;
-                intent.putExtra("subject", tuitionPostInfoArrayList.get(position).getStudentSubjectList()) ;
-                intent.putExtra("studentInstituteName", tuitionPostInfoArrayList.get(position).getStudentInstitute()) ;
-                intent.putExtra("address", tuitionPostInfoArrayList.get(position).getStudentFullAddress() +", " + tuitionPostInfoArrayList.get(position).getStudentAreaAddress()) ;
-                intent.putExtra("contactNo", tuitionPostInfoArrayList.get(position).getStudentContactNo()) ;
-                intent.putExtra("daysPerWeek", tuitionPostInfoArrayList.get(position).getDaysPerWeekOrMonth()) ;
-                intent.putExtra("salary", tuitionPostInfoArrayList.get(position).getSalary()) ;
-                intent.putExtra("extraInfo", tuitionPostInfoArrayList.get(position).getExtra()) ;
-                intent.putExtra("postTime", tuitionPostInfoArrayList.get(position).getPostDate() + ", " + tuitionPostInfoArrayList.get(position).getPostTime()) ;
-                intent.putExtra("tutorGenderPreferable", tuitionPostInfoArrayList.get(position).getTutorGenderPreference()) ;
-                parent.getContext().startActivity(intent);
-            }
-        });
-
+                    intent.putExtra("postTitle", tuitionPostInfoArrayList.get(position).getPostTitle()) ;
+                    intent.putExtra("medium", tuitionPostInfoArrayList.get(position).getStudentMedium()) ;
+                    intent.putExtra("class_name", tuitionPostInfoArrayList.get(position).getStudentClass()) ;
+                    intent.putExtra("group", tuitionPostInfoArrayList.get(position).getStudentGroup()) ;
+                    intent.putExtra("subject", tuitionPostInfoArrayList.get(position).getStudentSubjectList()) ;
+                    intent.putExtra("studentInstituteName", tuitionPostInfoArrayList.get(position).getStudentInstitute()) ;
+                    intent.putExtra("address", tuitionPostInfoArrayList.get(position).getStudentFullAddress() +", " + tuitionPostInfoArrayList.get(position).getStudentAreaAddress()) ;
+                    intent.putExtra("contactNo", tuitionPostInfoArrayList.get(position).getStudentContactNo()) ;
+                    intent.putExtra("daysPerWeek", tuitionPostInfoArrayList.get(position).getDaysPerWeekOrMonth()) ;
+                    intent.putExtra("salary", tuitionPostInfoArrayList.get(position).getSalary()) ;
+                    intent.putExtra("extraInfo", tuitionPostInfoArrayList.get(position).getExtra()) ;
+                    intent.putExtra("postTime", tuitionPostInfoArrayList.get(position).getPostDate() + ", " + tuitionPostInfoArrayList.get(position).getPostTime()) ;
+                    intent.putExtra("tutorGenderPreferable", tuitionPostInfoArrayList.get(position).getTutorGenderPreference()) ;
+                    parent.getContext().startActivity(intent);
+                }
+            });
+        }
     }
 
 

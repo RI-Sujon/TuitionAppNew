@@ -92,6 +92,10 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
             guardianUid = intent.getStringExtra("guardianUid") ;
             tuitionPostUid = intent.getStringExtra("tuitionPostUid") ;
             response = intent.getStringExtra("response") ;
+            postTitle = intent.getStringExtra("postTitle") ;
+            class_name = intent.getStringExtra("class_name") ;
+            subject = intent.getStringExtra("subject") ;
+
             if(response.equals("0")){
                 responseButton.setVisibility(View.VISIBLE);
             }
@@ -103,12 +107,12 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
 
         contactNo = intent.getStringExtra("contactNo") ;
 
-        postTitleTV.setText(intent.getStringExtra("postTitle"));
+        postTitleTV.setText(postTitle);
         genderPreferableTV.setText(intent.getStringExtra("tutorGenderPreferable"));
         mediumTV.setText(intent.getStringExtra("medium"));
-        class_nameTV.setText(intent.getStringExtra("class_name"));
+        class_nameTV.setText(class_name);
         groupTV.setText(intent.getStringExtra("group"));
-        subjectTV.setText(intent.getStringExtra("subject"));
+        subjectTV.setText(subject);
         studentInstituteNameTV.setText(intent.getStringExtra("studentInstituteName"));
         addressTV.setText(intent.getStringExtra("address"));
         contactNoTV.setText(intent.getStringExtra("contactNo"));
@@ -181,7 +185,8 @@ public class TuitionPostViewSinglePageActivity extends AppCompatActivity {
         responseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NotificationInfo notificationInfo = new NotificationInfo("response" , tutorInfo.get(0), tutorInfo.get(2), tutorInfo.get(3), tuitionPostUid) ;
+                String postInfo = "(Title: " + postTitle + ", " + class_name + ", SUBJECT: " + subject + ")" ;
+                NotificationInfo notificationInfo = new NotificationInfo("response" , tutorInfo.get(0), tutorInfo.get(2), tutorInfo.get(3), postInfo) ;
                 myRefNotification.push().setValue(notificationInfo) ;
 
                 ResponsePost responsePost = new ResponsePost(tuitionPostUid) ;

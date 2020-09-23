@@ -83,15 +83,20 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         TokenInfo token = new TokenInfo(refreshToken) ;
         FirebaseDatabase.getInstance().getReference("Notification").child("Tokens").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(token);
 
-
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser() ;
         myRefGuardian = FirebaseDatabase.getInstance().getReference("Guardian").child(firebaseUser.getUid()) ;
+        myRefApproveAndBlock = FirebaseDatabase.getInstance().getReference("ApproveAndBlock") ;
+        myRefCandidateTutor = FirebaseDatabase.getInstance().getReference("CandidateTutor") ;
+        myRefVerifiedTutor = FirebaseDatabase.getInstance().getReference("VerifiedTutor") ;
+        myRefGroupInfo = FirebaseDatabase.getInstance().getReference("Group") ;
 
         drawerLayout = findViewById(R.id.drawer_layout) ;
         navigationView = findViewById(R.id.navigation_view) ;
         recyclerView = findViewById(R.id.recycler_view) ;
         recyclerView2 = findViewById(R.id.recycler_view2) ;
+        notificationCounterTextView = findViewById(R.id.notificationCounter) ;
+        messageCounterTextView = findViewById(R.id.messageCounter) ;
 
         navigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.navigation_drawer_open,R.string.navigation_drawer_close) ;
@@ -106,6 +111,26 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         profilePic = view.findViewById(R.id.profile_image);
 
         guardianMobileNo.setText(mAuth.getCurrentUser().getPhoneNumber());
+
+        Menu menu = navigationView.getMenu();
+        menu.findItem(R.id.view_profile).setVisible(false) ;
+        menu.findItem(R.id.calenderMenuId).setVisible(false) ;
+        menu.findItem(R.id.notes).setVisible(false) ;
+
+        onStartActivity();
+    }
+
+    private void onStartActivity() {
+
+        approveAndBlockTutorUidList = new ArrayList<>() ;
+        tutorUidArrayList = new ArrayList<>();
+        approveAndBlockInfoList = new ArrayList<>() ;
+        candidateTutorInfoArrayList = new ArrayList<>() ;
+
+        groupInfoArrayList = new ArrayList<>() ;
+        groupNameList = new ArrayList<>() ;
+        groupInfoUidList = new ArrayList<>() ;
+
 
         myRefGuardian.addValueEventListener(new ValueEventListener() {
             @Override
@@ -129,35 +154,6 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
 
             }
         }) ;
-
-
-        Menu menu = navigationView.getMenu();
-        menu.findItem(R.id.view_profile).setVisible(false) ;
-        menu.findItem(R.id.calenderMenuId).setVisible(false) ;
-        menu.findItem(R.id.notes).setVisible(false) ;
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        approveAndBlockTutorUidList = new ArrayList<>() ;
-        tutorUidArrayList = new ArrayList<>();
-        approveAndBlockInfoList = new ArrayList<>() ;
-        candidateTutorInfoArrayList = new ArrayList<>() ;
-
-        groupInfoArrayList = new ArrayList<>() ;
-        groupNameList = new ArrayList<>() ;
-        groupInfoUidList = new ArrayList<>() ;
-
-        myRefApproveAndBlock = FirebaseDatabase.getInstance().getReference("ApproveAndBlock") ;
-        myRefCandidateTutor = FirebaseDatabase.getInstance().getReference("CandidateTutor") ;
-        myRefVerifiedTutor = FirebaseDatabase.getInstance().getReference("VerifiedTutor") ;
-        myRefGroupInfo = FirebaseDatabase.getInstance().getReference("Group") ;
-
-        notificationCounterTextView = findViewById(R.id.notificationCounter) ;
-        messageCounterTextView = findViewById(R.id.messageCounter) ;
 
         myRefApproveAndBlock.addValueEventListener(new ValueEventListener() {
             @Override
@@ -301,7 +297,6 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
         }
         intent.putExtra("user", "guardian") ;
         startActivity(intent);
-        //finish();
     }
 
     public void goToGuardianProfileViewActivity(){

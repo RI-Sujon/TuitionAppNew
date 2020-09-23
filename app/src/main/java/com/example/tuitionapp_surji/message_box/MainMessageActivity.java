@@ -89,8 +89,6 @@ public class MainMessageActivity extends AppCompatActivity {
         reference= FirebaseDatabase.getInstance().getReference("MessageBox");//.child(firebaseUser.getUid());
         candidateTutorReference = FirebaseDatabase.getInstance().getReference("CandidateTutor");
 
-
-
         if(checkUser.equals("guardian"))
         {
 

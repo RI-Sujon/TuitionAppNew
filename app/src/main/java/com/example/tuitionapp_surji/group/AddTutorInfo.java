@@ -1,24 +1,24 @@
 package com.example.tuitionapp_surji.group;
 
 public class AddTutorInfo {
-    private String groupID ;
+    private String tutorID ;
     private String tutorEmail ;
 
     public AddTutorInfo(){
 
     }
 
-    public AddTutorInfo(String groupID, String tutorEmail) {
-        this.groupID = groupID;
+    public AddTutorInfo(String tutorID, String tutorEmail) {
+        this.tutorID = tutorID;
         this.tutorEmail = tutorEmail;
     }
 
     public String getGroupID() {
-        return groupID;
+        return tutorID;
     }
 
-    public void setGroupID(String groupID) {
-        this.groupID = groupID;
+    public void setGroupID(String tutorID) {
+        this.tutorID = tutorID;
     }
 
     public String getTutorEmail() {

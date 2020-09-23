@@ -28,16 +28,13 @@ import java.util.List;
 public class MessageRequestsFragment extends Fragment {
 
 
-    RecyclerView message_request_recycler_view;
+    private RecyclerView message_request_recycler_view;
     private List<MessageBoxInfo> mUsers;
     private MessageRequestAdapter messageRequestAdapter;
     private String checkUser;
     private String tutorName;
-    ArrayList<String> userInfo ;
-
-    TextView no_request;
-
-
+    private ArrayList<String> userInfo ;
+    private TextView no_request;
     public MessageRequestsFragment(){
 
     }

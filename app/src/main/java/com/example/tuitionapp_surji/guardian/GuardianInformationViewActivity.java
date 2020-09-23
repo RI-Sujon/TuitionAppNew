@@ -102,7 +102,7 @@ public class GuardianInformationViewActivity extends AppCompatActivity {
 
     public void sendMessageToGuardianOperation(View view){
         final MessageBoxInfo messageBoxInfo = new MessageBoxInfo(guardianInfo.getPhoneNumber(),
-                guardianUid, tutorInfo.get(2), tutorInfo.get(3), false, true,false,false);
+                guardianUid, tutorInfo.get(2), tutorInfo.get(3), false, true,false,false,false);
 
         myRefMessageBox.addValueEventListener(new ValueEventListener() {
             @Override

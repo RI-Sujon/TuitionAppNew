@@ -38,24 +38,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainMessageActivity extends AppCompatActivity {
 
-    CircleImageView profile_image;
-    TextView username;
-
-    FirebaseUser firebaseUser;
-    DatabaseReference reference, candidateTutorReference;
-
+    private CircleImageView profile_image;
+    private TextView username;
+    private FirebaseUser firebaseUser;
+    private DatabaseReference reference, candidateTutorReference;
     private String checkUser;
-    ArrayList<String> userInfo ;
-    CandidateTutorInfo tutorInfo;
-    MessageBoxInfo messageBoxUser;
-
-    TextView toolbar_name;
-
-    String tutorName;
-    String tutorEmail;
-
-    ImageView chats_btn,request_btn;
-    TextView txt1,txt2;
+    private ArrayList<String> userInfo ;
+    private CandidateTutorInfo tutorInfo;
+    private MessageBoxInfo messageBoxUser;
+    private TextView toolbar_name;
+    private String tutorName;
+    private String tutorEmail;
+    private ImageView chats_btn,request_btn;
+    private TextView txt1,txt2;
     private long counterMessage, oldCounterMessage ;
     private FirebaseFirestore databaseFireStore = FirebaseFirestore.getInstance() ;
 
@@ -65,24 +60,21 @@ public class MainMessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_message);
 
         toolbar_name = findViewById(R.id.toolbar_name);
-
         Intent intent = getIntent() ;
         checkUser = intent.getStringExtra("user");
         userInfo = intent.getStringArrayListExtra("userInfo") ;
 
 
         //Toolbar toolbar=findViewById(R.id.toolbar_message);
-       // setSupportActionBar(toolbar);
-       // getSupportActionBar().setTitle(" ");
+        // setSupportActionBar(toolbar);
+        // getSupportActionBar().setTitle(" ");
 
         txt1 = findViewById(R.id.fragment_text01);
         txt2 = findViewById(R.id.fragment_text02);
-
         profile_image=findViewById(R.id.profile_image);
         chats_btn = findViewById(R.id.chats_button);
         request_btn = findViewById(R.id.message_request_button);
         //username=findViewById(R.id.username_message);
-
         tutorInfo = new CandidateTutorInfo();
 
         firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
@@ -91,16 +83,12 @@ public class MainMessageActivity extends AppCompatActivity {
 
         if(checkUser.equals("guardian"))
         {
-
-            databaseFireStore.collection("System").document("Counter")
-                    .collection("NotificationCounter").document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            databaseFireStore.collection("System").document("Counter").collection("NotificationCounter").document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     DocumentSnapshot document = task.getResult() ;
-
                     counterMessage = (long) document.get("messageCounter") ;
-                    counterMessage = 0;
-
+                    counterMessage =0;
                     databaseFireStore.collection("System").document("Counter")
                             .collection("NotificationCounter").document(firebaseUser.getUid())
                             .update("messageCounter",counterMessage) ;
@@ -113,17 +101,16 @@ public class MainMessageActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot1)
                 {
                     for(DataSnapshot snapshot:dataSnapshot1.getChildren()){
-                 //       System.out.println("kaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                        //System.out.println("kaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                         System.out.println();
                         MessageBoxInfo user=snapshot.getValue(MessageBoxInfo.class);
-                        if(user.getGuardianUid().equals(firebaseUser.getUid())){
+                        if(user.getGuardianUid().equals(firebaseUser.getUid()))
+                        {
                             System.out.println("getTutorId ============================= "+user.getTutorUid());
                             messageBoxUser = user;
-                         //   System.out.println("AAAAAAAAAAAAAAAAAAAAAAA ==== "+messageBoxUser.getTutorEmail());
+                            //System.out.println("AAAAAAAAAAAAAAAAAAAAAAA ==== "+messageBoxUser.getTutorEmail());
                             break;
                         }
-
-
                     }
 
                     if(messageBoxUser != null){
@@ -181,7 +168,7 @@ public class MainMessageActivity extends AppCompatActivity {
             //username.setText("Guardian");
         }
 
-        else{
+        else {
             databaseFireStore.collection("System").document("Counter")
                     .collection("NotificationCounter").document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -263,15 +250,15 @@ public class MainMessageActivity extends AppCompatActivity {
 
         }
 
-//        profile_image.setImageResource(R.mipmap.ic_launcher);
 
 
-      //  TabLayout tabLayout=findViewById(R.id.tab_layout_message);
+        //TabLayout tabLayout=findViewById(R.id.tab_layout_message);
         Toolbar toolbar= findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 if(checkUser.equals("tutor")){
@@ -292,24 +279,16 @@ public class MainMessageActivity extends AppCompatActivity {
         });
 
          final ViewPager viewPager =findViewById(R.id.view_pager_message);
-
          ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter( getSupportFragmentManager(),2);
-
          Fragment userFragment = new UsersFragment(checkUser,tutorName,userInfo);
          Fragment requestFragment = new MessageRequestsFragment(checkUser,tutorName,userInfo);
-
-
-        viewPagerAdapter.addFragment(userFragment,"Chats");
-        viewPagerAdapter.addFragment(requestFragment,"Requests");
-
+         viewPagerAdapter.addFragment(userFragment,"Chats");
+         viewPagerAdapter.addFragment(requestFragment,"Requests");
 
         //  viewPagerAdapter.addFragment(new UsersFragment(checkUser,tutorName,userInfo),"Chats");
         // viewPagerAdapter.addFragment(new MessageRequestsFragment(),"Requests");
         // tabLayout.setupWithViewPager(viewPager);
         //toolbar.setupWithViewPager(viewPager);
-
-
-
 
         request_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,9 +299,6 @@ public class MainMessageActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         chats_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -332,9 +308,7 @@ public class MainMessageActivity extends AppCompatActivity {
             }
         });
 
-
         viewPager.setAdapter(viewPagerAdapter);
-
     }
 
 
@@ -388,8 +362,6 @@ public class MainMessageActivity extends AppCompatActivity {
             hashMap.put("status",status);
             reference.updateChildren(hashMap);
         }
-
-
     }
 
     @Override
@@ -407,8 +379,8 @@ public class MainMessageActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-
+    public void onBackPressed()
+    {
         if(checkUser.equals("tutor")){
 
             Intent intent1 = getIntent() ;

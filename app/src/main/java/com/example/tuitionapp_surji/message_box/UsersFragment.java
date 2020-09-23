@@ -34,8 +34,8 @@ public class UsersFragment extends Fragment
     private List<MessageBoxUser> mUsers;
     private String checkUser;
     private String tutorName;
-    ArrayList<String> userInfo ;
-    TextView no_users;
+    private ArrayList<String> userInfo ;
+    private TextView no_users;
 
 
 

@@ -86,6 +86,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
     private int backButtonFlag = 0, batchReUseFlag = 0, tutorReUseFlag = 0 ;
 
     private GroupInfo groupInfo ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -450,7 +451,8 @@ public class GroupHomePageActivity extends AppCompatActivity {
     }
 
     public void sendMessageRequestByGuardianFromGroup(View view){
-        messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),groupInfo.getGroupAdminEmail(),groupInfo.getGroupAdminUid(), true ,false,false,false) ;
+
+        messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),groupInfo.getGroupAdminEmail(),groupInfo.getGroupAdminUid(), true ,false,false,false,true) ;
 
         myRefMessageBox.addValueEventListener(new ValueEventListener() {
             @Override
@@ -458,16 +460,16 @@ public class GroupHomePageActivity extends AppCompatActivity {
                 int flag = 0;
                 for(DataSnapshot snapshot:dataSnapshot.getChildren())
                 {
-                    MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class) ;
+                    MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
                     if(messageBoxInfo1.getGuardianUid().equals(firebaseUser.getUid()) && messageBoxInfo1.getTutorUid().equals(groupInfo.getGroupAdminUid())){
-                        flag=1 ;
+                        flag=1;
                     }
                 }
 
                 if(flag == 0){
                     myRefMessageBox.push().setValue(messageBoxInfo) ;
-                    messageRequestButton.setEnabled(false) ;
-                    messageRequestButton.setBackgroundColor(Color.GRAY) ;
+                    messageRequestButton.setEnabled(false);
+                    messageRequestButton.setBackgroundColor(Color.GRAY);
                 }
             }
 

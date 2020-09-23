@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.guardian.GuardianInfo;
+import com.example.tuitionapp_surji.guardian.GuardianInformationViewActivity;
+import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MessageRequestAdapter extends RecyclerView.Adapter<MessageRequestAdapter.RequestViewHolder> {
@@ -61,18 +64,18 @@ public class MessageRequestAdapter extends RecyclerView.Adapter<MessageRequestAd
 
         if(checkUser.equals("guardian")){
 
-            candidateTutorReference.addValueEventListener(new ValueEventListener() {
+            candidateTutorReference.addValueEventListener(new ValueEventListener()
+            {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    for(DataSnapshot snapshot:dataSnapshot.getChildren()) {
+                    for(DataSnapshot snapshot:dataSnapshot.getChildren())
+                    {
                         CandidateTutorInfo candidateTutorInfo = snapshot.getValue(CandidateTutorInfo.class);
                         if(candidateTutorInfo.getEmailPK().equals(user.getTutorEmail()))
                         {
-                            //System.out.println("User email ====================="+candidateTutorInfo.getEmailPK());
-                           // System.out.println("Name  =======================  "+candidateTutorInfo.getUserName());
                             holder.requester_username.setText(candidateTutorInfo.getUserName());
-                            holder.request_msg.setText(candidateTutorInfo.getUserName()+" sent you a message request.");
+                            holder.request_msg.setText("Message request from Tutor");
 
                             if(candidateTutorInfo.getGender().equals("MALE")){
                                 if(candidateTutorInfo.getProfilePictureUri()!= null)
@@ -103,15 +106,21 @@ public class MessageRequestAdapter extends RecyclerView.Adapter<MessageRequestAd
 
             guardianReference.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                    {
                         GuardianInfo guardianInfo = snapshot.getValue(GuardianInfo.class);
                         if (guardianInfo.getPhoneNumber().equals(user.getGuardianMobileNumber()))
                         {
 
                             holder.requester_username.setText(guardianInfo.getName());
-                            holder.request_msg.setText("A guardian sent you a message request.");
+
+                            if(user.isMessageRequestFromGroup())
+                                holder.request_msg.setText("Message request from Group");
+
+                            else
+                                holder.request_msg.setText("Message request from Guardian");
 
                             if(!guardianInfo.getProfilePicUri().equals("1")){
                                 Picasso.get().load(guardianInfo.getProfilePicUri()).into(holder.requester_profile_image);
@@ -137,28 +146,114 @@ public class MessageRequestAdapter extends RecyclerView.Adapter<MessageRequestAd
             holder.requester_profile_image.setImageResource(R.drawable.man)*/;
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.requester_profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, MessageRequestActivity.class);
-
+                Intent intent;
                 if(checkUser.equals("guardian")){
-                    intent.putExtra("userId", user.getTutorUid());
-                    intent.putExtra("tutorEmail",user.getTutorEmail());
-                    intent.putExtra("user", checkUser);
+                    intent= new Intent(context, VerifiedTutorProfileActivity.class);
+
+                    intent.putExtra("user", "guardian") ;
+                    intent.putExtra("tutorUid",user.getTutorUid());
+                    intent.putExtra("userEmail", user.getTutorEmail()) ;
+                    intent.putExtra("context","messenger");
+
                 }
 
-                else if(checkUser.equals("tutor")){
-                    intent.putExtra("userId", user.getGuardianUid());
-                    intent.putExtra("mobileNumber",user.getGuardianMobileNumber());
-                    intent.putStringArrayListExtra("userInfo", userInfo) ;
-                    intent.putExtra("user", checkUser);
+                else{
+                    intent = new Intent(context, GuardianInformationViewActivity.class);
+                    intent.putStringArrayListExtra("tutorInfo", userInfo) ;
+                    intent.putExtra("user","tutor");
+                    intent.putExtra("guardianUid",user.getGuardianUid());
+                }
+                context.startActivity(intent);
 
+            }
+        });
+
+
+        holder.accept_button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("MessageBox");
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                    {
+
+                        for(DataSnapshot snapshot:dataSnapshot.getChildren())
+                        {
+                            MessageBoxInfo messageBoxInfo = snapshot.getValue(MessageBoxInfo.class);
+                            HashMap<String, Object> hashMap = new HashMap<>();
+
+                            if(checkUser.equals("guardian"))
+                            {
+                                assert messageBoxInfo != null;
+                                if( user.getGuardianUid().equals(messageBoxInfo.getGuardianUid()) && user.getTutorUid().equals(messageBoxInfo.getTutorUid()) )
+                                {
+                                    System.out.println("Update ======================================================== Update");
+                                    hashMap.put("messageFromGuardianSide",true);
+                                    snapshot.getRef().updateChildren(hashMap);
+                                    break;
+                                }
+
+                            }
+
+                            else{
+                                assert messageBoxInfo != null;
+                                if( user.getTutorUid().equals(messageBoxInfo.getTutorUid()) && user.getGuardianUid().equals(messageBoxInfo.getGuardianUid()) )
+                                {
+                                    System.out.println("Update ======================================================== Update");
+                                    hashMap.put("messageFromTutorSide",true);
+                                    snapshot.getRef().updateChildren(hashMap);
+                                    break;
+                                }
+                            }
+
+                        }
+
+                        Intent intent = new Intent(context,MainMessageActivity.class);//.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        if(checkUser.equals("guardian")){
+                            intent.putExtra("user","guardian");
+                        }
+
+                        else {
+                            intent.putExtra("user","tutor");
+                            intent.putStringArrayListExtra("userInfo", userInfo) ;
+                        }
+                        context.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        });
+
+
+
+        holder.delete_button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,MainMessageActivity.class);//.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                if(checkUser.equals("guardian")){
+                    intent.putExtra("user","guardian");
+                }
+
+                else {
+                    intent.putExtra("user","tutor");
+                    intent.putStringArrayListExtra("userInfo", userInfo) ;
                 }
                 context.startActivity(intent);
             }
         });
+
     }
 
 
@@ -168,8 +263,11 @@ public class MessageRequestAdapter extends RecyclerView.Adapter<MessageRequestAd
     }
 
     public class RequestViewHolder extends RecyclerView.ViewHolder {
+
         public TextView requester_username;
         public TextView request_msg;
+        public TextView accept_button;
+        public TextView delete_button;
         public ImageView requester_profile_image;
 
         public RequestViewHolder(View view) {
@@ -178,6 +276,8 @@ public class MessageRequestAdapter extends RecyclerView.Adapter<MessageRequestAd
             requester_username = view.findViewById(R.id.requester_username);
             request_msg = view.findViewById(R.id.request_msg);
             requester_profile_image = view.findViewById(R.id.requester_profile_image);
+            accept_button = view.findViewById(R.id.request_accept_button);
+            delete_button = view.findViewById(R.id.request_delete_button);
         }
     }
 }

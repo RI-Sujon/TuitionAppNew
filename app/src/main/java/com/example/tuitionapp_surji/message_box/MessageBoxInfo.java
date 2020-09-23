@@ -3,30 +3,29 @@ package com.example.tuitionapp_surji.message_box;
 public class MessageBoxInfo {
     private String guardianMobileNumber ;
     private String guardianUid ;
-
     private String tutorEmail ;
     private String tutorUid ;
-
     private boolean messageFromGuardianSide ;
-    private boolean blockFromGuardianSide ;
     private boolean messageFromTutorSide ;
+    private boolean blockFromGuardianSide ;
     private boolean blockFromTutorSide ;
+    private boolean isMessageRequestFromGroup;
+
 
     public MessageBoxInfo(){
-
     }
 
-    public MessageBoxInfo(String guardianMobileNumber, String guardianUid, String tutorEmail, String tutorUid, boolean messageFromGuardianSide, boolean messageFromTutorSide, boolean blockFromGuardianSide,  boolean blockFromTutorSide) {
+    public MessageBoxInfo(String guardianMobileNumber, String guardianUid, String tutorEmail, String tutorUid, boolean messageFromGuardianSide, boolean messageFromTutorSide, boolean blockFromGuardianSide, boolean blockFromTutorSide, boolean isMessageRequestFromGroup) {
         this.guardianMobileNumber = guardianMobileNumber;
         this.guardianUid = guardianUid;
         this.tutorEmail = tutorEmail;
         this.tutorUid = tutorUid;
         this.messageFromGuardianSide = messageFromGuardianSide;
-        this.blockFromGuardianSide = blockFromGuardianSide;
         this.messageFromTutorSide = messageFromTutorSide;
+        this.blockFromGuardianSide = blockFromGuardianSide;
         this.blockFromTutorSide = blockFromTutorSide;
+        this.isMessageRequestFromGroup = isMessageRequestFromGroup;
     }
-
 
     public String getGuardianMobileNumber() {
         return guardianMobileNumber;
@@ -68,14 +67,6 @@ public class MessageBoxInfo {
         this.messageFromGuardianSide = messageFromGuardianSide;
     }
 
-    public boolean isBlockFromGuardianSide() {
-        return blockFromGuardianSide;
-    }
-
-    public void setBlockFromGuardianSide(boolean blockFromGuardianSide) {
-        this.blockFromGuardianSide = blockFromGuardianSide;
-    }
-
     public boolean isMessageFromTutorSide() {
         return messageFromTutorSide;
     }
@@ -84,11 +75,27 @@ public class MessageBoxInfo {
         this.messageFromTutorSide = messageFromTutorSide;
     }
 
+    public boolean isBlockFromGuardianSide() {
+        return blockFromGuardianSide;
+    }
+
+    public void setBlockFromGuardianSide(boolean blockFromGuardianSide) {
+        this.blockFromGuardianSide = blockFromGuardianSide;
+    }
+
     public boolean isBlockFromTutorSide() {
         return blockFromTutorSide;
     }
 
     public void setBlockFromTutorSide(boolean blockFromTutorSide) {
         this.blockFromTutorSide = blockFromTutorSide;
+    }
+
+    public boolean isMessageRequestFromGroup() {
+        return isMessageRequestFromGroup;
+    }
+
+    public void setMessageRequestFromGroup(boolean messageRequestFromGroup) {
+        isMessageRequestFromGroup = messageRequestFromGroup;
     }
 }

@@ -84,7 +84,7 @@ public class CalendarHomeActivity extends AppCompatActivity {
     }
 
     private void viewTheSelectedEvent(CalendarEventInfo calendarEventInfo) {
-        Intent intent = new Intent(this, CalendarViewEventActivity.class);
+        Intent intent = new Intent(this, CalendarEventViewActivity.class);
         intent.putExtra("calendarEventInfo", (Serializable) calendarEventInfo);
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);

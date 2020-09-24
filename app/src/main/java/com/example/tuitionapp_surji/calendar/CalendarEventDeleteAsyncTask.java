@@ -9,16 +9,16 @@ import java.io.IOException;
 public class CalendarEventDeleteAsyncTask extends AsyncTask<Void, Void, String>
 {
     private com.google.api.services.calendar.Calendar service;
-    private CalendarViewEventActivity calendarViewEventActivity;
+    private CalendarEventViewActivity calendarEventViewActivity;
     String eventId;
 
     /*
     public EventDeleteAsyncTask() {
     }*/
 
-    public CalendarEventDeleteAsyncTask(CalendarViewEventActivity calendarViewEventActivity, Calendar service, String eventId) {
+    public CalendarEventDeleteAsyncTask(CalendarEventViewActivity calendarEventViewActivity, Calendar service, String eventId) {
         this.service = service;
-        this.calendarViewEventActivity = calendarViewEventActivity;
+        this.calendarEventViewActivity = calendarEventViewActivity;
         this.eventId = eventId;
     }
 

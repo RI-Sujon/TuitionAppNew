@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="340dp"
+    android:layout_height="120dp"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:padding="15dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+
+            android:id="@+id/confirmation_btn"
+            android:textSize="18sp"
+            android:textColor="@color/Black"
+            android:text="Are you sure you want to delete this video?"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"/>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginLeft="50dp"
+            android:id="@+id/demo_OK_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/Black"
+            android:text="Yes"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_marginLeft="120dp"
+            android:text="No"
+            android:layout_gravity="left"
+            android:id="@+id/demo_cancel_btn"
+            android:layout_width="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/Blue"
+            android:layout_height="wrap_content"/>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

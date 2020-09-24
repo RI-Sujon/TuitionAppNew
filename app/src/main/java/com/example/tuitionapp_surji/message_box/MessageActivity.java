@@ -1,6 +1,7 @@
 package com.example.tuitionapp_surji.message_box;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,6 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tuitionapp_surji.MessengerSettingsActivity;
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.guardian.GuardianInfo;
@@ -95,6 +97,9 @@ public class MessageActivity extends AppCompatActivity
     private ValueEventListener seenListener;
 
     private DatabaseReference messageBlock;
+    private Dialog mDialog;
+    private TextView block_confirmation_btn,block_yes_btn,block_no_btn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -129,6 +134,8 @@ public class MessageActivity extends AppCompatActivity
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        mDialog = new Dialog(this);
 
         profile_image=findViewById(R.id.profile_image);
         username = findViewById(R.id.username);
@@ -665,8 +672,8 @@ public class MessageActivity extends AppCompatActivity
                 blockTheUser(true);
                 Intent intent = new Intent(MessageActivity.this,MessageActivity.class);
 
-                /*blockMenuItem.setVisible(false);
-                unblockMenuItem.setVisible(true);*/
+                blockMenuItem.setVisible(false);
+                unblockMenuItem.setVisible(true);
 
                 if(checkUser.equals("guardian")){
                     intent.putExtra("userId", userId);
@@ -711,52 +718,100 @@ public class MessageActivity extends AppCompatActivity
         return false;
     }
 
+
+
     private void blockTheUser(final boolean data)
     {
         final String  userId = intent.getStringExtra("userId");
-
         messageBlock = FirebaseDatabase.getInstance().getReference("MessageBox");
         final String currentUser= FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        mDialog.setContentView(R.layout.custom_pop_up_block_the_user);
+        block_confirmation_btn = mDialog.findViewById(R.id.block_confirmation_btn);
+        block_yes_btn = mDialog.findViewById(R.id.block_yes_btn);
+        block_no_btn = mDialog.findViewById(R.id.block_no_btn);
+        mDialog.show();
 
-        messageBlock.addValueEventListener(new ValueEventListener()
+        block_yes_btn.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onClick(View v)
+            {
 
-                for(DataSnapshot dS1: dataSnapshot.getChildren()){
-                    MessageBoxInfo messageBoxInfo = dS1.getValue(MessageBoxInfo.class);
-                    if(checkUser.equals("guardian"))
-                    {
-                        if(messageBoxInfo.getGuardianUid().equals(currentUser) && messageBoxInfo.getTutorUid().equals(userId)){
+                messageBlock.addValueEventListener(new ValueEventListener()
+                {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                HashMap<String,Object> hashMap = new HashMap<>();
-                                hashMap.put("blockFromGuardianSide",data);
-                                messageBlock.child(dS1.getKey()).updateChildren(hashMap);
-                                break;
+                        for(DataSnapshot dS1: dataSnapshot.getChildren()){
+                            MessageBoxInfo messageBoxInfo = dS1.getValue(MessageBoxInfo.class);
+                            if(checkUser.equals("guardian"))
+                            {
+                                if(messageBoxInfo.getGuardianUid().equals(currentUser) && messageBoxInfo.getTutorUid().equals(userId)){
 
+                                    HashMap<String,Object> hashMap = new HashMap<>();
+                                    hashMap.put("blockFromGuardianSide",data);
+                                    messageBlock.child(dS1.getKey()).updateChildren(hashMap);
+                                    break;
+
+                                }
+                            }
+
+                            else if(checkUser.equals("tutor"))
+                            {
+                                if (messageBoxInfo.getGuardianUid().equals(userId) && messageBoxInfo.getTutorUid().equals(currentUser)) {
+                                    HashMap<String,Object> hashMap = new HashMap<>();
+                                    hashMap.put("blockFromTutorSide",data);
+                                    messageBlock.child(dS1.getKey()).updateChildren(hashMap);
+                                    break;
+                                }
+                            }
                         }
+
+                        messageBlock.removeEventListener(this);
+
                     }
 
-                    else if(checkUser.equals("tutor"))
-                    {
-                        if (messageBoxInfo.getGuardianUid().equals(userId) && messageBoxInfo.getTutorUid().equals(currentUser)) {
-                            HashMap<String,Object> hashMap = new HashMap<>();
-                            hashMap.put("blockFromTutorSide",data);
-                            messageBlock.child(dS1.getKey()).updateChildren(hashMap);
-                            break;
-                        }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
                     }
-                }
+                });
 
-                messageBlock.removeEventListener(this);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                mDialog.dismiss();
             }
         });
+
+        block_no_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+
+
+    }
+
+    public void goTOMessengerSettings(View view) {
+
+        Intent i = getIntent();
+        final String  userId = i.getStringExtra("userId");
+        Intent intent = new Intent(this, MessengerSettingsActivity.class);
+
+        if(checkUser.equals("guardian")){
+            intent.putExtra("userId", userId );
+            intent.putExtra("tutorEmail",tutorEmail);
+            intent.putExtra("user", checkUser);
+        }
+
+        else if(checkUser.equals("tutor")){
+            intent.putExtra("userId", userId);
+            intent.putExtra("mobileNumber", guardianMobileNumber);
+            intent.putStringArrayListExtra("userInfo", userInfo) ;
+            intent.putExtra("user", checkUser);
+        }
+
+        startActivity(intent);
+        finish();
     }
 }

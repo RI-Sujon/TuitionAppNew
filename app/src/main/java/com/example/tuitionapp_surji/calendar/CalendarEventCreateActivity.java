@@ -43,7 +43,6 @@ import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Calendar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
 
 import java.time.LocalDate;
@@ -146,7 +145,7 @@ public final class CalendarEventCreateActivity extends Activity  {
         // enable logging
         Logger.getLogger("com.google.api.client").setLevel(LOGGING_LEVEL);
 
-        setContentView(R.layout.activity_calendar_create);
+        setContentView(R.layout.activity_calendar_event_create);
         //listView = findViewById(R.id.list);
         //registerForContextMenu(listView);
 
@@ -686,7 +685,7 @@ public final class CalendarEventCreateActivity extends Activity  {
     }
 
     public void ViewTheEvents(View view) {
-        Intent intent = new Intent(this, CalendarViewEventActivity.class);
+        Intent intent = new Intent(this, CalendarEventViewActivity.class);
         intent.putStringArrayListExtra("userInfo", userInfo) ;
         startActivity(intent);
         finish();

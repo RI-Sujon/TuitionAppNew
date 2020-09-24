@@ -29,10 +29,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/username"
-                android:layout_marginLeft="25dp"
+                android:layout_marginLeft="20dp"
                 android:text="username"
                 android:textColor="#fff"
                 android:textStyle="bold"/>
+
+            <ImageView
+                android:layout_marginLeft="95dp"
+                android:src="@drawable/settings2"
+                android:id="@+id/messenger_settings"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:onClick="goTOMessengerSettings"/>
 
 
         </androidx.appcompat.widget.Toolbar>

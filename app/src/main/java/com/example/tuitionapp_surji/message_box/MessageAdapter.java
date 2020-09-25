@@ -93,7 +93,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
                 holder.profile_image_messenger.setImageResource(R.drawable.user_profile_view);
 
-           
+
         }
 
 

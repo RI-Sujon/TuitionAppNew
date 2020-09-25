@@ -100,8 +100,10 @@ public class GroupCreationActivity extends AppCompatActivity {
             }
         });
 
-        if(!tutorApprovalStatus.equals("running")){
-            takeActionForNonApprovalTutor() ;
+        if(tutorApprovalStatus!=null){
+            if(!tutorApprovalStatus.equals("running")){
+                takeActionForNonApprovalTutor() ;
+            }
         }
 
         if(type!=null){

@@ -53,7 +53,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
     private DatabaseReference myRefGroup, myRefMessageBox, myRefReport, myRefBatch, myRefAddTutor, myRefCandidateTutor, myRefNotification ;
     private FirebaseUser firebaseUser ;
     private MessageBoxInfo messageBoxInfo;
-    private String user, tutorEmail, groupID , tutorUid2, batchID , groupName, groupAddress, context, viewType, tutorApprovalStatus;
+    private String user, tutorEmail, groupID , tutorUid2, batchID , groupName, groupAddress, context, viewType;
     private ArrayList<String>userInfo ;
 
     private TextView groupNameTextView, fullAddressTextView ;

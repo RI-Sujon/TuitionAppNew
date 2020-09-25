@@ -122,8 +122,10 @@ public class TuitionPostViewActivity extends AppCompatActivity {
 
             myRefResponsePost = myRefResponsePost.child(userInfo.get(3)) ;
 
-            if(!tutorApprovalStatus.equals("running")){
-                takeActionForNonApprovalTutor() ;
+            if(tutorApprovalStatus!=null){
+                if(!tutorApprovalStatus.equals("running")){
+                    takeActionForNonApprovalTutor() ;
+                }
             }
 
             myRefResponsePost.addValueEventListener(new ValueEventListener() {

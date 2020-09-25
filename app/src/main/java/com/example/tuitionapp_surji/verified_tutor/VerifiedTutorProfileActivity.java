@@ -1226,6 +1226,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     public void sendMessageRequestByGuardian(View view){
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
+        System.out.println("User Email === "+userEmail);
         messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail, tutorUid, true ,false,false,false,false) ;
 
         messageRequestButton.setBackgroundColor(Color.GREEN);

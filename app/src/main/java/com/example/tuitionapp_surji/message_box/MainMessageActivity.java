@@ -143,21 +143,6 @@ public class MainMessageActivity extends AppCompatActivity {
                         }
                     });
 
-             /*   if(checkUser.equals("guardian")){
-                    username.setText("Guardian");
-                }
-
-                else if(checkUser.equals("tutor")){
-                    username.setText("Tutor");
-                }
-
-               if("default".equals("default")){
-                    profile_image.setImageResource(R.mipmap.ic_launcher);
-                }*/
-
-               /* else{
-                    Glide.with(MainActivity.this).load(user.getImageURL()).into(profile_image);
-                }*/
                 }
 
                 @Override
@@ -212,9 +197,7 @@ public class MainMessageActivity extends AppCompatActivity {
                                     tutorInfo = candidateTutorInfo;
                                    // System.out.println("Name =============="+tutorInfo.getUserName());
                                 }
-
                             }
-
                         }
 
                         @Override
@@ -223,21 +206,6 @@ public class MainMessageActivity extends AppCompatActivity {
                         }
                     });
 
-             /*   if(checkUser.equals("guardian")){
-                    username.setText("Guardian");
-                }
-
-                else if(checkUser.equals("tutor")){
-                    username.setText("Tutor");
-                }
-
-               if("default".equals("default")){
-                    profile_image.setImageResource(R.mipmap.ic_launcher);
-                }*/
-
-               /* else{
-                    Glide.with(MainActivity.this).load(user.getImageURL()).into(profile_image);
-                }*/
                 }
 
                 @Override
@@ -245,9 +213,6 @@ public class MainMessageActivity extends AppCompatActivity {
 
                 }
             });
-
-          //  username.setText("Tutor");
-
         }
 
 

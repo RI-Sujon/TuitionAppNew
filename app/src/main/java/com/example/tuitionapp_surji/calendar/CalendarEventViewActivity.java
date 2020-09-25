@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CalendarViewEventActivity extends AppCompatActivity
+public class CalendarEventViewActivity extends AppCompatActivity
 {
 
     private Serializable eventInfoList;// = (ArrayList<String>) getIntent().getSerializableExtra("key");
@@ -62,7 +62,7 @@ public class CalendarViewEventActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar_view_event);
+        setContentView(R.layout.activity_calendar_event_view);
 
         Toolbar toolbar= findViewById(R.id.event_view_toolbar);
         setSupportActionBar(toolbar);
@@ -117,7 +117,7 @@ public class CalendarViewEventActivity extends AppCompatActivity
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CalendarViewEventActivity.this, CalendarHomeActivity.class);
+                Intent intent = new Intent(CalendarEventViewActivity.this, CalendarHomeActivity.class);
                 intent.putStringArrayListExtra("userInfo", userInfo) ;
                 startActivity(intent);
                 finish();

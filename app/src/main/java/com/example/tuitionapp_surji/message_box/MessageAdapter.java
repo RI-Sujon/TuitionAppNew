@@ -90,14 +90,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         else if(imageUri==null && gender!=null)
         {
-            if(gender.equals("MALE")){
-                holder.profile_image_messenger.setImageResource(R.drawable.male_pic);
 
-            }
+                holder.profile_image_messenger.setImageResource(R.drawable.user_profile_view);
 
-            else {
-                holder.profile_image_messenger.setImageResource(R.drawable.female_pic);
-            }
+           
         }
 
 

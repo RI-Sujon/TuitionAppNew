@@ -17,14 +17,15 @@
         android:roundIcon="@drawable/appicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".guardian.GuardianInformationViewActivity"></activity>
-        <activity android:name=".message_box.ImageLargeViewActivity"></activity>
+        <activity android:name=".message_box.MessengerSettingsActivity"></activity>
+        <activity android:name=".guardian.GuardianInformationViewActivity" />
+        <activity android:name=".message_box.ImageLargeViewActivity" />
         <activity android:name=".group.GroupProfileActivity" />
         <activity android:name=".tuition_post.TuitionPostViewSinglePageActivity" />
         <activity android:name=".message_box.MessageRequestActivity" />
         <activity android:name=".group.GroupCreationActivity" />
         <activity android:name=".demo_video.DemoVideoMainActivity" />
-        <activity android:name=".calendar.CalendarViewEventActivity" />
+        <activity android:name=".calendar.CalendarEventViewActivity" />
         <activity android:name=".calendar.CalendarHomeActivity" />
         <activity android:name=".calendar.CalendarEventCreateActivity" />
         <activity android:name=".note.Note_Home" />
@@ -73,10 +74,9 @@
             </intent-filter>
         </service>
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-
-
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

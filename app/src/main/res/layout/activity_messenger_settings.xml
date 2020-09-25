@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".message_box.MessengerSettingsActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/settings_toolbar"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/MenuStyle"
+            android:background="@drawable/border3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/messenger_settings_profile_pic"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/user_profile_view"
+
+        />
+
+    <TextView
+        android:id="@+id/messenger_settings_user_name"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="Abrar Hasan Rahim"
+        android:textAlignment="center"
+        android:textSize="22sp"
+        android:textColor="@color/Black"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/block_in_messenger_settings"
+            android:layout_marginTop="55dp"
+            android:layout_marginLeft="5dp"
+            android:padding="5dp"
+            android:text="Block User"
+            android:textSize="18sp"
+            android:textColor="@color/Black"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:layout_marginTop="60dp"
+            android:src="@drawable/block_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#000000"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/delete_conversation"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="5dp"
+            android:padding="5dp"
+            android:text="Delete Conversation"
+            android:textSize="18sp"
+            android:textColor="@color/Black"
+            />
+
+        <ImageView
+            android:layout_marginTop="25dp"
+            android:src="@drawable/trash"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#000000"
+        />
+
+
+       <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/search_conversation"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="5dp"
+            android:padding="5dp"
+            android:text="Search Conversation"
+            android:textSize="18sp"
+            android:textColor="@color/Black"
+            />
+
+        <ImageView
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/search_conversation"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="8dp"
+        android:background="#000000"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/something_wrong"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="5dp"
+            android:padding="5dp"
+            android:text="Something's Wrong"
+            android:textSize="18sp"
+            android:textColor="@color/Black"
+            />
+
+        <ImageView
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/something_went_wrong"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="8dp"
+        android:background="#000000"
+        />
+
+
+
+</LinearLayout>

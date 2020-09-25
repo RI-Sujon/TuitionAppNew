@@ -31,15 +31,16 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<MessageBoxUser> mUsers;
+    private List<MessageBoxInfo> mUsers;
     private  String checkUser;
     private CandidateTutorInfo tutorInfo;
     private String LastMessage;
     private boolean isChat;
     private ArrayList<String> userInfo ;
-    private ArrayList<CandidateTutorInfo> imageUriStrings;
+    private MessageBoxInfo user = new MessageBoxInfo();
+    private DatabaseReference candidateTutorReference, guardianReference;
 
-    public UserAdapter(Context mContext, List<MessageBoxUser> mUsers, String checkUser, boolean isChat, ArrayList<String> userInfo) {
+    public UserAdapter(Context mContext, List<MessageBoxInfo> mUsers, String checkUser, boolean isChat, ArrayList<String> userInfo) {
         this.mContext = mContext;
         this.mUsers = mUsers;
         this.checkUser = checkUser;
@@ -56,40 +57,34 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-       final MessageBoxUser user=mUsers.get(position);
-       imageUriStrings = new ArrayList<>();
 
-        DatabaseReference candidateTutorReference = FirebaseDatabase.getInstance().getReference("CandidateTutor");
-        DatabaseReference guardianReference = FirebaseDatabase.getInstance().getReference("Guardian");
+         user=mUsers.get(position);
 
-        if(checkUser.equals("guardian")){
-            final String[] tutorName = new String[1];
+         candidateTutorReference = FirebaseDatabase.getInstance().getReference("CandidateTutor");
+         guardianReference = FirebaseDatabase.getInstance().getReference("Guardian");
 
+         if(checkUser.equals("guardian")){
             candidateTutorReference.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                    for(DataSnapshot snapshot:dataSnapshot.getChildren())
+                    {
                         CandidateTutorInfo candidateTutorInfo = snapshot.getValue(CandidateTutorInfo.class);
                         if(candidateTutorInfo.getEmailPK().equals(user.getTutorEmail()))
                         {
-                            tutorInfo = candidateTutorInfo;
-                            tutorName[0] = tutorInfo.getUserName();
-                            imageUriStrings.add(candidateTutorInfo);
-                            holder.username.setText(tutorName[0]);
 
-                            if(candidateTutorInfo.getGender().equals("MALE")){
-                                if(tutorInfo.getProfilePictureUri()!= null)
-                                    Picasso.get().load(tutorInfo.getProfilePictureUri()).into(holder.profile_image);
-                                else
-                                    holder.profile_image.setImageResource(R.drawable.male_pic);
-                            }
+                            CandidateTutorInfo c =candidateTutorInfo;
 
-                            else if(candidateTutorInfo.getGender().equals("FEMALE")){
-                                if(tutorInfo.getProfilePictureUri()!= null)
-                                    Picasso.get().load(tutorInfo.getProfilePictureUri()).into(holder.profile_image);
+                            System.out.println("WHY MAN WHY +++++++ === "+c.getUserName());
+                            holder.username.setText(c.getUserName());
+
+
+                                if(candidateTutorInfo.getProfilePictureUri()!= null)
+                                    Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(holder.profile_image);
                                 else
-                                    holder.profile_image.setImageResource(R.drawable.female_pic);
-                            }
+                                    holder.profile_image.setImageResource(R.drawable.user_profile_view);
+
 
                             if(isChat){
                                 if(candidateTutorInfo.getStatus().equals("online")){
@@ -106,6 +101,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                                 holder.img_on.setVisibility(View.GONE);
                                 holder.img_off.setVisibility(View.GONE);
                             }
+
                             break;
                         }
                     }
@@ -133,29 +129,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
                             holder.username.setText(guardianInfo.getName());
 
-                           /* if(candidateTutorInfo.getGender().equals("MALE")){
-                                if(tutorInfo.getProfilePictureUri()!= null)
-                                    Picasso.get().load(tutorInfo.getProfilePictureUri()).into(holder.profile_image);
-                                else
-                                    holder.profile_image.setImageResource(R.drawable.male_pic);
-                            }
-
-                            else if(candidateTutorInfo.getGender().equals("FEMALE")){
-                                if(tutorInfo.getProfilePictureUri()!= null)
-                                    Picasso.get().load(tutorInfo.getProfilePictureUri()).into(holder.profile_image);
-                                else
-                                    holder.profile_image.setImageResource(R.drawable.female_pic);
-                            }*/
-
-                            if(!guardianInfo.getProfilePicUri().equals("1")){
+                            if(guardianInfo.getProfilePicUri()!=null){
                                 Picasso.get().load(guardianInfo.getProfilePicUri()).into(holder.profile_image);
                             }
 
                             else{
-                                holder.profile_image.setImageResource(R.drawable.man);
+                                holder.profile_image.setImageResource(R.drawable.user_profile_view);
                             }
-
-
 
                             if(isChat){
                                 if(guardianInfo.getStatus().equals("online")){
@@ -174,15 +154,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                                 holder.img_on.setVisibility(View.GONE);
                                 holder.img_off.setVisibility(View.GONE);
                             }
-
-
-
                             break;
                         }
-
-
                     }
-
                 }
 
                 @Override
@@ -193,15 +167,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
             lastMessageSetter(user.getGuardianUid(), holder.last_msg);
 
-
-           /* holder.username.setText(user.getGuardianMobileNumber());
-            holder.profile_image.setImageResource(R.drawable.man);
-            //holder.profile_image.setImageResource(R.mipmap.ic_launcher);
-
-            holder.img_on.setVisibility(View.GONE);
-            holder.img_off.setVisibility(View.GONE);*/
         }
-
 
         /*
         if(user.getGuardianMobileNumber() != ""){
@@ -302,7 +268,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 }
             }
 
-
             if(LastMessage.equals("default")){
                 last_msg.setText("No message");
             }
@@ -325,24 +290,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                         else{
                             last_msg.setText("You have sent a photo.  "+chat.getMessage_time());
                         }
-
                     }
-
-
                 }
                 else
                     last_msg.setText(LastMessage);
-
             }
-
         }
 
         else
             last_msg.setText("No Message");
-
-
-
     }
-
-
 }

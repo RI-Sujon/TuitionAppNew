@@ -37,7 +37,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private String LastMessage;
     private boolean isChat;
     private ArrayList<String> userInfo ;
-    private MessageBoxInfo user = new MessageBoxInfo();
+    //private MessageBoxInfo user = new MessageBoxInfo();
     private DatabaseReference candidateTutorReference, guardianReference;
 
     public UserAdapter(Context mContext, List<MessageBoxInfo> mUsers, String checkUser, boolean isChat, ArrayList<String> userInfo) {
@@ -58,12 +58,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-         user=mUsers.get(position);
+        final MessageBoxInfo user=mUsers.get(position);
 
          candidateTutorReference = FirebaseDatabase.getInstance().getReference("CandidateTutor");
          guardianReference = FirebaseDatabase.getInstance().getReference("Guardian");
 
-         if(checkUser.equals("guardian")){
+         if(checkUser.equals("guardian"))
+         {
             candidateTutorReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot)
@@ -119,7 +120,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
         else if(checkUser.equals("tutor")){
 
-            guardianReference.addValueEventListener(new ValueEventListener() {
+            guardianReference.addValueEventListener(new ValueEventListener()
+            {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for(DataSnapshot snapshot:dataSnapshot.getChildren()){

@@ -244,13 +244,13 @@ public class MessageActivity extends AppCompatActivity
                                     profile_image.setImageResource(R.drawable.female_pic);
                             }*/
 
-                          if(!guardianInfo.getProfilePicUri().equals("1")){
+                          if(guardianInfo.getProfilePicUri()!= null){
                               imageUri = guardianInfo.getProfilePicUri();
                               Picasso.get().load(guardianInfo.getProfilePicUri()).into(profile_image);
                           }
 
                           else{
-                              profile_image.setImageResource(R.drawable.man);
+                              profile_image.setImageResource(R.drawable.user_profile_view);
                           }
 
                         }

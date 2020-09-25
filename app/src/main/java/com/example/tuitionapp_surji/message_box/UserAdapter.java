@@ -267,7 +267,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                     last_msg.setTypeface(null,Typeface.BOLD);
                 }
             }
-            
+
             if(LastMessage.equals("default")){
                 last_msg.setText("No message");
             }

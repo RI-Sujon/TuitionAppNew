@@ -60,13 +60,10 @@ import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 
 public class DemoVideoMainActivity extends AppCompatActivity {
-
     private ArrayList<String> userInfo ;
     private String emailPrimaryKey ;
 
-
     private static final int PICK_VIDEO_REQUEST = 1;
-
 
     private ImageView choose_btn, video_view_btn, guardian_video_view_btn;
     private ImageView upload_btn, download_btn,delete_btn,guardian_download_btn;
@@ -86,9 +83,6 @@ public class DemoVideoMainActivity extends AppCompatActivity {
     private String tutorEmail, userEmail;
     private String name, tutorUid;
     private TextView t1,t2,t3,t4,t5;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

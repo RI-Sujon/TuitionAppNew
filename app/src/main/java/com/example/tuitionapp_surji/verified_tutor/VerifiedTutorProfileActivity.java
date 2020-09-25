@@ -360,7 +360,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 viewFlipper.setDisplayedChild(0);
                 aboutButton.setImageResource(R.drawable.about_blue);
-                excellenceButton.setImageResource(R.drawable.exc_gray);
+                excellenceButton.setImageResource(R.drawable.preferences_gray);
                 experienceButton.setImageResource(R.drawable.exp_gray);
             }
         });
@@ -370,7 +370,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 viewFlipper.setDisplayedChild(1);
                 aboutButton.setImageResource(R.drawable.about_gray);
-                excellenceButton.setImageResource(R.drawable.exc_blue);
+                excellenceButton.setImageResource(R.drawable.preference_blue);
                 experienceButton.setImageResource(R.drawable.exp_gray);
             }
         });
@@ -380,7 +380,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 viewFlipper.setDisplayedChild(2);
                 aboutButton.setImageResource(R.drawable.about_gray);
-                excellenceButton.setImageResource(R.drawable.exc_gray);
+                excellenceButton.setImageResource(R.drawable.preferences_gray);
                 experienceButton.setImageResource(R.drawable.exp_blue);
             }
         });

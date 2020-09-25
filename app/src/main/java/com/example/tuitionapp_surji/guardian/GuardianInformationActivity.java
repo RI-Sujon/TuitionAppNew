@@ -90,7 +90,7 @@ public class GuardianInformationActivity extends AppCompatActivity {
             address.setText(addressString);
 
             profilePicUriString2 = intent.getStringExtra("guardianProfilePicUri") ;
-            if(!profilePicUriString2.equals("1")) {
+            if(profilePicUriString2!=null) {
                 Picasso.get().load(profilePicUriString2).into(imageView);
             }
         }
@@ -195,7 +195,7 @@ public class GuardianInformationActivity extends AppCompatActivity {
         else {
             GuardianInfo guardianInfo ;
             if(type==null){
-                guardianInfo = new GuardianInfo(nameString, addressString, mobileNumberString, "1" ) ;
+                guardianInfo = new GuardianInfo(nameString, addressString, mobileNumberString, null ) ;
             }
             else {
                 guardianInfo = new GuardianInfo(nameString, addressString, mobileNumberString, profilePicUriString2 ) ;

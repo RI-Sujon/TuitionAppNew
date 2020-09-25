@@ -138,12 +138,12 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
                 GuardianInfo guardianInfo = dataSnapshot.getValue(GuardianInfo.class) ;
                 guardianName.setText(guardianInfo.getName());
 
-                if(!guardianInfo.getProfilePicUri().equals("1")){
+                if(guardianInfo.getProfilePicUri()!=null){
                     Picasso.get().load(guardianInfo.getProfilePicUri()).into(profilePic) ;
                 }
 
                 else
-                    profilePic.setImageResource(R.drawable.man);
+                    profilePic.setImageResource(R.drawable.user_profile_view);
 
 
                 myRefGuardian.removeEventListener(this);
@@ -314,6 +314,7 @@ public class GuardianHomePageActivity extends AppCompatActivity implements Navig
     }
 
     private void status(String status){
+      // final FirebaseUser firebaseUser1 = FirebaseAuth.getInstance().getCurrentUser();
          reference = FirebaseDatabase.getInstance().getReference("Guardian").child(firebaseUser.getUid());
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("status", status);

@@ -31,11 +31,13 @@ public class UsersFragment extends Fragment
 
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
-    private List<MessageBoxUser> mUsers;
+    private List<MessageBoxInfo> mUsers;
     private String checkUser;
     private String tutorName;
     private ArrayList<String> userInfo ;
     private TextView no_users;
+    private FirebaseUser firebaseUser;
+    private DatabaseReference reference;
 
 
 
@@ -65,21 +67,25 @@ public class UsersFragment extends Fragment
         return view;
     }
 
-    private void readUsers() {
-        final FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
-         DatabaseReference reference= FirebaseDatabase.getInstance().getReference("MessageBox");
+    private void readUsers()
+    {
+          firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+          reference= FirebaseDatabase.getInstance().getReference("MessageBox");
 
-        reference.addValueEventListener(new ValueEventListener() {
+          reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
 
-                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    MessageBoxUser user= snapshot.getValue(MessageBoxUser.class);
+                for(DataSnapshot snapshot: dataSnapshot.getChildren())
+                {
+                    MessageBoxInfo user= snapshot.getValue(MessageBoxInfo.class);
 
-                    assert user !=null;
+                    //System.out.println("User's Tutor Email ="+ user.getTutorEmail());
+
+                  /*  assert user !=null;
                     assert  firebaseUser != null;
-
+*/
 
                     if(checkUser.equals("guardian")){
                         if(user.getGuardianUid().equals(firebaseUser.getUid()))

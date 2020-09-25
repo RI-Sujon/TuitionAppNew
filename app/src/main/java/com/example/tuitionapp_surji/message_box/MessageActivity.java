@@ -2,7 +2,6 @@ package com.example.tuitionapp_surji.message_box;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -22,13 +21,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tuitionapp_surji.MessengerSettingsActivity;
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.guardian.GuardianInfo;
-import com.example.tuitionapp_surji.note.NoteInfo;
-import com.example.tuitionapp_surji.notification_pack.NotificationInfo;
-import com.example.tuitionapp_surji.notification_pack.NotificationSender;
 import com.example.tuitionapp_surji.notification_pack.SendNotification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

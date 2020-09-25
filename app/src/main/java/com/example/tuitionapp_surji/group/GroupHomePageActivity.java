@@ -35,6 +35,8 @@ import com.example.tuitionapp_surji.tuition_post.TuitionPostViewActivity;
 import com.example.tuitionapp_surji.verified_tutor.ReportInfo;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorHomePageActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,6 +46,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -122,7 +126,6 @@ public class GroupHomePageActivity extends AppCompatActivity {
         }) ;
 
         if(user.equals("guardian")||user.equals("guardianHomePage")){
-            messageFloatingButton = findViewById(R.id.messageBoxFloatingButton) ;
             messageFloatingButton.setVisibility(View.GONE);
 
             context = intent.getStringExtra("context") ;
@@ -135,7 +138,6 @@ public class GroupHomePageActivity extends AppCompatActivity {
             messageRequestButton.setVisibility(View.VISIBLE);
         }
         else if(user.equals("admin")){
-            messageFloatingButton = findViewById(R.id.messageBoxFloatingButton) ;
             messageFloatingButton.setVisibility(View.GONE);
 
             //blockButton = findViewById(R.id.blockGroupButton) ;
@@ -442,13 +444,6 @@ public class GroupHomePageActivity extends AppCompatActivity {
         finish();
     }
 
-    public void goToMessageBox(View view){
-        Intent intent = new Intent(this, MainMessageActivity.class);
-        intent.putStringArrayListExtra("userInfo", userInfo) ;
-        intent.putExtra("user",user) ;
-        startActivity(intent);
-        finish();
-    }
 
     public void sendMessageRequestByGuardianFromGroup(View view){
 

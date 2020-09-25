@@ -88,10 +88,10 @@ public class MainMessageActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     DocumentSnapshot document = task.getResult() ;
                     counterMessage = (long) document.get("messageCounter") ;
-                    counterMessage =0;
+                    oldCounterMessage = counterMessage ;
                     databaseFireStore.collection("System").document("Counter")
                             .collection("NotificationCounter").document(firebaseUser.getUid())
-                            .update("messageCounter",counterMessage) ;
+                            .update("messageOldCounter",oldCounterMessage) ;
                 }
             }) ;
 
@@ -131,10 +131,7 @@ public class MainMessageActivity extends AppCompatActivity {
 
                                     break;
                                 }
-
-
                             }
-
                         }
 
                         @Override
@@ -142,7 +139,6 @@ public class MainMessageActivity extends AppCompatActivity {
 
                         }
                     });
-
                 }
 
                 @Override
@@ -150,7 +146,7 @@ public class MainMessageActivity extends AppCompatActivity {
 
                 }
             });
-            //username.setText("Guardian");
+
         }
 
         else {

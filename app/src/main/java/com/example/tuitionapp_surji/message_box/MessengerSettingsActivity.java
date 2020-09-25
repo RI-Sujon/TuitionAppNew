@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.example.tuitionapp_surji.R;
 import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.guardian.GuardianInfo;
+import com.example.tuitionapp_surji.guardian.GuardianInformationViewActivity;
+import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,7 +36,7 @@ public class MessengerSettingsActivity extends AppCompatActivity
     private TextView messenger_settings_user_name, block_in_messenger_settings,
             delete_conversation,search_conversation, something_wrong;
     private DatabaseReference candidateTutorReference, guardianReference, messageBoxReference;
-    private String imageUri,gender;
+    private String imageUri,gender, userId;
 
 
     @Override
@@ -74,7 +76,7 @@ public class MessengerSettingsActivity extends AppCompatActivity
 
 
         intent = getIntent();
-        final String  userId = intent.getStringExtra("userId");
+        userId = intent.getStringExtra("userId");
         checkUser = intent.getStringExtra("user");
         guardianMobileNumber = intent.getStringExtra("mobileNumber");
         tutorEmail = intent.getStringExtra("tutorEmail");
@@ -187,6 +189,28 @@ public class MessengerSettingsActivity extends AppCompatActivity
             intent.putExtra("user", checkUser);
         }
 
+        startActivity(intent);
+        finish();
+    }
+
+    public void goToSelectedUserProfile(View view) {
+        Intent intent;
+        if(checkUser.equals("guardian")){
+            intent= new Intent(this, VerifiedTutorProfileActivity.class);
+
+            intent.putExtra("user", "guardian") ;
+            intent.putExtra("tutorUid",userId);
+            intent.putExtra("userEmail", tutorEmail) ;
+            intent.putExtra("context","messenger");
+
+        }
+
+        else{
+            intent = new Intent(this, GuardianInformationViewActivity.class);
+            intent.putStringArrayListExtra("tutorInfo", userInfo) ;
+            intent.putExtra("user","tutor");
+            intent.putExtra("guardianUid",userId);
+        }
         startActivity(intent);
         finish();
     }

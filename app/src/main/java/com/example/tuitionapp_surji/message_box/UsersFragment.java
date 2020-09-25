@@ -81,11 +81,8 @@ public class UsersFragment extends Fragment
                 {
                     MessageBoxInfo user= snapshot.getValue(MessageBoxInfo.class);
 
-                    //System.out.println("User's Tutor Email ="+ user.getTutorEmail());
-
-                  /*  assert user !=null;
+                    assert user !=null;
                     assert  firebaseUser != null;
-*/
 
                     if(checkUser.equals("guardian")){
                         if(user.getGuardianUid().equals(firebaseUser.getUid()))

@@ -174,40 +174,34 @@ public class MessageActivity extends AppCompatActivity
 
         if(checkUser.equals("guardian"))
         {
-            candidateTutorReference.addValueEventListener(new ValueEventListener() {
+            candidateTutorReference.addValueEventListener(new ValueEventListener()
+            {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot)
                 {
-                    for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                    for(DataSnapshot snapshot:dataSnapshot.getChildren())
+                    {
                         CandidateTutorInfo candidateTutorInfo = snapshot.getValue(CandidateTutorInfo.class);
-                        if(candidateTutorInfo.getEmailPK().equals(tutorEmail))
-                        {
-                            imageUri = candidateTutorInfo.getProfilePictureUri();
-                            gender = candidateTutorInfo.getGender();
 
-                            username.setText(candidateTutorInfo.getUserName());
-                            if(candidateTutorInfo.getGender().equals("MALE"))
+                        if(candidateTutorInfo.getEmailPK() != null){
+                            if(candidateTutorInfo.getEmailPK().equals(tutorEmail))
                             {
-                                if(candidateTutorInfo.getProfilePictureUri()!= null)
-                                    Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(profile_image);
-                                else
-                                    profile_image.setImageResource(R.drawable.male_pic);
-                            }
+                                imageUri = candidateTutorInfo.getProfilePictureUri();
+                                gender = candidateTutorInfo.getGender();
 
-                            else if(candidateTutorInfo.getGender().equals("FEMALE")){
-                                if(candidateTutorInfo.getProfilePictureUri()!= null)
+                                username.setText(candidateTutorInfo.getUserName());
+                                if(candidateTutorInfo.getProfilePictureUri()!=null)
                                     Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(profile_image);
-                                else
-                                    profile_image.setImageResource(R.drawable.female_pic);
-                            }
 
-                            break;
+                                else
+                                    profile_image.setImageResource(R.drawable.user_profile_view);
+
+                                break;
+                            }
                         }
-
                     }
 
                     readMessages(fuser.getUid(),userId,imageUri,gender);
-
                 }
 
                 @Override
@@ -215,7 +209,6 @@ public class MessageActivity extends AppCompatActivity
 
                 }
             });
-            //seenMessage(userId);
         }
 
         else if(checkUser.equals("tutor"))
@@ -226,39 +219,27 @@ public class MessageActivity extends AppCompatActivity
                 {
                     for(DataSnapshot snapshot:dataSnapshot.getChildren()){
                         GuardianInfo guardianInfo = snapshot.getValue(GuardianInfo.class);
-                        if(guardianInfo.getPhoneNumber().equals(guardianMobileNumber))
+
+                        if(guardianInfo.getPhoneNumber() != null)
                         {
-                            username.setText(guardianInfo.getName());
+                            if(guardianInfo.getPhoneNumber().equals(guardianMobileNumber))
+                            {
+                                username.setText(guardianInfo.getName());
 
-                          /*  if(guardianInfo.getGender().equals("MALE")){
-                                if(candidateTutorInfo.getProfilePictureUri()!= null)
-                                    Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(profile_image);
-                                else
-                                    profile_image.setImageResource(R.drawable.male_pic);
+                                if(guardianInfo.getProfilePicUri()!= null){
+                                    imageUri = guardianInfo.getProfilePicUri();
+                                    Picasso.get().load(guardianInfo.getProfilePicUri()).into(profile_image);
+                                }
+
+                                else{
+                                    profile_image.setImageResource(R.drawable.user_profile_view);
+                                }
+
                             }
-
-                            else if(candidateTutorInfo.getGender().equals("FEMALE")){
-                                if(candidateTutorInfo.getProfilePictureUri()!= null)
-                                    Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(profile_image);
-                                else
-                                    profile_image.setImageResource(R.drawable.female_pic);
-                            }*/
-
-                          if(guardianInfo.getProfilePicUri()!= null){
-                              imageUri = guardianInfo.getProfilePicUri();
-                              Picasso.get().load(guardianInfo.getProfilePicUri()).into(profile_image);
-                          }
-
-                          else{
-                              profile_image.setImageResource(R.drawable.user_profile_view);
-                          }
-
                         }
                     }
 
-                  // profile_image.setImageResource(R.drawable.man);
                     readMessages(fuser.getUid(),userId,imageUri,gender);
-
                 }
 
                 @Override
@@ -266,30 +247,11 @@ public class MessageActivity extends AppCompatActivity
 
                 }
             });
-            //seenMessage(userId);
         }
 
         seenMessage(userId);
     }
 
-
-
-
-    /*
-                databaseFireStore.collection("System").document("Counter")
-                        .collection("NotificationCounter").document(guardianUid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot document = task.getResult() ;
-
-                        counterMessage = (long) document.get("messageCounter") ;
-                        counterMessage = counterMessage + 1 ;
-
-                        databaseFireStore.collection("System").document("Counter")
-                                .collection("NotificationCounter").document(guardianUid)
-                                .update("messageCounter",counterMessage) ;
-                    }
-                }) ;*/
 
     private void seenMessage(final String userId)
     {

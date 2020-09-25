@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,38 +127,44 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for(DataSnapshot snapshot:dataSnapshot.getChildren()){
                         GuardianInfo guardianInfo = snapshot.getValue(GuardianInfo.class);
-                        if(guardianInfo.getPhoneNumber().equals(user.getGuardianMobileNumber()))
-                        {
 
-                            holder.username.setText(guardianInfo.getName());
+                        assert user !=null;
 
-                            if(guardianInfo.getProfilePicUri()!=null){
-                                Picasso.get().load(guardianInfo.getProfilePicUri()).into(holder.profile_image);
-                            }
+                        if(guardianInfo.getPhoneNumber()!=null){
+                            if(guardianInfo.getPhoneNumber().equals(user.getGuardianMobileNumber()))
+                            {
+                                holder.username.setText(guardianInfo.getName());
 
-                            else{
-                                holder.profile_image.setImageResource(R.drawable.user_profile_view);
-                            }
+                                if(guardianInfo.getProfilePicUri()!=null){
+                                    Picasso.get().load(guardianInfo.getProfilePicUri()).into(holder.profile_image);
+                                }
 
-                            if(isChat){
-                                if(guardianInfo.getStatus().equals("online")){
-                                    holder.img_on.setVisibility(View.VISIBLE);
+                                else{
+                                    holder.profile_image.setImageResource(R.drawable.user_profile_view);
+                                }
+
+                                if(isChat){
+                                    if(guardianInfo.getStatus().equals("online")){
+                                        holder.img_on.setVisibility(View.VISIBLE);
+                                        holder.img_off.setVisibility(View.GONE);
+                                    }
+
+                                    else
+                                    {
+                                        holder.img_on.setVisibility(View.GONE);
+                                        holder.img_off.setVisibility(View.VISIBLE);
+                                    }
+                                }
+
+                                else {
+                                    holder.img_on.setVisibility(View.GONE);
                                     holder.img_off.setVisibility(View.GONE);
                                 }
-
-                                else
-                                {
-                                    holder.img_on.setVisibility(View.GONE);
-                                    holder.img_off.setVisibility(View.VISIBLE);
-                                }
+                                break;
                             }
-
-                            else {
-                                holder.img_on.setVisibility(View.GONE);
-                                holder.img_off.setVisibility(View.GONE);
-                            }
-                            break;
                         }
+
+
                     }
                 }
 

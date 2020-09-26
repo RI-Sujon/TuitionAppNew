@@ -7,11 +7,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +57,8 @@ import java.util.List;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
 public class MessageActivity extends AppCompatActivity
 {
@@ -75,8 +79,10 @@ public class MessageActivity extends AppCompatActivity
 
 
     private ImageButton btn_send, img_send;
-    private EditText text_send;
-
+    private EmojiconEditText text_send;
+    private ImageView emoji_btn;
+    private View rootView;
+    private EmojIconActions emojIcon;
     private MessageAdapter messageAdapter;
     private List<Chat> mChat;
 
@@ -94,6 +100,17 @@ public class MessageActivity extends AppCompatActivity
     private DatabaseReference messageBlock;
     private Dialog mDialog;
     private TextView block_confirmation_btn,block_yes_btn,block_no_btn;
+
+
+    /*
+
+    EmojiconEditText emojiconEditText;
+    ImageView emojiButton;
+    ImageButton submitButton;
+    View rootView;
+    TextView myTextView;
+    EmojIconActions emojIcon;
+    */
 
 
     @Override
@@ -123,24 +140,26 @@ public class MessageActivity extends AppCompatActivity
             }
         });
 
+        /*
+        emojiconEditText = findViewById(R.id.text_send);
+        emojiButton = findViewById(R.id.emoji_btn);
+        submitButton = findViewById(R.id.btn_send);
+        myTextView = findViewById(R.id.myTextView);
+        rootView = findViewById(R.id.root_view);
+        emojIcon = new EmojIconActions(this, rootView, emojiconEditText, emojiButton);
+        emojIcon.ShowEmojIcon();
+        */
+
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-
         mDialog = new Dialog(this);
 
-        profile_image=findViewById(R.id.profile_image);
-        username = findViewById(R.id.username);
-
-        btn_send = findViewById(R.id.btn_send);
-        img_send = findViewById(R.id.img_send);
-        text_send = findViewById(R.id.text_send);
-
+        fuser = FirebaseAuth.getInstance().getCurrentUser();
         storageReference = FirebaseStorage.getInstance().getReference();
-
         intent = getIntent();
         final String  userId = intent.getStringExtra("userId");
         checkUser = intent.getStringExtra("user");
@@ -148,7 +167,32 @@ public class MessageActivity extends AppCompatActivity
         tutorEmail = intent.getStringExtra("tutorEmail");
         userInfo = intent.getStringArrayListExtra("userInfo") ;
 
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
+        profile_image=findViewById(R.id.profile_image);
+        username = findViewById(R.id.username);
+
+        btn_send = findViewById(R.id.btn_send);
+        img_send = findViewById(R.id.img_send);
+        text_send = findViewById(R.id.text_send);
+        emoji_btn = findViewById(R.id.emoji_btn);
+        rootView = findViewById(R.id.root_view);
+        emojIcon = new EmojIconActions(this, rootView, text_send, emoji_btn);
+
+        emojIcon.ShowEmojIcon();
+
+
+
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.e("Keyboard", "open");
+            }
+            @Override
+            public void onKeyboardClose() {
+                Log.e("Keyboard", "close");
+            }
+        });
+
+        emojIcon.addEmojiconEditTextList(text_send);
 
 
         btn_send.setOnClickListener(new View.OnClickListener() {
@@ -282,6 +326,9 @@ public class MessageActivity extends AppCompatActivity
         });
 
     }
+
+
+
 
 
     private void sendMessage(final String sender, final String receiver, final String message)

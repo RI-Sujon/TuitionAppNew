@@ -22,7 +22,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/profile_image_messenger"
-        android:src="@drawable/man"
+        android:src="@drawable/user_profile_view"
         />
 
     <TextView

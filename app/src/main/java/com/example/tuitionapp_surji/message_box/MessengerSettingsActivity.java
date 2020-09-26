@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import com.example.tuitionapp_surji.guardian.GuardianInfo;
 import com.example.tuitionapp_surji.guardian.GuardianInformationViewActivity;
 import com.example.tuitionapp_surji.verified_tutor.VerifiedTutorProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -37,6 +41,10 @@ public class MessengerSettingsActivity extends AppCompatActivity
             delete_conversation,search_conversation, something_wrong;
     private DatabaseReference candidateTutorReference, guardianReference, messageBoxReference;
     private String imageUri,gender, userId;
+    private DatabaseReference messageBlock;
+    private Dialog mDialog;
+    private TextView block_confirmation_btn,block_yes_btn,block_no_btn;
+    private FirebaseUser firebaseUser;
 
 
     @Override
@@ -88,10 +96,13 @@ public class MessengerSettingsActivity extends AppCompatActivity
         delete_conversation = findViewById(R.id.delete_conversation);
         search_conversation = findViewById(R.id.search_conversation);
         something_wrong = findViewById(R.id.something_wrong);
+        mDialog = new Dialog(this);
+
 
         messageBoxReference = FirebaseDatabase.getInstance().getReference("MessageBox");
         candidateTutorReference = FirebaseDatabase.getInstance().getReference("CandidateTutor");
         guardianReference = FirebaseDatabase.getInstance().getReference("Guardian");
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
         if(checkUser.equals("guardian"))
@@ -165,6 +176,55 @@ public class MessengerSettingsActivity extends AppCompatActivity
         }
 
 
+        messageBoxReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                for(DataSnapshot dataSnapshot:snapshot.getChildren())
+                {
+                    MessageBoxInfo messageBoxInfo = dataSnapshot.getValue(MessageBoxInfo.class);
+
+                    if(checkUser.equals("tutor")){
+
+                        if(messageBoxInfo.getTutorUid().equals(firebaseUser.getUid()) && messageBoxInfo.getGuardianUid().equals(userId)){
+                            if(messageBoxInfo.isBlockFromTutorSide()){
+                                block_in_messenger_settings.setText("Unblock User");
+                                block_in_messenger_settings.setTextColor(Color.RED);
+                                break;
+                            }
+
+                            else if(!messageBoxInfo.isBlockFromTutorSide()){
+                                block_in_messenger_settings.setText("Block User");
+                                break;
+                            }
+                        }
+
+                    }
+
+                    else{
+                        if(messageBoxInfo.getGuardianUid().equals(firebaseUser.getUid()) && messageBoxInfo.getTutorUid().equals(userId)){
+                            if(messageBoxInfo.isBlockFromGuardianSide()){
+                                block_in_messenger_settings.setText("Unblock User");
+                                block_in_messenger_settings.setTextColor(Color.RED);
+                                break;
+                            }
+
+                            else if(!messageBoxInfo.isBlockFromGuardianSide()){
+                                block_in_messenger_settings.setText("Block User");
+                                break;
+                            }
+                        }
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
     }
@@ -214,4 +274,85 @@ public class MessengerSettingsActivity extends AppCompatActivity
         startActivity(intent);
         finish();
     }
+
+    public void blockingUnblockingTheUser(View view) {
+        if(block_in_messenger_settings.getText().equals("Block User")){
+            blockingUnblockingSystem(true);
+        }
+
+        else if(block_in_messenger_settings.getText().equals("Unblock User")){
+            blockingUnblockingSystem(false);
+        }
+    }
+
+    public void blockingUnblockingSystem(final boolean data)
+    {
+        final String  userId = intent.getStringExtra("userId");
+        messageBlock = FirebaseDatabase.getInstance().getReference("MessageBox");
+        final String currentUser= FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        mDialog.setContentView(R.layout.custom_pop_up_block_the_user);
+        block_confirmation_btn = mDialog.findViewById(R.id.block_confirmation_btn);
+        block_yes_btn = mDialog.findViewById(R.id.block_yes_btn);
+        block_no_btn = mDialog.findViewById(R.id.block_no_btn);
+        mDialog.show();
+
+        block_yes_btn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                messageBlock.addValueEventListener(new ValueEventListener()
+                {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        for(DataSnapshot dS1: dataSnapshot.getChildren()){
+                            MessageBoxInfo messageBoxInfo = dS1.getValue(MessageBoxInfo.class);
+                            if(checkUser.equals("guardian"))
+                            {
+                                if(messageBoxInfo.getGuardianUid().equals(currentUser) && messageBoxInfo.getTutorUid().equals(userId)){
+
+                                    HashMap<String,Object> hashMap = new HashMap<>();
+                                    hashMap.put("blockFromGuardianSide",data);
+                                    messageBlock.child(dS1.getKey()).updateChildren(hashMap);
+                                    break;
+
+                                }
+                            }
+
+                            else if(checkUser.equals("tutor"))
+                            {
+                                if (messageBoxInfo.getGuardianUid().equals(userId) && messageBoxInfo.getTutorUid().equals(currentUser)) {
+                                    HashMap<String,Object> hashMap = new HashMap<>();
+                                    hashMap.put("blockFromTutorSide",data);
+                                    messageBlock.child(dS1.getKey()).updateChildren(hashMap);
+                                    break;
+                                }
+                            }
+                        }
+
+                        messageBlock.removeEventListener(this);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                mDialog.dismiss();
+            }
+        });
+
+        block_no_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+    }
+
+
 }

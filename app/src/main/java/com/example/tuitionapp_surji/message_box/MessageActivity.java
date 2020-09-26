@@ -618,12 +618,13 @@ public class MessageActivity extends AppCompatActivity
     }*/
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
         final String  userId = intent.getStringExtra("userId");
         MenuItem blockMenuItem = ((Toolbar)findViewById(R.id.toolbar)).getMenu().findItem(R.id.block_in_messenger);
         MenuItem unblockMenuItem = ((Toolbar)findViewById(R.id.toolbar)).getMenu().findItem(R.id.unblock_in_messenger);
 
-        switch (item.getItemId())
+       /* switch (item.getItemId())
         {
             case R.id.block_in_messenger:
                 blockTheUser(true);
@@ -671,10 +672,9 @@ public class MessageActivity extends AppCompatActivity
 
                 //return true;
         }
-
+        */
         return false;
     }
-
 
 
     private void blockTheUser(final boolean data)

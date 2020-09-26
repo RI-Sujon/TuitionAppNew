@@ -26,8 +26,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/messenger_settings_profile_pic"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:src="@drawable/user_profile_view"
@@ -36,16 +36,69 @@
 
     <TextView
         android:id="@+id/messenger_settings_user_name"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:text="Abrar Hasan Rahim"
+        android:layout_marginTop="10dp"
+        android:text="Ali Mahmud"
         android:textAlignment="center"
-        android:textSize="22sp"
+        android:layout_gravity="center"
+        android:textSize="24sp"
         android:textColor="@color/Black"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:src="@drawable/messenger_settings_profile_icon"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="105dp"
+            android:layout_width="47dp"
+            android:layout_height="47dp"
+            android:onClick="goToSelectedUserProfile"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:src="@drawable/messenger_settings_notification"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="55dp"
+            android:layout_width="47dp"
+            android:layout_height="47dp"/>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="105dp"
+            android:text="Profile"
+            android:textSize="15sp"
+            android:textColor="@color/Black"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="72dp"
+            android:text="Mute"
+            android:textSize="15sp"
+            android:textColor="@color/Black"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
 
 
     <LinearLayout
@@ -55,17 +108,19 @@
 
         <TextView
             android:id="@+id/block_in_messenger_settings"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="35dp"
             android:layout_marginLeft="5dp"
             android:padding="5dp"
             android:text="Block User"
             android:textSize="18sp"
             android:textColor="@color/Black"
             android:layout_width="320dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:onClick="blockingUnblockingTheUser"
+            />
 
         <ImageView
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="40dp"
             android:src="@drawable/block_icon"
             android:layout_width="25dp"
             android:layout_height="25dp"/>
@@ -74,7 +129,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="#000000"
@@ -108,7 +164,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="#000000"
@@ -144,9 +201,10 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="10dp"
         android:background="#000000"
         />
 
@@ -177,13 +235,11 @@
 
     </LinearLayout>
 
-    <View
+    <TextView
+        android:text="Give feedback and report conversation"
+        android:layout_marginLeft="9dp"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="8dp"
-        android:background="#000000"
-        />
+        android:layout_height="wrap_content"/>
 
 
 

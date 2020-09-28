@@ -2,12 +2,12 @@ package com.example.tuitionapp_surji.message_box;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +26,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public static final int MSG_TYPE_RIGHT = 1;
     public static final int IMAGE_TYPE_RIGHT = 2;
     public static final int IMAGE_TYPE_LEFT = 3;
+    public static final int MSG_TYPE_LEFT_WITH_EMOJI = 4;
+    public static final int MSG_TYPE_RIGHT_WITH_EMOJI = 5;
 
     private Context mContext;
     private List<Chat> mChat;
@@ -51,27 +53,35 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public MessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        if( viewType == MSG_TYPE_RIGHT){
+        if (viewType == MSG_TYPE_LEFT_WITH_EMOJI) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_left_when_emoji_added, parent, false);
+            return new MessageAdapter.ViewHolder(view);
+        }
+
+        else if (viewType == MSG_TYPE_RIGHT_WITH_EMOJI) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_right_when_emoji_added, parent, false);
+            return new MessageAdapter.ViewHolder(view);
+        }
+
+        else if (viewType == MSG_TYPE_RIGHT) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_right, parent, false);
-
             return new MessageAdapter.ViewHolder(view);
         }
 
-        else if(viewType == MSG_TYPE_LEFT){
+        else if (viewType == MSG_TYPE_LEFT)
+        {
             View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_left, parent, false);
-
             return new MessageAdapter.ViewHolder(view);
         }
 
-        else if(viewType == IMAGE_TYPE_LEFT){
+        else if (viewType == IMAGE_TYPE_LEFT)
+        {
             View view = LayoutInflater.from(mContext).inflate(R.layout.image_item_left, parent, false);
-
             return new MessageAdapter.ViewHolder(view);
         }
 
         else {
             View view = LayoutInflater.from(mContext).inflate(R.layout.image_item_right, parent, false);
-
             return new MessageAdapter.ViewHolder(view);
         }
 
@@ -99,11 +109,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             //System.out.println("URI ==================="+chat.getMessage());
             if(chat.getMessage()!=null){
 
+                Picasso.get().load(imageUri).into(holder.profile_image_messenger);
                 Picasso.get().load(chat.getMessage()).into(holder.show_image);
                 holder.show_message.setVisibility(View.GONE);
                 holder.show_date.setVisibility(View.GONE);
                 holder.txt_seen.setVisibility(View.GONE);
-                holder.profile_image_messenger.setVisibility(View.GONE);
+                holder.profile_image_messenger.setVisibility(View.VISIBLE);
 
                 holder.show_image.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -135,6 +146,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         else if(chat.getMessage_type().equals("text")){
             holder.show_image.setVisibility(View.GONE);
+            if(isEmoji(chat.getMessage())){
+                holder.show_message.setBackgroundColor(Color.parseColor("#e6e6e6"));
+            }
             holder.show_message.setText(chat.getMessage());
 
 
@@ -154,8 +168,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             }
 
             holder.show_date.setVisibility(View.GONE);
-
-
 
 
             holder.show_message.setOnClickListener(new View.OnClickListener() {
@@ -204,8 +216,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
                 }
             });
-
-
 
         }
 
@@ -310,25 +320,53 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     {
       fuser = FirebaseAuth.getInstance().getCurrentUser();
 
-      if(mChat.get(position).getMessage_type().equals("text")){
+      if(isEmoji(mChat.get(position).getMessage())){
+
           if(mChat.get(position).getSender().equals(fuser.getUid())){
-              return MSG_TYPE_RIGHT;
+              return MSG_TYPE_RIGHT_WITH_EMOJI;
           }
 
-          else {
-              return MSG_TYPE_LEFT;
+          else{
+              return MSG_TYPE_LEFT_WITH_EMOJI;
           }
       }
 
       else{
-          if(mChat.get(position).getSender().equals(fuser.getUid())){
-              return IMAGE_TYPE_RIGHT;
+          if(mChat.get(position).getMessage_type().equals("text")){
+              if(mChat.get(position).getSender().equals(fuser.getUid())){
+                  return MSG_TYPE_RIGHT;
+              }
+
+              else {
+                  return MSG_TYPE_LEFT;
+              }
           }
 
-          else {
-              return IMAGE_TYPE_LEFT;
+          else{
+              if(mChat.get(position).getSender().equals(fuser.getUid())){
+                  return IMAGE_TYPE_RIGHT;
+              }
+
+              else {
+                  return IMAGE_TYPE_LEFT;
+              }
           }
       }
 
+    }
+
+
+    private boolean isEmoji(String message) {
+        return message.matches("(?:[\uD83C\uDF00-\uD83D\uDDFF]|[\uD83E\uDD00-\uD83E\uDDFF]|" +
+                "[\uD83D\uDE00-\uD83D\uDE4F]|[\uD83D\uDE80-\uD83D\uDEFF]|" +
+                "[\u2600-\u26FF]\uFE0F?|[\u2700-\u27BF]\uFE0F?|\u24C2\uFE0F?|" +
+                "[\uD83C\uDDE6-\uD83C\uDDFF]{1,2}|" +
+                "[\uD83C\uDD70\uD83C\uDD71\uD83C\uDD7E\uD83C\uDD7F\uD83C\uDD8E\uD83C\uDD91-\uD83C\uDD9A]\uFE0F?|" +
+                "[\u0023\u002A\u0030-\u0039]\uFE0F?\u20E3|[\u2194-\u2199\u21A9-\u21AA]\uFE0F?|[\u2B05-\u2B07\u2B1B\u2B1C\u2B50\u2B55]\uFE0F?|" +
+                "[\u2934\u2935]\uFE0F?|[\u3030\u303D]\uFE0F?|[\u3297\u3299]\uFE0F?|" +
+                "[\uD83C\uDE01\uD83C\uDE02\uD83C\uDE1A\uD83C\uDE2F\uD83C\uDE32-\uD83C\uDE3A\uD83C\uDE50\uD83C\uDE51]\uFE0F?|" +
+                "[\u203C\u2049]\uFE0F?|[\u25AA\u25AB\u25B6\u25C0\u25FB-\u25FE]\uFE0F?|" +
+                "[\u00A9\u00AE]\uFE0F?|[\u2122\u2139]\uFE0F?|\uD83C\uDC04\uFE0F?|\uD83C\uDCCF\uFE0F?|" +
+                "[\u231A\u231B\u2328\u23CF\u23E9-\u23F3\u23F8-\u23FA]\uFE0F?)+");
     }
 }

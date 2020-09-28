@@ -7,11 +7,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +57,8 @@ import java.util.List;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
 public class MessageActivity extends AppCompatActivity
 {
@@ -75,8 +79,10 @@ public class MessageActivity extends AppCompatActivity
 
 
     private ImageButton btn_send, img_send;
-    private EditText text_send;
-
+    private EmojiconEditText text_send;
+    private ImageView emoji_btn;
+    private View rootView;
+    private EmojIconActions emojIcon;
     private MessageAdapter messageAdapter;
     private List<Chat> mChat;
 
@@ -129,18 +135,10 @@ public class MessageActivity extends AppCompatActivity
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-
         mDialog = new Dialog(this);
 
-        profile_image=findViewById(R.id.profile_image);
-        username = findViewById(R.id.username);
-
-        btn_send = findViewById(R.id.btn_send);
-        img_send = findViewById(R.id.img_send);
-        text_send = findViewById(R.id.text_send);
-
+        fuser = FirebaseAuth.getInstance().getCurrentUser();
         storageReference = FirebaseStorage.getInstance().getReference();
-
         intent = getIntent();
         final String  userId = intent.getStringExtra("userId");
         checkUser = intent.getStringExtra("user");
@@ -148,7 +146,34 @@ public class MessageActivity extends AppCompatActivity
         tutorEmail = intent.getStringExtra("tutorEmail");
         userInfo = intent.getStringArrayListExtra("userInfo") ;
 
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
+        profile_image=findViewById(R.id.profile_image);
+        username = findViewById(R.id.username);
+
+        btn_send = findViewById(R.id.btn_send);
+        img_send = findViewById(R.id.img_send);
+        text_send = findViewById(R.id.text_send);
+        emoji_btn = findViewById(R.id.emoji_btn);
+        rootView = findViewById(R.id.root_view);
+        emojIcon = new EmojIconActions(this, rootView, text_send, emoji_btn);
+        emojIcon.ShowEmojIcon();
+
+        /*emoji_btn.getLayoutParams().height = 100;
+        emoji_btn.getLayoutParams().width = 100;
+        */
+
+
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.e("Keyboard", "open");
+            }
+            @Override
+            public void onKeyboardClose() {
+                Log.e("Keyboard", "close");
+            }
+        });
+
+        emojIcon.addEmojiconEditTextList(text_send);
 
 
         btn_send.setOnClickListener(new View.OnClickListener() {
@@ -174,40 +199,34 @@ public class MessageActivity extends AppCompatActivity
 
         if(checkUser.equals("guardian"))
         {
-            candidateTutorReference.addValueEventListener(new ValueEventListener() {
+            candidateTutorReference.addValueEventListener(new ValueEventListener()
+            {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot)
                 {
-                    for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                    for(DataSnapshot snapshot:dataSnapshot.getChildren())
+                    {
                         CandidateTutorInfo candidateTutorInfo = snapshot.getValue(CandidateTutorInfo.class);
-                        if(candidateTutorInfo.getEmailPK().equals(tutorEmail))
-                        {
-                            imageUri = candidateTutorInfo.getProfilePictureUri();
-                            gender = candidateTutorInfo.getGender();
 
-                            username.setText(candidateTutorInfo.getUserName());
-                            if(candidateTutorInfo.getGender().equals("MALE"))
+                        if(candidateTutorInfo.getEmailPK() != null){
+                            if(candidateTutorInfo.getEmailPK().equals(tutorEmail))
                             {
-                                if(candidateTutorInfo.getProfilePictureUri()!= null)
-                                    Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(profile_image);
-                                else
-                                    profile_image.setImageResource(R.drawable.male_pic);
-                            }
+                                imageUri = candidateTutorInfo.getProfilePictureUri();
+                                gender = candidateTutorInfo.getGender();
 
-                            else if(candidateTutorInfo.getGender().equals("FEMALE")){
-                                if(candidateTutorInfo.getProfilePictureUri()!= null)
+                                username.setText(candidateTutorInfo.getUserName());
+                                if(candidateTutorInfo.getProfilePictureUri()!=null)
                                     Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(profile_image);
-                                else
-                                    profile_image.setImageResource(R.drawable.female_pic);
-                            }
 
-                            break;
+                                else
+                                    profile_image.setImageResource(R.drawable.user_profile_view);
+
+                                break;
+                            }
                         }
-
                     }
 
                     readMessages(fuser.getUid(),userId,imageUri,gender);
-
                 }
 
                 @Override
@@ -215,7 +234,6 @@ public class MessageActivity extends AppCompatActivity
 
                 }
             });
-            //seenMessage(userId);
         }
 
         else if(checkUser.equals("tutor"))
@@ -226,39 +244,27 @@ public class MessageActivity extends AppCompatActivity
                 {
                     for(DataSnapshot snapshot:dataSnapshot.getChildren()){
                         GuardianInfo guardianInfo = snapshot.getValue(GuardianInfo.class);
-                        if(guardianInfo.getPhoneNumber().equals(guardianMobileNumber))
+
+                        if(guardianInfo.getPhoneNumber() != null)
                         {
-                            username.setText(guardianInfo.getName());
+                            if(guardianInfo.getPhoneNumber().equals(guardianMobileNumber))
+                            {
+                                username.setText(guardianInfo.getName());
 
-                          /*  if(guardianInfo.getGender().equals("MALE")){
-                                if(candidateTutorInfo.getProfilePictureUri()!= null)
-                                    Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(profile_image);
-                                else
-                                    profile_image.setImageResource(R.drawable.male_pic);
+                                if(guardianInfo.getProfilePicUri()!= null){
+                                    imageUri = guardianInfo.getProfilePicUri();
+                                    Picasso.get().load(guardianInfo.getProfilePicUri()).into(profile_image);
+                                }
+
+                                else{
+                                    profile_image.setImageResource(R.drawable.user_profile_view);
+                                }
+
                             }
-
-                            else if(candidateTutorInfo.getGender().equals("FEMALE")){
-                                if(candidateTutorInfo.getProfilePictureUri()!= null)
-                                    Picasso.get().load(candidateTutorInfo.getProfilePictureUri()).into(profile_image);
-                                else
-                                    profile_image.setImageResource(R.drawable.female_pic);
-                            }*/
-
-                          if(guardianInfo.getProfilePicUri()!= null){
-                              imageUri = guardianInfo.getProfilePicUri();
-                              Picasso.get().load(guardianInfo.getProfilePicUri()).into(profile_image);
-                          }
-
-                          else{
-                              profile_image.setImageResource(R.drawable.user_profile_view);
-                          }
-
                         }
                     }
 
-                  // profile_image.setImageResource(R.drawable.man);
                     readMessages(fuser.getUid(),userId,imageUri,gender);
-
                 }
 
                 @Override
@@ -266,30 +272,11 @@ public class MessageActivity extends AppCompatActivity
 
                 }
             });
-            //seenMessage(userId);
         }
 
         seenMessage(userId);
     }
 
-
-
-
-    /*
-                databaseFireStore.collection("System").document("Counter")
-                        .collection("NotificationCounter").document(guardianUid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot document = task.getResult() ;
-
-                        counterMessage = (long) document.get("messageCounter") ;
-                        counterMessage = counterMessage + 1 ;
-
-                        databaseFireStore.collection("System").document("Counter")
-                                .collection("NotificationCounter").document(guardianUid)
-                                .update("messageCounter",counterMessage) ;
-                    }
-                }) ;*/
 
     private void seenMessage(final String userId)
     {
@@ -320,6 +307,9 @@ public class MessageActivity extends AppCompatActivity
         });
 
     }
+
+
+
 
 
     private void sendMessage(final String sender, final String receiver, final String message)
@@ -656,12 +646,13 @@ public class MessageActivity extends AppCompatActivity
     }*/
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
         final String  userId = intent.getStringExtra("userId");
         MenuItem blockMenuItem = ((Toolbar)findViewById(R.id.toolbar)).getMenu().findItem(R.id.block_in_messenger);
         MenuItem unblockMenuItem = ((Toolbar)findViewById(R.id.toolbar)).getMenu().findItem(R.id.unblock_in_messenger);
 
-        switch (item.getItemId())
+       /* switch (item.getItemId())
         {
             case R.id.block_in_messenger:
                 blockTheUser(true);
@@ -709,10 +700,9 @@ public class MessageActivity extends AppCompatActivity
 
                 //return true;
         }
-
+        */
         return false;
     }
-
 
 
     private void blockTheUser(final boolean data)

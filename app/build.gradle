@@ -85,6 +85,8 @@ dependencies {
         exclude group: 'org.apache.httpcomponents'}
     
     implementation 'com.chaos.view:pinview:1.4.3'
+    implementation 'com.github.hani-momanii:SuperNova-Emoji:1.1'
+
 
 }
 

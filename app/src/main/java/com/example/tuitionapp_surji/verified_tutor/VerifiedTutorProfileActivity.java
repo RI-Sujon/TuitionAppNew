@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +34,7 @@ import com.example.tuitionapp_surji.candidate_tutor.CandidateTutorInfo;
 import com.example.tuitionapp_surji.candidate_tutor.ReferInfo;
 import com.example.tuitionapp_surji.demo_video.DemoVideoMainActivity;
 import com.example.tuitionapp_surji.group.GroupHomePageActivity;
+import com.example.tuitionapp_surji.guardian.GuardianInformationViewActivity;
 import com.example.tuitionapp_surji.guardian.ViewingSearchingTutorProfileActivity;
 import com.example.tuitionapp_surji.message_box.MainMessageActivity;
 import com.example.tuitionapp_surji.message_box.MessageActivity;
@@ -109,7 +111,8 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     private int mobileNumberFlag = 0, addressFlag = 0, emailFlag = 0, subjectFlag = 0;
     private int mediumFlag = 0, classFlag = 0, groupFlag = 0, subjectListFlag = 0, areaFlag = 0, daysPerWeekFlag = 0, salaryFlag = 0 ;
-
+    private Dialog mDialog;
+    private TextView request_acceptation_btn,request_accept_yes_btn,request_accept_no_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -118,6 +121,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent() ;
         user = intent.getStringExtra("user") ;
+        mDialog = new Dialog(this);
         tutorUid = intent.getStringExtra("tutorUid");
         tutorEmail =  intent.getStringExtra("tutorEmail");
 
@@ -238,6 +242,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                 }
             }) ;
         }
+
         else if(user.equals("guardian")){
             myRefReport = FirebaseDatabase.getInstance().getReference("Report").child(tutorUid);
             userEmail = intent.getStringExtra("userEmail") ;
@@ -246,7 +251,9 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
             if(context2!=null){
                 tutorUid2 = intent.getStringExtra("tutorUid2") ;
                 groupID = intent.getStringExtra("groupID") ;
-            }else {
+            }
+
+            else {
                 messageRequestButton = findViewById(R.id.messageRequestButton) ;
                 messageRequestButton.setVisibility(View.VISIBLE);
                 demoVideoButton = findViewById(R.id.demo_video_button);
@@ -262,6 +269,42 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
                         }
                     }
                 }) ;
+
+                myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
+
+                myRefMessageBox.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                            MessageBoxInfo messageBoxInfo = dataSnapshot.getValue(MessageBoxInfo.class);
+
+                            if (messageBoxInfo.getGuardianUid().equals(firebaseUser.getUid()) && messageBoxInfo.getTutorUid().equals(tutorUid))
+                            {
+                                if(!messageBoxInfo.isMessageFromGuardianSide() && !messageBoxInfo.isMessageFromTutorSide()){
+                                    messageRequestButton.setText("Send Request");
+                                }
+
+                                else if(messageBoxInfo.isMessageFromGuardianSide() && messageBoxInfo.isMessageFromTutorSide()){
+                                    messageRequestButton.setText("Send Message");
+                                }
+
+                                else if((messageBoxInfo.isMessageFromGuardianSide()) && !messageBoxInfo.isMessageFromTutorSide()){
+                                    messageRequestButton.setText("Request Sent");
+                                }
+
+                                else if(!messageBoxInfo.isMessageFromGuardianSide() && messageBoxInfo.isMessageFromTutorSide()){
+                                    messageRequestButton.setText("Respond Request");
+                                }
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
 
             myRefCandidateTutorInfo = myRefCandidateTutorInfo.child(tutorUid) ;
@@ -1226,35 +1269,112 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
     public void sendMessageRequestByGuardian(View view){
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
-        System.out.println("User Email === "+userEmail);
-        messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail, tutorUid, true ,false,false,false,false) ;
 
-        messageRequestButton.setBackgroundColor(Color.GREEN);
-        messageRequestButton.setText("REQUEST SENT");
-
-        myRefMessageBox.addValueEventListener(new ValueEventListener() {
+        myRefMessageBox.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                String string = String.valueOf(messageRequestButton.getText());
                 int flag = 0;
-                for(DataSnapshot snapshot:dataSnapshot.getChildren())
+                Log.e("String  ",string);
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren())
                 {
+                    final String snapshotKey = snapshot.getKey();
+                    Log.e("DataSnapshotKey ",snapshotKey);
+
                     MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
-                    if(messageBoxInfo1.getGuardianUid().equals(firebaseUser.getUid())
-                            && messageBoxInfo1.getTutorUid().equals(tutorUid)){
+
+                    if (messageBoxInfo1.getGuardianUid().equals(firebaseUser.getUid()) && messageBoxInfo1.getTutorUid().equals(tutorUid))
+                    {
                         flag=1;
+                        if(flag==1 && string.equals("Send Request")){
+
+                            Log.e("Message Button Text ","The text is Send Message. ");
+                            HashMap<String,Object> hashMap = new HashMap<>();
+                            hashMap.put("messageFromGuardianSide",true);
+                            myRefMessageBox.child(snapshot.getKey()).updateChildren(hashMap);
+                            messageRequestButton.setText("Request Sent");
+                            myRefMessageBox.removeEventListener(this);
+                        }
+
+                        else if(string.equals("Request Sent")){
+                            HashMap<String,Object> hashMap = new HashMap<>();
+                            hashMap.put("messageFromGuardianSide",false);
+                            myRefMessageBox.child(snapshot.getKey()).updateChildren(hashMap);
+                            messageRequestButton.setText("Send Request");
+                            Log.e("Message Button Text ","The text is Request Sent. ");
+                            myRefMessageBox.removeEventListener(this);
+                        }
+
+                        else if(string.equals("Send Message"))
+                        {
+                            Log.e("DataSnapshotKey ",snapshotKey);
+                            Log.e("Tutor Email ",userEmail);
+                            Log.e("Tutor User ID ",tutorUid);
+
+                            Intent intent = new Intent(VerifiedTutorProfileActivity.this, MessageActivity.class);
+                            intent.putExtra("userId", tutorUid);
+                            intent.putExtra("tutorEmail",userEmail);
+                            intent.putExtra("user", "guardian");
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        else if(string.equals("Respond Request"))
+                        {
+                            Log.e("Message Button Text ","The text is Respond. ");
+                            Log.e("DataSnapshotKey ",snapshotKey);
+
+                            mDialog.setContentView(R.layout.custom_pop_up_accept_message_request);
+                            request_acceptation_btn = mDialog.findViewById(R.id.request_acceptation_btn);
+                            request_accept_yes_btn = mDialog.findViewById(R.id.request_accept_yes_btn);
+                            request_accept_no_btn = mDialog.findViewById(R.id.request_accept_no_btn);
+                            mDialog.show();
+
+                            request_accept_yes_btn.setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    HashMap<String,Object> hashMap = new HashMap<>();
+                                    hashMap.put("messageFromGuardianSide",true);
+                                    myRefMessageBox.child(snapshotKey).updateChildren(hashMap);
+                                    mDialog.dismiss();
+                                }
+                            });
+
+                            request_accept_no_btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mDialog.dismiss();
+                                }
+                            });
+
+                            myRefMessageBox.removeEventListener(this);
+                        }
+
+                        break;
                     }
                 }
 
-                if(flag == 0){
+                Log.e("Flag  ", String.valueOf(flag));
+                if(flag==0 && string.equals("Send Request"))
+                {
+
+                    messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),userEmail, tutorUid,
+                            true ,false,false,
+                            false,false) ;
+
                     myRefMessageBox.push().setValue(messageBoxInfo) ;
-                    messageRequestButton.setEnabled(false);
-                    messageRequestButton.setBackgroundColor(Color.GREEN);
-                    messageRequestButton.setText("REQUEST SENT");
+                    messageRequestButton.setText("Request Sent");
+                    myRefMessageBox.removeEventListener(this);
                 }
-                else {
-                    messageRequestButton.setBackgroundColor(Color.GREEN);
-                    messageRequestButton.setText("ALREADY SENT");
-                }
+
+
+                myRefMessageBox.removeEventListener(this);
+
             }
 
             @Override
@@ -1262,6 +1382,7 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     public void reportIDByGuardian(String reportString){

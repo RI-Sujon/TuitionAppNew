@@ -96,6 +96,7 @@
                             android:layout_height="45dp"
                             android:background="@drawable/pass_edit_text"
                             android:textSize="16dp"
+                            android:maxLength="14"
                             android:inputType="number"
                             android:paddingLeft="2dp"
                             android:hint="Mobile Number"

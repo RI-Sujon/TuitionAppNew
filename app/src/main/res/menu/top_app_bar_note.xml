@@ -29,7 +29,7 @@
     <item
         android:id="@+id/note_addAttachment"
         android:icon="@drawable/ic_done_black_24dp"
-        android:title="add notice"
+        android:title="add Attachment"
         android:iconTint="@color/White"
         android:contentDescription="content_description_more"
         app:showAsAction="ifRoom" />

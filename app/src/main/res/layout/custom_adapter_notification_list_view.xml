@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#010139"
-                android:textSize="16dp"
+                android:textSize="15dp"
                 android:text="A tutor response to your post"
                 android:textStyle="bold"
                 android:fontFamily="@font/merienda_one"
@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/Black"
-                android:textSize="14dp"
+                android:textSize="13dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"/>

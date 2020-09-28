@@ -1468,7 +1468,12 @@ public class VerifiedTutorProfileActivity extends AppCompatActivity {
     }
 
     public void removeTutorFromGroupByGroupAdmin(){
-        FirebaseDatabase.getInstance().getReference("AddTutor").child(groupID).child(firebaseUser.getUid()).removeValue() ;
+        if(user.equals("groupVisitor")){
+            FirebaseDatabase.getInstance().getReference("AddTutor").child(groupID).child(firebaseUser.getUid()).removeValue() ;
+        }
+        else if(user.equals("groupAdmin")){
+            FirebaseDatabase.getInstance().getReference("AddTutor").child(groupID).child(tutorUid).removeValue() ;
+        }
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Notification").child("Tutor").child(tutorUid) ;
 
         databaseReference.orderByChild("message3").equalTo(groupID).addListenerForSingleValueEvent(new ValueEventListener() {

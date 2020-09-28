@@ -69,7 +69,6 @@ public class GroupHomePageActivity extends AppCompatActivity {
     private String leaveFlag ;
 
     private MaterialButton messageRequestButton, reportButton , blockButton;
-    private RelativeLayout messageFloatingButton ;
 
     private LinearLayout groupDashboardLayout ;
 
@@ -133,8 +132,6 @@ public class GroupHomePageActivity extends AppCompatActivity {
         }) ;
 
         if(user.equals("guardian")||user.equals("guardianHomePage")){
-            //messageFloatingButton.setVisibility(View.GONE);
-
             context = intent.getStringExtra("context") ;
             tutorUid2 = intent.getStringExtra("tutorUid");
             tutorEmail = intent.getStringExtra("userEmail");
@@ -179,8 +176,6 @@ public class GroupHomePageActivity extends AppCompatActivity {
             });
         }
         else if(user.equals("admin")){
-            messageFloatingButton.setVisibility(View.GONE);
-
             //blockButton = findViewById(R.id.blockGroupButton) ;
             //blockButton.setVisibility(View.VISIBLE);
         }

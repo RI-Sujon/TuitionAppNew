@@ -3,9 +3,11 @@ package com.example.tuitionapp_surji.group;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +29,7 @@ import com.example.tuitionapp_surji.guardian.CustomAdapterForTutorListView;
 import com.example.tuitionapp_surji.guardian.GuardianHomePageActivity;
 import com.example.tuitionapp_surji.guardian.ViewingSearchingTutorProfileActivity;
 import com.example.tuitionapp_surji.message_box.MainMessageActivity;
+import com.example.tuitionapp_surji.message_box.MessageActivity;
 import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
 import com.example.tuitionapp_surji.notice_board.NoticeBoardViewAndCreateActivity;
 import com.example.tuitionapp_surji.R;
@@ -51,6 +54,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GroupHomePageActivity extends AppCompatActivity {
 
@@ -90,6 +94,8 @@ public class GroupHomePageActivity extends AppCompatActivity {
     private int backButtonFlag = 0, batchReUseFlag = 0, tutorReUseFlag = 0 ;
 
     private GroupInfo groupInfo ;
+    private Dialog mDialog;
+    private TextView request_acceptation_btn,request_accept_yes_btn,request_accept_no_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -98,6 +104,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_home_page);
 
         Intent intent = getIntent() ;
+        mDialog = new Dialog(this);
         userInfo = intent.getStringArrayListExtra("userInfo") ;
         user = intent.getStringExtra("user") ;
         groupID = intent.getStringExtra("groupID") ;
@@ -126,7 +133,7 @@ public class GroupHomePageActivity extends AppCompatActivity {
         }) ;
 
         if(user.equals("guardian")||user.equals("guardianHomePage")){
-            messageFloatingButton.setVisibility(View.GONE);
+            //messageFloatingButton.setVisibility(View.GONE);
 
             context = intent.getStringExtra("context") ;
             tutorUid2 = intent.getStringExtra("tutorUid");
@@ -136,6 +143,40 @@ public class GroupHomePageActivity extends AppCompatActivity {
             messageRequestButton.setVisibility(View.VISIBLE);
 
             messageRequestButton.setVisibility(View.VISIBLE);
+
+            myRefMessageBox.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                        MessageBoxInfo messageBoxInfo = dataSnapshot.getValue(MessageBoxInfo.class);
+
+                        if (messageBoxInfo.getGuardianUid().equals(firebaseUser.getUid()) && messageBoxInfo.getTutorUid().equals(groupInfo.getGroupAdminUid()))
+                        {
+                            if(!messageBoxInfo.isMessageFromGuardianSide() && !messageBoxInfo.isMessageFromTutorSide()){
+                                messageRequestButton.setText("Send A Message Request");
+                            }
+
+                            else if(messageBoxInfo.isMessageFromGuardianSide() && messageBoxInfo.isMessageFromTutorSide()){
+                                messageRequestButton.setText("Send Message");
+                            }
+
+                            else if((messageBoxInfo.isMessageFromGuardianSide()) && !messageBoxInfo.isMessageFromTutorSide()){
+                                messageRequestButton.setText("Request Sent");
+                            }
+
+                            else if(!messageBoxInfo.isMessageFromGuardianSide() && messageBoxInfo.isMessageFromTutorSide()){
+                                messageRequestButton.setText("Respond Request");
+                            }
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
         else if(user.equals("admin")){
             messageFloatingButton.setVisibility(View.GONE);
@@ -446,26 +487,114 @@ public class GroupHomePageActivity extends AppCompatActivity {
 
 
     public void sendMessageRequestByGuardianFromGroup(View view){
+        //Send A Message Request
 
-        messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(),groupInfo.getGroupAdminEmail(),groupInfo.getGroupAdminUid(), true ,false,false,false,true) ;
-
-        myRefMessageBox.addValueEventListener(new ValueEventListener() {
+        myRefMessageBox.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                String string = String.valueOf(messageRequestButton.getText());
                 int flag = 0;
-                for(DataSnapshot snapshot:dataSnapshot.getChildren())
+                Log.e("String  ",string);
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren())
                 {
+                    final String snapshotKey = snapshot.getKey();
+                    Log.e("DataSnapshotKey ",snapshotKey);
+
                     MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
-                    if(messageBoxInfo1.getGuardianUid().equals(firebaseUser.getUid()) && messageBoxInfo1.getTutorUid().equals(groupInfo.getGroupAdminUid())){
+
+                    if (messageBoxInfo1.getGuardianUid().equals(firebaseUser.getUid()) && messageBoxInfo1.getTutorUid().equals(groupInfo.getGroupAdminUid()))
+                    {
                         flag=1;
+                        if(flag==1 && string.equals("Send A Message Request")){
+
+                            Log.e("Message Button Text ","The text is Send Message. ");
+                            HashMap<String,Object> hashMap = new HashMap<>();
+                            hashMap.put("messageFromGuardianSide",true);
+                            myRefMessageBox.child(snapshot.getKey()).updateChildren(hashMap);
+                            messageRequestButton.setText("Request Sent");
+                            myRefMessageBox.removeEventListener(this);
+                        }
+
+                        else if(string.equals("Request Sent")){
+                            HashMap<String,Object> hashMap = new HashMap<>();
+                            hashMap.put("messageFromGuardianSide",false);
+                            myRefMessageBox.child(snapshot.getKey()).updateChildren(hashMap);
+                            messageRequestButton.setText("Send A Message Request");
+                            Log.e("Message Button Text ","The text is Request Sent. ");
+                            myRefMessageBox.removeEventListener(this);
+                        }
+
+                        else if(string.equals("Send Message"))
+                        {
+                            Log.e("DataSnapshotKey ",snapshotKey);
+                            Log.e("Tutor Email ", groupInfo.getGroupAdminEmail());
+                            Log.e("Tutor User ID ", groupInfo.getGroupAdminUid());
+
+                            Intent intent = new Intent(GroupHomePageActivity.this, MessageActivity.class);
+                            intent.putExtra("userId",  groupInfo.getGroupAdminUid());
+                            intent.putExtra("tutorEmail", groupInfo.getGroupAdminEmail());
+                            intent.putExtra("user", "guardian");
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        else if(string.equals("Respond Request"))
+                        {
+                            Log.e("Message Button Text ","The text is Respond. ");
+                            Log.e("DataSnapshotKey ",snapshotKey);
+
+                            mDialog.setContentView(R.layout.custom_pop_up_accept_message_request);
+                            request_acceptation_btn = mDialog.findViewById(R.id.request_acceptation_btn);
+                            request_accept_yes_btn = mDialog.findViewById(R.id.request_accept_yes_btn);
+                            request_accept_no_btn = mDialog.findViewById(R.id.request_accept_no_btn);
+                            mDialog.show();
+
+                            request_accept_yes_btn.setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    HashMap<String,Object> hashMap = new HashMap<>();
+                                    hashMap.put("messageFromGuardianSide",true);
+                                    myRefMessageBox.child(snapshotKey).updateChildren(hashMap);
+                                    mDialog.dismiss();
+                                }
+                            });
+
+                            request_accept_no_btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mDialog.dismiss();
+                                }
+                            });
+
+                            myRefMessageBox.removeEventListener(this);
+                        }
+
+                        break;
                     }
                 }
 
-                if(flag == 0){
+                Log.e("Flag  ", String.valueOf(flag));
+                if(flag==0 && string.equals("Send A Message Request"))
+                {
+
+                    messageBoxInfo = new MessageBoxInfo(firebaseUser.getPhoneNumber(),firebaseUser.getUid(), groupInfo.getGroupAdminEmail(),
+                            groupInfo.getGroupAdminUid(), true , false,false,
+                            false,true) ;
+
+
                     myRefMessageBox.push().setValue(messageBoxInfo) ;
-                    messageRequestButton.setEnabled(false);
-                    messageRequestButton.setBackgroundColor(Color.GRAY);
+                    messageRequestButton.setText("Request Sent");
+                    myRefMessageBox.removeEventListener(this);
                 }
+
+
+                myRefMessageBox.removeEventListener(this);
+
             }
 
             @Override

@@ -3,16 +3,20 @@ package com.example.tuitionapp_surji.guardian;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tuitionapp_surji.R;
+import com.example.tuitionapp_surji.message_box.MessageActivity;
 import com.example.tuitionapp_surji.message_box.MessageBoxInfo;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
@@ -26,6 +30,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GuardianInformationViewActivity extends AppCompatActivity {
 
@@ -37,6 +42,9 @@ public class GuardianInformationViewActivity extends AppCompatActivity {
     private DatabaseReference myRefMessageBox, myRefGuardianInfo ;
     private MaterialToolbar materialToolbar ;
     private MaterialButton editButton, sendMessageButton ;
+    private MessageBoxInfo messageBoxInfo;
+    private Dialog mDialog;
+    private TextView request_acceptation_btn,request_accept_yes_btn,request_accept_no_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +52,6 @@ public class GuardianInformationViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_guardian_information_view);
 
         Intent intent = getIntent() ;
-
         user = intent.getStringExtra("user") ;
 
         nameTextView = findViewById(R.id.guardianName) ;
@@ -54,6 +61,7 @@ public class GuardianInformationViewActivity extends AppCompatActivity {
         editButton = findViewById(R.id.editButton) ;
 
         myRefMessageBox = FirebaseDatabase.getInstance().getReference("MessageBox") ;
+        mDialog = new Dialog(this);
 
         materialToolbar = findViewById(R.id.topAppBar) ;
         materialToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -68,10 +76,46 @@ public class GuardianInformationViewActivity extends AppCompatActivity {
             editButton.setVisibility(View.VISIBLE);
         }
         else{
+
             sendMessageButton.setVisibility(View.VISIBLE);
             tutorInfo = intent.getStringArrayListExtra("tutorInfo") ;
             guardianUid = intent.getStringExtra("guardianUid") ;
             myRefGuardianInfo = FirebaseDatabase.getInstance().getReference("Guardian").child(guardianUid) ;
+
+            myRefMessageBox.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                        MessageBoxInfo messageBoxInfo = dataSnapshot.getValue(MessageBoxInfo.class);
+
+                        if (messageBoxInfo.getGuardianUid().equals(guardianUid) && messageBoxInfo.getTutorUid().equals(tutorInfo.get(3)))
+                        {
+                            if(!messageBoxInfo.isMessageFromGuardianSide() && !messageBoxInfo.isMessageFromTutorSide()){
+                                sendMessageButton.setText("Send Request");
+                            }
+
+                            else if(messageBoxInfo.isMessageFromGuardianSide() && messageBoxInfo.isMessageFromTutorSide()){
+                                sendMessageButton.setText("Send Message");
+                            }
+
+                            else if(!(messageBoxInfo.isMessageFromGuardianSide()) && messageBoxInfo.isMessageFromTutorSide()){
+                                sendMessageButton.setText("Request Sent");
+                            }
+
+                            else if(messageBoxInfo.isMessageFromGuardianSide() && !messageBoxInfo.isMessageFromTutorSide()){
+                                sendMessageButton.setText("Respond Request");
+                            }
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
         }
 
         myRefGuardianInfo.addValueEventListener(new ValueEventListener() {
@@ -100,28 +144,118 @@ public class GuardianInformationViewActivity extends AppCompatActivity {
         }
     }
 
-    public void sendMessageToGuardianOperation(View view){
-        final MessageBoxInfo messageBoxInfo = new MessageBoxInfo(guardianInfo.getPhoneNumber(),
-                guardianUid, tutorInfo.get(2), tutorInfo.get(3), false, true,false,false,false);
-
-        myRefMessageBox.addValueEventListener(new ValueEventListener() {
+    public void sendMessageToGuardianOperation(View view)
+    {
+        myRefMessageBox.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                String string = String.valueOf(sendMessageButton.getText());
                 int flag = 0;
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                Log.e("String  ",string);
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                {
+                    final String snapshotKey = snapshot.getKey();
+                    Log.e("DataSnapshotKey ",snapshotKey);
+
                     MessageBoxInfo messageBoxInfo1 = snapshot.getValue(MessageBoxInfo.class);
 
-                    if(messageBoxInfo1.getTutorUid()!=null){
-                        if (messageBoxInfo1.getGuardianUid().equals(guardianUid) && messageBoxInfo1.getTutorUid().equals(tutorInfo.get(3))) {
-                            flag = 1;
+                    if (messageBoxInfo1.getGuardianUid().equals(guardianUid) && messageBoxInfo1.getTutorUid().equals(tutorInfo.get(3)))
+                    {
+                        flag=1;
+                        if(flag==1 && string.equals("Send Request")){
+
+                                Log.e("Message Button Text ","The text is Send Message. ");
+                                HashMap<String,Object> hashMap = new HashMap<>();
+                                hashMap.put("messageFromTutorSide",true);
+                                myRefMessageBox.child(snapshot.getKey()).updateChildren(hashMap);
+                                sendMessageButton.setText("Request Sent");
+                                myRefMessageBox.removeEventListener(this);
                         }
+
+                        else if(string.equals("Request Sent")){
+                            HashMap<String,Object> hashMap = new HashMap<>();
+                            hashMap.put("messageFromTutorSide",false);
+                            myRefMessageBox.child(snapshot.getKey()).updateChildren(hashMap);
+                            sendMessageButton.setText("Send Request");
+                            Log.e("Message Button Text ","The text is Request Sent. ");
+                            myRefMessageBox.removeEventListener(this);
+                        }
+
+                        else if(string.equals("Send Message"))
+                        {
+                            Log.e("Message Button Text ","The text is Message. ");
+                            Log.e("DataSnapshotKey ",snapshotKey);
+
+                            Intent intent = new Intent(GuardianInformationViewActivity.this, MessageActivity.class);
+
+                                intent.putExtra("userId", guardianUid);
+                                intent.putExtra("mobileNumber",guardianInfo.getPhoneNumber());
+                                intent.putStringArrayListExtra("userInfo", tutorInfo) ;
+                                intent.putExtra("user", user);
+
+                                startActivity(intent);
+                                finish();
+                        }
+
+                        else if(string.equals("Respond Request"))
+                        {
+                            Log.e("Message Button Text ","The text is Respond. ");
+                            Log.e("DataSnapshotKey ",snapshotKey);
+
+
+                            mDialog.setContentView(R.layout.custom_pop_up_accept_message_request);
+                            request_acceptation_btn = mDialog.findViewById(R.id.request_acceptation_btn);
+                            request_accept_yes_btn = mDialog.findViewById(R.id.request_accept_yes_btn);
+                            request_accept_no_btn = mDialog.findViewById(R.id.request_accept_no_btn);
+                            mDialog.show();
+
+
+                            request_accept_yes_btn.setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    HashMap<String,Object> hashMap = new HashMap<>();
+                                    hashMap.put("messageFromTutorSide",true);
+                                    myRefMessageBox.child(snapshotKey).updateChildren(hashMap);
+                                    mDialog.dismiss();
+                                }
+                            });
+
+                            request_accept_no_btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mDialog.dismiss();
+                                }
+                            });
+
+                            myRefMessageBox.removeEventListener(this);
+
+                        }
+                        break;
                     }
                 }
-                if (flag == 0) {
-                    myRefMessageBox.push().setValue(messageBoxInfo);
-                    sendMessageButton.setBackgroundColor(Color.GRAY);
+
+                Log.e("Flag  ", String.valueOf(flag));
+                if(flag==0 && string.equals("Send Request"))
+                {
+
+                    messageBoxInfo = new MessageBoxInfo(guardianInfo.getPhoneNumber(),
+                            guardianUid, tutorInfo.get(2), tutorInfo.get(3), false,
+                            true,false,false,
+                            false);
+                    Log.e("Message Button Text ","Send Message");
+                    myRefMessageBox.push().setValue(messageBoxInfo) ;
+                    sendMessageButton.setText("Request Sent");
+                    myRefMessageBox.removeEventListener(this);
                 }
+
+
                 myRefMessageBox.removeEventListener(this);
+
             }
 
             @Override

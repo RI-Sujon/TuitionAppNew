@@ -102,17 +102,6 @@ public class MessageActivity extends AppCompatActivity
     private TextView block_confirmation_btn,block_yes_btn,block_no_btn;
 
 
-    /*
-
-    EmojiconEditText emojiconEditText;
-    ImageView emojiButton;
-    ImageButton submitButton;
-    View rootView;
-    TextView myTextView;
-    EmojIconActions emojIcon;
-    */
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -140,16 +129,6 @@ public class MessageActivity extends AppCompatActivity
             }
         });
 
-        /*
-        emojiconEditText = findViewById(R.id.text_send);
-        emojiButton = findViewById(R.id.emoji_btn);
-        submitButton = findViewById(R.id.btn_send);
-        myTextView = findViewById(R.id.myTextView);
-        rootView = findViewById(R.id.root_view);
-        emojIcon = new EmojIconActions(this, rootView, emojiconEditText, emojiButton);
-        emojIcon.ShowEmojIcon();
-        */
-
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -176,9 +155,11 @@ public class MessageActivity extends AppCompatActivity
         emoji_btn = findViewById(R.id.emoji_btn);
         rootView = findViewById(R.id.root_view);
         emojIcon = new EmojIconActions(this, rootView, text_send, emoji_btn);
-
         emojIcon.ShowEmojIcon();
 
+        /*emoji_btn.getLayoutParams().height = 100;
+        emoji_btn.getLayoutParams().width = 100;
+        */
 
 
         emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {

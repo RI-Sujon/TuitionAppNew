@@ -109,11 +109,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             //System.out.println("URI ==================="+chat.getMessage());
             if(chat.getMessage()!=null){
 
+                Picasso.get().load(imageUri).into(holder.profile_image_messenger);
                 Picasso.get().load(chat.getMessage()).into(holder.show_image);
                 holder.show_message.setVisibility(View.GONE);
                 holder.show_date.setVisibility(View.GONE);
                 holder.txt_seen.setVisibility(View.GONE);
-                holder.profile_image_messenger.setVisibility(View.GONE);
+                holder.profile_image_messenger.setVisibility(View.VISIBLE);
 
                 holder.show_image.setOnClickListener(new View.OnClickListener() {
                     @Override
